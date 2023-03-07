@@ -47,7 +47,7 @@ export class LoggerService {
   }
 
   private loadFromApi(): Observable<Message[]> {
-    return this.http.get<Message[]>('https://hoot.com.ua:8800/api/v1/log')
+    return this.http.get<Message[]>('https://hoot.com.ua:8800/api/v1/syslog')
       .pipe(catchError(this.errorHandler.bind(this)));
   }
 
