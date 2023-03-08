@@ -3,7 +3,6 @@ export const environment = {
   readSysLog: '/syslog',
   readBackLog: '/backlog'
 };
-
 export const pusherConf = {
   apiKey: 'a1f101fb40a32c47c791',
   cluster: 'eu',
