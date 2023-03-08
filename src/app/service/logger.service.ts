@@ -4,6 +4,7 @@ import {Message} from "../models/message";
 import {catchError, Observable, Subject, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ErrorService} from "./error.service";
+import {environment, pusherConf} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +30,12 @@ export class LoggerService {
   }
 
   private subscribeOnPusherUpdates() {
-    //Pusher.logToConsole = true
-    const pusher = new Pusher('a1f101fb40a32c47c791', {
-      cluster: 'eu'
+    Pusher.logToConsole = pusherConf.logToConsole;
+    const pusher = new Pusher(pusherConf.apiKey, {
+      cluster: pusherConf.cluster
     });
-    const channel = pusher.subscribe('sys_log');
-    channel.bind('call_event', (data: any) => {
+    const channel = pusher.subscribe(pusherConf.channel);
+    channel.bind(pusherConf.event, (data: any) => {
       let message = {
         time: data.time,
         feature: data.feature,
@@ -47,7 +48,7 @@ export class LoggerService {
   }
 
   private loadFromApi(): Observable<Message[]> {
-    return this.http.get<Message[]>('https://hoot.com.ua:8800/api/v1/syslog')
+    return this.http.get<Message[]>(environment.apiUrl+environment.readSysLog)
       .pipe(catchError(this.errorHandler.bind(this)));
   }
 
