@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
-import {IChargepoint} from "../models/chargepoint";
+import {Chargepoint} from "../models/chargepoint";
 import {ErrorService} from "./error.service";
 
 @Injectable({
@@ -13,15 +13,15 @@ export class ChargepointService {
     private errorService: ErrorService) {
   }
 
-  getAll(): Observable<IChargepoint[]> {
-    return this.http.get<IChargepoint[]>('https://fakestoreapi.com/products')
+  getAll(): Observable<Chargepoint[]> {
+    return this.http.get<Chargepoint[]>('https://fakestoreapi.com/products')
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
   }
 
-  create(chargepoint: IChargepoint): Observable<IChargepoint> {
-    return this.http.post<IChargepoint>('https://fakestoreapi.com/products', chargepoint)
+  create(chargepoint: Chargepoint): Observable<Chargepoint> {
+    return this.http.post<Chargepoint>('https://fakestoreapi.com/products', chargepoint)
   }
 
   private errorHandler(err: HttpErrorResponse) {

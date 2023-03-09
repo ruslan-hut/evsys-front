@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {User} from "../models/user";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
@@ -27,12 +27,12 @@ export class AccountService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
-      .subscribe(user => {
+    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {username, password})
+      .pipe(map(user => {
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
-        this.router.navigate(['/']);
-      });
+        return user;
+      }));
   }
 
   logout() {

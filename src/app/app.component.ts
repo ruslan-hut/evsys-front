@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IChargepoint} from "./models/chargepoint";
+import {Chargepoint} from "./models/chargepoint";
 import {ChargepointService} from "./service/chargepoint.service";
 import {Observable} from "rxjs";
 import {ModalService} from "./service/modal.service";
@@ -15,7 +15,7 @@ import {LoggerService} from "./service/logger.service";
 export class AppComponent implements OnInit {
   title = 'EV-SYS Management Panel';
 
-  chargepoints$: Observable<IChargepoint[]>;
+  chargepoints$: Observable<Chargepoint[]>;
   loading = false;
   filter = "";
 

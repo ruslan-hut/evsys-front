@@ -48,7 +48,8 @@ export class LoggerService {
   }
 
   private loadFromApi(): Observable<Message[]> {
-    return this.http.get<Message[]>(environment.apiUrl+environment.readSysLog)
+    const url = environment.apiUrl + environment.readSysLog;
+    return this.http.get<Message[]>(url)
       .pipe(catchError(this.errorHandler.bind(this)));
   }
 

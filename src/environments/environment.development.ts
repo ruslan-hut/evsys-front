@@ -8,5 +8,5 @@ export const pusherConf = {
   cluster: 'eu',
   channel: 'sys_log',
   event: 'call_event',
-  logToConsole: true
+  logToConsole: false
 }

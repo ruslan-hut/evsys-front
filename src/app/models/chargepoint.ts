@@ -1,12 +1,12 @@
-export interface IChargepoint {
-  id?: number,
+import {Connector} from "./connector";
+
+export interface Chargepoint {
+  id?: string,
   title: string,
-  price: number,
   description: string,
-  category: string,
-  image: string,
-  rating: {
-    rate: number,
-    count: number
-  }
+  model: string,
+  serialNumber: string,
+  vendor: string,
+  firmwareVersion: string,
+  connectors: Connector[]
 }

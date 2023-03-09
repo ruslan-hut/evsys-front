@@ -21,9 +21,8 @@ export class ChargepointFormComponent {
   })
 
   submit() {
-    this.chargepointService.create({
-      title: this.form.value as string,
-      category: "", description: "", image: "", price: 0, rating: {count: 0, rate: 0}
-    }).subscribe(() => this.modalService.close())
+    // this.chargepointService.create({
+    //   title: this.form.value as string,
+    //   description: ""}).subscribe(() => this.modalService.close())
   }
 }
