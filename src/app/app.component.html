@@ -1,27 +1,26 @@
 
-<p>
-  <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" [mat-menu-trigger-for]="mainMenu" aria-label="Main system menu button">
-      <mat-icon>menu</mat-icon>
+
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" [mat-menu-trigger-for]="mainMenu" aria-label="Main system menu button">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #mainMenu="matMenu">
+    <button mat-menu-item (click)="navigateTo('/')">
+      <span>Home</span>
     </button>
-    <mat-menu #mainMenu="matMenu">
-      <button mat-menu-item (click)="navigateTo('/')">
-        <span>Home</span>
-      </button>
-      <button mat-menu-item (click)="navigateTo('/syslog')">
-        <span>System log</span>
-      </button>
-    </mat-menu>
-    <span>{{title}}</span>
-    <span class="bar-spacer"></span>
+    <button mat-menu-item (click)="navigateTo('/syslog')">
+      <span>System log</span>
+    </button>
+  </mat-menu>
+  <span>{{title}}</span>
+  <span class="bar-spacer"></span>
 <!--    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">-->
 <!--      <mat-icon>favorite</mat-icon>-->
 <!--    </button>-->
-    <button mat-icon-button class="example-icon" aria-label="User account" (click)="navigateTo('/account/login')">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-  </mat-toolbar>
-</p>
+  <button mat-icon-button class="example-icon" aria-label="User account" (click)="navigateTo('/account/login')">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
 
 <app-snack-bar></app-snack-bar>
 <router-outlet></router-outlet>
