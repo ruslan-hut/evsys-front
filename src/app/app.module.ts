@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ChargepointComponent} from "./components/chargepoint/chargepoint.component";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { GlobalErrorComponent } from './components/global-error/global-error.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { FilerChargepointsPipe } from './pipes/filer-chargepoints.pipe';
@@ -29,6 +29,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { LoginComponent } from './components/login/login.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {TokenInterceptor} from "./helpers/token.interceptor";
+import {ErrorInterceptor} from "./helpers/error.interceptor";
 
 @NgModule({
   declarations: [
@@ -63,7 +65,10 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         MatCardModule,
         MatProgressBarModule
     ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

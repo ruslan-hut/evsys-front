@@ -18,7 +18,6 @@ export class TokenInterceptor implements HttpInterceptor {
     const user = this.accountService.userValue;
     const isLoggedIn = user && user.token;
     const isApiUrl = request.url.startsWith(environment.apiUrl);
-    console.log('TokenInterceptor: ', isLoggedIn, isApiUrl, request.url);
     if (isLoggedIn && isApiUrl) {
       request = request.clone({
         setHeaders: {
