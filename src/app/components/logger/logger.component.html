@@ -1,4 +1,4 @@
-<div>
+<div class="box-margin">
   <mat-form-field appearance="fill">
     <mat-label>Filter</mat-label>
     <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
@@ -8,7 +8,7 @@
   </mat-form-field>
 </div>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 box-margin">
   <table mat-table matSort [dataSource]="dataSource">
     <ng-container matColumnDef="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
@@ -38,6 +38,10 @@
 
   </table>
 
-  <mat-paginator #logDataPaginator [pageSizeOptions]="[10, 50, 100]"></mat-paginator>
+  <mat-paginator
+    #logDataPaginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons>
+
+  </mat-paginator>
 
 </div>
+
