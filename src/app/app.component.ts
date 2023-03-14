@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Chargepoint} from "./models/chargepoint";
 import {ChargepointService} from "./service/chargepoint.service";
-import {Observable} from "rxjs";
-import {ModalService} from "./service/modal.service";
 import {Router} from "@angular/router";
 import {ErrorService} from "./service/error.service";
 import {LoggerService} from "./service/logger.service";
+import {AccountService} from "./service/account.service";
 
 @Component({
   selector: 'app-root',
@@ -13,27 +11,31 @@ import {LoggerService} from "./service/logger.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'EV-SYS Management Panel';
-
-  chargepoints$: Observable<Chargepoint[]>;
-  loading = false;
-  filter = "";
+  title = 'EV-SYS';
+  username = '';
 
   constructor(
     private router: Router,
     public logger: LoggerService,
     private chargepointService: ChargepointService,
-    public modalService: ModalService,
-    public errorService: ErrorService
+    public errorService: ErrorService,
+    private accountService: AccountService
   ) {
   }
 
   ngOnInit(): void {
-    this.logger.init();
-    // this.loading = true
-    // this.chargepoints$ = this.chargepointService.getAll().pipe(
-    //   tap(() => this.loading = false)
-    // )
+    if (!this.accountService.userValue) {
+      this.navigateTo('/account/login');
+    } else {
+      this.logger.init();
+    }
+    this.accountService.user.subscribe(user => {
+      if (user) {
+        this.username = user.username;
+      } else {
+        this.username = '';
+      }
+    });
   }
 
   navigateTo(destination: string) {
@@ -43,5 +45,11 @@ export class AppComponent implements OnInit {
         }
       }
     );
+  }
+
+  logout() {
+    //this.username = '';
+    this.accountService.logout();
+    //this.navigateTo('/account/login');
   }
 }

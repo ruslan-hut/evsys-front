@@ -13,6 +13,7 @@ import {LoggerService} from "../../service/logger.service";
 export class LoggerComponent implements OnInit, AfterContentInit {
   displayedColumn: string[] = ['time', 'feature', 'id', 'text'];
   filter: string = "";
+  loading = false;
   dataSource = new MatTableDataSource<Message>();
   @ViewChild('logDataPaginator') set paginator(pager:MatPaginator) {
     if (pager) this.dataSource.paginator = pager;
@@ -24,6 +25,7 @@ export class LoggerComponent implements OnInit, AfterContentInit {
   constructor(public logger: LoggerService) {
   }
   ngOnInit(): void {
+    this.loading = true;
     this.logger.getMessages().subscribe((messages) => {
       this.dataSource.data = messages;
     })
@@ -33,6 +35,7 @@ export class LoggerComponent implements OnInit, AfterContentInit {
     if (data.length != this.dataSource.data.length) {
       this.dataSource.data = data;
     }
+    this.loading = false;
   }
   applyFilter(event: any) {
     this.filter = event;

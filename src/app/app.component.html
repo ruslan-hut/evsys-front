@@ -14,12 +14,20 @@
   </mat-menu>
   <span>{{title}}</span>
   <span class="bar-spacer"></span>
-<!--    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">-->
-<!--      <mat-icon>favorite</mat-icon>-->
-<!--    </button>-->
-  <button mat-icon-button class="example-icon" aria-label="User account" (click)="navigateTo('/account/login')">
-    <mat-icon>account_circle</mat-icon>
-  </button>
+
+  <span>{{username}}</span>
+
+  <div *ngIf="username; else showLoginButton">
+    <button mat-icon-button aria-label="User account" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+  <ng-template #showLoginButton>
+    <button mat-icon-button aria-label="User account" (click)="navigateTo('/account/login')">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </ng-template>
+
 </mat-toolbar>
 
 <app-snack-bar></app-snack-bar>

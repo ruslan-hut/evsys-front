@@ -4,6 +4,7 @@ import {AccountService} from "../../service/account.service";
 import {ErrorService} from "../../service/error.service";
 import {Router} from "@angular/router";
 import {first} from "rxjs";
+import {LoggerService} from "../../service/logger.service";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit{
     private formBuilder: FormBuilder,
     private accountService: AccountService,
     private router : Router,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private logger: LoggerService
   ) {}
 
   ngOnInit() {
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit{
       .subscribe({
         next: () => {
           const returnUrl = '/';
-          this.router.navigateByUrl(returnUrl);
+          this.router.navigateByUrl(returnUrl).then(() => this.logger.init());
         },
         error: error => {
           this.errorService.handle(error.statusText);
