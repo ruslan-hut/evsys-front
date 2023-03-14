@@ -24,14 +24,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.accountService.userValue) {
-      this.navigateTo('/account/login');
-    } else {
-      this.logger.init();
-    }
     this.accountService.user.subscribe(user => {
       if (user) {
-        this.username = user.username;
+        if (user.name) {
+          this.username = user.name;
+        } else {
+          this.username = user.username;
+        }
+        this.logger.init();
       } else {
         this.username = '';
       }
@@ -48,8 +48,6 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    //this.username = '';
     this.accountService.logout();
-    //this.navigateTo('/account/login');
   }
 }

@@ -13,7 +13,7 @@ export class SnackBarComponent implements OnInit {
     private errorService: ErrorService) {
   }
   openSnackBar(message: string, action: string){
-    this.snack.open(message, action);
+    this.snack.open(message, action, {duration: 5000});
   }
 
   ngOnInit(): void {

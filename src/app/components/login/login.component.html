@@ -1,10 +1,12 @@
-<mat-card>
+
+<div class="flex-center-vertically">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>User Sign In</mat-card-title>
     </mat-card-header>
-  <p></p>
+    <br>
     <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="user-form">
         <p>
           <mat-form-field>
           <input matInput placeholder="Username" type="text" formControlName="username">
@@ -16,12 +18,26 @@
           </mat-form-field>
         </p>
         <mat-card-actions align="end">
-          <button [disabled]="loading" mat-raised-button type="submit">Sign In</button>
+          <button [disabled]="loading" mat-raised-button color="primary" type="submit">Sign In</button>
         </mat-card-actions>
       </form>
     </mat-card-content>
     <mat-card-footer *ngIf="loading">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </mat-card-footer>
-</mat-card>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <div style="max-width: 300px; min-width: 200px">
+        <p>Don't have an account?</p>
+        <mat-card-actions align="end">
+          <button [disabled]="loading" mat-flat-button (click)="navigateTo('/account/register')">Sign Up</button>
+        </mat-card-actions>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
 
