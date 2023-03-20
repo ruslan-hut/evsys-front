@@ -1,12 +1,15 @@
 import {Connector} from "./connector";
 
 export interface Chargepoint {
-  id?: string,
+  charge_point_id?: string,
+  is_enabled: boolean,
   title: string,
   description: string,
   model: string,
-  serialNumber: string,
+  serial_number: string,
   vendor: string,
-  firmwareVersion: string,
+  firmware_version: string,
+  status: string,
+  error_code: string,
   connectors: Connector[]
 }

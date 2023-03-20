@@ -2,6 +2,7 @@ export const environment = {
   apiUrl: 'https://hoot.com.ua:8800/api/v1',
   readSysLog: '/syslog',
   readBackLog: '/backlog',
+  chargePointList: '/chp',
   wsUrl: 'wss://hoot.com.ua:8800/ws'
 };
 export const pusherConf = {

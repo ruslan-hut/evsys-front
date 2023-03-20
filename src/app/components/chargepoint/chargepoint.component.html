@@ -1,22 +1,26 @@
-<div class="py-4 px-6 border rounded flex items-center flex-row mb-2">
 
-<!--  <img [src]="chargepoint.image" [alt]="chargepoint.title" class="w-1/6 mb-2">-->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{chargepoint.charge_point_id}} :: {{chargepoint.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <tr><td >Description</td><td ><b>{{chargepoint.description}}</b></td><td></td></tr>
+      <tr><td >ID</td><td >{{chargepoint.charge_point_id}}</td><td></td></tr>
+      <tr ><td >Enabled</td><td >{{chargepoint.is_enabled}}</td>
+        <td></td>
+      </tr>
+      <tr><td >Model</td><td >{{chargepoint.model}}</td><td></td></tr>
+      <tr><td >Vendor</td><td >{{chargepoint.vendor}}</td><td></td></tr>
+      <tr><td >Serial number</td><td >{{chargepoint.serial_number}}</td><td></td></tr>
+      <tr><td >Firmware version</td><td >{{chargepoint.firmware_version}}</td><td></td></tr>
+      <tr ><td >Status</td><td ><b>{{chargepoint.status}}</b></td><td></td></tr>
+      <tr ><td >Error code</td><td >{{chargepoint.error_code}}</td><td></td></tr>
+    </table>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button color="primary">Edit</button>
+    <button mat-flat-button color="warn">Disable</button>
+  </mat-card-actions>
+</mat-card>
 
-  <h2 class="mb-2 text-lg text-center">{{chargepoint.title}}</h2>
-
-  <div *ngIf="details">
-    <p>{{chargepoint.description}}</p>
-  </div>
-
-  <button
-    class="border py-2 px-4 rounded"
-    [ngClass]="{
-      'bg-amber-400': !details,
-      'bg-blue-400': details
-    }"
-    (click)="details=!details"
-  >
-    {{details? 'Hide' : 'Show' }} Details
-  </button>
-
-</div>

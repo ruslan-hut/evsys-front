@@ -33,6 +33,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {TokenInterceptor} from "./helpers/token.interceptor";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {MatDividerModule} from "@angular/material/divider";
+import { ChargepointListComponent } from './components/chargepoint-list/chargepoint-list.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MatDividerModule} from "@angular/material/divider";
     LoggerComponent,
     SnackBarComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ChargepointListComponent
   ],
   imports: [
     BrowserModule,

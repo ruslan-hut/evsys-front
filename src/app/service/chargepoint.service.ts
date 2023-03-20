@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
 import {Chargepoint} from "../models/chargepoint";
 import {ErrorService} from "./error.service";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ChargepointService {
   }
 
   getAll(): Observable<Chargepoint[]> {
-    return this.http.get<Chargepoint[]>('https://fakestoreapi.com/products')
+    return this.http.get<Chargepoint[]>(environment.apiUrl + environment.chargePointList)
       .pipe(
         catchError(this.errorHandler.bind(this))
       )

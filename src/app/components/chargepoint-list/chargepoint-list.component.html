@@ -1,0 +1,3 @@
+  <div *ngIf="chargepoints$ | async as chargepoints">
+  <app-chargepoint *ngFor="let chp of chargepoints" [chargepoint]="chp"></app-chargepoint>
+  </div>
