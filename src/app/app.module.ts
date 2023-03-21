@@ -34,6 +34,8 @@ import {TokenInterceptor} from "./helpers/token.interceptor";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {MatDividerModule} from "@angular/material/divider";
 import { ChargepointListComponent } from './components/chargepoint-list/chargepoint-list.component';
+import { HeaderComponent } from './components/ui/header/header.component';
+import { FooterComponent } from './components/ui/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { ChargepointListComponent } from './components/chargepoint-list/chargepo
     SnackBarComponent,
     LoginComponent,
     RegisterComponent,
-    ChargepointListComponent
+    ChargepointListComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

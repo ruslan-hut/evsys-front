@@ -1,0 +1,29 @@
+<mat-toolbar class= "toolbar mat-elevation-z8" color="primary">
+  <button mat-icon-button class="example-icon" [mat-menu-trigger-for]="mainMenu" aria-label="Main system menu button">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #mainMenu="matMenu">
+    <button mat-menu-item (click)="navigateTo('/')">
+      <span>Home</span>
+    </button>
+    <button mat-menu-item (click)="navigateTo('/syslog')">
+      <span>System log</span>
+    </button>
+  </mat-menu>
+  <span>{{title}}</span>
+  <span class="bar-spacer"></span>
+
+  <span>{{username}}</span>
+
+  <div *ngIf="username; else showLoginButton">
+    <button mat-icon-button aria-label="User account" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+  <ng-template #showLoginButton>
+    <button mat-icon-button aria-label="User account" (click)="navigateTo('/account/login')">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </ng-template>
+
+</mat-toolbar>
