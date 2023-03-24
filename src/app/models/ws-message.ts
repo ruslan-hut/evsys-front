@@ -1,4 +1,4 @@
 export interface WsMessage {
-  source: string;
-  content: string;
+  topic: string;
+  data: string;
 }

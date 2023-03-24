@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {ErrorService} from "../../../service/error.service";
 import {AccountService} from "../../../service/account.service";
-import {LoggerService} from "../../../service/logger.service";
 
 @Component({
   selector: 'app-header',
@@ -17,7 +16,6 @@ export class HeaderComponent implements OnInit{
     private router: Router,
     public errorService: ErrorService,
     private accountService: AccountService,
-    public logger: LoggerService,
   ) {
   }
   navigateTo(destination: string) {
@@ -41,7 +39,6 @@ export class HeaderComponent implements OnInit{
         } else {
           this.username = user.username;
         }
-        this.logger.init();
       } else {
         this.username = '';
       }
