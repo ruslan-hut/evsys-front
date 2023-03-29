@@ -10,6 +10,7 @@ export interface Chargepoint {
   vendor: string,
   firmware_version: string,
   status: string,
+  info: string,
   error_code: string,
   connectors: Connector[]
 }
