@@ -44,4 +44,8 @@ export class WebsocketService {
   receive(): Observable<WsMessage> {
     return this.messages$;
   }
+
+  close(): void {
+    this.socket$.complete();
+  }
 }

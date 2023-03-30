@@ -1,4 +1,4 @@
-<button mat-flat-button color="primary" (click)="send()">WS Send message</button>
+<!--<button mat-flat-button color="primary" (click)="send()">WS Send message</button>-->
 <div *ngIf="chargepoints$ | async as chargepoints">
   <app-chargepoint *ngFor="let chp of chargepoints" [chargepoint]="chp"></app-chargepoint>
 </div>
