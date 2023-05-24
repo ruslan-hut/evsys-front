@@ -25,37 +25,28 @@ export class LoggerService {
     this.loadFromApi().subscribe( messages => {
         this.messages = messages;
         this.messages$.next(this.messages);
-        this.subscribeOnLogUpdates();
+        //this.subscribeOnLogUpdates();
       }
     )
     this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
-      console.log('Received: ', message.data);
-      if (message.data) {
-        const newMessage: Message = JSON.parse(message.data);
-        this.messages.unshift(newMessage);
-        this.messages$.next(this.messages);
+      //console.log('Received: ', message.data);
+      if (message.status === 'ping') {
+        this.websocketService.send({command: 'ListenLog'});
+        return;
+      }
+      if (message.status === 'error') {
+        this.errorService.handle('WS error: ' + message.info);
+        return;
+      }
+      if (message.status === 'success') {
+        if (message.data) {
+          const newMessage: Message = JSON.parse(message.data);
+          this.messages.unshift(newMessage);
+          this.messages$.next(this.messages);
+        }
       }
     });
-  }
-
-  private subscribeOnLogUpdates() {
-    // Pusher.logToConsole = pusherConf.logToConsole;
-    // const pusher = new Pusher(pusherConf.apiKey, {
-    //   cluster: pusherConf.cluster
-    // });
-    // const channel = pusher.subscribe(pusherConf.channel);
-    // channel.bind(pusherConf.event, (data: any) => {
-    //   let message = {
-    //     time: data.time,
-    //     feature: data.feature,
-    //     id: data.id,
-    //     text: data.text
-    //   };
-    //   this.messages.unshift(message);
-    //   this.messages$.next(this.messages);
-    // });
-    this.websocketService.send({command: 'ListenLog'});
   }
 
   private loadFromApi(): Observable<Message[]> {

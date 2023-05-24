@@ -23,7 +23,7 @@ export class ChargepointService {
   init(): void {
     this.getAll().subscribe(chargepoints => {
       this.chargePoints$.next(chargepoints);
-      this.websocketService.send({command: 'ListenChargepoints'});
+      this.websocketService.send({command: 'ListenChargePoints'});
     });
     this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {

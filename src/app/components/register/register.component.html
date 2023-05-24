@@ -21,6 +21,11 @@
             <input matInput placeholder="Password" type="password" formControlName="password">
           </mat-form-field>
         </p>
+        <p>
+          <mat-form-field>
+            <input matInput placeholder="Invite code" type="text" formControlName="token">
+          </mat-form-field>
+        </p>
         <mat-card-actions align="end">
           <button [disabled]="loading" mat-raised-button color="primary" type="submit">Sign Up</button>
         </mat-card-actions>
