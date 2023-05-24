@@ -1,4 +1,8 @@
 export interface WsMessage {
-  topic: string;
-  data: string;
+  status: string;
+  stage?: string;
+  info?: string;
+  progress?: number;
+  id?: number;
+  data?: string;
 }

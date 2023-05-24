@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
@@ -10,7 +10,7 @@ import {LoggerService} from "../../service/logger.service";
   templateUrl: './logger.component.html',
   styleUrls: ['./logger.component.css']
 })
-export class LoggerComponent implements OnInit, AfterContentInit {
+export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
   displayedColumn: string[] = ['time', 'feature', 'id', 'text'];
   filter: string = "";
   loading = false;
@@ -22,15 +22,18 @@ export class LoggerComponent implements OnInit, AfterContentInit {
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(public logger: LoggerService) {
-  }
+  constructor(
+    public logger: LoggerService
+    ) {}
+
   ngOnInit(): void {
     this.loading = true;
     this.logger.init();
     this.logger.getMessages().subscribe((messages) => {
       this.dataSource.data = messages;
-    })
+    });
   }
+
   ngAfterContentInit(): void {
     const data = this.logger.currentMessages();
     if (data.length != this.dataSource.data.length) {
@@ -38,12 +41,17 @@ export class LoggerComponent implements OnInit, AfterContentInit {
     }
     this.loading = false;
   }
+
   applyFilter(event: any) {
     this.filter = event;
     this.dataSource.filter = this.filter.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.logger.onStop();
   }
 
 }

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import Pusher from "pusher-js";
 import {Message} from "../models/message";
 import {catchError, Observable, Subject, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ErrorService} from "./error.service";
-import {environment, pusherConf} from "../../environments/environment";
+import {environment} from "../../environments/environment";
+import {WebsocketService} from "./websocket.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class LoggerService {
 
   constructor(
     private http: HttpClient,
+    private websocketService: WebsocketService,
     private errorService: ErrorService
   ) {
   }
@@ -24,27 +25,37 @@ export class LoggerService {
     this.loadFromApi().subscribe( messages => {
         this.messages = messages;
         this.messages$.next(this.messages);
-        this.subscribeOnPusherUpdates();
+        this.subscribeOnLogUpdates();
       }
     )
+    this.websocketService.connect();
+    this.websocketService.receive().subscribe(message => {
+      console.log('Received: ', message.data);
+      if (message.data) {
+        const newMessage: Message = JSON.parse(message.data);
+        this.messages.unshift(newMessage);
+        this.messages$.next(this.messages);
+      }
+    });
   }
 
-  private subscribeOnPusherUpdates() {
-    Pusher.logToConsole = pusherConf.logToConsole;
-    const pusher = new Pusher(pusherConf.apiKey, {
-      cluster: pusherConf.cluster
-    });
-    const channel = pusher.subscribe(pusherConf.channel);
-    channel.bind(pusherConf.event, (data: any) => {
-      let message = {
-        time: data.time,
-        feature: data.feature,
-        id: data.id,
-        text: data.text
-      };
-      this.messages.unshift(message);
-      this.messages$.next(this.messages);
-    });
+  private subscribeOnLogUpdates() {
+    // Pusher.logToConsole = pusherConf.logToConsole;
+    // const pusher = new Pusher(pusherConf.apiKey, {
+    //   cluster: pusherConf.cluster
+    // });
+    // const channel = pusher.subscribe(pusherConf.channel);
+    // channel.bind(pusherConf.event, (data: any) => {
+    //   let message = {
+    //     time: data.time,
+    //     feature: data.feature,
+    //     id: data.id,
+    //     text: data.text
+    //   };
+    //   this.messages.unshift(message);
+    //   this.messages$.next(this.messages);
+    // });
+    this.websocketService.send({command: 'ListenLog'});
   }
 
   private loadFromApi(): Observable<Message[]> {
@@ -64,5 +75,9 @@ export class LoggerService {
   private errorHandler(err: HttpErrorResponse) {
     this.errorService.handle(err.message)
     return throwError(() => err.message)
+  }
+
+  onStop(): void {
+    this.websocketService.close();
   }
 }

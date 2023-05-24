@@ -9,7 +9,7 @@ import {AccountService} from "../../../service/account.service";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit{
-  title = 'EV-SYS';
+  title = 'WattBrews';
   username = '';
 
   constructor(

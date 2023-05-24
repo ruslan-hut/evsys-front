@@ -4,6 +4,8 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import {environment} from "../../environments/environment";
 import {WsMessage} from "../models/ws-message";
 import {ErrorService} from "./error.service";
+import {AccountService} from "./account.service";
+import {WsRequest} from "../models/ws-request";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,8 @@ export class WebsocketService {
   }
 
   constructor(
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private accountService: AccountService
   ) { }
 
   connect(): void {
@@ -37,7 +40,11 @@ export class WebsocketService {
     );
   }
 
-  send(message: any): void {
+  send(message: WsRequest): void {
+    const user = this.accountService.userValue;
+    if (user && user.token) {
+      message.token = user.token;
+    }
     this.socket$.next(message);
   }
 
