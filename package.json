@@ -4,9 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href='/'",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "prebuild": "cp /var/www/vhosts/wattbrews.me/httpdocs/.htaccess /var/tmp/",
+    "build": "ng build --output-path=/var/www/vhosts/wattbrews.me/httpdocs",
+    "postbuild": "cp /var/tmp/.htaccess /var/www/vhosts/wattbrews.me/httpdocs/"
   },
   "private": true,
   "dependencies": {
