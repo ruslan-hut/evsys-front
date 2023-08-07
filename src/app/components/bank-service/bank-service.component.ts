@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {AccountService} from "../../service/account.service";
 
 declare var getInSiteFormJSON: any;
 declare var storeIdOper: any;
@@ -12,14 +13,20 @@ declare var storeIdOper: any;
 export class BankServiceComponent implements OnInit {
 
   language: string = 'ES';
+  authToken: string = '';
   token: string = '';
   errorCode: string = '';
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private accountService: AccountService
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.language = params['lng'];
+      this.authToken = params['token'];
+      this.accountService.loginWithToken(this.authToken)
     });
     this.setupEventListener();
     this.getInSiteForm();

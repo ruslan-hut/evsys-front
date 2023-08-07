@@ -35,6 +35,22 @@ export class AccountService {
       }));
   }
 
+  loginWithToken(token: string) {
+    let tempUser: User = {
+      name: '?',
+      username: '?',
+      password: '',
+      token: token,
+    }
+    this.userSubject.next(tempUser)
+    return this.http.get<User>(`${environment.apiUrl}/users/info`)
+      .pipe(map(user => {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      }))
+  }
+
   register(user: User) {
     return this.http.post(`${environment.apiUrl}/users/register`, user);
   }
