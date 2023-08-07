@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 
 declare var getInSiteFormJSON: any;
 declare var storeIdOper: any;
@@ -10,12 +11,16 @@ declare var storeIdOper: any;
 })
 export class BankServiceComponent implements OnInit {
 
+  language: string = 'ES';
   token: string = '';
   errorCode: string = '';
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.language = params['lng'];
+    });
     this.setupEventListener();
     this.getInSiteForm();
   }
@@ -41,6 +46,7 @@ export class BankServiceComponent implements OnInit {
       "fuc": "999008881",
       "terminal": "1",
       "order": orderNumber(),
+      "idioma": this.language,
       "mostrarLogo": "true",
       "estiloReducido": "true",
       "estiloInsite": "twoRows"
