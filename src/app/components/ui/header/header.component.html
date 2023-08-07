@@ -1,18 +1,20 @@
 <mat-toolbar class= "toolbar mat-elevation-z8" color="primary">
-  <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #mainMenu="matMenu">
-    <button mat-menu-item (click)="navigateTo('/')">
-      <span>Home</span>
+  <div *ngIf="username">
+    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
+      <mat-icon>menu</mat-icon>
     </button>
-    <button mat-menu-item (click)="navigateTo('/syslog')">
-      <span>System log</span>
-    </button>
-    <button mat-menu-item (click)="navigateTo('/bank')">
-      <span>Bank service</span>
-    </button>
-  </mat-menu>
+    <mat-menu #mainMenu="matMenu">
+      <button mat-menu-item (click)="navigateTo('/')">
+        <span>Home</span>
+      </button>
+      <button mat-menu-item (click)="navigateTo('/syslog')">
+        <span>System log</span>
+      </button>
+      <button mat-menu-item (click)="navigateTo('/bank')">
+        <span>Bank service</span>
+      </button>
+    </mat-menu>
+  </div>
   <span>{{title}}</span>
   <span class="bar-spacer"></span>
 
