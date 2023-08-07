@@ -37,18 +37,17 @@ export class AccountService {
 
   loginWithToken(token: string) {
     let tempUser: User = {
-      name: '?',
-      username: '?',
+      name: '',
+      username: '',
       password: '',
       token: token,
     }
     this.userSubject.next(tempUser)
-    return this.http.get<User>(`${environment.apiUrl}/users/info`)
+    this.http.get<User>(`${environment.apiUrl}/users/info`)
       .pipe(map(user => {
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
-        return user;
-      }))
+      })).subscribe()
   }
 
   register(user: User) {

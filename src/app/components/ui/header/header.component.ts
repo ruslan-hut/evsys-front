@@ -11,6 +11,7 @@ import {AccountService} from "../../../service/account.service";
 export class HeaderComponent implements OnInit{
   title = 'WattBrews';
   username = '';
+  menuEnabled = false;
 
   constructor(
     private router: Router,
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit{
         } else {
           this.username = user.username;
         }
+        this.menuEnabled = user.role === 'admin'
       } else {
         this.username = '';
       }
