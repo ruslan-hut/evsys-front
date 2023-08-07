@@ -5,10 +5,12 @@ import {authGuard} from "./helpers/auth.guard";
 import {LoginComponent} from "./components/login/login.component";
 import {RegisterComponent} from "./components/register/register.component";
 import {ChargepointListComponent} from "./components/chargepoint-list/chargepoint-list.component";
+import {BankServiceComponent} from "./components/bank-service/bank-service.component";
 
 const routes: Routes = [
   {path: 'syslog', component: LoggerComponent, canActivate: [authGuard]},
   {path: 'points', component: ChargepointListComponent},
+  {path: 'bank', component: BankServiceComponent},
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'}

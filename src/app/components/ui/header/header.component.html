@@ -1,5 +1,5 @@
 <mat-toolbar class= "toolbar mat-elevation-z8" color="primary">
-  <button mat-icon-button class="example-icon" [mat-menu-trigger-for]="mainMenu" aria-label="Main system menu button">
+  <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #mainMenu="matMenu">
@@ -8,6 +8,9 @@
     </button>
     <button mat-menu-item (click)="navigateTo('/syslog')">
       <span>System log</span>
+    </button>
+    <button mat-menu-item (click)="navigateTo('/bank')">
+      <span>Bank service</span>
     </button>
   </mat-menu>
   <span>{{title}}</span>

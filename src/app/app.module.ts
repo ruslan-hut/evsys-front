@@ -36,6 +36,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import { ChargepointListComponent } from './components/chargepoint-list/chargepoint-list.component';
 import { HeaderComponent } from './components/ui/header/header.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
+import { BankServiceComponent } from './components/bank-service/bank-service.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { FooterComponent } from './components/ui/footer/footer.component';
     RegisterComponent,
     ChargepointListComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BankServiceComponent
   ],
   imports: [
     BrowserModule,
