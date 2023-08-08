@@ -26,29 +26,28 @@ export class BankServiceComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.language = params['lng'];
       this.authToken = params['token'];
-      this.accountService.loginWithToken(this.authToken)
+      if (this.authToken) {
+        this.accountService.loginWithToken(this.authToken)
+      }
     });
     this.setupEventListener();
     this.getInSiteForm();
   }
 
   merchantValidation(): boolean {
-    alert("Got the operation result");
-    //alert(this.token + '--' + this.errorCode);
+    alert("Operation completed");
     return true;
   }
 
   setupEventListener(): void {
     window.addEventListener("message", (event) => {
-      //console.log("event", event)
-      //console.log(storeIdOper);
       storeIdOper(event, "token", "errorCode", this.merchantValidation);
     });
   }
 
   getInSiteForm() {
     const orderNumber = () => "ORD" + Math.floor((Math.random() * 1000) + 1);
-    const insiteJSON = {
+    const formParamsJSON = {
       "id": "card-form",
       "fuc": "999008881",
       "terminal": "1",
@@ -58,13 +57,17 @@ export class BankServiceComponent implements OnInit {
       "estiloReducido": "true",
       "estiloInsite": "twoRows"
     };
-    getInSiteFormJSON(insiteJSON);
+    getInSiteFormJSON(formParamsJSON);
   }
 
   showValues() {
     this.token = (document.getElementById("token") as HTMLInputElement).value;
     this.errorCode = (document.getElementById("errorCode") as HTMLInputElement).value;
-    alert(this.token + '--' + this.errorCode);
+    if (this.errorCode) {
+      alert('Error: ' + this.errorCode);
+    } else {
+      alert('Token: ' + this.token);
+    }
   }
 
 }
