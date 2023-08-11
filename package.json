@@ -6,9 +6,7 @@
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "prebuild": "cp /var/www/vhosts/wattbrews.me/httpdocs/.htaccess /var/tmp/",
-    "build": "ng build --output-path=/var/www/vhosts/wattbrews.me/httpdocs",
-    "postbuild": "cp /var/tmp/.htaccess /var/www/vhosts/wattbrews.me/httpdocs/"
+    "build": "ng build --output-path=/var/www/html"
   },
   "private": true,
   "dependencies": {
