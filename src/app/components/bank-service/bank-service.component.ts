@@ -54,6 +54,7 @@ export class BankServiceComponent implements OnInit {
       "terminal": "1",
       "order": orderNumber(),
       "idioma": this.language,
+      "buttonValue": "Confirmar",
       "mostrarLogo": "true",
       "estiloReducido": "true",
       "estiloInsite": "twoRows"
