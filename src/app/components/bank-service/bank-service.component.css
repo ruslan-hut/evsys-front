@@ -1,18 +1,19 @@
-
-:host {
-  display: flex;
-  justify-content: center;
-  margin: 100px 0;
+body {
+  margin: 0 0;
 }
-mat-card {
-  margin-bottom: 10px;
-}
-.user-form {
-  min-width: 200px;
-  max-width: 600px;
-  width: 100%;
-}
+/*:host {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*}*/
+/*mat-card {*/
+/*  margin-bottom: 10px;*/
+/*}*/
+/*.user-form {*/
+/*  min-width: 200px;*/
+/*  max-width: 600px;*/
+/*  width: 100%;*/
+/*}*/
 #card-form {
-  height: 500px;  /* adjust this value as per your needs */
+  height: 400px;  /* adjust this value as per your needs */
 }
 
