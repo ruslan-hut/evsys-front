@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'syslog', component: LoggerComponent, canActivate: [authGuard]},
   {path: 'points', component: ChargepointListComponent},
   {path: 'bank', component: BankServiceComponent},
-  {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'privacy', component: PrivacyPolicyComponent},
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'}
