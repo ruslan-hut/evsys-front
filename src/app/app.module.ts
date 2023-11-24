@@ -37,6 +37,7 @@ import { ChargepointListComponent } from './components/chargepoint-list/chargepo
 import { HeaderComponent } from './components/ui/header/header.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { BankServiceComponent } from './components/bank-service/bank-service.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { BankServiceComponent } from './components/bank-service/bank-service.com
     ChargepointListComponent,
     HeaderComponent,
     FooterComponent,
-    BankServiceComponent
+    BankServiceComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     BrowserModule,
