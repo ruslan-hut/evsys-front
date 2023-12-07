@@ -10,4 +10,8 @@ export class ChargepointComponent {
   @Input() chargepoint: Chargepoint
 
   details = false
+
+  editChargepoint() {
+
+  }
 }

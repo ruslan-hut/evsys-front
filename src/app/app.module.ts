@@ -9,6 +9,7 @@ import { FilerChargepointsPipe } from './pipes/filer-chargepoints.pipe';
 
 import { ChargepointFormComponent } from './components/chargepoint-form/chargepoint-form.component';
 import {ChargepointComponent} from "./components/chargepoint/chargepoint.component";
+import {ConnectorComponent} from "./components/connector/connector.component";
 import { GlobalErrorComponent } from './components/global-error/global-error.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,6 +44,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
   declarations: [
     AppComponent,
     ChargepointComponent,
+    ConnectorComponent,
     GlobalErrorComponent,
     FilerChargepointsPipe,
     ChargepointFormComponent,
