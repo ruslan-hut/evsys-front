@@ -1,4 +1,8 @@
-<!--<button mat-flat-button color="primary" (click)="send()">WS Send message</button>-->
-<div *ngIf="chargepoints$ | async as chargepoints">
-  <app-chargepoint *ngFor="let chp of chargepoints" [chargepoint]="chp"></app-chargepoint>
+<!--&lt;!&ndash;<button mat-flat-button color="primary" (click)="send()">WS Send message</button>&ndash;&gt;-->
+<!--<div *ngIf="chargepoints$ | async as chargepoints">-->
+<!--  <app-chargepoint *ngFor="let chp of chargepoints" [chargepoint]="chp"></app-chargepoint>-->
+<!--</div>-->
+
+<div class="mat-elevation-z8 box-margin">
+  <app-chargepoint *ngFor="let chp of dataSource.data" [chargepoint]="chp"></app-chargepoint>
 </div>

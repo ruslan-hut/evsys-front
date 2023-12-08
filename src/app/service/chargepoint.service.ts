@@ -11,8 +11,10 @@ import {WsMessage} from "../models/ws-message";
   providedIn: 'root'
 })
 export class ChargepointService {
+  private chargePoints: Chargepoint[] = [];
+  private chargePoints$ = new Subject<Chargepoint[]>();
 
-  chargePoints$ = new Subject<Chargepoint[]>();
+
 
   constructor(
     private http: HttpClient,
@@ -21,14 +23,23 @@ export class ChargepointService {
   }
 
   init(): void {
-    this.getAll().subscribe(chargepoints => {
-      this.chargePoints$.next(chargepoints);
+    this.getAll().subscribe(chargePoints => {
+      this.chargePoints = chargePoints;
+      this.chargePoints$.next(this.chargePoints);
       this.websocketService.send({command: 'ListenChargePoints'});
     });
     this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
       this.onWsMessage(message)
     });
+  }
+
+  getChargePoints(): Observable<Chargepoint[]> {
+    return this.chargePoints$;
+  }
+
+  currentChargePoints(): Chargepoint[] {
+    return this.chargePoints;
   }
 
   private getAll(): Observable<Chargepoint[]> {
@@ -43,16 +54,35 @@ export class ChargepointService {
   }
 
   private onWsMessage(message: WsMessage) {
-    if (message.data) {
-      const updated: Chargepoint = JSON.parse(message.data);
-      console.log('Updated: ', updated.charge_point_id);
-      // this.chargepoints$ = this.chargepoints$.pipe(
-      //   map(chargepoints => chargepoints.map(chargepoint => {
-      //     if (chargepoint.charge_point_id === updated.charge_point_id) {
-      //       return updated;
-      //     }
-      //     return chargepoint;
-      //   })));
+    // if (message.data) {
+    //   const updated: Chargepoint = JSON.parse(message.data);
+    //   console.log('Updated: ', updated.charge_point_id);
+    //   // this.chargepoints$ = this.chargepoints$.pipe(
+    //   //   map(chargepoints => chargepoints.map(chargepoint => {
+    //   //     if (chargepoint.charge_point_id === updated.charge_point_id) {
+    //   //       return updated;
+    //   //     }
+    //   //     return chargepoint;
+    //   //   })));
+    // }
+    if (message.status === 'ping') {
+      this.websocketService.send({command: 'ListenLog'});
+      return;
+    }
+    if (message.status === 'error') {
+      this.errorService.handle('WS error: ' + message.info);
+      return;
+    }
+    if (message.status === 'success') {
+      if (message.data) {
+        const updated = JSON.parse(message.data);
+        // const index = this.chargePoints.findIndex(chp => chp.charge_point_id === updated.id);
+        // if (index !== -1) {
+        //   this.chargePoints[index] = updated;
+        //   this.chargePoints$.next(this.chargePoints);
+        // }
+        console.log('Updated: ', updated);
+      }
     }
   }
 
