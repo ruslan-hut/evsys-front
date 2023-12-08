@@ -7,6 +7,7 @@ import {RegisterComponent} from "./components/register/register.component";
 import {ChargepointListComponent} from "./components/chargepoint-list/chargepoint-list.component";
 import {BankServiceComponent} from "./components/bank-service/bank-service.component";
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
+import {ChargepointFormComponent} from "./components/chargepoint-form/chargepoint-form.component";
 
 const routes: Routes = [
   {path: 'syslog', component: LoggerComponent, canActivate: [authGuard]},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'privacy', component: PrivacyPolicyComponent},
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
-  {path: '', redirectTo: '/points', pathMatch: 'full'}
+  {path: '', redirectTo: '/points', pathMatch: 'full'},
+  {path: 'points-form', component: ChargepointFormComponent}
 ];
 
 @NgModule({

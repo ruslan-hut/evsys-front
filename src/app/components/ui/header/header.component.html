@@ -15,6 +15,10 @@
       </button>
     </mat-menu>
   </div>
+  <button mat-icon-button *ngIf="!menuEnabled" (click)="navigateTo('/')" aria-label="Back button">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
   <span>{{title}}</span>
   <span class="bar-spacer"></span>
 

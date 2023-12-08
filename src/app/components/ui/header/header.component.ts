@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterContentChecked} from '@angular/core';
 import {Router} from "@angular/router";
 import {ErrorService} from "../../../service/error.service";
 import {AccountService} from "../../../service/account.service";
@@ -8,7 +8,7 @@ import {AccountService} from "../../../service/account.service";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit, AfterContentChecked{
   title = 'WattBrews';
   username = '';
   menuEnabled = false;
@@ -45,5 +45,9 @@ export class HeaderComponent implements OnInit{
         this.username = '';
       }
     });
+  }
+
+  ngAfterContentChecked(): void {
+    this.menuEnabled = !this.router.url.includes('/points-form');
   }
 }
