@@ -13,6 +13,8 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
   username = '';
   menuEnabled = false;
 
+  isAdmin = false;
+
   constructor(
     private router: Router,
     public errorService: ErrorService,
@@ -40,7 +42,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
         } else {
           this.username = user.username;
         }
-        this.menuEnabled = user.role === 'admin'
+        this.isAdmin = user.role === 'admin'
       } else {
         this.username = '';
       }

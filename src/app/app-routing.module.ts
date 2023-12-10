@@ -17,7 +17,7 @@ const routes: Routes = [
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},
-  {path: 'points-form', component: ChargepointFormComponent}
+  {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]}
 ];
 
 @NgModule({

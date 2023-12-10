@@ -1,5 +1,5 @@
 <mat-toolbar class= "toolbar mat-elevation-z8" color="primary">
-  <div *ngIf="menuEnabled">
+  <div *ngIf="menuEnabled && isAdmin">
     <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
       <mat-icon>menu</mat-icon>
     </button>
@@ -15,7 +15,7 @@
       </button>
     </mat-menu>
   </div>
-  <button mat-icon-button *ngIf="!menuEnabled" (click)="navigateTo('/')" aria-label="Back button">
+  <button mat-icon-button *ngIf="!menuEnabled && isAdmin" (click)="navigateTo('/')" aria-label="Back button">
     <mat-icon>arrow_back</mat-icon>
   </button>
 
