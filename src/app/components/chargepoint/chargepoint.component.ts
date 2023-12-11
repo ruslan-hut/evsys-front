@@ -35,4 +35,15 @@ export class ChargepointComponent implements OnInit {
       }
     });
   }
+
+  getTimeDifference(): string {
+    const now = new Date();
+    const event = new Date(this.chargepoint.event_time);
+    const differenceInSeconds = Math.floor((now.getTime() - event.getTime()) / 1000);
+
+    const hours = Math.floor(differenceInSeconds / 3600);
+    const minutes = Math.floor((differenceInSeconds % 3600) / 60);
+
+    return `${hours} h. ${minutes} min. ago`;
+  }
 }

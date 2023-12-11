@@ -1,3 +1,37 @@
 mat-card {
   margin: 10px;
 }
+
+.two-in-one {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 99.5%;
+}
+
+.two-in-one_input {
+  width: 49.5%;
+}
+
+.readonly-input {
+  cursor: default;
+  user-select: none;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-sizing: border-box;
+  padding: 3px;
+}
+textarea {
+  resize: none;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+

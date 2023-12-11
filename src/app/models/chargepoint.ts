@@ -1,5 +1,5 @@
 import {Connector} from "./connector";
-
+import {Location} from "./location";
 export interface Chargepoint {
   charge_point_id?: string,
   is_enabled: boolean,
@@ -10,7 +10,12 @@ export interface Chargepoint {
   vendor: string,
   firmware_version: string,
   status: string,
-  info: string,
   error_code: string,
+  info: string,
+  event_time: string,
+  is_online: boolean,
+  status_time: string,
+  address: string,
+  location: Location,
   connectors: Connector[]
 }

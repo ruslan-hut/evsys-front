@@ -38,6 +38,13 @@ export class ChargepointService {
     return this.chargePoints$;
   }
 
+  getChargePoint(id: string): Observable<Chargepoint> {
+    return this.http.get<Chargepoint>(environment.apiUrl + environment.chargePoint + id)
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
   currentChargePoints(): Chargepoint[] {
     return this.chargePoints;
   }

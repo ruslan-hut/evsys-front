@@ -1,9 +1,11 @@
 export interface Connector {
   connector_id: string,
   charge_point_id: string,
-  is_enabled: boolean,
+  type: string,
   status: string,
+  status_time: string,
   info: string,
   error_code: string,
-  vendor_id: string,
+  power: number,
+  transaction_id: string,
 }

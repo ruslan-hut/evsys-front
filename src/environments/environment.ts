@@ -4,5 +4,6 @@ export const environment = {
   readSysLog: '/syslog',
   readBackLog: '/backlog',
   chargePointList: '/chp',
+  chargePoint: '/point/',
   wsUrl: 'wss://wattbrews.me:9002/ws'
 };
