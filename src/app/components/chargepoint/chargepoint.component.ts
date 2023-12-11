@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from "@angular/core"
 import {Chargepoint} from "../../models/chargepoint";
 import { Router } from '@angular/router';
 import {AccountService} from "../../service/account.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-chargepoint',
@@ -28,7 +29,7 @@ export class ChargepointComponent implements OnInit {
   ngOnInit(): void {
     this.accountService.user.subscribe(user => {
       if (user) {
-        this.isAdmin = user.role === 'admin'
+        this.isAdmin = user.role === environment.admin;
       } else {
         this.isAdmin = false;
       }

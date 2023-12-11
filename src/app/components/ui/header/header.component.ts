@@ -2,6 +2,7 @@ import {Component, OnInit, AfterContentChecked} from '@angular/core';
 import {Router} from "@angular/router";
 import {ErrorService} from "../../../service/error.service";
 import {AccountService} from "../../../service/account.service";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-header',
@@ -42,7 +43,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
         } else {
           this.username = user.username;
         }
-        this.isAdmin = user.role === 'admin'
+        this.isAdmin = user.role === environment.admin;
       } else {
         this.username = '';
       }
