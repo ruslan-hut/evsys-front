@@ -2,7 +2,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title >{{chargepoint.charge_point_id}} :: {{chargepoint.title}}
-      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()">
+      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="isAdmin">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
     </mat-card-title>
