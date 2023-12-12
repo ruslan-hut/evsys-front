@@ -39,6 +39,7 @@ import { HeaderComponent } from './components/ui/header/header.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { BankServiceComponent } from './components/bank-service/bank-service.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
     HeaderComponent,
     FooterComponent,
     BankServiceComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

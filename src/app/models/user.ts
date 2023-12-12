@@ -4,5 +4,8 @@ export interface User {
   password: string,
   name?: string,
   role?: string,
-  token?: string
+  token?: string,
+  payment_plan?: string,
+  date_registered?: string,
+  last_seen?: string,
 }
