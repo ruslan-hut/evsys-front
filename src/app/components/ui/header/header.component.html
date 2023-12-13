@@ -8,8 +8,14 @@
         <span>Home</span>
       </button>
       <div *ngIf="isAdmin">
-        <button mat-menu-item (click)="navigateTo('/syslog')">
+        <button mat-menu-item (click)="navigateTo('/log/system')">
           <span>System log</span>
+        </button>
+        <button mat-menu-item (click)="navigateTo('/log/backend')">
+          <span>Backend log</span>
+        </button>
+        <button mat-menu-item (click)="navigateTo('/log/pay')">
+          <span>Payment log</span>
         </button>
         <button mat-menu-item (click)="navigateTo('/users')">
           <span>Users list</span>

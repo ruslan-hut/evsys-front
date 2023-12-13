@@ -40,6 +40,8 @@ import { FooterComponent } from './components/ui/footer/footer.component';
 import { BankServiceComponent } from './components/bank-service/bank-service.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { UsersComponent } from './components/users/users.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
+import { PaylogComponent } from './components/paylog/paylog.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { UsersComponent } from './components/users/users.component';
     FooterComponent,
     BankServiceComponent,
     PrivacyPolicyComponent,
-    UsersComponent
+    UsersComponent,
+    BacklogComponent,
+    PaylogComponent
   ],
   imports: [
     BrowserModule,

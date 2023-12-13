@@ -9,9 +9,13 @@ import {BankServiceComponent} from "./components/bank-service/bank-service.compo
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 import {ChargepointFormComponent} from "./components/chargepoint-form/chargepoint-form.component";
 import {UsersComponent} from "./components/users/users.component";
+import {BacklogComponent} from "./components/backlog/backlog.component";
+import {PaylogComponent} from "./components/paylog/paylog.component";
 
 const routes: Routes = [
-  {path: 'syslog', component: LoggerComponent, canActivate: [authGuard]},
+  {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
+  {path: 'log/backend', component: BacklogComponent, canActivate: [authGuard]},
+  {path: 'log/pay', component: PaylogComponent, canActivate: [authGuard]},
   {path: 'users', component: UsersComponent, canActivate: [authGuard]},
   {path: 'points', component: ChargepointListComponent},
   {path: 'bank', component: BankServiceComponent},
