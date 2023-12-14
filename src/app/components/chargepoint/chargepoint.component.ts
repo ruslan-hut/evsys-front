@@ -37,13 +37,25 @@ export class ChargepointComponent implements OnInit {
   }
 
   getTimeDifference(): string {
+    const eventTime = new Date(this.chargepoint.event_time);
     const now = new Date();
-    const event = new Date(this.chargepoint.event_time);
-    const differenceInSeconds = Math.floor((now.getTime() - event.getTime()) / 1000);
+    const differenceInSeconds = Math.floor((now.getTime() - eventTime.getTime()) / 1000);
 
-    const hours = Math.floor(differenceInSeconds / 3600);
+    const days = Math.floor(differenceInSeconds / (3600 * 24));
+    const hours = Math.floor((differenceInSeconds % (3600 * 24)) / 3600);
     const minutes = Math.floor((differenceInSeconds % 3600) / 60);
 
-    return `${hours} h. ${minutes} min. ago`;
+    let result = '';
+    if (days > 0) {
+      result += `${days} d. `;
+    }
+    if (hours > 0) {
+      result += `${hours} h. `;
+    }
+    if (minutes > 0) {
+      result += `${minutes} min. `;
+    }
+
+    return result.length > 0 ? result : 'now';
   }
 }

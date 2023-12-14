@@ -1,0 +1,12 @@
+<div>
+  <div *ngFor="let connector of connectors; let i = index">
+    <table>
+      <tr>
+        <app-connector [connector]="connector"></app-connector>
+        <td class="data" >Type: </td><td ><input [(ngModel)]="connector.type" /></td><td></td>
+        <td >kW: </td><td ><input [(ngModel)]="connector.power" /></td><td></td>
+      </tr>
+    </table>
+  </div>
+</div>
+

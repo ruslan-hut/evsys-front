@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, FormsModule} from "@angular/forms";
 import {ChargepointService} from "../../service/chargepoint.service";
 import {ModalService} from "../../service/modal.service";
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
+import {TextFieldModule} from '@angular/cdk/text-field';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class ChargepointFormComponent implements OnInit{
   constructor(
     private chargePointService: ChargepointService,
     private modalService: ModalService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
@@ -30,6 +32,7 @@ export class ChargepointFormComponent implements OnInit{
         this.chargePoint= chargePoint;
       });
     });
+    window.scrollTo(0, 0);
 
   }
 
@@ -44,7 +47,7 @@ export class ChargepointFormComponent implements OnInit{
   }
 
   close(){
-
+    this.router.navigate(['/']);
   }
 
   onInputChange(event: any) {
@@ -58,16 +61,5 @@ export class ChargepointFormComponent implements OnInit{
     }
 
     event.target.value = input;
-  }
-
-  onInputMouseDown(event: MouseEvent): void {
-    event.preventDefault();
-  }
-  adjustTextareaHeight() {
-    const textarea = document.querySelector('textarea');
-    if (textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
   }
 }
