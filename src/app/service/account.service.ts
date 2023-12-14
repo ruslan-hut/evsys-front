@@ -60,4 +60,8 @@ export class AccountService {
     this.userSubject.next(null);
     this.router.navigate(['/account/login']);
   }
+
+  getAll() {
+    return this.http.get<User[]>(`${environment.apiUrl}/users/list`);
+  }
 }

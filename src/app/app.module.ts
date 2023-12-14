@@ -39,8 +39,6 @@ import { HeaderComponent } from './components/ui/header/header.component';
 import { FooterComponent } from './components/ui/footer/footer.component';
 import { BankServiceComponent } from './components/bank-service/bank-service.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
-import {MatTabsModule} from "@angular/material/tabs";
-import { ConnectorFormComponent } from './components/connector-form/connector-form.component';
 
 @NgModule({
   declarations: [
@@ -59,32 +57,30 @@ import { ConnectorFormComponent } from './components/connector-form/connector-fo
     HeaderComponent,
     FooterComponent,
     BankServiceComponent,
-    PrivacyPolicyComponent,
-    ConnectorFormComponent
+    PrivacyPolicyComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatSlideToggleModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatMenuModule,
-        MatSnackBarModule,
-        MatCardModule,
-        MatProgressBarModule,
-        MatDividerModule,
-        MatTabsModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatDividerModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
