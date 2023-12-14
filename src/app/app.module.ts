@@ -17,6 +17,10 @@ import { LoggerComponent } from './components/logger/logger.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { LoginComponent } from './components/login/login.component';
+import {UsersComponent} from "./components/users/users.component";
+import {PaylogComponent} from "./components/paylog/paylog.component";
+import{ConnectorFormComponent} from "./components/connector-form/connector-form.component";
+import{BacklogComponent} from "./components/backlog/backlog.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -45,6 +49,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
     AppComponent,
     ChargepointComponent,
     ConnectorComponent,
+    ConnectorFormComponent,
     GlobalErrorComponent,
     FilerChargepointsPipe,
     ChargepointFormComponent,
@@ -57,7 +62,10 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
     HeaderComponent,
     FooterComponent,
     BankServiceComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    UsersComponent,
+    PaylogComponent,
+    BacklogComponent
   ],
   imports: [
     BrowserModule,
