@@ -11,6 +11,7 @@ import {ChargepointFormComponent} from "./components/chargepoint-form/chargepoin
 import {UsersComponent} from "./components/users/users.component";
 import {BacklogComponent} from "./components/backlog/backlog.component";
 import {PaylogComponent} from "./components/paylog/paylog.component";
+import {TermsComponent} from "./components/pages/terms/terms.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'bank', component: BankServiceComponent},
   {path: 'privacy/:lang', component: PrivacyPolicyComponent},
   {path: 'privacy', component: PrivacyPolicyComponent}, // default to english, legacy
+  {path: 'terms/:lang', component: TermsComponent},
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},

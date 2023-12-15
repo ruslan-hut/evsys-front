@@ -1,0 +1,24 @@
+<div *ngIf="pageContent">
+  <h1 [innerHTML]="pageContent.title"></h1>
+  <p [innerHTML]="pageContent.introduction"></p>
+  <p [innerHTML]="pageContent.thirdPartyNotice"></p>
+
+  <div *ngFor="let section of pageContent.sections">
+    <h2 [innerHTML]="section.title"></h2>
+    <p *ngFor="let paragraph of section.content" [innerHTML]="paragraph"></p>
+    <ul *ngIf="section.list">
+      <li *ngFor="let listItem of section.list" [innerHTML]="listItem"></li>
+    </ul>
+  </div>
+
+  <div *ngIf="pageContent.unsubscribeSection">
+    <h2 [innerHTML]="pageContent.unsubscribeSection.title"></h2>
+    <p *ngFor="let paragraph of pageContent.unsubscribeSection.content" [innerHTML]="paragraph"></p>
+  </div>
+
+  <div *ngIf="pageContent.contactInfo">
+    <h2 [innerHTML]="pageContent.contactInfo.title"></h2>
+    <p *ngFor="let paragraph of pageContent.contactInfo.content" [innerHTML]="paragraph"></p>
+  </div>
+</div>
+
