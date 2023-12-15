@@ -19,7 +19,8 @@ const routes: Routes = [
   {path: 'users', component: UsersComponent, canActivate: [authGuard]},
   {path: 'points', component: ChargepointListComponent},
   {path: 'bank', component: BankServiceComponent},
-  {path: 'privacy', component: PrivacyPolicyComponent},
+  {path: 'privacy/:lang', component: PrivacyPolicyComponent},
+  {path: 'privacy', component: PrivacyPolicyComponent}, // default to english, legacy
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},
