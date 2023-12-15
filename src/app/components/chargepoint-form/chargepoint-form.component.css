@@ -9,8 +9,20 @@ mat-card {
   width: 99.5%;
 }
 
+.equal-height-input{
+  min-height: 20px;
+  line-height: 21px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 3px;
+}
+
 .two-in-one_input {
   width: 49.5%;
+  min-height: 20px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 3px;
 }
 
 .readonly-input {

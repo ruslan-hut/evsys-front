@@ -18,12 +18,14 @@
   </mat-card-header>
   <mat-card-content>
     <table>
-      <tr><td >ID</td><td ><input [(ngModel)]="chargePoint.charge_point_id"
-                                  readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Enabled</td><td ><input [(ngModel)]="chargePoint.is_enabled"
-                                       readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Title</td><td ><input [(ngModel)]="chargePoint.title"/></td><td></td></tr>
-      <tr><td >Address</td><td ><input [(ngModel)]="chargePoint.address" rows="2"/></td><td></td></tr>
+      <tr><td >Title</td><td ><input class="equal-height-input"
+                                     [(ngModel)]="chargePoint.title" /></td><td></td></tr>
+      <tr><td >Address</td><td ><textarea class="equal-height-input"
+                                          matInput
+                                          cdkTextareaAutosize
+                                          #autosize="cdkTextareaAutosize"
+                                          cdkAutosizeMinRows="1"
+                                          [(ngModel)]="chargePoint.address"></textarea></td><td></td></tr>
       <tr>
         <td>Location</td>
         <td colspan="2" class="two-in-one">
@@ -31,25 +33,16 @@
           <input [(ngModel)]="chargePoint.location.longitude" class="two-in-one_input" (input)="onInputChange($event)"/>
         </td>
       </tr>
-      <tr><td >Description</td><td ><input [(ngModel)]="chargePoint.description" rows="2"/></td><td></td></tr>
-      <tr><td >Model</td><td ><input [(ngModel)]="chargePoint.model"
-                                     readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Serial Number</td><td ><input [(ngModel)]="chargePoint.serial_number"
-                                             readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Vendor</td><td ><input [(ngModel)]="chargePoint.vendor"
-                                      readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Firmware Version</td><td ><input [(ngModel)]="chargePoint.firmware_version"
-                                                readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Info</td><td ><input [(ngModel)]="chargePoint.info"
-                                    readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Error Code</td><td ><input [(ngModel)]="chargePoint.error_code"
-                                          readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr ><td >Status</td><td ><input [(ngModel)]="chargePoint.status"
-                                          readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
-      <tr><td >Last Update</td><td ><input [(ngModel)]="chargePoint.event_time"
-                                           readonly class="readonly-input" (mousedown)="onInputMouseDown($event)"/></td><td></td></tr>
+      <tr><td >Description</td><td ><textarea class="equal-height-input"
+                                              matInput
+                                              cdkTextareaAutosize
+                                              #autosize="cdkTextareaAutosize"
+                                              cdkAutosizeMinRows="1"
+                                              [(ngModel)]="chargePoint.description"></textarea>
+      </td><td></td></tr>
     </table>
   </mat-card-content>
+  <app-connector-form [connectors]="chargePoint.connectors"></app-connector-form>
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="save()">Save</button><td></td>
     <button mat-raised-button color="warn" (click)="close()">Close</button>
