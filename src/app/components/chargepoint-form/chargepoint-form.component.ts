@@ -4,7 +4,8 @@ import {ChargepointService} from "../../service/chargepoint.service";
 import {ModalService} from "../../service/modal.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
-import {TextFieldModule} from '@angular/cdk/text-field';
+import {MatTableDataSource} from "@angular/material/table";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -43,9 +44,7 @@ export class ChargepointFormComponent implements OnInit{
   })
 
   save() {
-    //
     this.chargePointService.postChargePoint(this.chargePoint).subscribe((chargePoint) => {
-      console.log(chargePoint);
       this.chargePoint = chargePoint;
       this.isSaved = true;
     });
