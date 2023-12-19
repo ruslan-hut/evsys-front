@@ -8,4 +8,14 @@ import {Connector} from "../../models/connector";
 })
 export class ConnectorFormComponent {
   @Input() connectors: Connector[]
+
+  getConnectorColor(connector: Connector) {
+    if (connector.status === "Available") {
+      return "limegreen";
+    } else if (connector.status === "Preparing") {
+      return "orange";
+    } else {
+      return "red";
+    }
+  }
 }

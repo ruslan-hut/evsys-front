@@ -1,3 +1,27 @@
 .data{
   padding-left: 20px;
 }
+
+.connector-content {
+  padding: 0;
+  margin-left: 16px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.title-with-indicator {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.connector-title {
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.status-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}

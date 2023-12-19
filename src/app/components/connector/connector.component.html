@@ -1,8 +1,18 @@
 <mat-card-content class="connector-content">
-  <div class="title-with-indicator">
-    <mat-card-title class="connector-title">Connector {{connector.connector_id}}:</mat-card-title>
-    <div [style.background-color]="getConnectorColor()" class="status-indicator"></div>
-  </div>
+  <table>
+    <tr>
+      <td>
+        <mat-card-title class="connector-title">Connector {{connector.connector_id}}:</mat-card-title>
+      </td>
+      <td>
+        <div [style.background-color]="getConnectorColor()" class="status-indicator"></div>
+      </td>
+      <td>
+        <span class="data">Status: {{connector.status}}</span>
+        <span class="data" *ngIf="connector.transaction_id">Transaction: {{connector.transaction_id}}</span>
+      </td>
+    </tr>
+  </table>
 </mat-card-content>
 
 
