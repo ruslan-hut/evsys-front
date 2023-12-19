@@ -31,8 +31,8 @@
       <tr>
         <td>Location</td>
         <td colspan="2" class="two-in-one">
-          <input [(ngModel)]="chargePoint.location.latitude" class="two-in-one_input" (input)="onInputChange($event)"/>
-          <input [(ngModel)]="chargePoint.location.longitude" class="two-in-one_input" (input)="onInputChange($event)"/>
+          <input [(ngModel)]="chargePoint.location.latitude" class="two-in-one_input" type="number"/>
+          <input [(ngModel)]="chargePoint.location.longitude" class="two-in-one_input" type="number"/>
         </td>
       </tr>
       <tr><td >Description</td><td ><textarea class="equal-height-input"

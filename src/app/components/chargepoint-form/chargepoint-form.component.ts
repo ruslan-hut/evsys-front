@@ -43,7 +43,9 @@ export class ChargepointFormComponent implements OnInit{
   })
 
   save() {
+    //
     this.chargePointService.postChargePoint(this.chargePoint).subscribe((chargePoint) => {
+      console.log(chargePoint);
       this.chargePoint = chargePoint;
       this.isSaved = true;
     });
@@ -57,16 +59,4 @@ export class ChargepointFormComponent implements OnInit{
     this.router.navigate(['/']);
   }
 
-  onInputChange(event: any) {
-    let input = event.target.value;
-
-    input = input.replace(/[^0-9.]/g, '');
-
-    const dotIndex = input.indexOf('.');
-    if (dotIndex !== -1) {
-      input = input.substr(0, dotIndex + 1) + input.substr(dotIndex + 1).replace(/\./g, '');
-    }
-
-    event.target.value = input;
-  }
 }
