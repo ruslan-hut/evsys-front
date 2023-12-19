@@ -13,7 +13,9 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-title >{{chargePointId}} <!--:: {{chargePoint.title}}-->
+    <mat-card-title class="center-content">
+      {{chargePointId}}
+      <mat-icon *ngIf="isSaved" color="primary">check_circle</mat-icon>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>

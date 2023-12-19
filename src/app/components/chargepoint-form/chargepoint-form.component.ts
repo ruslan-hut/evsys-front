@@ -16,6 +16,8 @@ export class ChargepointFormComponent implements OnInit{
 
   chargePointId: string;
   chargePoint: Chargepoint;
+
+  isSaved: boolean = false;
   constructor(
     private chargePointService: ChargepointService,
     private modalService: ModalService,
@@ -41,9 +43,14 @@ export class ChargepointFormComponent implements OnInit{
   })
 
   save() {
-    // this.chargepointService.create({
-    //   title: this.form.value as string,
-    //   description: ""}).subscribe(() => this.modalService.close())
+    this.chargePointService.postChargePoint(this.chargePoint).subscribe((chargePoint) => {
+      this.chargePoint = chargePoint;
+      this.isSaved = true;
+    });
+
+    setTimeout(() => {
+      this.isSaved = false;
+    }, 3000);
   }
 
   close(){

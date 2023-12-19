@@ -45,6 +45,13 @@ export class ChargepointService {
       )
   }
 
+  postChargePoint(chargePoint: Chargepoint): Observable<Chargepoint> {
+    return this.http.post<Chargepoint>(environment.apiUrl + environment.chargePoint + chargePoint.charge_point_id, chargePoint)
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
   currentChargePoints(): Chargepoint[] {
     return this.chargePoints;
   }
