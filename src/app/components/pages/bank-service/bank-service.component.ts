@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {AccountService} from "../../service/account.service";
+import {AccountService} from "../../../service/account.service";
 
 declare var getInSiteFormJSON: any;
 declare var storeIdOper: any;

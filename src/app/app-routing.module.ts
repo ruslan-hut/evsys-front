@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LoggerComponent} from "./components/logger/logger.component";
+import {LoggerComponent} from "./components/logs/logger/logger.component";
 import {authGuard} from "./helpers/auth.guard";
-import {LoginComponent} from "./components/login/login.component";
-import {RegisterComponent} from "./components/register/register.component";
+import {LoginComponent} from "./components/user/login/login.component";
+import {RegisterComponent} from "./components/user/register/register.component";
 import {ChargepointListComponent} from "./components/chargepoint-list/chargepoint-list.component";
-import {BankServiceComponent} from "./components/bank-service/bank-service.component";
-import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
+import {BankServiceComponent} from "./components/pages/bank-service/bank-service.component";
+import {PrivacyPolicyComponent} from "./components/pages/privacy-policy/privacy-policy.component";
 import {ChargepointFormComponent} from "./components/chargepoint-form/chargepoint-form.component";
-import {UsersComponent} from "./components/users/users.component";
-import {BacklogComponent} from "./components/backlog/backlog.component";
-import {PaylogComponent} from "./components/paylog/paylog.component";
+import {UsersComponent} from "./components/user/users/users.component";
+import {BacklogComponent} from "./components/logs/backlog/backlog.component";
+import {PaylogComponent} from "./components/logs/paylog/paylog.component";
 import {TermsComponent} from "./components/pages/terms/terms.component";
 import {CompanyInfoComponent} from "./components/pages/company-info/company-info.component";
 

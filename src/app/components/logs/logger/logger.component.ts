@@ -2,8 +2,8 @@ import {AfterContentInit, Component, OnDestroy, OnInit, ViewChild} from '@angula
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Message} from "../../models/message";
-import {LoggerService} from "../../service/logger.service";
+import {Message} from "../../../models/message";
+import {LoggerService} from "../../../service/logger.service";
 
 @Component({
   selector: 'app-logger',
