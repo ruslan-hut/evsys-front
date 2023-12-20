@@ -9,7 +9,7 @@
       </td>
       <td>
         <span class="data">Status: {{connector.status}}</span>
-        <span class="data" *ngIf="connector.transaction_id">Transaction: {{connector.transaction_id}}</span>
+        <span class="data" *ngIf="connector.current_transaction_id>=0">Transaction: {{connector.current_transaction_id}}</span>
       </td>
     </tr>
   </table>

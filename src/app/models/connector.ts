@@ -7,5 +7,5 @@ export interface Connector {
   info: string,
   error_code: string,
   power: number,
-  transaction_id: string,
+  current_transaction_id: number,
 }
