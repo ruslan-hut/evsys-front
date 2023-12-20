@@ -12,6 +12,7 @@ import {UsersComponent} from "./components/users/users.component";
 import {BacklogComponent} from "./components/backlog/backlog.component";
 import {PaylogComponent} from "./components/paylog/paylog.component";
 import {TermsComponent} from "./components/pages/terms/terms.component";
+import {CompanyInfoComponent} from "./components/pages/company-info/company-info.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'privacy/:lang', component: PrivacyPolicyComponent},
   {path: 'privacy', component: PrivacyPolicyComponent}, // default to english, legacy
   {path: 'terms/:lang', component: TermsComponent},
+  {path: 'company-info/:lang', component: CompanyInfoComponent},
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},

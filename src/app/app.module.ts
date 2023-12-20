@@ -44,6 +44,7 @@ import { FooterComponent } from './components/ui/footer/footer.component';
 import { BankServiceComponent } from './components/bank-service/bank-service.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { TermsComponent } from './components/pages/terms/terms.component';
+import { CompanyInfoComponent } from './components/pages/company-info/company-info.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { TermsComponent } from './components/pages/terms/terms.component';
     UsersComponent,
     PaylogComponent,
     BacklogComponent,
-    TermsComponent
+    TermsComponent,
+    CompanyInfoComponent
   ],
   imports: [
     BrowserModule,

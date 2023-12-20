@@ -1,0 +1,30 @@
+{
+  "title": "",
+  "introduction": "",
+  "sections": [
+    {
+      "title": "",
+      "content": [
+        "Aviso Legal: <b>H2PLT, S.A.</b>",
+        "Número de Identificación Fiscal (NIF): A67934604",
+        "Dirección: Parc Agrobiotech de Lleida. Edificio Incuba. Oficina 1.5",
+        "Código Postal: 25003",
+        "Población: Lleida",
+        "Correo Electrónico: info@h2plt.energy",
+        "Inscrita en el Registro Mercantil de Lleida en el Tomo 1646, Folio 47, Hoja L-33776, Inscripción 1, con fecha 24 de Diciembre de 2021."
+      ]
+    },
+    {
+      "title": "Política de Cancelaciones, Devoluciones y Reembolso",
+      "content": [
+        "En H2PLT, S.A. por circunstancias imprevistas permitimos la cancelación del servicio incluso después de haber iniciado el proceso de carga. En situaciones donde se haya realizado un pago adicional por el servicio consumido, nos comprometemos a reembolsar el monto excedente por el mismo medio de pago."
+        ]
+    }
+  ],
+  "contactInfo": {
+    "title": "",
+    "content": [
+      "Para consultas o comunicaciones directas, puede contactarnos a través de <a href=\"mailto:info@h2plt.energy\">info@h2plt.energy</a>"
+    ]
+  }
+}
