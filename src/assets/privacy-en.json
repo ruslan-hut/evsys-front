@@ -14,7 +14,16 @@
       ]
     },
     {
-      "title": "2. What Do We Do With Collected Data?",
+      "title": "2. Collection and Use of Primary Account Data",
+      "content": [
+        "Purpose of Data Collection: In order to facilitate payment processing for transactions made through our app, we collect your primary account data. This includes information necessary to perform charging transactions effectively and securely.",
+        "Processing of Sensitive Data: We understand the importance of protecting your sensitive financial information. Therefore, we do not directly process or store details like your card number or cardholder name. Instead, these details are securely processed by a trusted banking service, ensuring the highest level of data security and compliance with financial regulations.",
+        "Storage of Processed Data: After your data is processed by our banking partner, a unique link representing your transaction is generated. This link does not contain direct financial information but allows us to reference the specific transaction. This link is securely stored on our server <b>wattbrews.me</b> and is used solely for the purpose of facilitating charging transactions in the app.",
+        "Data Security and Privacy: We are committed to protecting your data and privacy. All data collected and stored by us is treated with the utmost confidentiality and is protected using industry-standard security measures. We do not share your personal data with third parties except as necessary for processing transactions as described above."
+      ]
+    },
+    {
+      "title": "3. What Do We Do With Collected Data?",
       "content": [
         "We use the collected data for the following purposes:"
       ],
@@ -28,7 +37,7 @@
       ]
     },
     {
-      "title": "3. Who Else May Have Access to Your Data?",
+      "title": "4. Who Else May Have Access to Your Data?",
       "content": [
         "Our affiliated companies, local distributors, and other organizations working with us may access your data for processing our needs and providing you with information and services upon your request.",
         "Additionally, we collaborate with third-party companies in developing and improving our site and applications. These companies collect statistical information about site usage and are entitled to use your personal data only to the extent necessary to provide us with relevant services.",
@@ -37,13 +46,13 @@
       ]
     },
     {
-      "title": "4. Cookies",
+      "title": "5. Cookies",
       "content": [
         "Some of our websites and applications use cookies. These are small text files that the site sends to your computer to record your online actions. These files may be used by our websites and applications to store your preferences when using our sites and applications, to improve certain aspects of our sites and applications, to record your online actions, and to provide you with personalized advertising and other materials. You can disable the use of cookies in your browser settings, but in this case, some features of our websites or applications may be unavailable."
       ]
     },
     {
-      "title": "5. How Do We Protect Your Data?",
+      "title": "6. How Do We Protect Your Data?",
       "content": [
         "We take commercially reasonable measures to protect your personal data. These measures include processes and procedures aimed at reducing the risks of unauthorized access to or disclosure of your data. However, we do not guarantee the complete exclusion of misuse of your personal data by intruders. Keep passwords for your accounts in a safe place and do not disclose them to third parties. If you become aware of unauthorized use of your password or other security breaches, contact us immediately.",
         "Forums, chats, and other community player areas accessible through our websites and applications are public. Do not disclose information in these areas that can identify you or any other person. We are not responsible for the security and protection of data disclosed by you in such areas."
@@ -51,13 +60,13 @@
     }
   ],
   "unsubscribeSection": {
-    "title": "6. How to Unsubscribe",
+    "title": "7. How to Unsubscribe",
     "content": [
       "If you no longer wish to receive marketing messages from us, follow the link provided in any of these messages or visit the registration section of our website and change your message settings. If you have not registered on any of our websites, send a message with the subject &#171;Unsubscribe&#187; (without quotes) to <a href=\"mailto:unsubscribe@h2plt.energy\">unsubscribe@h2plt.energy</a>."
     ]
   },
   "contactInfo": {
-    "title": "7. Contact Information",
+    "title": "8. Contact Information",
     "content": [
       "For general inquiries, contact our user support service, the details of which are published on the website <a href=\"https://wattbrews.me/\">https://wattbrews.me/</a>",
       "You have the legal right to know what personal data about you is held by the organization and how these data are processed. If you want to know what data we have about you, send a letter mentioning the site where you registered or used our application to: <a href=\"mailto:support@h2plt.energy\">support@h2plt.energy</a>. Note that we may require you to confirm your identity and pay a small administrative fee."

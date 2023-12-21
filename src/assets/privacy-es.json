@@ -14,7 +14,16 @@
       ]
     },
     {
-      "title": "2. ¿Qué hacemos con los datos recopilados?",
+      "title": "2. Recolección y Uso de Datos de la Cuenta Principal",
+      "content": [
+        "Finalidad de la Recolección de Datos: Para facilitar el procesamiento de pagos de las transacciones realizadas a través de nuestra aplicación, recopilamos sus datos de cuenta principal. Esto incluye información necesaria para realizar transacciones de carga de manera efectiva y segura.",
+        "Procesamiento de Datos Sensibles: Entendemos la importancia de proteger su información financiera sensible. Por lo tanto, no procesamos ni almacenamos directamente detalles como su número de tarjeta o el nombre del titular de la tarjeta. En cambio, estos detalles son procesados de forma segura por un servicio bancario de confianza, asegurando el más alto nivel de seguridad de datos y cumplimiento con las regulaciones financieras.",
+        "Almacenamiento de Datos Procesados: Después de que sus datos sean procesados por nuestro socio bancario, se genera un enlace único que representa su transacción. Este enlace no contiene información financiera directa, pero nos permite referenciar la transacción específica. Este enlace se almacena de forma segura en nuestro servidor wattbrews.me y se utiliza únicamente para facilitar transacciones de carga en la aplicación.",
+        "Seguridad de Datos y Privacidad: Estamos comprometidos a proteger sus datos y su privacidad. Todos los datos recopilados y almacenados por nosotros se tratan con la máxima confidencialidad y están protegidos mediante medidas de seguridad estándar en la industria. No compartimos sus datos personales con terceros, excepto lo necesario para procesar transacciones como se describe anteriormente."
+      ]
+    },
+    {
+      "title": "3. ¿Qué hacemos con los datos recopilados?",
       "content": [
         "Utilizamos los datos recopilados para los siguientes fines:"
       ],
@@ -28,7 +37,7 @@
       ]
     },
     {
-      "title": "3. ¿Quién más puede tener acceso a sus datos?",
+      "title": "4. ¿Quién más puede tener acceso a sus datos?",
       "content": [
         "Nuestras empresas afiliadas, distribuidores locales y otras organizaciones que trabajan con nosotros pueden acceder a sus datos para procesar nuestras necesidades y proporcionarle información y servicios a su solicitud.",
         "Además, colaboramos con empresas de terceros en el desarrollo y mejora de nuestro sitio y aplicaciones. Estas empresas recopilan información estadística sobre el uso del sitio y tienen derecho a usar sus datos personales solo en la medida necesaria para proporcionarnos servicios relevantes.",
@@ -37,13 +46,13 @@
       ]
     },
     {
-      "title": "4. Cookies",
+      "title": "5. Cookies",
       "content": [
         "Algunos de nuestros sitios web y aplicaciones utilizan cookies. Estos son pequeños archivos de texto que el sitio envía a su computadora para registrar sus acciones en línea. Estos archivos pueden ser utilizados por nuestros sitios web y aplicaciones para almacenar sus preferencias al usar nuestros sitios y aplicaciones, para mejorar ciertos aspectos de nuestros sitios y aplicaciones, para registrar sus acciones en línea y para proporcionarle publicidad personalizada y otros materiales. Puede desactivar el uso de cookies en la configuración de su navegador, pero en este caso, algunas funciones de nuestros sitios web o aplicaciones pueden no estar disponibles."
       ]
     },
     {
-      "title": "5. Seguridad",
+      "title": "6. Seguridad",
       "content": [
         "Tomamos medidas comercialmente razonables para proteger sus datos personales. Estas medidas incluyen procesos y procedimientos destinados a reducir los riesgos de acceso no autorizado o divulgación de sus datos. Sin embargo, no garantizamos la exclusión completa del mal uso de sus datos personales por intrusos. Mantenga las contraseñas de sus cuentas en un lugar seguro y no las revele a terceros. Si se entera del uso no autorizado de su contraseña u otras violaciones de seguridad, contáctenos de inmediato.",
         "Foros, chats y otras áreas de jugadores comunitarios accesibles a través de nuestros sitios web y aplicaciones son públicos. No revele información en estas áreas que pueda identificarle a usted o a otra persona. No somos responsables de la seguridad y protección de los datos revelados por usted en tales áreas."
@@ -51,13 +60,13 @@
     }
   ],
   "unsubscribeSection": {
-    "title": "6. Cómo darse de baja",
+    "title": "7. Cómo darse de baja",
     "content": [
       "Si ya no desea recibir mensajes de marketing de nuestra parte, siga el enlace proporcionado en cualquiera de estos mensajes o visite la sección de registro de nuestro sitio web y cambie la configuración de sus mensajes. Si no se ha registrado en ninguno de nuestros sitios web, envíe un mensaje con el asunto &#171;Darse de baja&#187; (sin comillas) a <a href=\"mailto:unsubscribe@h2plt.energy\">unsubscribe@h2plt.energy</a>."
     ]
   },
   "contactInfo": {
-    "title": "7. Información de contacto",
+    "title": "8. Información de contacto",
     "content": [
       "Para consultas generales, contacte con nuestro servicio de soporte al usuario, cuyos detalles se publican en el sitio web <a href=\"https://wattbrews.me/\">https://wattbrews.me/</a>",
       "Usted tiene el derecho legal de saber qué datos personales sobre usted son retenidos por la organización y cómo se procesan estos datos. Si desea saber qué datos tenemos sobre usted, envíe una carta mencionando el sitio donde se registró o utilizó nuestra aplicación a: <a href=\"mailto:support@h2plt.energy\">support@h2plt.energy</a>. Tenga en cuenta que podemos requerirle confirmar su identidad y pagar una pequeña tarifa administrativa."
