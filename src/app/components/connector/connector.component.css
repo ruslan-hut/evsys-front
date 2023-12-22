@@ -9,7 +9,6 @@
 
 .connector-title {
   font-size: 14px;
-  margin-right: 8px;
 }
 
 .status-indicator {
@@ -21,5 +20,12 @@
 .data{
   display: inline-block;
   vertical-align: middle;
-  margin-left: 32px;
+  margin-left: 20px;
+}
+
+.custom-button {
+  height: 30px;
+  border-radius: 20px;
+  color: whitesmoke !important;
+  font-size: 12px;
 }

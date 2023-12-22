@@ -5,11 +5,8 @@
         <mat-card-title class="connector-title">Connector {{connector.connector_id}}:</mat-card-title>
       </td>
       <td>
-        <div [style.background-color]="getConnectorColor()" class="status-indicator"></div>
-      </td>
-      <td>
-        <span class="data">Status: {{connector.status}}</span>
-        <span class="data" *ngIf="connector.current_transaction_id>=0">Transaction: {{connector.current_transaction_id}}</span>
+        <button mat-flat-button [style.background-color]="getConnectorColor()" class="data custom-button">{{connector.status}}</button>
+        <button mat-flat-button color="primary" class="data custom-button" *ngIf="connector.current_transaction_id>=0">Transaction: {{connector.current_transaction_id}}</button>
       </td>
     </tr>
   </table>

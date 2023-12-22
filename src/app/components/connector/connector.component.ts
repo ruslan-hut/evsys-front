@@ -1,5 +1,6 @@
 import {Component, Input} from "@angular/core"
 import {Connector} from "../../models/connector";
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-connector',
