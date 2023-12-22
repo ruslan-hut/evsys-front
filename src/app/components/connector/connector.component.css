@@ -26,6 +26,11 @@
 .custom-button {
   height: 30px;
   border-radius: 20px;
-  color: whitesmoke !important;
+  color: white !important;
   font-size: 12px;
+  filter: saturate(95%);
+}
+
+.fix-width {
+  width: 100px;
 }
