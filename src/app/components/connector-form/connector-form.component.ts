@@ -18,4 +18,12 @@ export class ConnectorFormComponent {
       return "red";
     }
   }
+
+  getConnectorName(connector: Connector): string {
+    if(connector.connector_id_name!="") {
+      return connector.connector_id_name;
+    } else {
+      return connector.connector_id;
+    }
+  }
 }

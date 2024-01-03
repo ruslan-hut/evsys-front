@@ -2,7 +2,7 @@
   <table>
     <tr>
       <td>
-        <mat-card-title class="connector-title">Connector {{connector.connector_id}}:</mat-card-title>
+        <mat-card-title class="connector-title">Connector {{getConnectorName()}}:</mat-card-title>
       </td>
       <td>
         <button mat-flat-button [style.background-color]="getConnectorColor()" class="data custom-button fix-width">{{connector.status}}</button>

@@ -21,4 +21,12 @@ export class ConnectorComponent {
       return "red";
     }
   }
+
+  getConnectorName(): string {
+    if(this.connector.connector_id_name!="") {
+      return this.connector.connector_id_name;
+    } else {
+      return this.connector.connector_id;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 export interface Connector {
   connector_id: string,
+  connector_id_name: string,
   charge_point_id: string,
   type: string,
   status: string,

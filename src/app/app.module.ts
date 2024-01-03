@@ -21,6 +21,7 @@ import {UsersComponent} from "./components/user/users/users.component";
 import {PaylogComponent} from "./components/logs/paylog/paylog.component";
 import{ConnectorFormComponent} from "./components/connector-form/connector-form.component";
 import{BacklogComponent} from "./components/logs/backlog/backlog.component";
+import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -69,7 +70,8 @@ import { CompanyInfoComponent } from './components/pages/company-info/company-in
     PaylogComponent,
     BacklogComponent,
     TermsComponent,
-    CompanyInfoComponent
+    CompanyInfoComponent,
+    ChargepointInfoComponent
   ],
     imports: [
         BrowserModule,
