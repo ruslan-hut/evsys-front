@@ -58,4 +58,12 @@ export class ChargepointComponent implements OnInit {
 
     return result.length > 0 ? result : 'now';
   }
+
+  isOnline(): string {
+    if (this.chargepoint.is_online) {
+      return 'limegreen';
+    } else {
+      return 'red';
+    }
+  }
 }
