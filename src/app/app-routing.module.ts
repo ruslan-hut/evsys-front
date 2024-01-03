@@ -13,6 +13,7 @@ import {BacklogComponent} from "./components/logs/backlog/backlog.component";
 import {PaylogComponent} from "./components/logs/paylog/paylog.component";
 import {TermsComponent} from "./components/pages/terms/terms.component";
 import {CompanyInfoComponent} from "./components/pages/company-info/company-info.component";
+import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -28,7 +29,8 @@ const routes: Routes = [
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},
-  {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]}
+  {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]},
+  {path: 'points-info', component: ChargepointInfoComponent}
 ];
 
 @NgModule({

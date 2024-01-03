@@ -12,6 +12,7 @@ export interface Chargepoint {
   status: string,
   error_code: string,
   info: string,
+  last_seen: string,
   event_time: string,
   is_online: boolean,
   status_time: string,

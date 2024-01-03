@@ -1,0 +1,40 @@
+mat-card {
+  margin: 10px;
+}
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+}
+th,td {
+  padding: 2px;
+}
+td {
+  max-width: 20%;
+}
+
+.like-input{
+  min-height: 20px;
+  border: 1px solid #000;
+  background-color: whitesmoke;
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.two-in-one {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.name_field {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 2px 5px;
+}
+
+.two-in-one_input {
+  width: 200%;
+}

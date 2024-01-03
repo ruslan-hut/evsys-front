@@ -26,6 +26,12 @@ export class ChargepointComponent implements OnInit {
     this.router.navigate(['points-form', { id: chargepointId }]);
   }
 
+  infoChargePoint() {
+    const chargepointId = this.chargepoint.charge_point_id;
+
+    this.router.navigate(['points-info', { id: chargepointId }]);
+  }
+
   ngOnInit(): void {
     this.accountService.user.subscribe(user => {
       if (user) {

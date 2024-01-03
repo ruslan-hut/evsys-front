@@ -1,10 +1,285 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<!--<form [formGroup]="form" (ngSubmit)="submit()">-->
 
-</body>
-</html>
+<!--  <input-->
+<!--    type="text"-->
+<!--    class="border w-full py-2 px-4 mb-2"-->
+<!--    placeholder="Point name"-->
+<!--    formControlName="title"-->
+<!--  >-->
+
+<!--  <button class="py-2 px-4 bg-blue-600 text-white" type="submit">Save</button>-->
+
+<!--</form>-->
+
+<mat-card *ngIf="chargePoint">
+  <mat-card-header>
+    <mat-card-title class="center-content">
+      {{chargePointId}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>Id :</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.charge_point_id}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Is Enabled:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.is_enabled}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Title:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.title}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Description:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.description}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Model:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.model}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Serial Number:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.serial_number}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Vendor:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.vendor}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Firmware Version:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.firmware_version}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Status:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.status}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>ErrorCode:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.error_code}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Info:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.info}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Last seen:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.last_seen | date: "short"}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Event time:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.event_time | date: "short"}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Online:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.is_online}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Status time:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.status_time | date: "short"}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Address:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.address}}
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Location:</td>
+        <td colspan="2" class="two-in-one">
+          <div style="padding: 1px 5px">Lat: </div>
+          <div class="like-input two-in-one_input">
+            {{chargePoint.location.latitude}}
+          </div>
+          <div style="padding: 1px 5px">Long: </div>
+          <div class="like-input two-in-one_input">
+            {{chargePoint.location.longitude}}
+          </div>
+        </td>
+      </tr>
+      <tr *ngFor="let connector of chargePoint.connectors ">
+
+        <td>Connector {{connector.connector_id}}:</td>
+        <td>
+          <hr>
+          <table>
+            <tr>
+              <td>ChargePointID:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.charge_point_id}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Type:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.type}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Status:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.status}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Status time:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.status_time | date: "short"}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>info:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.info}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>VendorID:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.vendor_id}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Error code:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.error_code}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>kWatt:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.power}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Transaction:</td>
+              <td>
+                <div class="like-input">
+                  {{connector.current_transaction_id}}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+
+    </table>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="warn" (click)="close()">Close</button>
+  </mat-card-actions>
+</mat-card>
+
