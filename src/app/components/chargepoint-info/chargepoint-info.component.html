@@ -26,8 +26,6 @@
             {{chargePoint.charge_point_id}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Is Enabled:</td>
@@ -36,8 +34,6 @@
             {{chargePoint.is_enabled}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Title:</td>
@@ -46,8 +42,6 @@
             {{chargePoint.title}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Description:</td>
@@ -56,8 +50,6 @@
             {{chargePoint.description}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Model:</td>
@@ -66,8 +58,6 @@
             {{chargePoint.model}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Serial Number:</td>
@@ -76,8 +66,6 @@
             {{chargePoint.serial_number}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Vendor:</td>
@@ -86,8 +74,6 @@
             {{chargePoint.vendor}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Firmware Version:</td>
@@ -96,8 +82,6 @@
             {{chargePoint.firmware_version}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Status:</td>
@@ -106,8 +90,6 @@
             {{chargePoint.status}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>ErrorCode:</td>
@@ -116,8 +98,6 @@
             {{chargePoint.error_code}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Info:</td>
@@ -126,8 +106,6 @@
             {{chargePoint.info}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Last seen:</td>
@@ -136,8 +114,6 @@
             {{chargePoint.last_seen | date: "short"}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Event time:</td>
@@ -146,8 +122,6 @@
             {{chargePoint.event_time | date: "short"}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Online:</td>
@@ -156,8 +130,6 @@
             {{chargePoint.is_online}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Status time:</td>
@@ -166,8 +138,6 @@
             {{chargePoint.status_time | date: "short"}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Address:</td>
@@ -176,27 +146,33 @@
             {{chargePoint.address}}
           </div>
         </td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>Location:</td>
         <td colspan="2" class="two-in-one">
-          <div style="padding: 1px 5px">Lat: </div>
           <div class="like-input two-in-one_input">
             {{chargePoint.location.latitude}}
           </div>
-          <div style="padding: 1px 5px">Long: </div>
           <div class="like-input two-in-one_input">
             {{chargePoint.location.longitude}}
           </div>
         </td>
       </tr>
-      <tr *ngFor="let connector of chargePoint.connectors ">
+    </table>
 
-        <td>Connector {{connector.connector_id}}:</td>
-        <td>
-          <hr>
+    <div *ngFor="let connector of chargePoint.connectors ">
+      <mat-accordion>
+        <mat-expansion-panel >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
+              </div>
+              Connector {{connector.connector_id}}
+            </mat-panel-title>
+            <mat-panel-description>
+
+            </mat-panel-description>
+          </mat-expansion-panel-header>
           <table>
             <tr>
               <td>ChargePointID:</td>
@@ -271,15 +247,93 @@
               </td>
             </tr>
           </table>
-        </td>
-        <td></td>
-        <td></td>
-      </tr>
-
-    </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+<!--      <div>Connector {{connector.connector_id}}:</div>-->
+<!--      <div>-->
+<!--        <hr>-->
+<!--        <table>-->
+<!--          <tr>-->
+<!--            <td>ChargePointID:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.charge_point_id}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>Type:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.type}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>Status:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.status}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>Status time:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.status_time | date: "short"}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>info:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.info}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>VendorID:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.vendor_id}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>Error code:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.error_code}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>kWatt:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.power}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>Transaction:</td>-->
+<!--            <td>-->
+<!--              <div class="like-input">-->
+<!--                {{connector.current_transaction_id}}-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--        </table>-->
+<!--      </div>-->
+<!--    </div>-->
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="warn" (click)="close()">Close</button>
   </mat-card-actions>
 </mat-card>
+
+
 

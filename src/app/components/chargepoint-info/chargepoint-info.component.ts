@@ -4,6 +4,7 @@ import {ChargepointService} from "../../service/chargepoint.service";
 import {ModalService} from "../../service/modal.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
+import {Connector} from "../../models/connector";
 
 
 @Component({
@@ -41,6 +42,16 @@ export class ChargepointInfoComponent implements OnInit{
 
   close(){
     this.router.navigate(['/']);
+  }
+
+  getConnectorColor(connector: Connector) {
+    if (connector.status === "Available") {
+      return "limegreen";
+    } else if (connector.status === "Preparing") {
+      return "orange";
+    } else {
+      return "red";
+    }
   }
 
 }

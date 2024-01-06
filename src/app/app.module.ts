@@ -46,6 +46,7 @@ import { BankServiceComponent } from './components/pages/bank-service/bank-servi
 import { PrivacyPolicyComponent } from './components/pages/privacy-policy/privacy-policy.component';
 import { TermsComponent } from './components/pages/terms/terms.component';
 import { CompanyInfoComponent } from './components/pages/company-info/company-info.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { CompanyInfoComponent } from './components/pages/company-info/company-in
         MatSnackBarModule,
         MatCardModule,
         MatProgressBarModule,
-        MatDividerModule
+        MatDividerModule,
+        MatExpansionModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
