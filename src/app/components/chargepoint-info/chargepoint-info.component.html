@@ -159,10 +159,8 @@
         </td>
       </tr>
     </table>
-
-    <div *ngFor="let connector of chargePoint.connectors ">
-      <mat-accordion>
-        <mat-expansion-panel >
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let connector of chargePoint.connectors ">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
@@ -248,87 +246,7 @@
             </tr>
           </table>
         </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-<!--      <div>Connector {{connector.connector_id}}:</div>-->
-<!--      <div>-->
-<!--        <hr>-->
-<!--        <table>-->
-<!--          <tr>-->
-<!--            <td>ChargePointID:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.charge_point_id}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>Type:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.type}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>Status:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.status}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>Status time:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.status_time | date: "short"}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>info:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.info}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>VendorID:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.vendor_id}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>Error code:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.error_code}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>kWatt:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.power}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--          <tr>-->
-<!--            <td>Transaction:</td>-->
-<!--            <td>-->
-<!--              <div class="like-input">-->
-<!--                {{connector.current_transaction_id}}-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--        </table>-->
-<!--      </div>-->
-<!--    </div>-->
+    </mat-accordion>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="warn" (click)="close()">Close</button>

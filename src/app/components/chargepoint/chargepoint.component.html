@@ -2,12 +2,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title >{{chargepoint.charge_point_id}} :: {{chargepoint.title}}
-      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="isAdmin">
-        <mat-icon class="edit-icon">edit</mat-icon>
-      </button>
-      <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()">
-        <mat-icon class="edit-icon">remove_red_eye</mat-icon>
-      </button>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
@@ -20,7 +15,14 @@
   <ng-container *ngFor="let connector of chargepoint.connectors">
     <app-connector [connector]="connector"></app-connector>
   </ng-container>
-  <mat-card-actions align="end">
+  <mat-card-actions align="end" class="tool-panel">
+    <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="isAdmin">
+      <mat-icon class="edit-icon">edit</mat-icon>
+    </button>
+    <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()">
+      <mat-icon class="edit-icon">remove_red_eye</mat-icon>
+    </button>
+    <div class="space"></div>
     <mat-icon color="primary" *ngIf="chargepoint.is_online; else isNotOnline">cloud_queue</mat-icon>
     <ng-template #isNotOnline>
       <mat-icon color="warn">cloud_off</mat-icon>
