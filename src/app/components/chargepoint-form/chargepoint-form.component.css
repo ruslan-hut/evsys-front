@@ -2,6 +2,10 @@ mat-card {
   margin: 10px;
 }
 
+td{
+  padding: 1px 10px;
+}
+
 .center-content {
   display: flex;
   align-items: center;
@@ -12,20 +16,19 @@ mat-card {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 99.5%;
-}
-
-.equal-height-input{
-  min-height: 20px;
-  line-height: 21px;
-  font-family: sans-serif;
-  font-size: 14px;
-  padding: 3px;
 }
 
 .two-in-one_input {
   width: 49.5%;
   min-height: 20px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 3px;
+}
+
+.equal-height-input{
+  min-height: 30px;
+  line-height: 21px;
   font-family: sans-serif;
   font-size: 14px;
   padding: 3px;
@@ -52,4 +55,7 @@ input {
   width: 100%;
 }
 
+.flex-spacer {
+  flex-grow: 1;
+}
 

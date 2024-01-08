@@ -159,13 +159,14 @@
         </td>
       </tr>
     </table>
+    <br>
     <mat-accordion>
       <mat-expansion-panel *ngFor="let connector of chargePoint.connectors ">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
               </div>
-              Connector {{connector.connector_id}}
+              {{connector.connector_id}}
             </mat-panel-title>
             <mat-panel-description>
 
@@ -173,12 +174,6 @@
           </mat-expansion-panel-header>
           <table>
             <tr>
-              <td>ChargePointID:</td>
-              <td>
-                <div class="like-input">
-                  {{connector.charge_point_id}}
-                </div>
-              </td>
             </tr>
             <tr>
               <td>Type:</td>
@@ -248,8 +243,13 @@
         </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
-  <mat-card-actions>
+  <mat-card-actions class="flex-container">
     <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <div class="flex-spacer"></div>
+    <mat-icon color="primary" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
+    <ng-template #isNotOnline>
+      <mat-icon color="warn">cloud_off</mat-icon>
+    </ng-template>
   </mat-card-actions>
 </mat-card>
 

@@ -35,7 +35,6 @@ td {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
 }
 
 .name_field {
@@ -47,4 +46,14 @@ td {
 
 .two-in-one_input {
   width: 200%;
+  padding-right: 12px;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
 }

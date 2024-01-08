@@ -48,5 +48,10 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="save()">Save</button><td></td>
     <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <div class="flex-spacer"></div>
+    <mat-icon color="primary" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
+    <ng-template #isNotOnline>
+      <mat-icon color="warn">cloud_off</mat-icon>
+    </ng-template>
   </mat-card-actions>
 </mat-card>
