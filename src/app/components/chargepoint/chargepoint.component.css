@@ -32,14 +32,8 @@ mat-card-title {
   padding-top: 14px;
 }
 
-.online-icon {
-  margin-left: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.online-status {
+  color: limegreen;
 }
 
 .edit-icon {

@@ -23,7 +23,7 @@
       <mat-icon class="edit-icon">remove_red_eye</mat-icon>
     </button>
     <div class="space"></div>
-    <mat-icon color="primary" *ngIf="chargepoint.is_online; else isNotOnline">cloud_queue</mat-icon>
+    <mat-icon class="online-status" *ngIf="chargepoint.is_online; else isNotOnline">cloud_queue</mat-icon>
     <ng-template #isNotOnline>
       <mat-icon color="warn">cloud_off</mat-icon>
     </ng-template>

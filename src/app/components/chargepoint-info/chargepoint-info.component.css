@@ -31,6 +31,10 @@ td {
   border-radius: 50%;
 }
 
+.online-status {
+  color: limegreen;
+}
+
 .two-in-one {
   display: flex;
   flex-direction: row;

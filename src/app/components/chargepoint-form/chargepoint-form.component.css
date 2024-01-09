@@ -63,3 +63,7 @@ button {
   margin: 1px;
 }
 
+.online-status {
+  color: limegreen;
+}
+
