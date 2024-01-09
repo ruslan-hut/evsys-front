@@ -65,3 +65,7 @@ td {
 button {
   margin: 1px;
 }
+
+.connector-buttons{
+  justify-content: flex-start;
+}

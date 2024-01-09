@@ -63,6 +63,16 @@ export class ChargepointInfoComponent implements OnInit{
     });
   }
 
+  startConnector(connector: Connector) {
+
+  }
+  stopConnector(connector: Connector) {
+
+  }
+  unlockConnector(connector: Connector) {
+
+  }
+
   getConnectorColor(connector: Connector) {
     if (connector.status === "Available") {
       return "limegreen";
