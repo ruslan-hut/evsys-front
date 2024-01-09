@@ -20,7 +20,7 @@
 .data{
   display: inline-block;
   vertical-align: middle;
-  margin-left: 20px;
+  margin: 0 10px 0 0;
 }
 
 .custom-button {
@@ -34,4 +34,24 @@
 
 .fix-width {
   width: 100px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+
+@media screen and (max-width: 600px) {
+  .button-container {
+    flex-direction: column;
+  }
+
+  .title-container {
+    vertical-align: top;
+  }
+
+  .space{
+    height: 4px;
+  }
 }
