@@ -22,6 +22,7 @@ import {PaylogComponent} from "./components/logs/paylog/paylog.component";
 import{ConnectorFormComponent} from "./components/connector-form/connector-form.component";
 import{BacklogComponent} from "./components/logs/backlog/backlog.component";
 import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
+import {RebootDialogComponent} from "./components/dialogs/reboot/reboot-dialog.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -47,6 +48,7 @@ import { PrivacyPolicyComponent } from './components/pages/privacy-policy/privac
 import { TermsComponent } from './components/pages/terms/terms.component';
 import { CompanyInfoComponent } from './components/pages/company-info/company-info.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
     BacklogComponent,
     TermsComponent,
     CompanyInfoComponent,
-    ChargepointInfoComponent
+    ChargepointInfoComponent,
+    RebootDialogComponent
   ],
     imports: [
         BrowserModule,
@@ -95,7 +98,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
         MatCardModule,
         MatProgressBarModule,
         MatDividerModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatDialogModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

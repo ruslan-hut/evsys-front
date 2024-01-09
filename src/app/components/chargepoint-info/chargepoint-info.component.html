@@ -20,22 +20,6 @@
   <mat-card-content>
     <table>
       <tr>
-        <td>Id :</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.charge_point_id}}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Is Enabled:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.is_enabled}}
-          </div>
-        </td>
-      </tr>
-      <tr>
         <td>Title:</td>
         <td>
           <div class="like-input">
@@ -48,6 +32,14 @@
         <td>
           <div class="like-input">
             {{chargePoint.description}}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Address:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.address}}
           </div>
         </td>
       </tr>
@@ -84,14 +76,6 @@
         </td>
       </tr>
       <tr>
-        <td>Status:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.status}}
-          </div>
-        </td>
-      </tr>
-      <tr>
         <td>ErrorCode:</td>
         <td>
           <div class="like-input">
@@ -104,6 +88,14 @@
         <td>
           <div class="like-input">
             {{chargePoint.info}}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Status:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.status}}
           </div>
         </td>
       </tr>
@@ -124,26 +116,10 @@
         </td>
       </tr>
       <tr>
-        <td>Online:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.is_online}}
-          </div>
-        </td>
-      </tr>
-      <tr>
         <td>Status time:</td>
         <td>
           <div class="like-input">
             {{chargePoint.status_time | date: "short"}}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Address:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.address}}
           </div>
         </td>
       </tr>
@@ -245,6 +221,7 @@
   </mat-card-content>
   <mat-card-actions class="flex-container">
     <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <button mat-raised-button color="primary" (click)="reboot()">Reboot</button>
     <div class="flex-spacer"></div>
     <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
     <ng-template #isNotOnline>

@@ -61,3 +61,7 @@ td {
 .flex-spacer {
   flex-grow: 1;
 }
+
+button {
+  margin: 1px;
+}

@@ -5,6 +5,8 @@ import {ModalService} from "../../service/modal.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
 import {Connector} from "../../models/connector";
+import {MatDialog} from "@angular/material/dialog";
+import {RebootDialogComponent} from "../dialogs/reboot/reboot-dialog.component";
 
 
 @Component({
@@ -21,6 +23,7 @@ export class ChargepointInfoComponent implements OnInit{
     private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
+    public dialog: MatDialog
   ) {
   }
 
@@ -42,6 +45,22 @@ export class ChargepointInfoComponent implements OnInit{
 
   close(){
     this.router.navigate(['/']);
+  }
+
+  reboot(): void {
+    const dialogRef = this.dialog.open(RebootDialogComponent, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        //reboot code
+        console.log("rebooting")
+      } else {
+        //do nothing
+        console.log("not rebooting")
+      }
+    });
   }
 
   getConnectorColor(connector: Connector) {
