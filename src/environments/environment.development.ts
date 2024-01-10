@@ -6,5 +6,6 @@ export const environment = {
   readPayLog: '/log/pay',
   chargePointList: '/chp',
   chargePoint: '/point/',
+  transactionInfo: '/transactions/info/',
   wsUrl: 'wss://wattbrews.me:9002/ws'
 };
