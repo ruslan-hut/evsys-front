@@ -1,0 +1,27 @@
+table {
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+th,td {
+  padding: 2px 20px 2px 2px;
+}
+td {
+  max-width: 20%;
+}
+
+.online-icon {
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.connector-buttons{
+  justify-content: flex-start;
+}
+
+

@@ -10,20 +10,12 @@ export class ConnectorFormComponent {
   @Input() connectors: Connector[]
 
   getConnectorColor(connector: Connector) {
-    if (connector.status === "Available") {
+    if (connector.state === "available") {
       return "limegreen";
-    } else if (connector.status === "Preparing") {
+    } else if (connector.state === "occupied") {
       return "orange";
     } else {
       return "red";
-    }
-  }
-
-  getConnectorName(connector: Connector): string {
-    if(connector.connector_id_name!="") {
-      return connector.connector_id_name;
-    } else {
-      return connector.connector_id;
     }
   }
 }
