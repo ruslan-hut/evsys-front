@@ -6,7 +6,8 @@ import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
 import {Connector} from "../../models/connector";
 import {MatDialog} from "@angular/material/dialog";
-import {RebootDialogComponent} from "../dialogs/reboot/reboot-dialog.component";
+import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
+import {DialogData} from "../../models/dialogData";
 
 
 @Component({
@@ -48,13 +49,21 @@ export class ChargepointInfoComponent implements OnInit{
   }
 
   reboot(): void {
-    const dialogRef = this.dialog.open(RebootDialogComponent, {
+    let dialogData: DialogData = {
+      title: "Reboot",
+      content: "",
+      buttonYes: "Reboot",
+      buttonNo: "Close"
+    };
+
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
       width: '250px',
+      data: dialogData,
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
-        //reboot code
+        //basic code
         console.log("rebooting")
       } else {
         //do nothing
