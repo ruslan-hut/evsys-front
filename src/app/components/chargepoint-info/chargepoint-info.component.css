@@ -13,24 +13,6 @@ td {
   max-width: 20%;
 }
 
-/*.like-input{*/
-/*  min-height: 20px;*/
-/*  border: 1px solid #000;*/
-/*  background-color: whitesmoke;*/
-/*  padding: 1px 5px;*/
-/*  border-radius: 2px;*/
-/*}*/
-
-.online-icon {
-  margin-right: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
 .online-status {
   color: limegreen;
 }
@@ -64,8 +46,4 @@ td {
 
 button {
   margin: 1px;
-}
-
-.connector-buttons{
-  justify-content: flex-start;
 }

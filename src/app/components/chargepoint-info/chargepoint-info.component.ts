@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule} from "@angular/forms";
 import {ChargepointService} from "../../service/chargepoint.service";
 import {ModalService} from "../../service/modal.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
 import {Connector} from "../../models/connector";
-import {MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialogData";
 
@@ -70,26 +70,6 @@ export class ChargepointInfoComponent implements OnInit{
         console.log("not rebooting")
       }
     });
-  }
-
-  startConnector(connector: Connector) {
-
-  }
-  stopConnector(connector: Connector) {
-
-  }
-  unlockConnector(connector: Connector) {
-
-  }
-
-  getConnectorColor(connector: Connector) {
-    if (connector.status === "Available") {
-      return "limegreen";
-    } else if (connector.status === "Preparing") {
-      return "orange";
-    } else {
-      return "red";
-    }
   }
 
 }

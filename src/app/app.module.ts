@@ -23,6 +23,7 @@ import{ConnectorFormComponent} from "./components/connector-form/connector-form.
 import{BacklogComponent} from "./components/logs/backlog/backlog.component";
 import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
 import {BasicDialogComponent} from "./components/dialogs/basic/basic-dialog.component";
+import {ConnectorInfoComponent} from "./components/connector-info/connector-info.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -75,7 +76,8 @@ import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
     TermsComponent,
     CompanyInfoComponent,
     ChargepointInfoComponent,
-    BasicDialogComponent
+    BasicDialogComponent,
+    ConnectorInfoComponent
   ],
     imports: [
         BrowserModule,

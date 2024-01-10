@@ -1,0 +1,85 @@
+<mat-expansion-panel [expanded]="isDialog()">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
+      </div>
+      {{connector.connector_id}}
+    </mat-panel-title>
+    <mat-panel-description>
+
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <table>
+    <tr>
+    </tr>
+    <tr>
+      <td>Type:</td>
+      <td>
+        <div class="like-input">
+          {{connector.type}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Status:</td>
+      <td>
+        <div class="like-input">
+          {{connector.status}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Status time:</td>
+      <td>
+        <div class="like-input">
+          {{connector.status_time | date: "short"}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>info:</td>
+      <td>
+        <div class="like-input">
+          {{connector.info}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>VendorID:</td>
+      <td>
+        <div class="like-input">
+          {{connector.vendor_id}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Error code:</td>
+      <td>
+        <div class="like-input">
+          {{connector.error_code}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>kWatt:</td>
+      <td>
+        <div class="like-input">
+          {{connector.power}}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Transaction:</td>
+      <td>
+        <div class="like-input">
+          {{connector.current_transaction_id}}
+        </div>
+      </td>
+    </tr>
+  </table>
+  <mat-action-row class="connector-buttons">
+    <button mat-button color="primary" (click)="startConnector(connector)">Start</button>
+    <button mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
+    <button mat-button (click)="unlockConnector(connector)">Unlock</button>
+  </mat-action-row>
+</mat-expansion-panel>
