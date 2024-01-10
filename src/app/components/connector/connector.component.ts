@@ -13,9 +13,9 @@ export class ConnectorComponent {
   details = false
 
   getConnectorColor() {
-    if (this.connector.status === "Available") {
+    if (this.connector.state === "available") {
       return "limegreen";
-    } else if (this.connector.status === "Preparing") {
+    } else if (this.connector.state === "occupied") {
       return "orange";
     } else {
       return "red";

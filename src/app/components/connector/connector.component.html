@@ -5,7 +5,7 @@
         <mat-card-title class="connector-title">Connector {{getConnectorName()}}:</mat-card-title>
       </td>
       <td class="button-container">
-        <button mat-flat-button [style.border-color]="getConnectorColor()" class="data custom-button fix-width">{{connector.status}}</button>
+        <button mat-flat-button [style.border-color]="getConnectorColor()" class="data custom-button fix-width">{{connector.state | titlecase}}</button>
         <div class="space"></div>
         <button mat-stroked-button color="primary" class="data custom-button" *ngIf="connector.current_transaction_id>=0">Transaction: {{connector.current_transaction_id}}</button>
       </td>

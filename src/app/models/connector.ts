@@ -5,6 +5,7 @@ export interface Connector {
   type: string,
   status: string,
   status_time: string,
+  state: string,
   info: string,
   vendor_id: string,
   error_code: string,

@@ -21,6 +21,7 @@
   display: inline-block;
   vertical-align: middle;
   margin: 0 10px 0 0;
+  text-align: center;
 }
 
 .custom-button {
@@ -33,7 +34,7 @@
 }
 
 .fix-width {
-  width: 100px;
+  width: 110px;
 }
 
 .button-container {
