@@ -9,7 +9,7 @@
                 (click)="openInfo()">{{connector.state | titlecase}}</button>
         <div class="space"></div>
         <button mat-stroked-button color="primary" class="data custom-button" *ngIf="connector.current_transaction_id>=0"
-                (click)="openInfo()">Transaction: {{connector.current_transaction_id}}</button>
+                (click)="transactionInfo()">Transaction: {{connector.current_transaction_id}}</button>
       </td>
     </tr>
   </table>

@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ transaction.charge_point_title}}</mat-card-title>
+  </mat-card-header>
+    <mat-card-content>
+      {{ transaction.charge_point_address }}
+      <br>
+      <br>
+      <div class="status">{{ transaction.status }}</div>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <br>
+      <table>
+        <tr>
+        </tr>
+        <tr>
+          <td style="text-align: left;">
+            Connector:
+          </td>
+          <td style="text-align: right;">
+            {{ transaction.connector.connector_id}}
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: left;">
+            Start time:
+          </td>
+          <td style="text-align: right;">
+            {{ transaction.time_started | date:"hh:mm"}}
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: left;">
+            Duration:
+          </td>
+          <td style="text-align: right;">
+            {{ getDuration(transaction.duration)}}
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: left;">
+            Consumed:
+          </td>
+          <td style="text-align: right;">
+            {{ transaction.consumed /1000 | number: '1.2-2'}} kWh
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: left;">
+            Price:
+          </td>
+          <td style="text-align: right;">
+            {{ transaction.price}} €
+          </td>
+        </tr>
+      </table>
+    </mat-card-content>
+    <mat-card-actions >
+      <button mat-button color="primary" (click)="dialogRef?.close('no')">Close</button>
+      <button mat-button color="warn" (click)="stopTransaction()">Stop</button>
+    </mat-card-actions>
+</mat-card>

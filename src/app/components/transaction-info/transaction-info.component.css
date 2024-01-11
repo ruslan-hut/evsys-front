@@ -1,0 +1,26 @@
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+}
+table {
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+th,td {
+  padding: 2px 2px 2px 2px;
+}
+td {
+  max-width: 20%;
+}
+
+.flex-spacer {
+  flex: 1;
+}
+
+.status{
+  font-size: 20px;
+  padding: 0 0 5px 0;
+}
+

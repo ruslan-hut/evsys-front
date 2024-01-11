@@ -5,6 +5,7 @@ import {DialogData} from "../../models/dialogData";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ConnectorInfoComponent} from "../connector-info/connector-info.component";
+import {TransactionInfoComponent} from "../transaction-info/transaction-info.component";
 
 @Component({
   selector: 'app-connector',
@@ -43,5 +44,12 @@ export class ConnectorComponent {
       data: this.connector,
     });
 
+  }
+
+  transactionInfo() {
+    const dialogRef = this.dialog.open(TransactionInfoComponent, {
+      width: '350px',
+      data: this.connector.current_transaction_id,
+    });
   }
 }
