@@ -78,8 +78,14 @@
     </tr>
   </table>
   <mat-action-row class="connector-buttons">
-    <button mat-button color="primary" (click)="startConnector(connector)">Start</button>
-    <button mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
-    <button mat-button (click)="unlockConnector(connector)">Unlock</button>
+    <button *ngIf="isDialog()" mat-button (click)="dialogRef?.close('no')">Close</button>
+    <button *ngIf="connector.state === 'available'; else notAvailable" mat-button color="primary" (click)="startConnector(connector)">Start</button>
+
+    <ng-template #notAvailable>
+      <ng-container *ngIf="connector.state !== 'unavailable'">
+      <button *ngIf="connector.current_transaction_id > 0" mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
+      <button *ngIf="connector.current_transaction_id < 0" mat-button color="warn" (click)="unlockConnector(connector)">Unlock</button>
+      </ng-container>
+    </ng-template>
   </mat-action-row>
 </mat-expansion-panel>
