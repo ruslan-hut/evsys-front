@@ -11,7 +11,7 @@ import {AccountService} from "../../../service/account.service";
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  displayedColumn: string[] = ['username', 'name', 'role', 'plan', 'registered', 'last_seen'];
+  displayedColumn: string[] = ['username', 'name', 'role', 'level', 'plan', 'registered', 'last_seen'];
   filter: string = "";
   loading = false;
   dataSource = new MatTableDataSource<User>();
