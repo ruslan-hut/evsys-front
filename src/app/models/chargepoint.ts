@@ -17,6 +17,8 @@ export interface Chargepoint {
   is_online: boolean,
   status_time: string,
   address: string,
+  access_type: string,
+  access_level: string,
   location: Location,
   connectors: Connector[]
 }
