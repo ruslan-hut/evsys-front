@@ -92,8 +92,10 @@ export class ChargepointService {
         const updated = JSON.parse(message.data);
         const index = this.chargePoints.findIndex(chp => chp.charge_point_id == updated);
         if (index !== -1) {
-          this.chargePoints[index] = updated;
-          this.chargePoints$.next(this.chargePoints);
+          this.getChargePoint(updated).subscribe(chargePoint => {
+            this.chargePoints[index] = chargePoint;
+            this.chargePoints$.next(this.chargePoints);
+          });
         }
         console.log('Updated: ', updated);
       }
