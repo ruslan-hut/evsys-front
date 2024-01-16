@@ -9,6 +9,7 @@
 
 .connector-title {
   font-size: 14px;
+  max-lines: 1;
 }
 
 .status-indicator {
@@ -31,6 +32,7 @@
   font-size: 12px;
   filter: saturate(95%);
   border: 2px solid transparent;
+  max-lines: 1;
 }
 
 .fix-width {
