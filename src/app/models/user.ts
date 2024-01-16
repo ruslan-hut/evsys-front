@@ -2,7 +2,7 @@ export interface User {
   id?: string,
   username: string,
   password: string,
-  access_level?: string,
+  access_level?: number,
   email?: string,
   name?: string,
   role?: string,

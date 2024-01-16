@@ -87,17 +87,18 @@ export class ChargepointService {
       this.errorService.handle('WS error: ' + message.info);
       return;
     }
-    if (message.status === 'success') {
+    if (message.status === 'event') {
       if (message.data) {
         const updated = JSON.parse(message.data);
-        // const index = this.chargePoints.findIndex(chp => chp.charge_point_id === updated.id);
-        // if (index !== -1) {
-        //   this.chargePoints[index] = updated;
-        //   this.chargePoints$.next(this.chargePoints);
-        // }
+        const index = this.chargePoints.findIndex(chp => chp.charge_point_id == updated);
+        if (index !== -1) {
+          this.chargePoints[index] = updated;
+          this.chargePoints$.next(this.chargePoints);
+        }
         console.log('Updated: ', updated);
       }
     }
+    // console.log('msg: ', message);
   }
 
   private errorHandler(err: HttpErrorResponse) {
