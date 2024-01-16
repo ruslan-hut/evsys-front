@@ -22,6 +22,11 @@
     <table>
       <tr><td >Title</td><td ><input class="equal-height-input"
                                      [(ngModel)]="chargePoint.title" /></td><td></td></tr>
+      <tr><td >Access type</td><td ><input class="equal-height-input"
+                                     [(ngModel)]="chargePoint.access_type" /></td><td></td></tr>
+      <tr><td >Access level</td><td ><input class="equal-height-input"
+                                     [(ngModel)]="chargePoint.access_level" type="number"
+                                            step="1" pattern="[0-9]*" inputmode="numeric"/></td><td></td></tr>
       <tr><td >Address</td><td ><textarea class="equal-height-input"
                                           matInput
                                           cdkTextareaAutosize
