@@ -23,6 +23,7 @@
   vertical-align: middle;
   margin: 0 10px 0 0;
   text-align: center;
+  white-space: nowrap;
 }
 
 .custom-button {
