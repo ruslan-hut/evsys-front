@@ -28,22 +28,6 @@
         </td>
       </tr>
       <tr>
-        <td>Access type:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.access_type}}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Access level:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.access_level}}
-          </div>
-        </td>
-      </tr>
-      <tr>
         <td>Description:</td>
         <td>
           <div class="like-input">
@@ -56,6 +40,22 @@
         <td>
           <div class="like-input">
             {{chargePoint.address}}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Location:</td>
+        <td>
+          <a href="https://www.google.com/maps?q={{chargePoint.location.latitude}},{{chargePoint.location.longitude}}" target="_blank">
+            {{chargePoint.location.latitude.toFixed(3)}};{{chargePoint.location.longitude.toFixed(3)}}
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Access type:</td>
+        <td>
+          <div class="like-input">
+            {{chargePoint.access_type}}
           </div>
         </td>
       </tr>
@@ -116,18 +116,10 @@
         </td>
       </tr>
       <tr>
-        <td>Last seen:</td>
-        <td>
-          <div class="like-input">
-            {{chargePoint.last_seen | date: "short"}}
-          </div>
-        </td>
-      </tr>
-      <tr>
         <td>Event time:</td>
         <td>
           <div class="like-input">
-            {{chargePoint.event_time | date: "short"}}
+            {{getTimeDifference(chargePoint.event_time)}}
           </div>
         </td>
       </tr>
@@ -135,16 +127,16 @@
         <td>Status time:</td>
         <td>
           <div class="like-input">
-            {{chargePoint.status_time | date: "short"}}
+            {{getTimeDifference(chargePoint.status_time)}}
           </div>
         </td>
       </tr>
       <tr>
-        <td>Location:</td>
+        <td>Access level:</td>
         <td>
-          <a href="https://www.google.com/maps?q={{chargePoint.location.latitude}},{{chargePoint.location.longitude}}" target="_blank">
-            {{chargePoint.location.latitude.toFixed(3)}};{{chargePoint.location.longitude.toFixed(3)}}
-          </a>
+          <div class="like-input">
+            {{chargePoint.access_level}}
+          </div>
         </td>
       </tr>
 
