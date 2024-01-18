@@ -3,6 +3,7 @@ import {Connector} from "../../models/connector";
 import {DialogData} from "../../models/dialogData";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {TimeService} from "../../service/time.service";
 
 @Component({
   selector: 'app-connector-info',
@@ -15,6 +16,7 @@ export class ConnectorInfoComponent {
 
   constructor(
     public dialog: MatDialog,
+    public timeService: TimeService,
     @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: Connector,
   ) {

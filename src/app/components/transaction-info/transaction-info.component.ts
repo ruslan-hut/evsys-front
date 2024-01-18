@@ -32,23 +32,22 @@ export class TransactionInfoComponent {
   getDuration(duration: number): string {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor((duration % 3600) / 60);
-    const seconds = duration % 60;
 
     let formattedDuration = '';
 
+    if (hours < 10) {
+      formattedDuration += '0';
+    }
     if (hours > 0) {
       formattedDuration += hours + ':';
+    }else {
+      formattedDuration += '0:';
     }
 
     if (minutes < 10) {
       formattedDuration += '0';
     }
-    formattedDuration += minutes + ':';
-
-    if (seconds < 10) {
-      formattedDuration += '0';
-    }
-    formattedDuration += seconds;
+    formattedDuration += minutes;
 
     return formattedDuration;
   }

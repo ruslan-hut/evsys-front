@@ -8,6 +8,7 @@ import {Connector} from "../../models/connector";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialogData";
+import {TimeService} from "../../service/time.service";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ChargepointInfoComponent implements OnInit{
   constructor(
     private chargePointService: ChargepointService,
     private modalService: ModalService,
+    public timeService: TimeService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
@@ -70,29 +72,6 @@ export class ChargepointInfoComponent implements OnInit{
         console.log("not rebooting")
       }
     });
-  }
-
-  getTimeDifference(date: string): string {
-    const eventTime = new Date(date);
-    const now = new Date();
-    const differenceInSeconds = Math.floor((now.getTime() - eventTime.getTime()) / 1000);
-
-    const days = Math.floor(differenceInSeconds / (3600 * 24));
-    const hours = Math.floor((differenceInSeconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((differenceInSeconds % 3600) / 60);
-
-    let result = '';
-    if (days > 0) {
-      result += `${days} d. `;
-    }
-    if (hours > 0) {
-      result += `${hours} h. `;
-    }
-    if (minutes > 0) {
-      result += `${minutes} min. `;
-    }
-
-    return result.length > 0 ? result : 'now';
   }
 
 }

@@ -32,7 +32,7 @@
       <td>Status time:</td>
       <td>
         <div class="like-input">
-          {{connector.status_time | date: "short"}}
+          {{timeService.getTimeDifference(connector.status_time)}}
         </div>
       </td>
     </tr>

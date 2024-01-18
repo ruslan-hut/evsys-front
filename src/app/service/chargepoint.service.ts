@@ -79,17 +79,17 @@ export class ChargepointService {
     //   //     return chargepoint;
     //   //   })));
     // }
-    if (message.status === 'ping') {
+    if (message.status == 'ping') {
       this.websocketService.send({command: 'ListenLog'});
       return;
     }
-    if (message.status === 'error') {
+    if (message.status == 'error') {
       this.errorService.handle('WS error: ' + message.info);
       return;
     }
-    if (message.status === 'event') {
+    if (message.status == 'event') {
       if (message.data) {
-        const updated = JSON.parse(message.data);
+        const updated = message.data;
         const index = this.chargePoints.findIndex(chp => chp.charge_point_id == updated);
         if (index !== -1) {
           this.getChargePoint(updated).subscribe(chargePoint => {
@@ -97,10 +97,8 @@ export class ChargepointService {
             this.chargePoints$.next(this.chargePoints);
           });
         }
-        console.log('Updated: ', updated);
       }
     }
-    // console.log('msg: ', message);
   }
 
   private errorHandler(err: HttpErrorResponse) {

@@ -3,6 +3,7 @@ import {Chargepoint} from "../../models/chargepoint";
 import { Router } from '@angular/router';
 import {AccountService} from "../../service/account.service";
 import {environment} from "../../../environments/environment";
+import {TimeService} from "../../service/time.service";
 
 @Component({
   selector: 'app-chargepoint',
@@ -18,6 +19,8 @@ export class ChargepointComponent implements OnInit {
   constructor(
     private router: Router,
     private accountService: AccountService,
+
+    public timeService: TimeService
     ) { }
 
   editChargePoint() {
@@ -40,29 +43,6 @@ export class ChargepointComponent implements OnInit {
         this.isAdmin = false;
       }
     });
-  }
-
-  getTimeDifference(): string {
-    const eventTime = new Date(this.chargepoint.event_time);
-    const now = new Date();
-    const differenceInSeconds = Math.floor((now.getTime() - eventTime.getTime()) / 1000);
-
-    const days = Math.floor(differenceInSeconds / (3600 * 24));
-    const hours = Math.floor((differenceInSeconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((differenceInSeconds % 3600) / 60);
-
-    let result = '';
-    if (days > 0) {
-      result += `${days} d. `;
-    }
-    if (hours > 0) {
-      result += `${hours} h. `;
-    }
-    if (minutes > 0) {
-      result += `${minutes} min. `;
-    }
-
-    return result.length > 0 ? result : 'now';
   }
 
 }
