@@ -64,4 +64,8 @@ export class AccountService {
   getAll() {
     return this.http.get<User[]>(`${environment.apiUrl}/users/list`);
   }
+
+  getUserInfo(username: string | null) {
+    return this.http.get<User>(`${environment.apiUrl}/users/info/${username}`);
+  }
 }

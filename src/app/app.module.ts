@@ -50,7 +50,10 @@ import { PrivacyPolicyComponent } from './components/pages/privacy-policy/privac
 import { TermsComponent } from './components/pages/terms/terms.component';
 import { CompanyInfoComponent } from './components/pages/company-info/company-info.component';
 import {MatExpansionModule} from "@angular/material/expansion";
-import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {MatDialogModule} from "@angular/material/dialog";
+import { UserInfoComponent } from './components/user/user-info/user-info.component';
+import { UserEditComponent } from './components/user/user-edit/user-edit.component';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -80,31 +83,34 @@ import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
     BasicDialogComponent,
     ConnectorInfoComponent,
     TransactionInfoComponent,
+    UserInfoComponent,
+    UserEditComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatSlideToggleModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatMenuModule,
-        MatSnackBarModule,
-        MatCardModule,
-        MatProgressBarModule,
-        MatDividerModule,
-        MatExpansionModule,
-        MatDialogModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatListModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}

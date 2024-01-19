@@ -14,12 +14,16 @@ import {PaylogComponent} from "./components/logs/paylog/paylog.component";
 import {TermsComponent} from "./components/pages/terms/terms.component";
 import {CompanyInfoComponent} from "./components/pages/company-info/company-info.component";
 import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
+import {UserInfoComponent} from "./components/user/user-info/user-info.component";
+import {UserEditComponent} from "./components/user/user-edit/user-edit.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
   {path: 'log/backend', component: BacklogComponent, canActivate: [authGuard]},
   {path: 'log/pay', component: PaylogComponent, canActivate: [authGuard]},
   {path: 'users', component: UsersComponent, canActivate: [authGuard]},
+  {path: 'users/info/:username', component: UserInfoComponent, canActivate: [authGuard]},
+  {path: 'users/edit/:username', component: UserEditComponent, canActivate: [authGuard]},
   {path: 'points', component: ChargepointListComponent},
   {path: 'bank', component: BankServiceComponent},
   {path: 'privacy/:lang', component: PrivacyPolicyComponent},

@@ -4,6 +4,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {User} from "../../../models/user";
 import {AccountService} from "../../../service/account.service";
+import {MatDialog} from "@angular/material/dialog";
+import {UserInfoComponent} from "../user-info/user-info.component";
 
 @Component({
   selector: 'app-users',
@@ -11,7 +13,8 @@ import {AccountService} from "../../../service/account.service";
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  displayedColumn: string[] = ['username', 'name', 'role', 'level', 'plan', 'registered', 'last_seen'];
+  //displayedColumn: string[] = ['username', 'name', 'role', 'level', 'plan', 'registered', 'last_seen', 'actions'];
+  displayedColumn: string[] = ['username', 'name', 'last_seen', 'actions'];
   filter: string = "";
   loading = false;
   dataSource = new MatTableDataSource<User>();
@@ -24,7 +27,8 @@ export class UsersComponent implements OnInit {
   }
 
   constructor(
-    public account: AccountService
+    public account: AccountService,
+    public dialog: MatDialog
     ) {}
 
   ngOnInit(): void {
@@ -42,5 +46,13 @@ export class UsersComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  openUserInfo(username: string) {
+    this.dialog.open(UserInfoComponent, {
+      width: '400px',
+      data: username,
+    });
+  }
+
 
 }

@@ -39,6 +39,17 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Last seen</th>
       <td mat-cell *matCellDef="let row">{{row.last_seen}}</td>
     </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button [routerLink]="['/users/edit', row.username]">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="openUserInfo(row.username)">
+          <mat-icon>remove_red_eye</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumn"></tr>

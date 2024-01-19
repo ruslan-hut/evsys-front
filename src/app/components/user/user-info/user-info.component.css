@@ -1,0 +1,23 @@
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.sub-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.detail-name, .sub-detail-name {
+  font-weight: bold;
+}
+
+.detail-value {
+  /* styling for the value */
+}
+
+.detail-value, .nested-object {
+  margin-left: 10px;
+}
