@@ -20,6 +20,8 @@
     "@angular/platform-browser": "^15.2.1",
     "@angular/platform-browser-dynamic": "^15.2.1",
     "@angular/router": "^15.2.1",
+    "firebase": "^10.7.2",
+    "firebaseui": "^6.1.0",
     "pusher-js": "^8.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

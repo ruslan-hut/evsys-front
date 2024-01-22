@@ -1,13 +1,7 @@
 .detail-row {
   display: flex;
   justify-content: space-between;
-  align-items: start;
-}
-
-.sub-detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .detail-name, .sub-detail-name {
@@ -16,8 +10,4 @@
 
 .detail-value {
   /* styling for the value */
-}
-
-.detail-value, .nested-object {
-  margin-left: 10px;
 }
