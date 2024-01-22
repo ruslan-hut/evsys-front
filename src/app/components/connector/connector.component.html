@@ -1,18 +1,10 @@
 <mat-card-content class="connector-content">
-  <table>
-    <tr>
-      <td class="title-container" style="white-space: nowrap;">
-        <mat-card-title class="connector-title">Connector {{getConnectorName()}}:</mat-card-title>
-      </td>
-      <td class="button-container">
-        <button mat-flat-button [style.border-color]="getConnectorColor()" class="data custom-button fix-width"
-                (click)="openInfo()">{{connector.state | titlecase}}</button>
-        <div class="space"></div>
-        <button mat-flat-button class="data custom-button" *ngIf="connector.current_transaction_id>=0"
-                (click)="transactionInfo()">Transaction: {{connector.current_transaction_id}}</button>
-      </td>
-    </tr>
-  </table>
+  <button *ngIf="connector.current_transaction_id<0; else noTransaction" mat-flat-button [style.border-color]="getConnectorColor()" class="data custom-button fix-width"
+          (click)="openInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>
+  <ng-template #noTransaction>
+  <button mat-flat-button class="data custom-button" *ngIf="connector.current_transaction_id>=0"
+          (click)="transactionInfo()">{{connector.connector_id | titlecase}}: {{connector.state | titlecase}}</button>
+  </ng-template>
 </mat-card-content>
 
 

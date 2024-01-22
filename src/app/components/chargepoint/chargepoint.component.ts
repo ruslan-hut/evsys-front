@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {AccountService} from "../../service/account.service";
 import {environment} from "../../../environments/environment";
 import {TimeService} from "../../service/time.service";
+import {Connector} from "../../models/connector";
 
 @Component({
   selector: 'app-chargepoint',
