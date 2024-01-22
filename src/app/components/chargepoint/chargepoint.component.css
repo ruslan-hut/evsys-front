@@ -64,3 +64,12 @@ mat-card-title {
   width: 12px;
 }
 
+.connector-container{
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+app-connector {
+  margin: 5px;
+}

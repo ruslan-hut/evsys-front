@@ -143,7 +143,7 @@
     </table>
     <br>
     <mat-accordion >
-      <div *ngFor="let connector of chargePoint.connectors ">
+      <div *ngFor="let connector of chargePoint.connectors| sortConnectors ">
         <app-connector-info [connector]="connector"></app-connector-info>
       </div>
     </mat-accordion>

@@ -25,6 +25,7 @@ import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoin
 import {BasicDialogComponent} from "./components/dialogs/basic/basic-dialog.component";
 import {ConnectorInfoComponent} from "./components/connector-info/connector-info.component";
 import {TransactionInfoComponent} from "./components/transaction-info/transaction-info.component";
+import {SortConnectorsPipe} from "./components/pipes/sortConnectorsPipe";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -87,6 +88,7 @@ import { LoginFirebaseComponent } from './components/user/login-firebase/login-f
     UserInfoComponent,
     UserEditComponent,
     LoginFirebaseComponent,
+    SortConnectorsPipe
   ],
   imports: [
     BrowserModule,
