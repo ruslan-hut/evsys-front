@@ -15,4 +15,8 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
+}
+.button-spacing {
+  margin-right: 8px;
 }

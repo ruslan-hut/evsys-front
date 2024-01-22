@@ -16,6 +16,7 @@ import {CompanyInfoComponent} from "./components/pages/company-info/company-info
 import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
 import {UserInfoComponent} from "./components/user/user-info/user-info.component";
 import {UserEditComponent} from "./components/user/user-edit/user-edit.component";
+import {LoginFirebaseComponent} from "./components/user/login-firebase/login-firebase.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'terms/:lang', component: TermsComponent},
   {path: 'company-info/:lang', component: CompanyInfoComponent},
   {path: 'account/login', component: LoginComponent},
+  {path: 'account/login-fb', component: LoginFirebaseComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},
   {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]},

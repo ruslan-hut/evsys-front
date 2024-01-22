@@ -4,6 +4,8 @@ import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
 import {Router} from "@angular/router";
 import {first} from "rxjs";
+import { getAuth, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 
 @Component({
   selector: 'app-login',
@@ -11,9 +13,11 @@ import {first} from "rxjs";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit{
-  form: FormGroup;
+  formUsername: FormGroup;
+  formEmail: FormGroup;
   loading = false;
   submitted = false;
+  auth = getAuth();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,22 +27,44 @@ export class LoginComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
+    this.formEmail = this.formBuilder.group({
+      email: ['', Validators.required]
+    });
+    this.formUsername = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-  }
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        console.log("login: user is signed in");
+        user.getIdToken().then((token) => {
+          this.accountService.loginWithToken(token).pipe().subscribe({
+            next: () => {
+              const returnUrl = '/';
+              this.navigateTo(returnUrl);
+            },
+            error: error => {
+              this.errorService.handle(error.statusText);
+              this.loading = false;
+            }
+          });
+        });
+      } else {
+        console.log("User is signed out");
+      }}
+    )
+  };
 
-  get f() { return this.form.controls; }
+  get fu() { return this.formUsername.controls; }
 
-  onSubmit() {
+  onSubmitUsername() {
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.formUsername.invalid) {
       this.errorService.handle("Invalid input");
       return;
     }
     this.loading = true;
-    this.accountService.login(this.f.username.value, this.f.password.value)
+    this.accountService.login(this.fu.username.value, this.fu.password.value)
       .pipe(first())
       .subscribe({
         next: () => {
@@ -50,6 +76,38 @@ export class LoginComponent implements OnInit{
           this.loading = false;
         }
       });
+  }
+
+  onGoogleAccountSignIn() {
+    this.loading = true;
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(this.auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        if (token == null) {
+          this.errorService.handle("Failed to get Google Access Token");
+          return;
+        }
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        this.errorService.handle(`${errorCode} ${errorMessage}`);
+        this.loading = false;
+        //const email = error.customData.email;
+        //const credential = GoogleAuthProvider.credentialFromError(error);
+    });
+  }
+
+  onSubmitEmail() {
+    this.submitted = true;
+    if (this.formEmail.invalid) {
+      this.errorService.handle("Invalid input");
+      return;
+    }
+    this.loading = true;
+
   }
 
   navigateTo(destination: string) {

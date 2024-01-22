@@ -54,6 +54,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { UserInfoComponent } from './components/user/user-info/user-info.component';
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import {MatListModule} from "@angular/material/list";
+import { LoginFirebaseComponent } from './components/user/login-firebase/login-firebase.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import {MatListModule} from "@angular/material/list";
     TransactionInfoComponent,
     UserInfoComponent,
     UserEditComponent,
+    LoginFirebaseComponent,
   ],
   imports: [
     BrowserModule,
