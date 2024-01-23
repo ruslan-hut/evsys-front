@@ -2,8 +2,8 @@
   <button *ngIf="connector.current_transaction_id<0; else noTransaction" mat-flat-button [style.border-color]="getConnectorColor()" class="data custom-button fix-width"
           (click)="openInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>
   <ng-template #noTransaction>
-  <button mat-flat-button class="data custom-button" *ngIf="connector.current_transaction_id>=0"
-          (click)="transactionInfo()">{{connector.connector_id | titlecase}}: {{connector.state | titlecase}}</button>
+  <button mat-flat-button class="data custom-button fix-width" *ngIf="connector.current_transaction_id>=0"
+          (click)="transactionInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>
   </ng-template>
 </mat-card-content>
 
