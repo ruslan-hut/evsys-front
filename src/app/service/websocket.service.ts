@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Optional} from '@angular/core';
 import { Observable, retry, tap, timer} from "rxjs";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import {environment} from "../../environments/environment";
@@ -22,7 +22,7 @@ export class WebsocketService {
 
   constructor(
     private errorService: ErrorService,
-    private accountService: AccountService
+    @Optional() private accountService?: AccountService
   ) { }
 
   connect(): void {
@@ -41,7 +41,7 @@ export class WebsocketService {
   }
 
   send(message: WsRequest): void {
-    const user = this.accountService.userValue;
+    const user = this.accountService?.userValue;
     if (user && user.token) {
       message.token = user.token;
     }

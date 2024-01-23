@@ -4,7 +4,7 @@ import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
 import {Router} from "@angular/router";
 import {first} from "rxjs";
-import { getAuth, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 
 @Component({
@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit{
   formEmail: FormGroup;
   loading = false;
   submitted = false;
-  auth = getAuth();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,25 +33,6 @@ export class LoginComponent implements OnInit{
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        console.log("login: user is signed in");
-        user.getIdToken().then((token) => {
-          this.accountService.loginWithToken(token).pipe().subscribe({
-            next: () => {
-              const returnUrl = '/';
-              this.navigateTo(returnUrl);
-            },
-            error: error => {
-              this.errorService.handle(error.statusText);
-              this.loading = false;
-            }
-          });
-        });
-      } else {
-        console.log("User is signed out");
-      }}
-    )
   };
 
   get fu() { return this.formUsername.controls; }
@@ -80,8 +60,9 @@ export class LoginComponent implements OnInit{
 
   onGoogleAccountSignIn() {
     this.loading = true;
+    const auth = getAuth();
     const provider = new GoogleAuthProvider();
-    signInWithPopup(this.auth, provider)
+    signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -90,6 +71,18 @@ export class LoginComponent implements OnInit{
           this.errorService.handle("Failed to get Google Access Token");
           return;
         }
+        result.user.getIdToken().then((token) => {
+          this.accountService.loginWithToken(token).pipe().subscribe({
+            next: () => {
+              const returnUrl = '/';
+              this.navigateTo(returnUrl);
+            },
+            error: error => {
+              this.errorService.handle(error.statusText);
+              this.loading = false;
+            }
+          });
+        });
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
