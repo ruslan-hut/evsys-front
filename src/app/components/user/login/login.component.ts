@@ -15,7 +15,6 @@ import { GoogleAuthProvider } from "firebase/auth";
 import {MatDialog} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../../models/dialog-data";
-import {FirebaseService} from "../../../service/firebase.service";
 
 @Component({
   selector: 'app-login',

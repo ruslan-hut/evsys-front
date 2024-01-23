@@ -1,11 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormControl, FormGroup, FormsModule} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
 import {ChargepointService} from "../../service/chargepoint.service";
-import {ModalService} from "../../service/modal.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
-import {Connector} from "../../models/connector";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialog-data";
 import {TimeService} from "../../service/time.service";
@@ -22,7 +20,6 @@ export class ChargepointInfoComponent implements OnInit{
   chargePoint: Chargepoint;
   constructor(
     private chargePointService: ChargepointService,
-    private modalService: ModalService,
     public timeService: TimeService,
     private route: ActivatedRoute,
     private router: Router,

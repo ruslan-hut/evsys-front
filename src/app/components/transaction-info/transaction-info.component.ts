@@ -3,7 +3,6 @@ import {TransactionService} from "../../service/transaction.service";
 import {Transaction} from "../../models/transaction";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
-import {Connector} from "../../models/connector";
 import {DialogData} from "../../models/dialog-data";
 
 @Component({
