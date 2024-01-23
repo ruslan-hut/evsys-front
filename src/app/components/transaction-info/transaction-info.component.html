@@ -7,7 +7,7 @@
       <br>
       <br>
       <div class="status">{{ transaction.status }}</div>
-      <mat-progress-bar *ngIf="transaction.is_charging; else notCharging" mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar *ngIf="isCharging(); else notCharging" mode="indeterminate"></mat-progress-bar>
       <ng-template #notCharging>
         <mat-progress-bar mode="determinate" [value]="0"></mat-progress-bar>
       </ng-template>

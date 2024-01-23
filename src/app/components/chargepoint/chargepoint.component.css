@@ -71,5 +71,5 @@ mat-card-title {
 }
 
 app-connector {
-  margin: 5px;
+  margin: 5px 0 0 0;
 }
