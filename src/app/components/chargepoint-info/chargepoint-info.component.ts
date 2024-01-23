@@ -7,7 +7,7 @@ import {Chargepoint} from "../../models/chargepoint";
 import {Connector} from "../../models/connector";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
-import {DialogData} from "../../models/dialogData";
+import {DialogData} from "../../models/dialog-data";
 import {TimeService} from "../../service/time.service";
 
 

@@ -1,7 +1,7 @@
 import {Component, Input} from "@angular/core"
 import {Connector} from "../../models/connector";
 import {MatButtonModule} from '@angular/material/button';
-import {DialogData} from "../../models/dialogData";
+import {DialogData} from "../../models/dialog-data";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ConnectorInfoComponent} from "../connector-info/connector-info.component";

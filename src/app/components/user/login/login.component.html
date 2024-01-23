@@ -12,12 +12,12 @@
           Sign in or register with Google account
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-action-row>
-        <button [disabled]="loading" mat-flat-button color="primary" (click)="onGoogleAccountSignIn()">Sign In</button>
-      </mat-action-row>
       <mat-card-footer *ngIf="loading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </mat-card-footer>
+      <mat-action-row>
+        <button [disabled]="loading" mat-flat-button color="primary" (click)="onGoogleAccountSignIn()">Sign In</button>
+      </mat-action-row>
     </mat-expansion-panel>
 
     <mat-expansion-panel hideToggle>
@@ -33,13 +33,14 @@
         <mat-form-field class="form-field">
           <input matInput placeholder="e-mail address" type="text" formControlName="email">
         </mat-form-field>
+        <mat-card-footer *ngIf="loading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
         <mat-action-row>
           <button [disabled]="loading" mat-flat-button class="button-spacing" color="primary" type="submit">Sign In</button>
         </mat-action-row>
       </form>
-      <mat-card-footer *ngIf="loading">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </mat-card-footer>
+
     </mat-expansion-panel>
 
     <mat-expansion-panel hideToggle>
@@ -59,15 +60,15 @@
         <mat-form-field class="form-field">
           <input matInput placeholder="Password" type="password" formControlName="password">
         </mat-form-field>
+        <mat-card-footer *ngIf="loading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
         <mat-action-row>
           <button [disabled]="loading" mat-flat-button class="button-spacing" color="primary" type="submit">Sign In</button>
           <button [disabled]="loading" mat-flat-button color="warn" (click)="navigateTo('/account/register')">Sign Up</button>
         </mat-action-row>
       </form>
 
-      <mat-card-footer *ngIf="loading">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </mat-card-footer>
     </mat-expansion-panel>
 
   </mat-accordion>

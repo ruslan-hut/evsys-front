@@ -1,6 +1,6 @@
 import {Component, Inject, Input, Optional} from "@angular/core";
 import {Connector} from "../../models/connector";
-import {DialogData} from "../../models/dialogData";
+import {DialogData} from "../../models/dialog-data";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TimeService} from "../../service/time.service";

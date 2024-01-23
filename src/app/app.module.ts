@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -55,6 +55,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { UserInfoComponent } from './components/user/user-info/user-info.component';
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import {MatListModule} from "@angular/material/list";
+import {FirebaseService} from "./service/firebase.service";
+
+export function initializeApp(firebaseService: FirebaseService) {
+  return () => firebaseService.loadConfig();
+}
 
 @NgModule({
   declarations: [
@@ -114,6 +119,8 @@ import {MatListModule} from "@angular/material/list";
     MatListModule
   ],
   providers: [
+    FirebaseService,
+    { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [FirebaseService], multi: true },
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
