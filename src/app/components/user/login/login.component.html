@@ -1,5 +1,10 @@
 
-<div class="flex-center-vertically">
+<div class="flex-center-vertically max-width">
+
+  <div>
+    <h1 class="mat-h1">Sign In</h1>
+    <p class="mat-body-1">Join us and explore a world of possibilities! Sign in with your email or conveniently use your Google account to get started.</p>
+  </div>
 
   <mat-accordion>
 
@@ -12,6 +17,9 @@
           Sign in or register with Google account
         </mat-panel-description>
       </mat-expansion-panel-header>
+      <div>
+        <p class="mat-body-1">Easily access all our features by signing in with your Google account. No need for remembering another password – just one click and you're in! You will be redirected to Google to sign in or register. We will not have access to your password.</p>
+      </div>
       <mat-card-footer *ngIf="loading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </mat-card-footer>
@@ -29,6 +37,9 @@
           Use your e-mail address to sign in or register
         </mat-panel-description>
       </mat-expansion-panel-header>
+      <div>
+        <p class="mat-body-1">If you don't have or don't want to use your Google account, you can sign in or register with your e-mail address. Enter your email address below and we'll send you a secure sign-in link. Just click on the link in your email to access your account – no password necessary!</p>
+      </div>
       <form [formGroup]="formEmail" (ngSubmit)="onSubmitEmail()" class="user-form">
         <mat-form-field class="form-field">
           <input matInput placeholder="e-mail address" type="text" formControlName="email">
@@ -52,6 +63,10 @@
           Sign in with username and password
         </mat-panel-description>
       </mat-expansion-panel-header>
+
+      <div>
+        <p class="mat-body-1">If you have login and password, sign in here. To create new account using invite code, press Sign Up.</p>
+      </div>
 
       <form [formGroup]="formUsername" (ngSubmit)="onSubmitUsername()" class="user-form">
         <mat-form-field class="form-field">
