@@ -1,4 +1,4 @@
-import {Injectable, Injector} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -12,21 +12,19 @@ import {AccountService} from "../service/account.service";
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private injector: Injector) {}
+  constructor(private accountService: AccountService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (request.headers.get('skip-interceptor') === 'true') {
       const newRequest = request.clone({headers: request.headers.delete('skip-interceptor')});
       return next.handle(newRequest);
     }
-    const accountService = this.injector.get(AccountService);
-    const user = accountService.userValue;
-    const isLoggedIn = user && user.token;
+    const token = this.accountService.userToken();
     const isApiUrl = request.url.startsWith(environment.apiUrl);
-    if (isLoggedIn && isApiUrl) {
+    if (token && isApiUrl) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${user.token}`
+          Authorization: `Bearer ${token}`
         }
       });
     }

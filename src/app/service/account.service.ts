@@ -27,6 +27,14 @@ export class AccountService {
     return this.userSubject.value;
   }
 
+  public userToken(): string {
+    const currentUser = this.userSubject.value;
+    if (currentUser) {
+      return <string>currentUser.token;
+    }
+    return "";
+  }
+
   login(username: string, password: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {username, password})
       .pipe(map(user => {
@@ -37,7 +45,14 @@ export class AccountService {
   }
 
   loginWithToken(token: string) {
-    return this.login('', token)
+    const username = "";
+    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, token})
+      .pipe(map(user => {
+        user.token = token;
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      }));
   }
 
   register(user: User) {
