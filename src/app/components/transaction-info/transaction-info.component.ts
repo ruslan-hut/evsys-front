@@ -76,7 +76,6 @@ export class TransactionInfoComponent {
   }
 
   isCharging(): boolean {
-    console.log(this.transaction.status);
     return this.transaction.status.toLowerCase() === 'charging';
   }
 

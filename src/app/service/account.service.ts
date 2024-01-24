@@ -45,14 +45,7 @@ export class AccountService {
   }
 
   loginWithToken(token: string) {
-    const username = "";
-    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, token})
-      .pipe(map(user => {
-        user.token = token;
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userSubject.next(user);
-        return user;
-      }));
+    return this.login("", token);
   }
 
   register(user: User) {
