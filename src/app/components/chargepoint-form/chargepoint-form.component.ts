@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, FormsModule} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {ChargepointService} from "../../service/chargepoint.service";
-import {ModalService} from "../../service/modal.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
-import {MatTableDataSource} from "@angular/material/table";
-import {Observable} from "rxjs";
-
 
 @Component({
   selector: 'app-chargepoint-form',
@@ -21,7 +17,6 @@ export class ChargepointFormComponent implements OnInit{
   isSaved: boolean = false;
   constructor(
     private chargePointService: ChargepointService,
-    private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -30,7 +25,6 @@ export class ChargepointFormComponent implements OnInit{
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.chargePointId = params['id'];
-      this.chargePointService.init();
       this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
         this.chargePoint= chargePoint;
       });

@@ -5,6 +5,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ErrorService} from "./error.service";
 import {environment} from "../../environments/environment";
 import {WebsocketService} from "./websocket.service";
+import {AccountService} from "./account.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,17 @@ export class LoggerService {
   constructor(
     private http: HttpClient,
     private websocketService: WebsocketService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private accountService: AccountService,
   ) {
+    this.accountService.authState$.subscribe(status =>{
+      if (status) {
+        this.init();
+      }
+    });
   }
 
-  init(): void {
+  private init(): void {
     this.loadFromApi().subscribe( messages => {
         this.messages = messages;
         this.messages$.next(this.messages);
@@ -69,6 +76,6 @@ export class LoggerService {
   }
 
   onStop(): void {
-    this.websocketService.close();
+    //this.websocketService.close();
   }
 }

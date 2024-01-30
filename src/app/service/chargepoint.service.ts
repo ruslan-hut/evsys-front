@@ -21,16 +21,20 @@ export class ChargepointService {
     private errorService: ErrorService,
     private accountService: AccountService,
   ) {
-    this.accountService.authState$.subscribe(_ =>{
-      this.init();
+    this.accountService.authState$.subscribe(status =>{
+      if (status) {
+        this.init();
+      }
     });
   }
 
-  init(): void {
-    this.getAll().subscribe(chargePoints => {
-      this.chargePoints = chargePoints;
-      this.chargePoints$.next(this.chargePoints);
-      this.websocketService.send({command: 'ListenChargePoints'});
+  private init(): void {
+    this.getAll().subscribe(result => {
+      if (result) {
+        this.chargePoints = result;
+        this.chargePoints$.next(this.chargePoints);
+        this.websocketService.send({command: 'ListenChargePoints'});
+      }
     });
     //this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
@@ -67,22 +71,7 @@ export class ChargepointService {
       )
   }
 
-  create(chargepoint: Chargepoint): Observable<Chargepoint> {
-    return this.http.post<Chargepoint>('https://fakestoreapi.com/products', chargepoint)
-  }
-
   private onWsMessage(message: WsMessage) {
-    // if (message.data) {
-    //   const updated: Chargepoint = JSON.parse(message.data);
-    //   console.log('Updated: ', updated.charge_point_id);
-    //   // this.chargepoints$ = this.chargepoints$.pipe(
-    //   //   map(chargepoints => chargepoints.map(chargepoint => {
-    //   //     if (chargepoint.charge_point_id === updated.charge_point_id) {
-    //   //       return updated;
-    //   //     }
-    //   //     return chargepoint;
-    //   //   })));
-    // }
     if (message.status == 'ping') {
       this.websocketService.send({command: 'ListenLog'});
       return;
@@ -111,7 +100,7 @@ export class ChargepointService {
   }
 
   onStop(): void {
-    this.websocketService.close();
+    //this.websocketService.close();
   }
 
 }

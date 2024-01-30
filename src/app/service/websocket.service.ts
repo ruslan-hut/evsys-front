@@ -35,7 +35,6 @@ export class WebsocketService {
   }
 
   private connect(): void {
-    console.log("WS open connection")
     this.socket$ = webSocket(environment.wsUrl);
     this.messages$ = this.socket$.pipe(
       retry(this.retryConfig)

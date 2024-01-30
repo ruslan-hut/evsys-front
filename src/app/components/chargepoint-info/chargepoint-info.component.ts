@@ -30,7 +30,7 @@ export class ChargepointInfoComponent implements OnInit{
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.chargePointId = params['id'];
-      this.chargePointService.init();
+      //this.chargePointService.init();
       this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
         this.chargePoint= chargePoint;
       });

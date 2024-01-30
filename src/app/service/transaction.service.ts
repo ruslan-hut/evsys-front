@@ -1,9 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {WebsocketService} from "./websocket.service";
 import {ErrorService} from "./error.service";
 import {catchError, Observable, throwError} from "rxjs";
-import {Chargepoint} from "../models/chargepoint";
 import {environment} from "../../environments/environment";
 import {Transaction} from "../models/transaction";
 
@@ -14,7 +12,7 @@ export class TransactionService {
 
   constructor(
     private http: HttpClient,
-    private websocketService: WebsocketService,
+    //private websocketService: WebsocketService,
     private errorService: ErrorService) {
   }
 
@@ -30,7 +28,4 @@ export class TransactionService {
     return throwError(() => err.message)
   }
 
-  onStop(): void {
-    this.websocketService.close();
-  }
 }

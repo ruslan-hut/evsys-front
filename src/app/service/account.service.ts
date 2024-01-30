@@ -46,7 +46,6 @@ export class AccountService {
   private updateToken() {
     const auth = getAuth();
     auth.currentUser?.getIdToken().then((token) => {
-      console.log(`token refreshed... ${token.length}`)
       this.currentToken = token;
       this.tokenSubject.next(token)
       this.authState.next(true)
@@ -57,15 +56,7 @@ export class AccountService {
     return this.userSubject.value;
   }
 
-  public getToken(): Observable<string|null> {
-    return this.tokenSubject;
-  }
-
   public userToken(): string|null {
-    // const currentUser = this.userSubject.value;
-    // if (currentUser) {
-    //   return <string>currentUser.token;
-    // }
     return this.currentToken;
   }
 
