@@ -3,6 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {FirebaseApp,initializeApp} from "firebase/app";
 import {getAnalytics} from "firebase/analytics";
+import {getAuth} from "firebase/auth";
+import {AccountService} from "./account.service";
 
 interface KeyValue {
   Key: string;
@@ -18,6 +20,7 @@ export class FirebaseService {
 
   constructor(
     private http: HttpClient,
+    private accountService: AccountService,
   ) { }
 
   loadConfig() {
@@ -29,8 +32,9 @@ export class FirebaseService {
         return obj;
       }, {});
         this.app = initializeApp(config);
-        //this.auth = getAuth(this.app);
+        getAuth(this.app);
         getAnalytics(this.app);
+        this.accountService.afterFirebaseLoad();
       }
     )
   }

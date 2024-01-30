@@ -2,7 +2,6 @@ import {AfterContentInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ChargepointService} from "../../service/chargepoint.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {Chargepoint} from "../../models/chargepoint";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-chargepoint-list',
@@ -11,18 +10,16 @@ import {Observable} from "rxjs";
 })
 export class ChargepointListComponent implements OnInit, AfterContentInit, OnDestroy {
 
-  chargepoints$: Observable<Chargepoint[]>;
   loading = false;
-
   dataSource = new MatTableDataSource<Chargepoint>();
 
   constructor(
-    private chargepointService: ChargepointService
+    private chargepointService: ChargepointService,
   ) { }
 
   ngOnInit(): void {
     this.loading = true;
-    this.chargepointService.init();
+    //this.chargepointService.init();
     this.chargepointService.getChargePoints().subscribe((chargePoints) => {
       this.dataSource.data = chargePoints;
     });

@@ -1,25 +1,29 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Observable, Subject, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, throwError} from "rxjs";
 import {Chargepoint} from "../models/chargepoint";
 import {ErrorService} from "./error.service";
 import {environment} from "../../environments/environment";
 import {WebsocketService} from "./websocket.service";
 import {WsMessage} from "../models/ws-message";
+import {AccountService} from "./account.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChargepointService {
   private chargePoints: Chargepoint[] = [];
-  private chargePoints$ = new Subject<Chargepoint[]>();
-
-
+  private chargePoints$ = new BehaviorSubject<Chargepoint[]>([]);
 
   constructor(
     private http: HttpClient,
     private websocketService: WebsocketService,
-    private errorService: ErrorService) {
+    private errorService: ErrorService,
+    private accountService: AccountService,
+  ) {
+    this.accountService.authState$.subscribe(_ =>{
+      this.init();
+    });
   }
 
   init(): void {
@@ -28,7 +32,7 @@ export class ChargepointService {
       this.chargePoints$.next(this.chargePoints);
       this.websocketService.send({command: 'ListenChargePoints'});
     });
-    this.websocketService.connect();
+    //this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
       this.onWsMessage(message)
     });

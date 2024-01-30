@@ -28,7 +28,7 @@ export class LoggerService {
         //this.subscribeOnLogUpdates();
       }
     )
-    this.websocketService.connect();
+    //this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
       //console.log('Received: ', message.data);
       if (message.status === 'ping') {
@@ -36,7 +36,7 @@ export class LoggerService {
         return;
       }
       if (message.status === 'error') {
-        this.errorService.handle('WS error: ' + message.info);
+        this.errorService.handle('Websocket error: ' + message.info);
         return;
       }
       if (message.status === 'success') {

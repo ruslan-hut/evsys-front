@@ -4,7 +4,7 @@ import {BehaviorSubject, map, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
-import {getAuth} from "firebase/auth";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,12 @@ export class AccountService {
 
   private userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
+  private tokenSubject = new BehaviorSubject<string|null>(null);
+  public token$ = this.tokenSubject.asObservable();
+  private currentToken: string|null = null;
+
+  private authState = new BehaviorSubject<boolean>(false);
+  authState$ = this.authState.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -23,16 +29,44 @@ export class AccountService {
     this.user = this.userSubject.asObservable();
   }
 
+  afterFirebaseLoad() {
+    this.initTokenRefresh();
+  }
+
+  private initTokenRefresh() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.updateToken();
+        setInterval(() => this.updateToken(), 60*60*1000);
+      }
+    })
+  }
+
+  private updateToken() {
+    const auth = getAuth();
+    auth.currentUser?.getIdToken().then((token) => {
+      console.log(`token refreshed... ${token.length}`)
+      this.currentToken = token;
+      this.tokenSubject.next(token)
+      this.authState.next(true)
+    })
+  }
+
   public get userValue(): User {
     return this.userSubject.value;
   }
 
-  public userToken(): string {
-    const currentUser = this.userSubject.value;
-    if (currentUser) {
-      return <string>currentUser.token;
-    }
-    return "";
+  public getToken(): Observable<string|null> {
+    return this.tokenSubject;
+  }
+
+  public userToken(): string|null {
+    // const currentUser = this.userSubject.value;
+    // if (currentUser) {
+    //   return <string>currentUser.token;
+    // }
+    return this.currentToken;
   }
 
   login(username: string, password: string) {

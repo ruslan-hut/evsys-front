@@ -14,6 +14,8 @@ export class WebsocketService {
   private socket$: WebSocketSubject<any>;
   private messages$: Observable<WsMessage>;
 
+  token: string|null = null;
+
   private retryConfig = {
     count: 100,
     delay: this.retryObservable.bind(this),
@@ -23,9 +25,17 @@ export class WebsocketService {
   constructor(
     private errorService: ErrorService,
     private accountService: AccountService
-  ) { }
+  ) {
+    this.accountService.token$.subscribe(token =>{
+      if (token && token != this.token) {
+        this.token = token;
+        this.connect();
+      }
+    });
+  }
 
-  connect(): void {
+  private connect(): void {
+    console.log("WS open connection")
     this.socket$ = webSocket(environment.wsUrl);
     this.messages$ = this.socket$.pipe(
       retry(this.retryConfig)
@@ -41,7 +51,9 @@ export class WebsocketService {
   }
 
   send(message: WsRequest): void {
-    message.token = this.accountService.userToken();
+    if (this.token) {
+      message.token = this.token;
+    }
     this.socket$.next(message);
   }
 
