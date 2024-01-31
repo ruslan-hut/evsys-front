@@ -33,12 +33,18 @@ export class ChargepointService {
       if (result) {
         this.chargePoints = result;
         this.chargePoints$.next(this.chargePoints);
-        this.websocketService.send({command: 'ListenChargePoints'});
       }
     });
-    //this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
       this.onWsMessage(message)
+    });
+  }
+
+  subscribeOnUpdates(): void {
+    this.websocketService.isConnected$.subscribe(status =>{
+      if (status) {
+        this.websocketService.send({command: 'ListenChargePoints'});
+      }
     });
   }
 
@@ -72,15 +78,13 @@ export class ChargepointService {
   }
 
   private onWsMessage(message: WsMessage) {
-    if (message.status == 'ping') {
-      this.websocketService.send({command: 'ListenLog'});
-      return;
-    }
     if (message.status == 'error') {
-      this.errorService.handle('WS error: ' + message.info);
+      if (message.info) {
+        this.errorService.handle(message.info);
+      }
       return;
     }
-    if (message.status == 'event') {
+    if (message.status == 'event' && message.stage == 'charge-point-event') {
       if (message.data) {
         const updated = message.data;
         const index = this.chargePoints.findIndex(chp => chp.charge_point_id == updated);

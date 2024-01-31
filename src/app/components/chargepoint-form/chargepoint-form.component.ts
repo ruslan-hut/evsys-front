@@ -30,7 +30,6 @@ export class ChargepointFormComponent implements OnInit{
       });
     });
     window.scrollTo(0, 0);
-
   }
 
   form = new FormGroup({

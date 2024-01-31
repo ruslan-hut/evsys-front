@@ -8,5 +8,6 @@ export const environment = {
   chargePointList: '/chp',
   chargePoint: '/point/',
   transactionInfo: '/transactions/info/',
-  wsUrl: 'wss://wattbrews.me:9002/ws'
+  wsUrl: 'wss://wattbrews.me:9002/ws',
+  debug: true,
 };

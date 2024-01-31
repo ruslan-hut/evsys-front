@@ -19,7 +19,7 @@ export class ChargepointListComponent implements OnInit, AfterContentInit, OnDes
 
   ngOnInit(): void {
     this.loading = true;
-    //this.chargepointService.init();
+    this.chargepointService.subscribeOnUpdates();
     this.chargepointService.getChargePoints().subscribe((chargePoints) => {
       this.dataSource.data = chargePoints;
     });

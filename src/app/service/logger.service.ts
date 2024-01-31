@@ -28,25 +28,28 @@ export class LoggerService {
     });
   }
 
+  subscribeOnUpdates(): void {
+    this.websocketService.isConnected$.subscribe(status =>{
+      if (status) {
+        this.websocketService.send({command: 'ListenLog'});
+      }
+    });
+  }
+
   private init(): void {
     this.loadFromApi().subscribe( messages => {
         this.messages = messages;
         this.messages$.next(this.messages);
-        //this.subscribeOnLogUpdates();
       }
     )
-    //this.websocketService.connect();
     this.websocketService.receive().subscribe(message => {
-      //console.log('Received: ', message.data);
-      if (message.status === 'ping') {
-        this.websocketService.send({command: 'ListenLog'});
-        return;
-      }
       if (message.status === 'error') {
-        this.errorService.handle('Websocket error: ' + message.info);
+        if (message.info) {
+          this.errorService.handle(message.info);
+        }
         return;
       }
-      if (message.status === 'success') {
+      if (message.status === 'event' && message.stage === 'log-event') {
         if (message.data) {
           const newMessage: Message = JSON.parse(message.data);
           this.messages.unshift(newMessage);

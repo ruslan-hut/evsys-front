@@ -28,7 +28,7 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = true;
-    //this.logger.init();
+    this.logger.subscribeOnUpdates();
     this.logger.getMessages().subscribe((messages) => {
       this.dataSource.data = messages;
     });
