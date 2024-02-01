@@ -15,6 +15,8 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
   filter: string = "";
   loading = false;
   dataSource = new MatTableDataSource<Message>();
+  isOnline = false;
+
   @ViewChild('logDataPaginator') set paginator(pager:MatPaginator) {
     if (pager) this.dataSource.paginator = pager;
   }
@@ -31,6 +33,10 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     this.logger.subscribeOnUpdates();
     this.logger.getMessages().subscribe((messages) => {
       this.dataSource.data = messages;
+      this.loading = false;
+    });
+    this.logger.isOnline$.subscribe(status => {
+      this.isOnline = status;
     });
   }
 
@@ -38,8 +44,8 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     const data = this.logger.currentMessages();
     if (data.length != this.dataSource.data.length) {
       this.dataSource.data = data;
+      this.loading = false;
     }
-    this.loading = false;
   }
 
   applyFilter(event: any) {

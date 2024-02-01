@@ -1,4 +1,10 @@
-<div *ngIf="loading"><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+<div *ngIf="!isOnline; else loadingBar"><mat-progress-bar mode="buffer"></mat-progress-bar></div>
+<ng-template #loadingBar>
+  <div *ngIf="loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</ng-template>
+
 <div class="box-margin">
   <mat-form-field appearance="fill">
     <mat-label>Filter</mat-label>

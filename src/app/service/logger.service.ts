@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Message} from "../models/message";
-import {catchError, Observable, Subject, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, Subject, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ErrorService} from "./error.service";
 import {environment} from "../../environments/environment";
@@ -14,6 +14,9 @@ export class LoggerService {
 
   private messages: Message[] = [];
   private messages$ = new Subject<Message[]>();
+
+  private isOnline = new BehaviorSubject(false);
+  isOnline$ = this.isOnline.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -30,6 +33,7 @@ export class LoggerService {
 
   subscribeOnUpdates(): void {
     this.websocketService.isConnected$.subscribe(status =>{
+      this.isOnline.next(status);
       if (status) {
         this.websocketService.send({command: 'ListenLog'});
       }
