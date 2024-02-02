@@ -16,7 +16,7 @@ export class BasicDialogComponent {
               ) {
     this.checked = new Array<boolean>(this.data.checkboxes.length);
     this.checked.fill(false);
-    this.isConfirm = true;
+    this.isConfirm = this.data.checkboxes.length == 0;
   }
 
   getContent(): string {
@@ -28,6 +28,6 @@ export class BasicDialogComponent {
 
   onChecked(i: number){
     this.checked[i] = !this.checked[i];
-    this.isConfirm = !this.checked.every((value) => value);
+    this.isConfirm = this.checked.every((value) => value);
   }
 }

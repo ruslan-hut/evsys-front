@@ -15,5 +15,5 @@
   <div *ngIf="this.data.buttonNo">
     <button mat-button (click)="dialogRef.close('no')">{{this.data.buttonNo}}</button>
   </div>
-  <button [disabled]="isConfirm" mat-button color="primary" (click)="dialogRef.close('yes')">{{this.data.buttonYes}}</button>
+  <button [disabled]="!isConfirm" mat-button color="primary" (click)="dialogRef.close('yes')">{{this.data.buttonYes}}</button>
 </div>
