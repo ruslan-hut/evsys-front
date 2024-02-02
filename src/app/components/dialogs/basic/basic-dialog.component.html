@@ -1,10 +1,19 @@
 <h1 mat-dialog-title>{{this.data.title}}</h1>
 <div mat-dialog-content>
   {{getContent()}}
+  <table>
+    <tr *ngFor="let checkbox of data.checkboxes; let i = index">
+      <mat-checkbox [checked]="checked[i]"
+                    (change)="onChecked(i)">
+        {{ checkbox }}
+      </mat-checkbox>
+    </tr>
+  </table>
+
 </div>
 <div mat-dialog-actions align="end">
   <div *ngIf="this.data.buttonNo">
     <button mat-button (click)="dialogRef.close('no')">{{this.data.buttonNo}}</button>
   </div>
-  <button mat-button color="primary" (click)="dialogRef.close('yes')">{{this.data.buttonYes}}</button>
+  <button [disabled]="isConfirm" mat-button color="primary" (click)="dialogRef.close('yes')">{{this.data.buttonYes}}</button>
 </div>

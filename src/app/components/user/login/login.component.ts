@@ -176,7 +176,8 @@ export class LoginComponent implements OnInit, AfterViewInit{
       title: "Check inbox",
       content: "We've sent you an email with a link to sign in. Go to your inbox and click on the link to sign in.",
       buttonYes: "Ok",
-      buttonNo: ""
+      buttonNo: "",
+      checkboxes: []
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
@@ -194,7 +195,8 @@ export class LoginComponent implements OnInit, AfterViewInit{
       title: "Cookies",
       content: "This website uses cookies to improve your experience. By using this website, you agree with our Privacy Policy.",
       buttonYes: "Ok",
-      buttonNo: "Privacy Policy"
+      buttonNo: "Privacy Policy",
+      checkboxes: ["Accept Privacy Policy"]
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {

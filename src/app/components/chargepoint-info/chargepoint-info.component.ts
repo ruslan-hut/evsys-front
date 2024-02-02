@@ -52,7 +52,8 @@ export class ChargepointInfoComponent implements OnInit{
       title: "Reboot",
       content: "",
       buttonYes: "Reboot",
-      buttonNo: "Close"
+      buttonNo: "Close",
+      checkboxes: []
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {

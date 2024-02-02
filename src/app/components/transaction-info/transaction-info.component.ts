@@ -56,7 +56,8 @@ export class TransactionInfoComponent {
       title: "Stop",
       content: "",
       buttonYes: "Stop",
-      buttonNo: "Close"
+      buttonNo: "Close",
+      checkboxes: []
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {

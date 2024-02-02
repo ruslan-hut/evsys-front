@@ -56,6 +56,7 @@ import { UserInfoComponent } from './components/user/user-info/user-info.compone
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import {MatListModule} from "@angular/material/list";
 import {FirebaseService} from "./service/firebase.service";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 export function initializeApp(firebaseService: FirebaseService) {
   return () => firebaseService.loadConfig();
@@ -93,31 +94,32 @@ export function initializeApp(firebaseService: FirebaseService) {
     UserEditComponent,
     SortConnectorsPipe
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatCardModule,
-    MatProgressBarModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatListModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatSlideToggleModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule,
+        MatSnackBarModule,
+        MatCardModule,
+        MatProgressBarModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatListModule,
+        MatCheckboxModule
+    ],
   providers: [
     FirebaseService,
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [FirebaseService], multi: true },

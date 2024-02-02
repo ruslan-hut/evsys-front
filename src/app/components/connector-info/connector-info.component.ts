@@ -35,7 +35,8 @@ export class ConnectorInfoComponent {
       title: "Start",
       content: "",
       buttonYes: "Start",
-      buttonNo: "Close"
+      buttonNo: "Close",
+      checkboxes: []
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
@@ -58,7 +59,8 @@ export class ConnectorInfoComponent {
       title: "Stop",
       content: "",
       buttonYes: "Stop",
-      buttonNo: "Close"
+      buttonNo: "Close",
+      checkboxes: []
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
@@ -81,7 +83,8 @@ export class ConnectorInfoComponent {
       title: "Unlock",
       content: "",
       buttonYes: "Unlock",
-      buttonNo: "Close"
+      buttonNo: "Close",
+      checkboxes: []
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
