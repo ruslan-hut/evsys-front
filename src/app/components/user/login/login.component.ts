@@ -21,7 +21,7 @@ import {DialogData} from "../../../models/dialog-data";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class LoginComponent implements OnInit, AfterViewInit{
   formUsername: FormGroup;
   formEmail: FormGroup;
   loading = false;
@@ -54,6 +54,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.errorService.handle(errorMessage);
           this.loading = false;
         });
+    }
+    const permission = localStorage.getItem('acceptedCookies')
+    if (permission == null || permission != 'true') {
+      this.showCookiesDialog();
     }
     }
 
@@ -182,6 +186,28 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(() => {
       this.loading = false;
+    });
+  }
+
+  showCookiesDialog() {
+    let dialogData: DialogData = {
+      title: "Cookies",
+      content: "This website uses cookies to improve your experience. By using this website, you agree with our Privacy Policy.",
+      buttonYes: "Ok",
+      buttonNo: "Privacy Policy"
+    };
+
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == 'yes') {
+        localStorage.setItem('acceptedCookies', 'true');
+      }
+      else if (result == 'no') {
+        this.navigateTo('/privacy');
+      }
     });
   }
 
