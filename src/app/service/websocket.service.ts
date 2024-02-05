@@ -21,6 +21,10 @@ export class WebsocketService {
 
   token: string|null = null;
 
+  private reconnectionAttempts = 0;
+  private maxReconnectionAttempts = 20; // Set max attempts to prevent infinite retrying
+  private reconnectionInterval = 1000; // Start with 1 second
+
   constructor(
     private errorService: ErrorService,
     private accountService: AccountService
@@ -43,6 +47,7 @@ export class WebsocketService {
           }
           this.startPing();
           this.isConnected.next(true);
+          this.reconnectionAttempts = 0; // Reset on successful connection
         }
       },
       closeObserver: {
@@ -61,6 +66,7 @@ export class WebsocketService {
       catchError(err => {
         if (err.name === 'TimeoutError') {
           this.errorService.handle('WebSocket connection timeout');
+          this.reconnect();
         }
         throw "WebSocket connection error or timeout; "+err;
       })
@@ -73,8 +79,21 @@ export class WebsocketService {
   }
 
   private reconnect(): void {
-    this.close();
-    this.connect();
+    if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
+      setTimeout(() => {
+        if (environment.debug) {
+          console.log(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
+        }
+        this.reconnectionAttempts++;
+        this.connect();
+      }, this.reconnectionInterval * this.reconnectionAttempts); // Increase delay with each attempt
+
+      // Optionally, increase the reconnection interval to a maximum value
+      // For example, cap at 30 seconds
+      this.reconnectionInterval = Math.min(this.reconnectionInterval * 2, 30000);
+    } else if (environment.debug) {
+      console.log('Max reconnection attempts reached. Giving up.');
+    }
   }
 
   private startPing(): void {
