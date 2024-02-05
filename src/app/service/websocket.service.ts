@@ -65,7 +65,7 @@ export class WebsocketService {
       timeout(60000), // 60 seconds to receive a message/ping response
       catchError(err => {
         if (err.name === 'TimeoutError') {
-          this.errorService.handle('WebSocket connection timeout');
+          //this.errorService.handle('WebSocket connection timeout');
           this.reconnect();
         }
         throw "WebSocket connection error or timeout; "+err;
@@ -81,9 +81,10 @@ export class WebsocketService {
   private reconnect(): void {
     if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
       setTimeout(() => {
-        if (environment.debug) {
-          console.log(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
-        }
+        this.errorService.handle(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
+        // if (environment.debug) {
+        //   console.log(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
+        // }
         this.reconnectionAttempts++;
         this.connect();
       }, this.reconnectionInterval * this.reconnectionAttempts); // Increase delay with each attempt
