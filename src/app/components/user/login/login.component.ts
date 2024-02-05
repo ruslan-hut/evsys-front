@@ -193,9 +193,10 @@ export class LoginComponent implements OnInit, AfterViewInit{
   showCookiesDialog() {
     let dialogData: DialogData = {
       title: "Cookies",
-      content: "This website uses cookies to improve your experience. By using this website, you agree with our Privacy Policy.",
+      content: "This website uses cookies to improve your experience. By using this website, you agree with our " +
+        "<a href=\"https://wattbrews.me/privacy\">Privacy Policy</a>.\n",
       buttonYes: "Ok",
-      buttonNo: "Privacy Policy",
+      buttonNo: "",
       checkboxes: ["Accept Privacy Policy"]
     };
 
