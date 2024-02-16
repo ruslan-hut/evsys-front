@@ -208,7 +208,7 @@ export class LoginComponent implements OnInit, AfterViewInit{
       if (result == 'yes') {
         localStorage.setItem('acceptedCookies', 'true');
       }
-      else if (result == 'no') {
+      else {
         this.navigateTo('/privacy');
       }
     });

@@ -1,0 +1,37 @@
+mat-card {
+  margin: 10px;
+}
+
+.online-status {
+  color: limegreen;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+button {
+  margin: 1px;
+}
+
+.online-icon {
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.connector-buttons{
+  justify-content: flex-start;
+}
+
+
+

@@ -16,6 +16,8 @@ import {CompanyInfoComponent} from "./components/pages/company-info/company-info
 import {ChargepointInfoComponent} from "./components/chargepoint-info/chargepoint-info.component";
 import {UserInfoComponent} from "./components/user/user-info/user-info.component";
 import {UserEditComponent} from "./components/user/user-edit/user-edit.component";
+import {PromoListComponent} from "./components/promo-list/promo-list.component";
+import {PromoComponent} from "./components/promo/promo.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -34,7 +36,9 @@ const routes: Routes = [
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},
   {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]},
-  {path: 'points-info', component: ChargepointInfoComponent}
+  {path: 'points-info', component: ChargepointInfoComponent},
+  {path: 'promo', component: PromoListComponent},
+  {path: 'promo-point', component: PromoComponent}
 ];
 
 @NgModule({

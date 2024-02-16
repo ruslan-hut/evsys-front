@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Enter promo code</h1>
+<div mat-dialog-content >
+  <mat-form-field>
+    <input matInput [(ngModel)]="promoCode" placeholder="Promo code">
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close('no')">Cancel</button>
+  <button mat-button color="primary" (click)="this.confirm()">Confirm</button>
+</div>

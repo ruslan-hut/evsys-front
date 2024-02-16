@@ -26,6 +26,9 @@ import {BasicDialogComponent} from "./components/dialogs/basic/basic-dialog.comp
 import {ConnectorInfoComponent} from "./components/connector-info/connector-info.component";
 import {TransactionInfoComponent} from "./components/transaction-info/transaction-info.component";
 import {SortConnectorsPipe} from "./components/pipes/sortConnectorsPipe";
+import {PromoComponent} from "./components/promo/promo.component";
+import {PromoDialogComponent} from "./components/dialogs/promo-dialog/promo-dialog.component";
+import {PromoListComponent} from "./components/promo-list/promo-list.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -57,6 +60,7 @@ import { UserEditComponent } from './components/user/user-edit/user-edit.compone
 import {MatListModule} from "@angular/material/list";
 import {FirebaseService} from "./service/firebase.service";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatRadioModule} from "@angular/material/radio";
 
 export function initializeApp(firebaseService: FirebaseService) {
   return () => firebaseService.loadConfig();
@@ -92,34 +96,38 @@ export function initializeApp(firebaseService: FirebaseService) {
     TransactionInfoComponent,
     UserInfoComponent,
     UserEditComponent,
-    SortConnectorsPipe
+    SortConnectorsPipe,
+    PromoComponent,
+    PromoDialogComponent,
+    PromoListComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatSlideToggleModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatMenuModule,
-        MatSnackBarModule,
-        MatCardModule,
-        MatProgressBarModule,
-        MatDividerModule,
-        MatExpansionModule,
-        MatDialogModule,
-        MatListModule,
-        MatCheckboxModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatListModule,
+    MatCheckboxModule,
+    MatRadioModule
+  ],
   providers: [
     FirebaseService,
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [FirebaseService], multi: true },
