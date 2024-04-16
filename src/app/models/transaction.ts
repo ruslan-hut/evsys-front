@@ -1,4 +1,5 @@
 import {Connector} from "./connector";
+import {MeterValue} from "./meter-value";
 
 export interface Transaction{
   transaction_id: number,
@@ -11,8 +12,10 @@ export interface Transaction{
   meter_start: number,
   duration: number,
   consumed: number,
+  power_rate: number,
   price: number,
   status: string,
   is_charging: boolean,
   can_stop: boolean,
+  meter_values: MeterValue[],
 }

@@ -71,11 +71,13 @@ export class WebsocketService {
         throw "WebSocket connection error or timeout; "+err;
       })
     );
-    if (environment.debug) {
-      this.messages$.subscribe(message => {
-        console.log('WebSocket message: ', message);
-      });
-    }
+    this.messages$.subscribe(message => {
+      if (environment.debug) {
+        console.log('<<--- ', message);
+      }else{
+        console.log('-- ', message.status, message.info);
+      }
+    });
   }
 
   private reconnect(): void {
@@ -112,7 +114,7 @@ export class WebsocketService {
 
   send(message: WsRequest): void {
     if (environment.debug) {
-      console.log('Websocket send: ', message.command);
+      console.log('--->> ', message.command);
     }
     if (!this.socket$) {
       if (environment.debug) {

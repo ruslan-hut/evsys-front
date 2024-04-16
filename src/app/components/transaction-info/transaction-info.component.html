@@ -49,10 +49,18 @@
         </tr>
         <tr>
           <td style="text-align: left;">
+            Power (current):
+          </td>
+          <td style="text-align: right;">
+            {{ transaction.power_rate /1000 | number: '1.1-1'}} kW
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: left;">
             Consumed:
           </td>
           <td style="text-align: right;">
-            {{ transaction.consumed /1000 | number: '1.2-2'}} kWh
+            {{ transaction.consumed /1000 | number: '1.1-1'}} kWh
           </td>
         </tr>
         <tr>
@@ -60,7 +68,7 @@
             Price:
           </td>
           <td style="text-align: right;">
-            {{ transaction.price/100}} €
+            {{ transaction.price/100 | number: '1.2-2'}} €
           </td>
         </tr>
       </table>
