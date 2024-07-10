@@ -3,5 +3,6 @@ export interface DialogData {
   content: string;
   buttonYes: string;
   buttonNo: string;
+  buttonAction?: string;
   checkboxes: string[];
 }

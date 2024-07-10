@@ -56,13 +56,14 @@ export class PromoComponent implements OnInit, AfterViewInit{
   showAlertPromoDialog(){
     let content = "Please enter a new promo code.";
     if(this.promoCode != null && this.promoCode != '' && this.promoCode != undefined){
-      content = "Your promo code: " + this.promoCode + " is not valid. Please enter a new one.";
+      content = "Your promo code: " + this.promoCode + " is not valid. Please enter a new one, or pay as usual.";
     }
     let dialogData: DialogData = {
       title: "Promo code",
       content: content,
       buttonYes: "New code",
       buttonNo: "Cancel",
+      buttonAction: "Pay",
       checkboxes: []
     };
 
@@ -71,8 +72,15 @@ export class PromoComponent implements OnInit, AfterViewInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result == 'yes') {
-        this.showPromoDialog();
+
+      switch (result) {
+        case 'yes':
+          this.showPromoDialog();
+          break;
+        case 'no':
+          break;
+        case 'action':
+          break;
       }
     });
   }
@@ -129,6 +137,6 @@ export class PromoComponent implements OnInit, AfterViewInit{
   }
 
   validatePromoCode(): boolean {
-    return this.promoCode == "hoot";
+    return this.promoCode == "hoot1";
   }
 }
