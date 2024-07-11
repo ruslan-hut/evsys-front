@@ -1,40 +1,46 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, catchError, Observable, Subscription, timeout, timer} from "rxjs";
+import { Injectable, OnDestroy } from '@angular/core';
+import {BehaviorSubject, Observable, Subscription, timer, throwError, timeout} from "rxjs";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import {environment} from "../../environments/environment";
-import {WsMessage} from "../models/ws-message";
-import {ErrorService} from "./error.service";
-import {AccountService} from "./account.service";
-import {WsRequest} from "../models/ws-request";
+import { environment } from "../../environments/environment";
+import { WsMessage } from "../models/ws-message";
+import { ErrorService } from "./error.service";
+import { AccountService } from "./account.service";
+import { WsRequest } from "../models/ws-request";
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService {
+export class WebsocketService implements OnDestroy {
   private socket$: WebSocketSubject<any>;
   private messages$: Observable<WsMessage>;
-  private pingInterval$: Observable<number> = timer(2000, 30000); // Ping every 30 seconds
+  private pingInterval$: Observable<number> = timer(10000, 30000); // Ping every 30 seconds
   private pingSubscription: Subscription;
 
   private isConnected = new BehaviorSubject<boolean>(false);
   isConnected$ = this.isConnected.asObservable();
 
-  token: string|null = null;
+  token: string | null = null;
 
   private reconnectionAttempts = 0;
-  private maxReconnectionAttempts = 20; // Set max attempts to prevent infinite retrying
+  private readonly maxReconnectionAttempts = 20; // Set max attempts to prevent infinite retrying
   private reconnectionInterval = 1000; // Start with 1 second
 
   constructor(
     private errorService: ErrorService,
     private accountService: AccountService
   ) {
-    this.accountService.token$.subscribe(token =>{
-      if (token && token != this.token) {
+    this.accountService.token$.subscribe(token => {
+      if (token && token !== this.token) {
         this.token = token;
         this.connect();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.stopPing();
+    this.close();
   }
 
   private connect(): void {
@@ -59,22 +65,27 @@ export class WebsocketService {
           this.isConnected.next(false);
           this.reconnect();
         }
-      },
+      }
     });
+
     this.messages$ = this.socket$.pipe(
       timeout(60000), // 60 seconds to receive a message/ping response
       catchError(err => {
         if (err.name === 'TimeoutError') {
-          //this.errorService.handle('WebSocket connection timeout');
+          this.errorService.handle('WebSocket connection timeout');
           this.reconnect();
+        } else {
+          this.errorService.handle('WebSocket error: ' + err.message);
         }
-        throw "WebSocket connection error or timeout; "+err;
+        return throwError(() => new Error('WS error: ' + err.message));
       })
     );
+
     this.messages$.subscribe(message => {
       if (environment.debug) {
         console.log('<<--- ', message);
-      }else{
+      }
+      else {
         console.log('-- ', message.status, message.info);
       }
     });
@@ -84,15 +95,10 @@ export class WebsocketService {
     if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
       setTimeout(() => {
         this.errorService.handle(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
-        // if (environment.debug) {
-        //   console.log(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
-        // }
         this.reconnectionAttempts++;
         this.connect();
-      }, this.reconnectionInterval * this.reconnectionAttempts); // Increase delay with each attempt
+      }, this.reconnectionInterval * this.reconnectionAttempts);
 
-      // Optionally, increase the reconnection interval to a maximum value
-      // For example, cap at 30 seconds
       this.reconnectionInterval = Math.min(this.reconnectionInterval * 2, 30000);
     } else if (environment.debug) {
       console.log('Max reconnection attempts reached. Giving up.');
@@ -133,6 +139,8 @@ export class WebsocketService {
   }
 
   close(): void {
-    this.socket$.complete();
+    if (this.socket$) {
+      this.socket$.complete();
+    }
   }
 }
