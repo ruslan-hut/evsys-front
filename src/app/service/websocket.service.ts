@@ -72,12 +72,9 @@ export class WebsocketService implements OnDestroy {
       timeout(60000), // 60 seconds to receive a message/ping response
       catchError(err => {
         if (err.name === 'TimeoutError') {
-          this.errorService.handle('WebSocket connection timeout');
           this.reconnect();
-        } else {
-          this.errorService.handle('WebSocket error: ' + err.message);
         }
-        return throwError(() => new Error('WS error: ' + err.message));
+        return throwError(() => new Error('connection error'));
       })
     );
 
@@ -86,7 +83,7 @@ export class WebsocketService implements OnDestroy {
         console.log('<<--- ', message);
       }
       else {
-        console.log('-- ', message.status, message.info);
+        console.log('-- ', message.status, ":", message.info);
       }
     });
   }
