@@ -10,4 +10,13 @@ export const environment = {
   transactionInfo: '/transactions/info/',
   wsUrl: 'wss://wattbrews.me/ws',
   debug: true,
+  firebaseConfig: {
+    apiKey: "fb-api-key",
+    authDomain: "fb-auth-domain",
+    projectId: "fb-project-id",
+    storageBucket: "fb-storage-bucket",
+    messagingSenderId: "fb-messaging-sender-id",
+    appId: "fb-app-id",
+    measurementId: "fb-measurement-id"
+  },
 };
