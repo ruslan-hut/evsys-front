@@ -40,7 +40,7 @@ jobs:
           sed -i "s|fb-measurement-id|$FIREBASE_MEASUREMENT_ID|g" src/environments/environment.ts
 
       - name: Build Angular project
-        run: npm run build
+        run: ng build
 
       - name: Archive production artifacts
         run: tar -czf angular-app.tar.gz -C dist/evsys-front .
