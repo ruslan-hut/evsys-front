@@ -15,7 +15,6 @@ export class AccountService {
   public user: Observable<User>;
   private tokenSubject = new BehaviorSubject<string|null>(null);
   public token$ = this.tokenSubject.asObservable();
-  private currentToken: string|null = null;
 
   private authState = new BehaviorSubject<boolean>(false);
   authState$ = this.authState.asObservable();
@@ -25,15 +24,17 @@ export class AccountService {
     private router: Router
   ) {
     // @ts-ignore
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+    const localUser = JSON.parse(localStorage.getItem('user'))
+    this.userSubject = new BehaviorSubject<User>(localUser);
     this.user = this.userSubject.asObservable();
   }
 
-  afterFirebaseLoad() {
-    this.initTokenRefresh();
+  userToken() : string|null {
+    return this.tokenSubject.value
   }
 
-  private initTokenRefresh() {
+  // called on app initialization, after loading Firebase service
+  afterFirebaseLoad() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -41,12 +42,29 @@ export class AccountService {
         setInterval(() => this.updateToken(), 60*60*1000);
       }
     })
+
+    // check and login if user is authenticated with name and password
+    // without using Firebase service - we have to request API for authentication
+    this.user.subscribe(user => {
+      if (user && user.token) {
+        if (this.tokenSubject.value !== user.token) {
+          this.loginWithToken(user.token).subscribe({
+              next: (result) => {
+                if (result.token) {
+                  this.tokenSubject.next(result.token)
+                  this.authState.next(true)
+                }
+              }
+            }
+          )
+        }
+      }
+    })
   }
 
   private updateToken() {
     const auth = getAuth();
     auth.currentUser?.getIdToken().then((token) => {
-      this.currentToken = token;
       this.tokenSubject.next(token)
       this.authState.next(true)
     })
@@ -56,21 +74,20 @@ export class AccountService {
     return this.userSubject.value;
   }
 
-  public userToken(): string|null {
-    return this.currentToken;
-  }
-
   login(username: string, password: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {username, password})
       .pipe(map(user => {
         localStorage.setItem('user', JSON.stringify(user));
+        if (user.token) {
+          this.tokenSubject.next(user.token)
+        }
         this.userSubject.next(user);
         return user;
       }));
   }
 
   loginWithToken(token: string) {
-    return this.login("", token);
+    return this.login("", token)
   }
 
   register(user: User) {

@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 
@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       // }
 
       const error = err.error.message || err.statusText;
-      return throwError(error);
+      return throwError(() => new HttpErrorResponse(error));
     }));
   }
 }
