@@ -1,0 +1,41 @@
+name: Deploy to wattbrews.me
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular project
+        run: npm run build -- --prod
+
+      - name: Archive production artifacts
+        run: tar -czf angular-app.tar.gz -C dist/evsys-front .
+
+      - name: Deploy to server
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "rm -rf /var/www/html/*"
+          sshpass -p "$SERVER_PASSWORD" scp angular-app.tar.gz $SERVER_USERNAME@$SERVER_IP:/var/www/html/
+          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "tar -xzf /var/www/html/angular-app.tar.gz -C /var/www/html/"
+
+      - name: Clean up local artifacts
+        run: rm angular-app.tar.gz
