@@ -36,6 +36,7 @@ export class WebsocketService implements OnDestroy {
         this.connect();
       }
     });
+    this.startPing();
   }
 
   ngOnDestroy() {
@@ -51,7 +52,6 @@ export class WebsocketService implements OnDestroy {
           if (environment.debug) {
             console.log('WebSocket connection opened');
           }
-          this.startPing();
           this.isConnected.next(true);
           this.reconnectionAttempts = 0; // Reset on successful connection
         }
@@ -61,7 +61,6 @@ export class WebsocketService implements OnDestroy {
           if (environment.debug) {
             console.log('WebSocket connection closed');
           }
-          this.stopPing();
           this.isConnected.next(false);
           this.reconnect();
         }
@@ -116,14 +115,14 @@ export class WebsocketService implements OnDestroy {
   }
 
   send(message: WsRequest): void {
-    if (environment.debug) {
-      console.log('--->> ', message.command);
-    }
     if (!this.socket$) {
       if (environment.debug) {
         console.log('Send: websocket not connected');
       }
       return;
+    }
+    if (environment.debug) {
+      console.log('--->> ', message.command);
     }
     if (this.token) {
       message.token = this.token;
