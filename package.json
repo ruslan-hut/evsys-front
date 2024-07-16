@@ -6,7 +6,7 @@
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build": "ng build --output-path=/var/www/html"
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
