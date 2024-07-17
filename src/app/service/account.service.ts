@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {User} from "../models/user";
 import {BehaviorSubject, map, Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {getAuth, onAuthStateChanged} from "firebase/auth";

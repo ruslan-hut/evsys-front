@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Message} from "../models/message";
 import {BehaviorSubject, catchError, Observable, Subject, throwError} from "rxjs";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {ErrorService} from "./error.service";
 import {environment} from "../../environments/environment";
 import {WebsocketService} from "./websocket.service";
