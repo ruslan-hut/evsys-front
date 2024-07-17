@@ -43,7 +43,7 @@ jobs:
         run: npm run build
 
       - name: Archive production artifacts
-        run: tar -czf angular-app.tar.gz -C dist/evsys-front .
+        run: tar -czf angular-app.tar.gz -C dist/evsys-front/browser .
 
       - name: Deploy to server
         env:
