@@ -3,7 +3,6 @@ import {BehaviorSubject, Observable, Subscription, timer, throwError, timeout} f
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from "../../environments/environment";
 import { WsMessage } from "../models/ws-message";
-import { ErrorService } from "./error.service";
 import { AccountService } from "./account.service";
 import { WsRequest } from "../models/ws-request";
 import { catchError } from 'rxjs/operators';
@@ -27,7 +26,6 @@ export class WebsocketService implements OnDestroy {
   private reconnectionInterval = 1000; // Start with 1 second
 
   constructor(
-    private errorService: ErrorService,
     private accountService: AccountService
   ) {
     this.accountService.token$.subscribe(token => {
@@ -50,7 +48,7 @@ export class WebsocketService implements OnDestroy {
       openObserver: {
         next: () => {
           if (environment.debug) {
-            console.log('WebSocket connection opened');
+            console.log('WS: connection opened');
           }
           this.isConnected.next(true);
           this.reconnectionAttempts = 0; // Reset on successful connection
@@ -59,7 +57,7 @@ export class WebsocketService implements OnDestroy {
       closeObserver: {
         next: () => {
           if (environment.debug) {
-            console.log('WebSocket connection closed');
+            console.log('WS: connection closed');
           }
           this.isConnected.next(false);
           this.reconnect();
@@ -73,16 +71,13 @@ export class WebsocketService implements OnDestroy {
         if (err.name === 'TimeoutError') {
           this.reconnect();
         }
-        return throwError(() => new Error('connection error'));
+        return throwError(() => new Error('WS: connection error'));
       })
     );
 
     this.messages$.subscribe(message => {
       if (environment.debug) {
-        console.log('<<--- ', message);
-      }
-      else {
-        console.log('-- ', message.status, ":", message.info);
+        console.log('WS << ', message);
       }
     });
   }
@@ -90,14 +85,13 @@ export class WebsocketService implements OnDestroy {
   private reconnect(): void {
     if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
       setTimeout(() => {
-        this.errorService.handle(`Attempting to reconnect (${this.reconnectionAttempts + 1}/${this.maxReconnectionAttempts})...`);
         this.reconnectionAttempts++;
         this.connect();
       }, this.reconnectionInterval * this.reconnectionAttempts);
 
       this.reconnectionInterval = Math.min(this.reconnectionInterval * 2, 30000);
     } else if (environment.debug) {
-      console.log('Max reconnection attempts reached. Giving up.');
+      console.log('WS: max reconnection attempts reached; giving up');
     }
   }
 
@@ -117,12 +111,12 @@ export class WebsocketService implements OnDestroy {
   send(message: WsRequest): void {
     if (!this.socket$) {
       if (environment.debug) {
-        console.log('Send: websocket not connected');
+        console.log('WS: send aborted - not connected');
       }
       return;
     }
     if (environment.debug) {
-      console.log('--->> ', message.command);
+      console.log('WS >> ', message.command);
     }
     if (this.token) {
       message.token = this.token;
