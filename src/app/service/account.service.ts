@@ -103,7 +103,7 @@ export class AccountService {
     }
     // @ts-ignore
     this.userSubject.next(null);
-    this.router.navigate(['/account/login']);
+    this.router.navigate(['/account/login']).then(() => {});
   }
 
   getAll() {
