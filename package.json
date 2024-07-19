@@ -22,6 +22,8 @@
     "@angular/router": "^18.1.0",
     "firebase": "^10.7.2",
     "firebaseui": "^6.1.0",
+    "glob": "^9.3.5",
+    "rimraf": "^4.4.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.7"
@@ -33,7 +35,7 @@
     "@types/jasmine": "~4.3.0",
     "autoprefixer": "^10.4.13",
     "jasmine-core": "~4.5.0",
-    "karma": "~6.4.0",
+    "karma": "^6.4.3",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
