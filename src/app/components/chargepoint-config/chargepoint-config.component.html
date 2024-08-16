@@ -1,0 +1,68 @@
+<!--<form [formGroup]="form" (ngSubmit)="submit()">-->
+
+<!--  <input-->
+<!--    type="text"-->
+<!--    class="border w-full py-2 px-4 mb-2"-->
+<!--    placeholder="Point name"-->
+<!--    formControlName="title"-->
+<!--  >-->
+
+<!--  <button class="py-2 px-4 bg-blue-600 text-white" type="submit">Save</button>-->
+
+<!--</form>-->
+
+<mat-card *ngIf="chargePoint">
+  <mat-card-header>
+    <mat-card-title class="center-content">
+      {{chargePointId}}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content *ngIf="chargePointConfig">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!-- Key Column -->
+      <ng-container matColumnDef="key">
+        <th mat-header-cell *matHeaderCellDef> Key </th>
+        <td mat-cell *matCellDef="let element"> {{ element.key }} </td>
+      </ng-container>
+
+      <!-- Value Column -->
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef> Value </th>
+        <td mat-cell *matCellDef="let element">
+          <table>
+            <tr><td class="value-cell">{{ element.value }}</td>
+              <td><mat-spinner [diameter]="20" color="primary" *ngIf="element.loading"></mat-spinner></td></tr>
+          </table>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="table-cell-container" *ngIf="!element.readonly">
+            <input matInput class="equal-height-input" #inputValue placeholder="Enter value"/>
+            <button mat-button color="primary" (click)="submit(element.key, inputValue.value)">Submit</button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading" color="primary" class="progressbar"></mat-progress-bar>
+  <mat-card-actions>
+    <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <button mat-raised-button color="primary" (click)="reload()">Reload</button>
+    <div class="flex-spacer"></div>
+    <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
+    <ng-template #isNotOnline>
+      <mat-icon color="warn">cloud_off</mat-icon>
+    </ng-template>
+  </mat-card-actions>
+</mat-card>
+

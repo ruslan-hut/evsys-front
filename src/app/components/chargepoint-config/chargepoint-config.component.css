@@ -1,0 +1,120 @@
+mat-card {
+  margin: 10px;
+}
+
+td{
+  padding: 1px 10px;
+}
+
+tr{
+  line-height: 1.5;
+}
+
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.two-in-one {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.two-in-one_input {
+  width: 49.5%;
+  min-height: 20px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 3px;
+}
+
+.equal-height-input{
+  min-height: 30px;
+  line-height: 21px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 3px;
+}
+
+.readonly-input {
+  cursor: default;
+  user-select: none;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-sizing: border-box;
+  padding: 3px;
+}
+textarea {
+  resize: none;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+button {
+  margin: 1px;
+}
+
+.online-status {
+  color: limegreen;
+}
+
+.value-cell {
+  font-size: 16px;
+  max-width: 200px; /* Adjust to your desired maximum width */
+  overflow-wrap: break-word; /* Allows long words to break and wrap */
+  word-wrap: break-word; /* Older property for compatibility */
+}
+
+.small-spinner {
+  height: 20px; /* Set your desired height */
+  width: 20px; /* Set your desired width */
+}
+
+/* Ensure the container doesn't expand */
+.table-cell-container {
+  display: flex;
+  align-items: center; /* Align items vertically center */
+  height: 100%; /* Ensure the cell height is consistent */
+}
+
+/* Optional: Adjust vertical alignment of spinner */
+.mat-spinner {
+  display: inline-block;
+  vertical-align: middle; /* Align spinner with text */
+  margin-left: 8px; /* Optional: Add margin if needed */
+}
+
+/* Ensure that input and button sizes are consistent */
+.equal-height-input {
+  margin-right: 8px; /* Adjust spacing between elements if needed */
+}
+
+.mat-cell {
+  line-height: 24px; /* Match to height of spinner */
+}
+
+/* Remove any default margin/padding that might affect layout */
+.mat-cell, .mat-header-cell {
+  margin: 0;
+  padding: 0;
+}
+
+.progressbar {
+  align-self: center;
+  width: 97%;
+}
+
+

@@ -18,6 +18,7 @@ import {UserInfoComponent} from "./components/user/user-info/user-info.component
 import {UserEditComponent} from "./components/user/user-edit/user-edit.component";
 import {PromoListComponent} from "./components/promo-list/promo-list.component";
 import {PromoComponent} from "./components/promo/promo.component";
+import {ChargepointConfigComponent} from "./components/chargepoint-config/chargepoint-config.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'account/login', component: LoginComponent},
   {path: 'account/register', component: RegisterComponent},
   {path: '', redirectTo: '/points', pathMatch: 'full'},
+  {path: 'points-config', component: ChargepointConfigComponent, canActivate: [authGuard]},
   {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]},
   {path: 'points-info', component: ChargepointInfoComponent},
   {path: 'promo', component: PromoListComponent},

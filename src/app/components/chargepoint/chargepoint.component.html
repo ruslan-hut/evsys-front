@@ -18,6 +18,9 @@
     </ng-container>
   </div>
   <mat-card-actions align="end" class="tool-panel">
+    <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()" *ngIf="isAdmin">
+      <mat-icon class="edit-icon">settings</mat-icon>
+    </button>
     <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="isAdmin">
       <mat-icon class="edit-icon">edit</mat-icon>
     </button>

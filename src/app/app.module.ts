@@ -61,6 +61,8 @@ import {MatListModule} from "@angular/material/list";
 import {FirebaseService} from "./service/firebase.service";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
+import { ChargepointConfigComponent } from './components/chargepoint-config/chargepoint-config.component';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 export function initializeApp(firebaseService: FirebaseService) {
   return () => firebaseService.loadConfig();
@@ -98,7 +100,8 @@ export function initializeApp(firebaseService: FirebaseService) {
         SortConnectorsPipe,
         PromoComponent,
         PromoDialogComponent,
-        PromoListComponent
+        PromoListComponent,
+        ChargepointConfigComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
@@ -123,7 +126,7 @@ export function initializeApp(firebaseService: FirebaseService) {
         MatDialogModule,
         MatListModule,
         MatCheckboxModule,
-        MatRadioModule], providers: [
+        MatRadioModule, MatProgressSpinner], providers: [
         FirebaseService,
         { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [FirebaseService], multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

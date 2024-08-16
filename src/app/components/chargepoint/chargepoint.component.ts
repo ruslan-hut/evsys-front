@@ -24,6 +24,12 @@ export class ChargepointComponent implements OnInit {
     public timeService: TimeService
     ) { }
 
+  configureChargePoint() {
+    const chargepointId = this.chargepoint.charge_point_id;
+
+    this.router.navigate(['points-config', { id: chargepointId }]);
+  }
+
   editChargePoint() {
     const chargepointId = this.chargepoint.charge_point_id;
 

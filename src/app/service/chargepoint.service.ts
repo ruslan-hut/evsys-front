@@ -7,6 +7,8 @@ import {environment} from "../../environments/environment";
 import {WebsocketService} from "./websocket.service";
 import {WsMessage} from "../models/ws-message";
 import {AccountService} from "./account.service";
+import {CsCommand} from "../models/cs-command";
+import {CsCommandResponse} from "../models/cs-command-response";
 
 @Injectable({
   providedIn: 'root'
@@ -107,4 +109,17 @@ export class ChargepointService {
     //this.websocketService.close();
   }
 
+  sendCsCommand(chargePointId: string, connectorId:number, command: string, payload: string): Observable<CsCommandResponse> {
+    const csCommand: CsCommand = {
+      charge_point_id: chargePointId,
+      connector_id: connectorId,
+      feature_name: command,
+      payload: payload,
+    }
+
+    return this.http.post<CsCommandResponse>(environment.apiUrl + environment.sengCommand, csCommand)
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      )
+  }
 }
