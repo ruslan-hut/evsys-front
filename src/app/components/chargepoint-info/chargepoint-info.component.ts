@@ -7,6 +7,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialog-data";
 import {TimeService} from "../../service/time.service";
+import {CSService} from "../../service/cs.service";
+import {ErrorService} from "../../service/error.service";
 
 
 @Component({
@@ -23,7 +25,9 @@ export class ChargepointInfoComponent implements OnInit{
     public timeService: TimeService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private csService: CSService,
+    private errorService: ErrorService,
   ) {
   }
 
@@ -47,11 +51,11 @@ export class ChargepointInfoComponent implements OnInit{
     this.router.navigate(['/']);
   }
 
-  reboot(): void {
+  reboot(mode: number): void {
     let dialogData: DialogData = {
-      title: "Reboot",
+      title: "Reset",
       content: "",
-      buttonYes: "Reboot",
+      buttonYes: "Reset",
       buttonNo: "Close",
       checkboxes: []
     };
@@ -63,11 +67,37 @@ export class ChargepointInfoComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
-        //basic code
-        console.log("rebooting")
+        if(mode == 0){
+          this.hardReboot();
+        }
+        else {
+          this.softReboot();
+        }
       } else {
         //do nothing
         console.log("not rebooting")
+      }
+    });
+  }
+
+  softReboot(){
+    this.csService.softRebootChargePoint(this.chargePointId).subscribe((response) => {
+      if (response.status === 'success') {
+        this.errorService.handle("Soft Reset")
+      } else {
+        this.errorService.handle(response.info)
+        console.log(response)
+      }
+    });
+  }
+
+  hardReboot(){
+    this.csService.hardRebootChargePoint(this.chargePointId).subscribe((response) => {
+      if (response.status === 'success') {
+        this.errorService.handle("Hard Reset")
+      } else {
+        this.errorService.handle(response.info)
+        console.log(response)
       }
     });
   }

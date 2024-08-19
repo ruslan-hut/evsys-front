@@ -1,20 +1,25 @@
-import {Component, Inject, Optional} from "@angular/core";
+import {Component, Inject, OnInit, Optional} from "@angular/core";
 import {TransactionService} from "../../service/transaction.service";
 import {Transaction} from "../../models/transaction";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialog-data";
+import {CSService} from "../../service/cs.service";
+import {ErrorService} from "../../service/error.service";
+import {CsResponse} from "../../models/cs-response";
 
 @Component({
   selector: 'transaction-info',
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.css']
 })
-export class TransactionInfoComponent {
+export class TransactionInfoComponent{
 
   transaction: Transaction;
 
   constructor(
+    private csService: CSService,
+    private errorService: ErrorService,
     public dialog: MatDialog,
     private transactionService: TransactionService,
     @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
@@ -24,6 +29,15 @@ export class TransactionInfoComponent {
       // data = 400;
       this.transactionService.getTransaction(data).subscribe((transaction) => {
         this.transaction= transaction;
+
+        this.transactionService.subscribeOnUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
+        this.transactionService.getTransactions().subscribe((transactions) => {
+          transactions.forEach((transaction) => {
+            if (transaction.transaction_id === this.transaction.transaction_id) {
+              this.transaction = transaction;
+            }
+          });
+        });
       });
     }
   }
@@ -67,8 +81,22 @@ export class TransactionInfoComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
-        //basic code
-        console.log("stopping")
+        this.csService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id.toString()).subscribe({
+          next: (result) => {
+            const resp = (JSON.parse(result.info) as CsResponse);
+            if (resp.status == "Accepted" && result.status == 'success') {
+              console.log("Transaction stopped")
+            } else {
+              if (resp.error != null) {
+                this.errorService.handle(resp.error);
+              }
+              else {
+                this.errorService.handle(resp.status);
+              }
+              console.log(result)
+            }
+          }
+        });
       } else {
         //do nothing
         console.log("not stopping")

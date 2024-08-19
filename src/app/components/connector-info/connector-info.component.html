@@ -1,4 +1,4 @@
-<mat-expansion-panel [expanded]="isDialog()">
+<mat-expansion-panel [expanded]="isDialog()" *ngIf="connector">
   <mat-expansion-panel-header>
     <mat-panel-title>
       <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
@@ -41,22 +41,6 @@
       <td>
         <div class="like-input">
           {{connector.info}}
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>VendorID:</td>
-      <td>
-        <div class="like-input">
-          {{connector.vendor_id}}
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>Error code:</td>
-      <td>
-        <div class="like-input">
-          {{connector.error_code}}
         </div>
       </td>
     </tr>
