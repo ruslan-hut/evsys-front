@@ -33,7 +33,6 @@ export class PaymentMethodListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.accountService.user.subscribe(user => {
       this.accountService.getUserInfo(user.username).subscribe(info=>{
         if (info.payment_methods) {
@@ -46,7 +45,7 @@ export class PaymentMethodListComponent implements OnInit {
 
   selectPaymentMethod(paymentMethod: PaymentMethod) {
     this.dataSource.data.forEach(p =>
-      p.selected = p === paymentMethod ? !p.selected : false
+      p.selected = p.identifier === paymentMethod.identifier ? !p.selected : false
     );
   }
 

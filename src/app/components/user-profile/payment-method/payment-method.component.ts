@@ -74,7 +74,7 @@ export class PaymentMethodComponent implements OnInit {
     this.accountService.updatePaymentMethod(this.paymentMethod).subscribe(
       (result) => {
         if (result) {
-          this.paymentMethod = result
+          this.paymentMethod.is_default = result.is_default
         } else {
           console.log(result)
           this.errorService.handle("Failed to set default payment method")
@@ -123,7 +123,7 @@ export class PaymentMethodComponent implements OnInit {
     this.accountService.updatePaymentMethod(this.paymentMethod).subscribe(
       (result) => {
         if (result) {
-          this.paymentMethod = result
+          this.paymentMethod.description = result.description
         }else {
           console.log(result)
           this.errorService.handle("Failed to update payment method")

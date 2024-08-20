@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {AccountService} from "../../service/account.service";
-import {MatCard, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {Router} from "@angular/router";
 
@@ -11,7 +11,8 @@ import {Router} from "@angular/router";
     MatCard,
     MatCardHeader,
     MatCardTitle,
-    MatIcon
+    MatIcon,
+    MatCardContent
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
