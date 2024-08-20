@@ -33,10 +33,12 @@ export class PaymentMethodListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.accountService.user.subscribe(user => {
       this.accountService.getUserInfo(user.username).subscribe(info=>{
         if (info.payment_methods) {
           this.dataSource.data = info.payment_methods;
+          scroll(0, 0);
         };
       });
     });

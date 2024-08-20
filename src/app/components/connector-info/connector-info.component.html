@@ -63,7 +63,7 @@
   </table>
   <mat-action-row class="connector-buttons">
     <button *ngIf="isDialog()" mat-button (click)="dialogRef?.close('no')">Close</button>
-    <button *ngIf="connector.state === 'available'; else notAvailable" mat-button color="primary" (click)="startConnector(connector)">Start</button>
+    <button *ngIf="connector.state === 'available'; else notAvailable" mat-button color="primary" (click)="onStartConnector(connector)">Start</button>
 
     <ng-template #notAvailable>
       <ng-container *ngIf="connector.state !== 'unavailable'">

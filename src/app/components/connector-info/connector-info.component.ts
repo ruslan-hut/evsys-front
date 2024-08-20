@@ -11,6 +11,7 @@ import {User} from "../../models/user";
 import {CsResponse} from "../../models/cs-response";
 import {ErrorService} from "../../service/error.service";
 import {ChargepointService} from "../../service/chargepoint.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-connector-info',
@@ -25,6 +26,8 @@ export class ConnectorInfoComponent implements OnInit {
     private csService: CSService,
     private errorService: ErrorService,
     private chargePointService: ChargepointService,
+    private accountService: AccountService,
+    private router: Router,
     public dialog: MatDialog,
     public timeService: TimeService,
     @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
@@ -59,6 +62,51 @@ export class ConnectorInfoComponent implements OnInit {
   isDialog(): boolean {
     return !!this.data;
 
+  }
+
+  onStartConnector(connector: Connector) {
+    this.accountService.user.subscribe((user: User | null) => {
+      if (user) {
+        this.accountService.getUserInfo(user.username).subscribe((userInfo) => {
+          if (userInfo.payment_methods) {
+              this.startConnector(connector);
+          } else {
+            this.addPaymentMethod();
+          }
+        });
+      }
+    });
+  }
+
+  addPaymentMethod() {
+    let dialogData: DialogData = {
+      title: "Add Payment Method",
+      content: "You need to add a payment method to start a transaction",
+      buttonYes: "Add Payment Method",
+      buttonNo: "Close",
+      checkboxes: []
+    };
+
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
+      width: '400px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        this.dialog.closeAll();
+        this.router.navigate(['/payment-methods']).then(r => {
+          if (!result) {
+            console.log(result)
+            this.errorService.handle("Failed to delete payment method")
+          }
+        });
+
+      } else {
+        //do nothing
+        console.log("not adding payment method")
+      }
+    });
   }
 
   startConnector(connector: Connector) {
@@ -99,6 +147,8 @@ export class ConnectorInfoComponent implements OnInit {
     });
   }
 
+
+
   stopConnector(connector: Connector) {
     let dialogData: DialogData = {
       title: "Stop",
@@ -136,6 +186,7 @@ export class ConnectorInfoComponent implements OnInit {
       }
     });
   }
+
   unlockConnector(connector: Connector) {
     let dialogData: DialogData = {
       title: "Unlock",
