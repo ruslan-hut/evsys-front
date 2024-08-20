@@ -43,8 +43,8 @@ const routes: Routes = [
   {path: 'points-info', component: ChargepointInfoComponent},
   {path: 'promo', component: PromoListComponent},
   {path: 'promo-point', component: PromoComponent},
-  {path:'user-profile', component: UserProfileComponent, canActivate: [authGuard]},
-  {path:'payment-methods', component: PaymentMethodListComponent, canActivate: [authGuard]},
+  {path:'user-profile', component: UserProfileComponent},
+  {path:'payment-methods', component: PaymentMethodListComponent},
 ];
 
 @NgModule({

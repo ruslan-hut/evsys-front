@@ -69,13 +69,43 @@ export class ConnectorInfoComponent implements OnInit {
       if (user) {
         this.accountService.getUserInfo(user.username).subscribe((userInfo) => {
           if (userInfo.payment_methods) {
-              this.startConnector(connector);
+            let hasPaymentMethod = false;
+            userInfo.payment_methods.forEach((pm) => {
+                if(this.isPaymentMethodValid(pm.expiry_date)){
+                  hasPaymentMethod = true;
+                }
+            });
+
+            if (hasPaymentMethod) {
+                this.startConnector(connector);
+            }else {
+              this.addPaymentMethod();
+            }
           } else {
             this.addPaymentMethod();
           }
         });
       }
     });
+  }
+
+  isPaymentMethodValid(expiryDate: string): boolean {
+    if (expiryDate && expiryDate.length === 4) {
+      const month = parseInt(expiryDate.substring(2, 4), 10);
+      const year = parseInt('20' + expiryDate.substring(0, 2), 10); // Assuming dates are in the 2000s
+
+      // Get the current date
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth() + 1; // getMonth() is 0-indexed
+
+      // Check if the expiry date is in the future
+      if (year > currentYear || (year === currentYear && month >= currentMonth)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   addPaymentMethod() {
