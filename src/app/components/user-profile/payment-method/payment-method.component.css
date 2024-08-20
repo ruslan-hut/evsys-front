@@ -1,0 +1,41 @@
+.title-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.title-with-icon mat-icon {
+  margin-right: 8px;
+}
+
+mat-card {
+  margin: 10px;
+}
+
+table {
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+th,td {
+  padding: 2px;
+}
+td {
+  max-width: 20%;
+}
+
+button {
+  margin: 1px;
+}
+
+mat-form-field {
+  margin-right: 10px;
+}
+
+mat-card-header {
+  align-items: center;
+}
+
+.warn {
+  color: #f44336;
+}
+

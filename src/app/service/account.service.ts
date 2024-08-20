@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {PaymentMethod} from "../models/payment-method";
 
 @Injectable({
   providedIn: 'root'
@@ -112,5 +113,13 @@ export class AccountService {
 
   getUserInfo(username: string | null) {
     return this.http.get<User>(`${environment.apiUrl}/users/info/${username}`);
+  }
+
+  updatePaymentMethod(paymentMethod: PaymentMethod) {
+    return this.http.post<PaymentMethod>(`${environment.apiUrl}/payment/update`, paymentMethod);
+  }
+
+  deletePaymentMethod(paymentMethod: PaymentMethod) {
+    return this.http.post<PaymentMethod>(`${environment.apiUrl}/payment/delete/`, paymentMethod);
   }
 }

@@ -19,6 +19,8 @@ import {UserEditComponent} from "./components/user/user-edit/user-edit.component
 import {PromoListComponent} from "./components/promo-list/promo-list.component";
 import {PromoComponent} from "./components/promo/promo.component";
 import {ChargepointConfigComponent} from "./components/chargepoint-config/chargepoint-config.component";
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
+import {PaymentMethodListComponent} from "./components/user-profile/payment-method-list/payment-method-list.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -40,7 +42,9 @@ const routes: Routes = [
   {path: 'points-form', component: ChargepointFormComponent, canActivate: [authGuard]},
   {path: 'points-info', component: ChargepointInfoComponent},
   {path: 'promo', component: PromoListComponent},
-  {path: 'promo-point', component: PromoComponent}
+  {path: 'promo-point', component: PromoComponent},
+  {path:'user-profile', component: UserProfileComponent, canActivate: [authGuard]},
+  {path:'payment-methods', component: PaymentMethodListComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

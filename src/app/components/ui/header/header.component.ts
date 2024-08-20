@@ -53,4 +53,14 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
   ngAfterContentChecked(): void {
     this.menuEnabled = !this.router.url.includes('/points-form');
   }
+
+  openUserProfile(): void {
+    this.router.navigate(['/user-profile']).then(r =>
+      {
+        if (!r) {
+          this.errorService.handle("Failed to navigate: /user-profile")
+        }
+      }
+    );
+  }
 }

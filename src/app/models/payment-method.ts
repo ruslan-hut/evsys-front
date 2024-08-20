@@ -8,4 +8,5 @@ export interface PaymentMethod {
   user_id: string,
   user_name: string,
   fail_count: number,
+  selected?: boolean,
 }

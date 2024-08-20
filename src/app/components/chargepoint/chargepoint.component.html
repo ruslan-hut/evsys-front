@@ -24,7 +24,7 @@
     <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="isAdmin">
       <mat-icon class="edit-icon">edit</mat-icon>
     </button>
-    <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()">
+    <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()" *ngIf="isAdmin">
       <mat-icon class="edit-icon">remove_red_eye</mat-icon>
     </button>
     <div class="space"></div>

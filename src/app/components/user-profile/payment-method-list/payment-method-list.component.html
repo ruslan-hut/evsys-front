@@ -1,0 +1,5 @@
+<app-payment-method *ngFor="let pm of dataSource.data" [paymentMethod]="pm" (click)="selectPaymentMethod(pm)"></app-payment-method>
+<button mat-raised-button class="title-with-icon" color="primary" (click)="addPaymentMethod()">
+  <mat-icon class="edit-icon">add</mat-icon>
+  Add payment method
+</button>

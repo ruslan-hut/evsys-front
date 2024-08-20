@@ -39,6 +39,9 @@
   <span>{{title}}</span>
   <span class="bar-spacer"></span>
 
+  <button mat-icon-button *ngIf="menuEnabled && username" (click)="openUserProfile()">
+    <mat-icon>account_circle</mat-icon>
+  </button>
   <span>{{username}}</span>
 
   <div *ngIf="username; else showLoginButton">

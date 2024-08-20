@@ -1,0 +1,16 @@
+.title-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.title-with-icon mat-icon {
+  margin-right: 8px; /* Adjust the spacing as needed */
+}
+
+mat-card {
+  margin: 16px;
+}
+
+mat-card-header {
+  padding: 4px 16px;
+}
