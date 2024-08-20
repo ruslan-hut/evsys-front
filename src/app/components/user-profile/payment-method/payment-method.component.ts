@@ -10,6 +10,9 @@ import {ErrorService} from "../../../service/error.service";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {Router} from "@angular/router";
+import {DialogData} from "../../../models/dialog-data";
+import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-payment-method',
@@ -41,6 +44,7 @@ export class PaymentMethodComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private errorService: ErrorService,
+    public dialog: MatDialog,
   ) {
   }
 
@@ -83,15 +87,36 @@ export class PaymentMethodComponent implements OnInit {
   }
 
   delete() {
-    this.accountService.deletePaymentMethod(this.paymentMethod).subscribe(
-      (result) => {
-        if (result) {
-          this.paymentMethod = result
-        } else {
-          console.log(result)
-          this.errorService.handle("Failed to delete payment method")
-        }
-      });
+
+    let dialogData: DialogData = {
+      title: "Delete",
+      content: "",
+      buttonYes: "Delete",
+      buttonNo: "Close",
+      checkboxes: []
+    };
+
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
+      width: '250px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        this.accountService.deletePaymentMethod(this.paymentMethod).subscribe(
+          (result) => {
+            if (result) {
+              this.paymentMethod = result
+            } else {
+              console.log(result)
+              this.errorService.handle("Failed to delete payment method")
+            }
+          });
+      } else {
+        //do nothing
+        console.log("not rebooting")
+      }
+    });
   }
 
   saveDescription() {
