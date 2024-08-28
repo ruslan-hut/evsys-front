@@ -3,6 +3,7 @@ import {Connector} from "../../models/connector";
 import {MatDialog} from "@angular/material/dialog";
 import {ConnectorInfoComponent} from "../connector-info/connector-info.component";
 import {TransactionInfoComponent} from "../transaction-info/transaction-info.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-connector',
@@ -13,7 +14,8 @@ export class ConnectorComponent {
   @Input() connector: Connector
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
   ) {
   }
 
@@ -37,16 +39,23 @@ export class ConnectorComponent {
 
   openInfo() {
 
-    const dialogRef = this.dialog.open(ConnectorInfoComponent, {
-      data: this.connector,
+    // const dialogRef = this.dialog.open(ConnectorInfoComponent, {
+    //   data: this.connector,
+    // });
+
+    this.router.navigate(['new-transactions'], {
+      queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
     });
 
   }
 
   transactionInfo() {
-    const dialogRef = this.dialog.open(TransactionInfoComponent, {
-      width: '350px',
-      data: this.connector.current_transaction_id,
+    // const dialogRef = this.dialog.open(TransactionInfoComponent, {
+    //   width: '350px',
+    //   data: this.connector.current_transaction_id,
+    // });
+    this.router.navigate(['new-transactions'], {
+      queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
     });
   }
 }

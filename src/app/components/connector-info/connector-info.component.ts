@@ -53,7 +53,6 @@ export class ConnectorInfoComponent implements OnInit {
             });
           }
         });
-        console.log(chargePoint);
       });
     }
 

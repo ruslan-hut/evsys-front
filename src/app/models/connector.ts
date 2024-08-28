@@ -12,3 +12,7 @@ export interface Connector {
   power: number,
   current_transaction_id: number,
 }
+
+export function getConnectorName(connector: Connector): string {
+  return connector.connector_id_name ? connector.connector_id_name : connector.connector_id;
+}

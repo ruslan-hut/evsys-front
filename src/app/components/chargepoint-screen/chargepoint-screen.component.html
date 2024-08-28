@@ -1,0 +1,51 @@
+
+<mat-card *ngIf="chargePoint">
+
+
+  <mat-card-content class="info-container">
+    <ng-template [ngIf]="transactionId == -1 && !isStarted">
+      <div class="info-item">
+        <span class="info-label">{{chargePointId}}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Connector:</span>
+        <span class="info-value">{{connectorName}}</span>
+      </div>
+      <ng-template [ngIf]="paymentMethod">
+        <app-payment-method [paymentMethod]="paymentMethod" ></app-payment-method>
+      </ng-template>
+      <ng-template [ngIf]="!paymentMethod">
+        <button mat-raised-button class="title-with-icon" color="primary" (click)="addPaymentMethod()">
+          <mat-icon class="edit-icon">add</mat-icon>
+          Add payment method
+        </button>
+      </ng-template>
+      <div class="info-item">
+        <span class="info-label">Cost:</span>
+        <span class="info-value">{{ paymentPlan?.price_per_kwh }} €/kWh</span>
+      </div>
+      <button mat-raised-button color="primary" (click)="start()">Start</button>
+    </ng-template>
+    <ng-template [ngIf]="transactionId != -1">
+      <app-transaction-screen [transactionId]="transactionId"></app-transaction-screen>
+      <ng-template [ngIf]="canStop">
+        <button mat-raised-button  color="primary" (click)="stop()">Stop</button>
+      </ng-template>
+    </ng-template>
+
+    <mat-progress-bar mode="indeterminate" color="primary" class="progressbar" *ngIf="isStarted"></mat-progress-bar>
+
+  </mat-card-content>
+
+  <mat-card-actions class="flex-container">
+    <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <div class="flex-spacer"></div>
+    <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
+    <ng-template #isNotOnline>
+      <mat-icon color="warn">cloud_off</mat-icon>
+    </ng-template>
+  </mat-card-actions>
+</mat-card>
+
+
+

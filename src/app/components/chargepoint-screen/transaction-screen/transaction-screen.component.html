@@ -1,0 +1,41 @@
+<ng-template [ngIf]="transaction">
+  <div class="info-item">
+    <span class="info-label">{{ transaction.charge_point_title}}</span>
+  </div>
+  <div class="info-item">
+    <span class="info-value">{{ transaction.charge_point_address }}</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Status:</span>
+    <span class="info-value">{{ transaction.status }}</span>
+  </div>
+  <mat-progress-bar *ngIf="isCharging(); else notCharging" mode="indeterminate"></mat-progress-bar>
+  <ng-template #notCharging>
+    <mat-progress-bar mode="determinate" [value]="0"></mat-progress-bar>
+  </ng-template>
+  <div class="info-item">
+    <span class="info-label">Start time:</span>
+    <span class="info-value">{{ transaction.time_started | date:"hh:mm"}}</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Duration:</span>
+    <span class="info-value">{{ getDuration(transaction.duration)}}</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Power (current):</span>
+    <span class="info-value">{{ transaction.power_rate /1000 | number: '1.1-1'}} kW</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Consumed:</span>
+    <span class="info-value">{{ transaction.consumed /1000 | number: '1.1-1'}} kWh</span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Price:</span>
+    <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} €</span>
+  </div>
+</ng-template>
+<ng-template [ngIf]="!transaction">
+  <mat-progress-bar mode="indeterminate" color="primary" class="progressbar"></mat-progress-bar>
+</ng-template>
+
+

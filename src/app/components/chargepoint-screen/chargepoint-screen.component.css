@@ -1,0 +1,86 @@
+mat-card {
+  margin: 10px;
+}
+table {
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+th,td {
+  padding: 2px;
+}
+td {
+  max-width: 20%;
+}
+
+.online-status {
+  color: limegreen;
+}
+
+.two-in-one {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.name_field {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 2px 5px;
+}
+
+.two-in-one_input {
+  width: 200%;
+  padding-right: 12px;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+button {
+  margin: 1px;
+}
+
+/* container for all the information */
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* spacing between items */
+  padding: 15px;
+  border: 1px solid #ddd; /* light border around the container */
+  border-radius: 8px; /* rounded corners */
+  background-color: #f9f9f9; /* light background color */
+  max-width: 1000px; /* adjust width as needed */
+  margin: 20px auto; /* center container horizontally */
+}
+
+/* styling for each item */
+.info-item {
+  display: flex;
+  justify-content: space-between; /* space between label and value */
+  padding: 4px 0; /* vertical padding for spacing */
+}
+
+/* label styling */
+.info-label {
+  font-weight: bold;
+  color: #333; /* dark color for label */
+}
+
+/* value styling */
+.info-value {
+  color: #555; /* lighter color for value */
+}
+
+.progressbar {
+  align-self: center;
+  width: 400px;
+}
+
