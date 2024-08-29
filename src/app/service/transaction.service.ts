@@ -37,6 +37,7 @@ export class TransactionService  {
   }
 
   getTransaction(id: number): Observable<Transaction> {
+    console.log('Getting transaction: ', id);
     return this.http.get<Transaction>(environment.apiUrl + environment.transactionInfo + id)
       .pipe(
         catchError(this.errorHandler.bind(this))
@@ -63,11 +64,15 @@ export class TransactionService  {
     if (message.status == 'value' && message.info == 'Wh') {
       const updated = message.id;
       const index = this.transactions.findIndex(transaction => transaction.transaction_id == updated);
+      console.log('Transaction updated');
       if (index !== -1 && updated) {
-        this.getTransaction(updated).subscribe(chargePoint => {
-          this.transactions[index] = chargePoint;
-          this.transactions$.next(this.transactions);
-        });
+        let updatedTransaction: Transaction = this.transactions[index];
+        updatedTransaction.meter_values.push(message.meter_value!!);
+        updatedTransaction.consumed = message.power!!;
+        updatedTransaction.price= message.price!!;
+
+        this.transactions[index] = updatedTransaction;
+        this.transactions$.next(this.transactions);
       }
       else if (index === -1 && updated) {
         this.getTransaction(updated).subscribe(transaction => {

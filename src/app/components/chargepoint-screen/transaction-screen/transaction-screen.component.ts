@@ -35,6 +35,7 @@ export class TransactionScreenComponent implements OnInit {
     this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
       this.transaction = transaction;
       if(transaction){
+        this.canStop = transaction.can_stop;
         this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
         this.transactionService.getTransactions().subscribe((transactions) => {
           transactions.forEach((transaction) => {
