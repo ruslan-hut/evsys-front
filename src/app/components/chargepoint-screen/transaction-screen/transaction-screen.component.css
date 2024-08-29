@@ -33,3 +33,7 @@
 .progressbar {
   align-self: center;
 }
+
+button {
+  width: 100%;
+}
