@@ -29,7 +29,6 @@ export class ChargepointScreenComponent implements OnInit{
   paymentMethod: PaymentMethod | undefined;
   paymentPlan: PaymentPlan | undefined;
   transactionId: number = -1;
-  canStop: boolean = false;
   isStarted: boolean = false;
   isAvailable: boolean = false;
   constructor(
@@ -66,9 +65,6 @@ export class ChargepointScreenComponent implements OnInit{
                 if(connector.current_transaction_id != -1){
                   this.isStarted = false;
                   this.transactionId = connector.current_transaction_id;
-                  this.transactionService.getTransaction(connector.current_transaction_id).subscribe((transaction) => {
-                    this.canStop = transaction.can_stop;
-                  });
                 }
 
                 if(!this.isAvailable && connector.current_transaction_id == -1){
@@ -115,27 +111,6 @@ export class ChargepointScreenComponent implements OnInit{
         }
       }
     });
-  }
-
-  stop(): void {
-    const connector = this.chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
-    if (connector && this.canStop) {
-      this.csService.stopTransaction(this.chargePointId, this.connectorId, connector.current_transaction_id.toString()).subscribe({
-        next: (result) => {
-          const resp = (JSON.parse(result.info) as CsResponse);
-          if (resp.status == "Accepted" && result.status == 'success') {
-            this.alertDialog("Transaction stopped");
-          } else {
-            if (resp.error != null) {
-              this.errorService.handle(resp.error);
-            }else{
-              this.errorService.handle(resp.status);
-            }
-            console.log(result)
-          }
-        }
-      });
-    }
   }
 
   alertDialog(text: string): void {

@@ -5,6 +5,9 @@
   <div class="info-item">
     <span class="info-value">{{ transaction.charge_point_address }}</span>
   </div>
+  <div class="info-item" *ngIf="chargePoint.description">
+    <span class="info-value">{{chargePoint.description}}</span>
+  </div>
   <div class="info-item">
     <span class="info-label">Status:</span>
     <span class="info-value">{{ transaction.status }}</span>
@@ -33,6 +36,9 @@
     <span class="info-label">Price:</span>
     <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} €</span>
   </div>
+  <ng-template [ngIf]="canStop">
+    <button mat-raised-button  color="primary" (click)="stop()">Stop</button>
+  </ng-template>
 </ng-template>
 <ng-template [ngIf]="!transaction">
   <mat-progress-bar mode="indeterminate" color="primary" class="progressbar"></mat-progress-bar>

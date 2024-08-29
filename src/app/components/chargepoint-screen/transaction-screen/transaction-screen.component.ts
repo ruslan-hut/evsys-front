@@ -5,6 +5,10 @@ import {ErrorService} from "../../../service/error.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TransactionService} from "../../../service/transaction.service";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
+import {CsResponse} from "../../../models/cs-response";
+import {DialogData} from "../../../models/dialog-data";
+import {ChargepointService} from "../../../service/chargepoint.service";
+import {Chargepoint} from "../../../models/chargepoint";
 
 @Component({
   selector: 'app-transaction-screen',
@@ -15,17 +19,29 @@ export class TransactionScreenComponent implements OnInit {
 
   transaction: Transaction;
   @Input() transactionId!: number;
+  canStop: boolean = false;
+  chargePoint: Chargepoint;
 
   constructor(
     public dialog: MatDialog,
     private transactionService: TransactionService,
+    private csService: CSService,
+    private errorService: ErrorService,
+    private chargePointService: ChargepointService
   ) {
   }
 
   ngOnInit(): void {
     this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
       this.transaction = transaction;
+      if(transaction){
+        this.canStop = transaction.can_stop;
+        this.chargePointService.getChargePoint(this.transaction.charge_point_id).subscribe((chargePoint) => {
+          this.chargePoint = chargePoint;
+        });
+      }
     });
+
   }
 
   isCharging(): boolean {
@@ -53,6 +69,47 @@ export class TransactionScreenComponent implements OnInit {
     formattedDuration += minutes;
 
     return formattedDuration;
+  }
+
+  stop(): void {
+    if (this.canStop) {
+      this.csService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id.toString()).subscribe({
+        next: (result) => {
+          const resp = (JSON.parse(result.info) as CsResponse);
+          if (resp.status == "Accepted" && result.status == 'success') {
+            this.alertDialog("Transaction stopped");
+          } else {
+            if (resp.error != null) {
+              this.errorService.handle(resp.error);
+            }else{
+              this.errorService.handle(resp.status);
+            }
+            console.log(result)
+          }
+        }
+      });
+    }
+  }
+
+  alertDialog(text: string): void {
+    let dialogData: DialogData = {
+      title: "Alert",
+      content: text,
+      buttonYes: "Ok",
+      buttonNo: "",
+      checkboxes: []
+    };
+
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
+      width: '250px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'yes') {
+
+      }
+    });
   }
 
 

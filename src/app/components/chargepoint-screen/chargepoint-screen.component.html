@@ -5,13 +5,22 @@
   <mat-card-content class="info-container">
     <ng-template [ngIf]="transactionId == -1 && !isStarted">
       <div class="info-item">
-        <span class="info-label">{{chargePointId}}</span>
+        <span class="info-label">{{chargePoint.title}}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-value">{{chargePoint.address}}</span>
+      </div>
+      <div class="info-item" *ngIf="chargePoint.description">
+        <span class="info-value">{{chargePoint.description}}</span>
       </div>
       <div class="info-item">
         <span class="info-label">Connector:</span>
         <span class="info-value">{{connectorName}}</span>
       </div>
       <ng-template [ngIf]="paymentMethod">
+        <div class="info-item">
+          <span class="info-label">Payment method:</span>
+        </div>
         <app-payment-method [paymentMethod]="paymentMethod" ></app-payment-method>
       </ng-template>
       <ng-template [ngIf]="!paymentMethod">
@@ -28,9 +37,6 @@
     </ng-template>
     <ng-template [ngIf]="transactionId != -1">
       <app-transaction-screen [transactionId]="transactionId"></app-transaction-screen>
-      <ng-template [ngIf]="canStop">
-        <button mat-raised-button  color="primary" (click)="stop()">Stop</button>
-      </ng-template>
     </ng-template>
 
     <mat-progress-bar mode="indeterminate" color="primary" class="progressbar" *ngIf="isStarted"></mat-progress-bar>
