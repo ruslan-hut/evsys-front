@@ -22,9 +22,9 @@
       </ng-template>
       <div class="info-item">
         <span class="info-label">Cost:</span>
-        <span class="info-value">{{ paymentPlan?.price_per_kwh }} €/kWh</span>
+        <span class="info-value">{{ paymentPlan?.price_per_kwh!!/100 | number: '1.2-2'}} €/kWh</span>
       </div>
-      <button mat-raised-button color="primary" (click)="start()">Start</button>
+      <button mat-raised-button color="primary" (click)="start()" [disabled]="!isAvailable">Start</button>
     </ng-template>
     <ng-template [ngIf]="transactionId != -1">
       <app-transaction-screen [transactionId]="transactionId"></app-transaction-screen>

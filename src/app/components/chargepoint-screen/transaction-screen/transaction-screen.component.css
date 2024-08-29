@@ -7,8 +7,9 @@
   border: 1px solid #ddd; /* light border around the container */
   border-radius: 8px; /* rounded corners */
   background-color: #f9f9f9; /* light background color */
-  max-width: 1000px; /* adjust width as needed */
   margin: 20px auto; /* center container horizontally */
+  max-width: 1000px;
+  width: 90%;
 }
 
 /* styling for each item */
@@ -31,5 +32,4 @@
 
 .progressbar {
   align-self: center;
-  width: 400px;
 }
