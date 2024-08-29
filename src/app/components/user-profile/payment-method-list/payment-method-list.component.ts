@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PaymentMethodComponent} from "../payment-method/payment-method.component";
 import {MatTableDataSource} from "@angular/material/table";
-import {Chargepoint} from "../../../models/chargepoint";
 import {PaymentMethod} from "../../../models/payment-method";
 import {AccountService} from "../../../service/account.service";
 import {NgForOf} from "@angular/common";
@@ -34,12 +33,16 @@ export class PaymentMethodListComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.user.subscribe(user => {
-      this.accountService.getUserInfo(user.username).subscribe(info=>{
-        if (info.payment_methods) {
-          this.dataSource.data = info.payment_methods;
-          scroll(0, 0);
-        };
-      });
+      if (user) {
+        this.accountService.getUserInfo(user.username).subscribe(info => {
+          if (info.payment_methods) {
+            this.dataSource.data = info.payment_methods;
+            scroll(0, 0);
+          }
+        });
+      }else{
+        this.dataSource.data = []
+      }
     });
   }
 

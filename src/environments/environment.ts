@@ -9,7 +9,7 @@ export const environment = {
   chargePoint: '/point/',
   transactionInfo: '/transactions/info/',
   wsUrl: 'wss://wattbrews.me/ws',
-  sengCommand: '/csc',
+  sendCommand: '/csc',
   debug: false,
   firebaseConfig: {
     apiKey: "fb-api-key",

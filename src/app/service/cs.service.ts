@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, catchError, Observable, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ErrorService} from "./error.service";
 import {environment} from "../../environments/environment";
@@ -30,7 +30,7 @@ export class CSService {
       payload: payload,
     }
 
-    return this.http.post<CsCommandResponse>(environment.apiUrl + environment.sengCommand, csCommand)
+    return this.http.post<CsCommandResponse>(environment.apiUrl + environment.sendCommand, csCommand)
       .pipe(
         catchError(this.errorHandler.bind(this))
       )

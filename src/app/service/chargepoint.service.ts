@@ -117,7 +117,7 @@ export class ChargepointService {
       payload: payload,
     }
 
-    return this.http.post<CsCommandResponse>(environment.apiUrl + environment.sengCommand, csCommand)
+    return this.http.post<CsCommandResponse>(environment.apiUrl + environment.sendCommand, csCommand)
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
