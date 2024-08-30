@@ -12,7 +12,7 @@ import {MatInput} from "@angular/material/input";
 import {DialogData} from "../../../models/dialog-data";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {environment} from "../../../../environments/environment.development";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-payment-method',
