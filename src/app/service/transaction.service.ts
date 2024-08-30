@@ -37,7 +37,6 @@ export class TransactionService  {
   }
 
   getTransaction(id: number): Observable<Transaction> {
-    console.log('Getting transaction: ', id);
     return this.http.get<Transaction>(environment.apiUrl + environment.transactionInfo + id)
       .pipe(
         catchError(this.errorHandler.bind(this))
@@ -64,7 +63,6 @@ export class TransactionService  {
     if (message.status == 'value' && message.info == 'Wh') {
       const updated = message.id;
       const index = this.transactions.findIndex(transaction => transaction.transaction_id == updated);
-      console.log('Transaction updated');
       if (index !== -1 && updated) {
         let updatedTransaction: Transaction = this.transactions[index];
         updatedTransaction.meter_values.push(message.meter_value!!);

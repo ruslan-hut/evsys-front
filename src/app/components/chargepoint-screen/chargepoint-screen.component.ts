@@ -15,6 +15,7 @@ import {PaymentPlan} from "../../models/payment-plan";
 import {TransactionService} from "../../service/transaction.service";
 import {AppModule} from "../../app.module";
 import {getConnectorName} from "../../models/connector";
+import {LocalStorageService} from "../../service/local-storage.service";
 
 @Component({
   selector: 'app-chargepoint-screen',
@@ -39,7 +40,7 @@ export class ChargepointScreenComponent implements OnInit{
     public dialog: MatDialog,
     private csService: CSService,
     private errorService: ErrorService,
-    private transactionService: TransactionService,
+    private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -50,6 +51,7 @@ export class ChargepointScreenComponent implements OnInit{
       this.connectorId = parseInt(params['connector_id']);
       this.authService.user.subscribe((user) => {
         if(!user){
+          this.localStorageService.saveRedirectUrl(this.chargePointId, this.connectorId);
           this.router.navigate(['account/login']);
         }
 
