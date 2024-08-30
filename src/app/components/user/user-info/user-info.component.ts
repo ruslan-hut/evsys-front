@@ -5,6 +5,7 @@ import {User} from "../../../models/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {DataObject, SimpleDataObject} from "../../../models/data-object";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-user-info',
@@ -63,16 +64,14 @@ export class UserInfoComponent implements OnInit {
     return Array.isArray(value);
   }
 
-  objectKeys(obj: any): string[] {
-    return Object.keys(obj);
-  }
-
   loadUserData(username: string) {
     this.account.getUserInfo(username).subscribe(
       data => {
         this.user = data;
         this.makeUserInfo(data)
-        //console.log(this.userInfo);
+        if (environment.debug) {
+          console.log(`User info loaded`, data);
+        }
       })
   }
 
@@ -87,7 +86,7 @@ export class UserInfoComponent implements OnInit {
     if (this.dialogRef) {
       this.dialogRef.close();
     } else {
-      this.router.navigate(['/users']).then(r => console.log(r));
+      this.router.navigate(['/users']).then(() => {});
     }
   }
 

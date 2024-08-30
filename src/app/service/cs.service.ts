@@ -5,6 +5,7 @@ import {ErrorService} from "./error.service";
 import {environment} from "../../environments/environment";
 import {CsCommandResponse} from "../models/cs-command-response";
 import {CsCommand} from "../models/cs-command";
+import {CsResponse} from "../models/cs-response";
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,21 @@ export class CSService {
 
   hardRebootChargePoint(chargePointId: string): Observable<CsCommandResponse> {
     return this.sendCsCommand(chargePointId, 0, "Reset", "Hard")
+  }
+
+  processCentralSystemResponse(response: CsCommandResponse, description: string) {
+    const resp = (JSON.parse(response.info) as CsResponse);
+    if (resp.status == "Accepted" && response.status == 'success') {
+      this.errorService.handle(description);
+    } else {
+      if (resp.error != null) {
+        this.errorService.handle(resp.error);
+      }else{
+        this.errorService.handle(resp.status);
+      }
+      if (environment.debug) {
+        console.log(response)
+      }
+    }
   }
 }

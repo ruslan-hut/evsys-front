@@ -9,6 +9,7 @@ import {DialogData} from "../../models/dialog-data";
 import {TimeService} from "../../service/time.service";
 import {CSService} from "../../service/cs.service";
 import {ErrorService} from "../../service/error.service";
+import {environment} from "../../../environments/environment";
 
 
 @Component({
@@ -75,7 +76,7 @@ export class ChargepointInfoComponent implements OnInit{
         }
       } else {
         //do nothing
-        console.log("not rebooting")
+        console.log("reboot cancelled")
       }
     });
   }
@@ -86,7 +87,9 @@ export class ChargepointInfoComponent implements OnInit{
         this.errorService.handle("Soft Reset")
       } else {
         this.errorService.handle(response.info)
-        console.log(response)
+        if (environment.debug) {
+          console.log(response)
+        }
       }
     });
   }
@@ -97,7 +100,9 @@ export class ChargepointInfoComponent implements OnInit{
         this.errorService.handle("Hard Reset")
       } else {
         this.errorService.handle(response.info)
-        console.log(response)
+        if (environment.debug) {
+          console.log(response)
+        }
       }
     });
   }

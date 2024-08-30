@@ -1,12 +1,10 @@
-import {Component, Inject, OnInit, Optional} from "@angular/core";
+import {Component, Inject, Optional} from "@angular/core";
 import {TransactionService} from "../../service/transaction.service";
 import {Transaction} from "../../models/transaction";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialog-data";
 import {CSService} from "../../service/cs.service";
-import {ErrorService} from "../../service/error.service";
-import {CsResponse} from "../../models/cs-response";
 
 @Component({
   selector: 'transaction-info',
@@ -19,7 +17,6 @@ export class TransactionInfoComponent{
 
   constructor(
     private csService: CSService,
-    private errorService: ErrorService,
     public dialog: MatDialog,
     private transactionService: TransactionService,
     @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
@@ -83,23 +80,9 @@ export class TransactionInfoComponent{
       if (result === 'yes') {
         this.csService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id.toString()).subscribe({
           next: (result) => {
-            const resp = (JSON.parse(result.info) as CsResponse);
-            if (resp.status == "Accepted" && result.status == 'success') {
-              console.log("Transaction stopped")
-            } else {
-              if (resp.error != null) {
-                this.errorService.handle(resp.error);
-              }
-              else {
-                this.errorService.handle(resp.status);
-              }
-              console.log(result)
-            }
+            this.csService.processCentralSystemResponse(result, "Transaction stopped")
           }
         });
-      } else {
-        //do nothing
-        console.log("not stopping")
       }
     });
   }

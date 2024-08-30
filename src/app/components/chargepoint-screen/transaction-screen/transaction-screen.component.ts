@@ -1,14 +1,15 @@
-import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Transaction} from "../../../models/transaction";
 import {CSService} from "../../../service/cs.service";
 import {ErrorService} from "../../../service/error.service";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {TransactionService} from "../../../service/transaction.service";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {CsResponse} from "../../../models/cs-response";
 import {DialogData} from "../../../models/dialog-data";
 import {ChargepointService} from "../../../service/chargepoint.service";
 import {Chargepoint} from "../../../models/chargepoint";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-transaction-screen',
@@ -94,7 +95,9 @@ export class TransactionScreenComponent implements OnInit {
             }else{
               this.errorService.handle(resp.status);
             }
-            console.log(result)
+            if (environment.debug) {
+              console.log(result)
+            }
           }
         }
       });

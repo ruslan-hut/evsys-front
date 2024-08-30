@@ -10,12 +10,10 @@ import {DialogData} from "../../models/dialog-data";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {AccountService} from "../../service/account.service";
 import {PaymentMethod} from "../../models/payment-method";
-import {PaymentMethodComponent} from "../user-profile/payment-method/payment-method.component";
 import {PaymentPlan} from "../../models/payment-plan";
-import {TransactionService} from "../../service/transaction.service";
-import {AppModule} from "../../app.module";
 import {getConnectorName} from "../../models/connector";
 import {LocalStorageService} from "../../service/local-storage.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-chargepoint-screen',
@@ -109,7 +107,9 @@ export class ChargepointScreenComponent implements OnInit{
           }else{
             this.errorService.handle(resp.status);
           }
-          console.log(result)
+          if (environment.debug) {
+            console.log(result)
+          }
         }
       }
     });
@@ -140,6 +140,4 @@ export class ChargepointScreenComponent implements OnInit{
     this.router.navigate(['/user-profile']).then(() => {});
   }
 
-
-  protected readonly getConnectorName = getConnectorName;
 }

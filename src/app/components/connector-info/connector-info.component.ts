@@ -8,7 +8,6 @@ import {AccountService} from "../../service/account.service";
 import {CSService} from "../../service/cs.service";
 import {environment} from "../../../environments/environment";
 import {User} from "../../models/user";
-import {CsResponse} from "../../models/cs-response";
 import {ErrorService} from "../../service/error.service";
 import {ChargepointService} from "../../service/chargepoint.service";
 import {Router} from "@angular/router";
@@ -124,16 +123,14 @@ export class ConnectorInfoComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
         this.dialog.closeAll();
-        this.router.navigate(['/payment-methods']).then(r => {
+        this.router.navigate(['/payment-methods']).then(() => {
           if (!result) {
-            console.log(result)
+            if (environment.debug) {
+              console.log(result)
+            }
             this.errorService.handle("Failed to delete payment method")
           }
         });
-
-      } else {
-        //do nothing
-        console.log("not adding payment method")
       }
     });
   }
@@ -156,22 +153,9 @@ export class ConnectorInfoComponent implements OnInit {
       if (result === 'yes') {
         this.csService.startTransaction(connector.charge_point_id, parseInt(connector.connector_id)).subscribe({
           next: (result) => {
-            const resp = (JSON.parse(result.info) as CsResponse);
-            if (resp.status == "Accepted" && result.status == 'success') {
-              console.log("Transaction started")
-            } else {
-              if (resp.error != null) {
-                this.errorService.handle(resp.error);
-              }else{
-                this.errorService.handle(resp.status);
-              }
-              console.log(result)
-            }
+            this.csService.processCentralSystemResponse(result, "Transaction started")
           }
         });
-      } else {
-        //do nothing
-        console.log("not starting")
       }
     });
   }
@@ -196,22 +180,9 @@ export class ConnectorInfoComponent implements OnInit {
       if (result === 'yes') {
         this.csService.stopTransaction(connector.charge_point_id, parseInt(connector.connector_id), connector.current_transaction_id.toString()).subscribe({
           next: (result) => {
-            const resp = (JSON.parse(result.info) as CsResponse);
-            if (resp.status == "Accepted" && result.status == 'success') {
-              console.log("Transaction stopped")
-            } else {
-              if (resp.error != null) {
-                this.errorService.handle(resp.error);
-              }
-              else {
-                this.errorService.handle(resp.status);
-              }
-              console.log(result)
-            }
+            this.csService.processCentralSystemResponse(result, "Transaction stopped")
           }
         });
-      } else {
-        console.log("not stopping")
       }
     });
   }
@@ -234,22 +205,9 @@ export class ConnectorInfoComponent implements OnInit {
       if (result === 'yes') {
         this.csService.unlockConnector(connector.charge_point_id, parseInt(connector.connector_id)).subscribe({
           next: (result) => {
-            const resp = (JSON.parse(result.info) as CsResponse);
-            if (resp.status == "Accepted" && result.status == 'success') {
-              console.log("Connector unlocked")
-            } else {
-              if (resp.error != null) {
-                this.errorService.handle(resp.error);
-              }else{
-                this.errorService.handle(resp.status);
-              }
-              console.log(result)
-            }
+            this.csService.processCentralSystemResponse(result, "Connector unlocked")
           }
         });
-      } else {
-        //do nothing
-        console.log("not unlocking")
       }
     });
   }
