@@ -68,6 +68,7 @@ export class TransactionService  {
         updatedTransaction.meter_values.push(message.meter_value!!);
         updatedTransaction.consumed = message.power!!;
         updatedTransaction.price= message.price!!;
+        updatedTransaction.status = message.connector_status!!;
 
         this.transactions[index] = updatedTransaction;
         this.transactions$.next(this.transactions);

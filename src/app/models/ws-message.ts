@@ -10,4 +10,5 @@ export interface WsMessage {
   meter_value?: MeterValue;
   power?: number;
   price?: number;
+  connector_status?: string;
 }

@@ -122,5 +122,12 @@ export class TransactionScreenComponent implements OnInit {
     });
   }
 
+  getPowerRate(){
+    if(this.isCharging()){
+      return this.transaction.meter_values[this.transaction.meter_values.length - 1].power_rate;
+    }
+
+    return this.transaction.power_rate;
+  }
 
 }

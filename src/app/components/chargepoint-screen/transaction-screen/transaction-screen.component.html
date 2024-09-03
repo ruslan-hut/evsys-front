@@ -26,7 +26,7 @@
   </div>
   <div class="info-item">
     <span class="info-label">Power (current):</span>
-    <span class="info-value">{{ transaction.power_rate /1000 | number: '1.1-1'}} kW</span>
+    <span class="info-value">{{ getPowerRate() /1000 | number: '1.1-1'}} kW</span>
   </div>
   <div class="info-item">
     <span class="info-label">Consumed:</span>
