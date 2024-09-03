@@ -17,7 +17,7 @@ export class AuthGuard {
 
   canActivate(): boolean {
     const user = this.accountService.userValue;
-    return user.role === environment.admin;
+    return user.role === environment.admin || user.role === environment.operator;
   }
 
 }

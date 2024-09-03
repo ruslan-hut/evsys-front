@@ -7,6 +7,7 @@ import {ConfigKey, CsConfigResponse} from "../../models/cs-config-response";
 import {CsResponse} from "../../models/cs-response";
 import {MatTableDataSource} from "@angular/material/table";
 import {ErrorService} from "../../service/error.service";
+import {AccountService} from "../../service/account.service";
 
 @Component({
   selector: 'app-chargepoint-config',
@@ -26,6 +27,7 @@ export class ChargepointConfigComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private errorService: ErrorService,
+    public accountService: AccountService
   ) {
   }
 

@@ -1,6 +1,7 @@
 export const environment = {
   apiUrl: 'https://wattbrews.me/api/v1',
   admin: 'admin',
+  operator: 'operator',
   config: '/config/',
   readSysLog: '/log/sys',
   readBackLog: '/log/back',

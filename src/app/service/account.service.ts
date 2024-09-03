@@ -71,8 +71,16 @@ export class AccountService {
     })
   }
 
-  public get userValue(): User {
-    return this.userSubject.value;
+  public get userValue(): User{
+    return this.userSubject?.value;
+  }
+
+  public get isAdmin(): boolean {
+    return this.userValue?.role === environment.admin;
+  }
+
+  public get isOperator(): boolean {
+    return this.userValue?.role === environment.operator;
   }
 
   login(username: string, password: string) {

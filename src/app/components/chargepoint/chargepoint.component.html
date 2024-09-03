@@ -18,13 +18,13 @@
     </ng-container>
   </div>
   <mat-card-actions align="end" class="tool-panel">
-    <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()" *ngIf="isAdmin">
+    <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()" *ngIf="accountService.isAdmin || accountService.isOperator">
       <mat-icon class="edit-icon">settings</mat-icon>
     </button>
-    <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="isAdmin">
+    <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="accountService.isAdmin">
       <mat-icon class="edit-icon">edit</mat-icon>
     </button>
-    <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()" *ngIf="isAdmin">
+    <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()" *ngIf="accountService.isAdmin || accountService.isOperator">
       <mat-icon class="edit-icon">remove_red_eye</mat-icon>
     </button>
     <div class="space"></div>

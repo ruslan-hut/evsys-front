@@ -11,15 +11,12 @@ import {Connector} from "../../models/connector";
   templateUrl: './chargepoint.component.html',
   styleUrls: ['./chargepoint.component.css']
 })
-export class ChargepointComponent implements OnInit {
+export class ChargepointComponent{
   @Input() chargepoint: Chargepoint
-
-  isAdmin = false;
-  details = false
 
   constructor(
     private router: Router,
-    private accountService: AccountService,
+    public accountService: AccountService,
 
     public timeService: TimeService
     ) { }
@@ -40,16 +37,6 @@ export class ChargepointComponent implements OnInit {
     const chargepointId = this.chargepoint.charge_point_id;
 
     this.router.navigate(['points-info', { id: chargepointId }]);
-  }
-
-  ngOnInit(): void {
-    this.accountService.user.subscribe(user => {
-      if (user) {
-        this.isAdmin = user.role === environment.admin;
-      } else {
-        this.isAdmin = false;
-      }
-    });
   }
 
 }

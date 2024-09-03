@@ -10,6 +10,7 @@ import {DialogData} from "../../../models/dialog-data";
 import {ChargepointService} from "../../../service/chargepoint.service";
 import {Chargepoint} from "../../../models/chargepoint";
 import {environment} from "../../../../environments/environment";
+import {AccountService} from "../../../service/account.service";
 
 @Component({
   selector: 'app-transaction-screen',
@@ -28,7 +29,8 @@ export class TransactionScreenComponent implements OnInit {
     private transactionService: TransactionService,
     private csService: CSService,
     private errorService: ErrorService,
-    private chargePointService: ChargepointService
+    private chargePointService: ChargepointService,
+    public accountService: AccountService
   ) {
   }
 
