@@ -90,7 +90,9 @@ export class ChargepointService {
       if (message.data) {
         const updated = message.data;
         const index = this.chargePoints.findIndex(chp => chp.charge_point_id == updated);
-        console.log('Charge point updated' + message.data);
+        if (environment.debug) {
+          console.log(`Charge point update`, message);
+        }
         if (index !== -1) {
           this.getChargePoint(updated).subscribe(chargePoint => {
             this.chargePoints[index] = chargePoint;

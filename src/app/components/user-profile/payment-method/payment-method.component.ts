@@ -9,10 +9,10 @@ import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {Router} from "@angular/router";
 import {DialogData} from "../../../models/dialog-data";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-payment-method',
@@ -76,7 +76,9 @@ export class PaymentMethodComponent implements OnInit {
         if (result) {
           this.paymentMethod.is_default = result.is_default
         } else {
-          console.log(result)
+          if (environment.debug) {
+            console.log(result)
+          }
           this.errorService.handle("Failed to set default payment method")
         }
       });
@@ -112,9 +114,6 @@ export class PaymentMethodComponent implements OnInit {
               this.errorService.handle("Failed to delete payment method")
             }
           });
-      } else {
-        //do nothing
-        console.log("not rebooting")
       }
     });
   }
@@ -125,7 +124,9 @@ export class PaymentMethodComponent implements OnInit {
         if (result) {
           this.paymentMethod.description = result.description
         }else {
-          console.log(result)
+          if (environment.debug) {
+            console.log(result)
+          }
           this.errorService.handle("Failed to update payment method")
         }
       }

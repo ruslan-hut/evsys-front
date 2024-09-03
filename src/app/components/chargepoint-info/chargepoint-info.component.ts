@@ -8,7 +8,6 @@ import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialog-data";
 import {TimeService} from "../../service/time.service";
 import {CSService} from "../../service/cs.service";
-import {ErrorService} from "../../service/error.service";
 
 
 @Component({
@@ -27,7 +26,6 @@ export class ChargepointInfoComponent implements OnInit{
     private router: Router,
     public dialog: MatDialog,
     private csService: CSService,
-    private errorService: ErrorService,
   ) {
   }
 
@@ -48,7 +46,7 @@ export class ChargepointInfoComponent implements OnInit{
   })
 
   close(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/']).then(() => {});
   }
 
   reboot(mode: number): void {
@@ -73,32 +71,19 @@ export class ChargepointInfoComponent implements OnInit{
         else {
           this.softReboot();
         }
-      } else {
-        //do nothing
-        console.log("not rebooting")
       }
     });
   }
 
   softReboot(){
     this.csService.softRebootChargePoint(this.chargePointId).subscribe((response) => {
-      if (response.status === 'success') {
-        this.errorService.handle("Soft Reset")
-      } else {
-        this.errorService.handle(response.info)
-        console.log(response)
-      }
+      this.csService.processCentralSystemResponse(response, "Performing soft reset")
     });
   }
 
   hardReboot(){
     this.csService.hardRebootChargePoint(this.chargePointId).subscribe((response) => {
-      if (response.status === 'success') {
-        this.errorService.handle("Hard Reset")
-      } else {
-        this.errorService.handle(response.info)
-        console.log(response)
-      }
+      this.csService.processCentralSystemResponse(response, "Performing hard reset")
     });
   }
 

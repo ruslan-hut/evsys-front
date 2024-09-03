@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {AccountService} from "../../service/account.service";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {Router} from "@angular/router";
@@ -25,8 +24,7 @@ export class UserProfileComponent {
   }
 
   openPaymentMethods() {
-    this.router.navigate(['/payment-methods']).then(r =>
-      console.log('navigated to payment methods'));
+    this.router.navigate(['/payment-methods']).then(() => {})
   }
 
 }
