@@ -67,8 +67,8 @@
 
     <ng-template #notAvailable>
       <ng-container *ngIf="connector.state !== 'unavailable'">
-      <button *ngIf="connector.current_transaction_id > 0" mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
-      <button *ngIf="connector.current_transaction_id < 0" mat-button color="warn" (click)="unlockConnector(connector)">Unlock</button>
+      <button *ngIf="connector.current_transaction_id > 0" mat-button color="accent" (click)="stopConnector(connector)">Stop</button>
+      <button *ngIf="connector.current_transaction_id < 0" mat-button color="accent" (click)="unlockConnector(connector)">Unlock</button>
       </ng-container>
     </ng-template>
   </mat-action-row>

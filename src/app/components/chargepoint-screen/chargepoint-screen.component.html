@@ -44,7 +44,7 @@
   </mat-card-content>
 
   <mat-card-actions class="flex-container">
-    <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <button mat-raised-button color="accent" (click)="close()">Close</button>
     <div class="flex-spacer"></div>
     <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
     <ng-template #isNotOnline>

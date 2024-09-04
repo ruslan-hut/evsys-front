@@ -53,8 +53,8 @@
     <app-connector-form [connectors]="chargePoint.connectors | sortConnectors"></app-connector-form>
   </mat-card>
   <mat-card-actions>
+    <button mat-raised-button (click)="close()">Close</button>
     <button mat-raised-button color="primary" (click)="save()">Save</button>
-    <button mat-raised-button color="warn" (click)="close()">Close</button>
     <div class="flex-spacer"></div>
     <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
     <ng-template #isNotOnline>

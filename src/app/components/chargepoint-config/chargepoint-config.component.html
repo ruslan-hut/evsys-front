@@ -60,7 +60,7 @@
   </mat-card-content>
   <mat-progress-bar mode="indeterminate" *ngIf="loading" color="primary" class="progressbar"></mat-progress-bar>
   <mat-card-actions>
-    <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <button mat-raised-button (click)="close()">Close</button>
     <button mat-raised-button color="primary" (click)="reload()">Reload</button>
     <div class="flex-spacer"></div>
     <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>

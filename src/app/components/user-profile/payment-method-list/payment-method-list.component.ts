@@ -8,6 +8,7 @@ import {ErrorService} from "../../../service/error.service";
 import {Router} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-payment-method-list',
@@ -27,8 +28,8 @@ export class PaymentMethodListComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private errorService: ErrorService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +55,10 @@ export class PaymentMethodListComponent implements OnInit {
 
   addPaymentMethod() {
     this.router.navigate(['/bank']).then(() => {});
+  }
+
+  back(){
+    this.location.back();
   }
 
 }
