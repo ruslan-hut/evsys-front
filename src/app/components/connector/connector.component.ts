@@ -24,9 +24,15 @@ export class ConnectorComponent {
       return "limegreen";
     } else if (this.connector.state === "occupied") {
       return "orange";
-    } else {
+    } else if (this.connector.current_transaction_id>-1){
+      return "indigo";
+    }else {
       return "red";
     }
+  }
+
+  isDisabled() {
+    return this.connector.status.toLowerCase() === "unavailable";
   }
 
   getConnectorName(): string {
@@ -35,6 +41,23 @@ export class ConnectorComponent {
     } else {
       return this.connector.connector_id;
     }
+  }
+
+  getConnectorTypeIcon(): string {
+   switch (this.connector.type) {
+      case "Type 2":
+        return "assets/icons/ev_plug_type1.svg";
+      case "Type 1":
+        return "assets/icons/ev_plug_type2.svg";
+      case "CHAdeMO":
+        return "assets/icons/ev_plug_chademo.svg";
+      case "CCS1":
+        return "assets/icons/ev_plug_ccs1.svg";
+      case "CCS2":
+        return "assets/icons/ev_plug_ccs2.svg";
+      default:
+        return "assets/icons/power.svg";
+   }
   }
 
   openInfo() {

@@ -26,18 +26,65 @@
 }
 
 .custom-button {
-  height: 30px;
-  border-radius: 20px;
-  color: black !important;
-  font-size: 12px;
-  filter: saturate(95%);
-  border: 2px solid transparent;
-  border-color: indigo;
-  max-lines: 1;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: black;
+  background-color: white;
+  width: 250px;
+  height: fit-content;
+  z-index: 0;
+}
+
+.button-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.connector-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.connector-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+/* Пример динамического стиля */
+[data-available='true'] {
+  color: green;
+}
+
+[data-available='false'] {
+  color: red;
 }
 
 .fix-width {
-  width: 125px;
+  width: 140px;
 }
 
 .button-container {

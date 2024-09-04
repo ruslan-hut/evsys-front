@@ -1,10 +1,33 @@
 <mat-card-content class="connector-content">
-  <button *ngIf="connector.current_transaction_id<0; else noTransaction" mat-flat-button [style.border-color]="getConnectorColor()" class="data custom-button fix-width"
-          (click)="openInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>
-  <ng-template #noTransaction>
-  <button mat-flat-button class="data custom-button fix-width" *ngIf="connector.current_transaction_id>=0"
-          (click)="transactionInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>
-  </ng-template>
+  <button mat-flat-button
+          [ngStyle]="{ 'border-color': getConnectorColor(), 'border-width': '2px' }"
+          class="custom-button fix-width"
+          (click)="openInfo()"
+          [disabled]="isDisabled()">
+    <div class="button-content">
+      <div class="connector-number">
+        {{getConnectorName()}}
+      </div>
+      <div class="connector-info">
+        <div class="info-item">
+          <img src="{{getConnectorTypeIcon()}}" alt="Type" class="icon"/>
+          {{ this.connector.type }}
+        </div>
+        <div class="info-item">
+          <img src="assets/icons/bolt.svg" alt="Power" class="icon"/>
+          {{ this.connector.power }} kW
+        </div>
+        <div class="info-item" [ngStyle]="{ 'color': getConnectorColor() }">
+<!--          <img src="available-icon.svg" alt="Status" class="icon"/>-->
+          {{ this.connector.status | titlecase }}
+        </div>
+      </div>
+    </div>
+  </button>
+<!--  <ng-template #noTransaction>-->
+<!--  <button mat-flat-button class="data custom-button fix-width" *ngIf="connector.current_transaction_id>=0"-->
+<!--          (click)="transactionInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>-->
+<!--  </ng-template>-->
 </mat-card-content>
 
 
