@@ -14,6 +14,8 @@ import {PaymentPlan} from "../../models/payment-plan";
 import {getConnectorName} from "../../models/connector";
 import {LocalStorageService} from "../../service/local-storage.service";
 import {environment} from "../../../environments/environment";
+import {TransactionService} from "../../service/transaction.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chargepoint-screen',
@@ -27,7 +29,6 @@ export class ChargepointScreenComponent implements OnInit{
   connectorName: string = "";
   paymentMethod: PaymentMethod | undefined;
   paymentPlan: PaymentPlan | undefined;
-  transactionId: number = -1;
   isStarted: boolean = false;
   isAvailable: boolean = false;
   constructor(
@@ -36,9 +37,8 @@ export class ChargepointScreenComponent implements OnInit{
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
-    private csService: CSService,
-    private errorService: ErrorService,
     private localStorageService: LocalStorageService,
+    public transactionService: TransactionService,
   ) {
   }
 
@@ -55,17 +55,12 @@ export class ChargepointScreenComponent implements OnInit{
 
         this.authService.authState$.subscribe((auth) => {
           if (auth) {
-            this.chargePointService.subscribeOnUpdates();
             this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
               this.chargePoint= chargePoint;
               const connector = chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
               if (connector) {
                 this.isAvailable = connector.status != "Faulted";
                 this.connectorName = getConnectorName(connector);
-                if(connector.current_transaction_id != -1){
-                  this.isStarted = false;
-                  this.transactionId = connector.current_transaction_id;
-                }
 
                 if(!this.isAvailable && connector.current_transaction_id == -1){
                   this.alertDialog("Connector is not available");
@@ -92,27 +87,11 @@ export class ChargepointScreenComponent implements OnInit{
   }
 
   start(): void {
-    const connector = this.chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
     this.isStarted = true;
-    this.csService.startTransaction(this.chargePointId, this.connectorId).subscribe({
-      next: (result) => {
-        const resp = (JSON.parse(result.info) as CsResponse);
-        if (resp.status == "Accepted" && result.status == 'success') {
-          if (connector?.status != "Preparing") {
-            this.alertDialog("Connect your car");
-          }
-        } else {
-          if (resp.error != null) {
-            this.errorService.handle(resp.error);
-          }else{
-            this.errorService.handle(resp.status);
-          }
-          if (environment.debug) {
-            console.log(result)
-          }
-        }
-      }
-    });
+    this.transactionService.startTransaction(this.chargePointId, this.connectorId);
+    setTimeout(() => {
+      this.isStarted = false;
+    }, 10000);
   }
 
   alertDialog(text: string): void {

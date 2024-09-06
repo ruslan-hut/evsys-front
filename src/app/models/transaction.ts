@@ -18,4 +18,5 @@ export interface Transaction{
   is_charging: boolean,
   can_stop: boolean,
   meter_values: MeterValue[],
+  battery?: number
 }

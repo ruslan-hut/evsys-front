@@ -16,6 +16,9 @@ export class TransactionService  {
 
   private transactions: Transaction[] = [];
   private transactions$ = new BehaviorSubject<Transaction[]>([]);
+  public isWaiting = false;
+  public isStarted = false;
+  public transactionId: number = -1;
 
   constructor(
     private http: HttpClient,
@@ -47,6 +50,22 @@ export class TransactionService  {
     return this.transactions$;
   }
 
+  startTransaction(chargePointId: string, connectorId:number) {
+    this.websocketService.isConnected$.subscribe(status =>{
+      if (status) {
+        this.websocketService.send({command: 'StartTransaction', charge_point_id: chargePointId, connector_id: connectorId});
+      }
+    });
+  }
+
+  stopTransaction(chargePointId: string, connectorId:number, transactionID: number) {
+    this.websocketService.isConnected$.subscribe(status =>{
+      if (status) {
+        this.websocketService.send({command: 'StopTransaction', charge_point_id: chargePointId, connector_id: connectorId, transaction_id: transactionID});
+      }
+    });
+  }
+
   private errorHandler(err: HttpErrorResponse) {
     this.errorService.handle(err.message)
     return throwError(() => err.message)
@@ -60,25 +79,50 @@ export class TransactionService  {
       return;
     }
 
-    if (message.status == 'value' && message.info == 'Wh') {
-      const updated = message.id;
-      const index = this.transactions.findIndex(transaction => transaction.transaction_id == updated);
-      if (index !== -1 && updated) {
-        let updatedTransaction: Transaction = this.transactions[index];
-        updatedTransaction.meter_values.push(message.meter_value!!);
-        updatedTransaction.consumed = message.power!!;
-        updatedTransaction.price= message.price!!;
-        updatedTransaction.status = message.connector_status!!;
 
-        this.transactions[index] = updatedTransaction;
+    switch (message.status) {
+      case 'value':
+        this.updateTransaction(message);
+        break;
+      case 'waiting':
+        if(message.stage == 'start' || message.stage == 'stop') {
+          this.isWaiting = true;
+        }
+        break;
+      case 'success':
+        if(message.stage == 'start' || message.stage == 'stop') {
+          this.isWaiting = false;
+          this.isStarted = message.stage == 'start';
+          this.transactionId = message.id!!;
+        }
+        break;
+      case 'error':
+        this.isWaiting = false;
+        this.errorService.handle(message.info!!);
+        break;
+    }
+  }
+
+  private updateTransaction(message: WsMessage) {
+    const updated = message.id;
+    const index = this.transactions.findIndex(transaction => transaction.transaction_id == updated);
+    if (index !== -1 && updated) {
+      let updatedTransaction: Transaction = this.transactions[index];
+      updatedTransaction.meter_values.push(message.meter_value!!);
+      updatedTransaction.power_rate = message.power_rate!!;
+      updatedTransaction.consumed = message.power!!;
+      updatedTransaction.price= message.price!!;
+      updatedTransaction.status = message.connector_status!!;
+      updatedTransaction.battery = message.soc!!;
+
+      this.transactions[index] = updatedTransaction;
+      this.transactions$.next(this.transactions);
+    }
+    else if (index === -1 && updated) {
+      this.getTransaction(updated).subscribe(transaction => {
+        this.transactions.push(transaction);
         this.transactions$.next(this.transactions);
-      }
-      else if (index === -1 && updated) {
-        this.getTransaction(updated).subscribe(transaction => {
-          this.transactions.push(transaction);
-          this.transactions$.next(this.transactions);
-        });
-      }
+      });
     }
   }
 
@@ -86,6 +130,14 @@ export class TransactionService  {
     this.websocketService.isConnected$.subscribe(status =>{
       if (status) {
         this.websocketService.send({command: 'ListenTransaction', transaction_id: transactionID, charge_point_id: chargePointID, connector_id: connectorID});
+      }
+    });
+  }
+
+  unsubscribeFromUpdates(transactionID: number, chargePointID: string, connectorID: number): void {
+    this.websocketService.isConnected$.subscribe(status =>{
+      if (status) {
+        this.websocketService.send({command: 'StopListenTransaction', transaction_id: transactionID, charge_point_id: chargePointID, connector_id: connectorID});
       }
     });
   }

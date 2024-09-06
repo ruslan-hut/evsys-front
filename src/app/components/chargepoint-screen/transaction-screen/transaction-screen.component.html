@@ -22,21 +22,26 @@
   </div>
   <div class="info-item">
     <span class="info-label">Duration:</span>
-    <span class="info-value">{{ getDuration(transaction.duration)}}</span>
+    <span class="info-value">{{ getDuration()}}</span>
   </div>
   <div class="info-item">
-    <span class="info-label">Power (current):</span>
-    <span class="info-value">{{ getPowerRate() /1000 | number: '1.1-1'}} kW</span>
+    <span class="info-label">Power:</span>
+    <span class="info-value">{{ transaction.power_rate /1000 | number: '1.1-1'}} kW</span>
   </div>
   <div class="info-item">
     <span class="info-label">Consumed:</span>
-    <span class="info-value">{{ transaction.consumed /1000 | number: '1.1-1'}} kWh</span>
+    <span class="info-value">{{ transaction.consumed /1000 | number: '1.2-2'}} kWh</span>
   </div>
   <div class="info-item">
     <span class="info-label">Price:</span>
     <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} €</span>
   </div>
-  <ng-template [ngIf]="canStop || accountService.isAdmin || accountService.isOperator">
+  <div class="info-item" *ngIf="transaction.battery">
+    <span class="info-label">Battery:</span>
+    <span class="info-value">{{ transaction.battery | number}} %</span>
+  </div>
+  <mat-progress-bar *ngIf="transactionService.isWaiting" mode="indeterminate"></mat-progress-bar>
+  <ng-template *ngIf="transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)">
     <button mat-raised-button  color="accent" (click)="stop()">Stop</button>
   </ng-template>
 </ng-template>

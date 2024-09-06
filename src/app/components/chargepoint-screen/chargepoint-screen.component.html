@@ -1,9 +1,7 @@
 
 <mat-card *ngIf="chargePoint">
-
-
   <mat-card-content class="info-container">
-    <ng-template [ngIf]="transactionId == -1 && !isStarted">
+    <ng-template [ngIf]="!transactionService.isStarted">
       <div class="info-item">
         <span class="info-label">{{chargePoint.title}}</span>
       </div>
@@ -33,13 +31,14 @@
         <span class="info-label">Cost:</span>
         <span class="info-value">{{ paymentPlan?.price_per_kwh!!/100 | number: '1.2-2'}} €/kWh</span>
       </div>
-      <button mat-raised-button color="primary" (click)="start()" [disabled]="!isAvailable">Start</button>
+      <mat-progress-bar *ngIf="transactionService.isWaiting; else notWaiting" mode="indeterminate"></mat-progress-bar>
+      <ng-template #notWaiting>
+        <button mat-raised-button color="primary" (click)="start()" [disabled]="!isAvailable || isStarted">Start</button>
+      </ng-template>
     </ng-template>
-    <ng-template [ngIf]="transactionId != -1">
-      <app-transaction-screen [transactionId]="transactionId"></app-transaction-screen>
+    <ng-template [ngIf]="transactionService.isStarted">
+      <app-transaction-screen [transactionId]="transactionService.transactionId"></app-transaction-screen>
     </ng-template>
-
-    <mat-progress-bar mode="indeterminate" color="primary" class="progressbar" *ngIf="isStarted"></mat-progress-bar>
 
   </mat-card-content>
 

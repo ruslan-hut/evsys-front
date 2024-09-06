@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Transaction} from "../../../models/transaction";
 import {CSService} from "../../../service/cs.service";
 import {ErrorService} from "../../../service/error.service";
@@ -17,7 +17,7 @@ import {AccountService} from "../../../service/account.service";
   templateUrl: './transaction-screen.component.html',
   styleUrl: './transaction-screen.component.css'
 })
-export class TransactionScreenComponent implements OnInit {
+export class TransactionScreenComponent implements OnInit, OnDestroy {
 
   transaction: Transaction;
   @Input() transactionId!: number;
@@ -26,9 +26,7 @@ export class TransactionScreenComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private transactionService: TransactionService,
-    private csService: CSService,
-    private errorService: ErrorService,
+    public transactionService: TransactionService,
     private chargePointService: ChargepointService,
     public accountService: AccountService
   ) {
@@ -57,52 +55,32 @@ export class TransactionScreenComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.transactionService.unsubscribeFromUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
+  }
+
   isCharging(): boolean {
     return this.transaction.status.toLowerCase() === 'charging';
   }
 
-  getDuration(duration: number): string {
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration % 3600) / 60);
-
-    let formattedDuration = '';
-
-    if (hours < 10) {
-      formattedDuration += '0';
-    }
-    if (hours > 0) {
-      formattedDuration += hours + ':';
-    }else {
-      formattedDuration += '0:';
+  getDuration(): string {
+    let duration = 0;
+    if (this.transaction.meter_values.length > 0) {
+      duration = (new Date(this.transaction.meter_values[this.transaction.meter_values.length - 1].time).getTime() - new Date(this.transaction.time_started).getTime()) / 1000;
     }
 
-    if (minutes < 10) {
-      formattedDuration += '0';
-    }
-    formattedDuration += minutes;
+    return this.formatDuration(duration);
+  }
 
-    return formattedDuration;
+  formatDuration(duration: number): string {
+    let hours = Math.floor(duration / 3600);
+    let minutes = Math.floor((duration % 3600) / 60);
+    return `${hours}:${minutes}`;
   }
 
   stop(): void {
     if (this.canStop) {
-      this.csService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id.toString()).subscribe({
-        next: (result) => {
-          const resp = (JSON.parse(result.info) as CsResponse);
-          if (resp.status == "Accepted" && result.status == 'success') {
-            this.alertDialog("Transaction stopped");
-          } else {
-            if (resp.error != null) {
-              this.errorService.handle(resp.error);
-            }else{
-              this.errorService.handle(resp.status);
-            }
-            if (environment.debug) {
-              console.log(result)
-            }
-          }
-        }
-      });
+      this.transactionService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id);
     }
   }
 

@@ -11,4 +11,6 @@ export interface WsMessage {
   power?: number;
   price?: number;
   connector_status?: string;
+  power_rate?: number;
+  soc?: number;
 }
