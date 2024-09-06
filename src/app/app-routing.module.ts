@@ -22,6 +22,9 @@ import {ChargepointConfigComponent} from "./components/chargepoint-config/charge
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {PaymentMethodListComponent} from "./components/user-profile/payment-method-list/payment-method-list.component";
 import {ChargepointScreenComponent} from "./components/chargepoint-screen/chargepoint-screen.component";
+import {
+  TransactionScreenComponent
+} from "./components/chargepoint-screen/transaction-screen/transaction-screen.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -47,6 +50,7 @@ const routes: Routes = [
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'payment-methods', component: PaymentMethodListComponent},
   {path: 'new-transactions', component: ChargepointScreenComponent},
+  {path: 'current-transaction', component: TransactionScreenComponent},
 ];
 
 @NgModule({

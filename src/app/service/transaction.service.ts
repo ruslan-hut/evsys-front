@@ -18,7 +18,7 @@ export class TransactionService  {
   private transactions$ = new BehaviorSubject<Transaction[]>([]);
   public isWaiting = false;
   public isStarted = false;
-  public transactionId: number = -1;
+  public transactionId = new BehaviorSubject<number>(-1);
 
   constructor(
     private http: HttpClient,
@@ -93,7 +93,7 @@ export class TransactionService  {
         if(message.stage == 'start' || message.stage == 'stop') {
           this.isWaiting = false;
           this.isStarted = message.stage == 'start';
-          this.transactionId = message.id!!;
+          this.transactionId.next(message.id!!);
         }
         break;
       case 'error':

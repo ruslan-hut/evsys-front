@@ -1,3 +1,23 @@
+mat-card {
+  margin: 10px;
+}
+
+.online-status {
+  color: limegreen;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+button {
+  margin: 1px;
+}
 /* container for all the information */
 .info-container {
   display: flex;
@@ -32,8 +52,4 @@
 
 .progressbar {
   align-self: center;
-}
-
-button {
-  width: 100%;
 }

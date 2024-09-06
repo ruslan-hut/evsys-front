@@ -1,52 +1,65 @@
-<ng-template [ngIf]="transaction">
-  <div class="info-item">
-    <span class="info-label">{{ transaction.charge_point_title}}</span>
-  </div>
-  <div class="info-item">
-    <span class="info-value">{{ transaction.charge_point_address }}</span>
-  </div>
-  <div class="info-item" *ngIf="chargePoint">
-    <span class="info-value">{{chargePoint.description}}</span>
-  </div>
-  <div class="info-item">
-    <span class="info-label">Status:</span>
-    <span class="info-value">{{ transaction.status }}</span>
-  </div>
-  <mat-progress-bar *ngIf="isCharging(); else notCharging" mode="indeterminate"></mat-progress-bar>
-  <ng-template #notCharging>
-    <mat-progress-bar mode="determinate" [value]="0"></mat-progress-bar>
-  </ng-template>
-  <div class="info-item">
-    <span class="info-label">Start time:</span>
-    <span class="info-value">{{ transaction.time_started | date:"hh:mm"}}</span>
-  </div>
-  <div class="info-item">
-    <span class="info-label">Duration:</span>
-    <span class="info-value">{{ getDuration()}}</span>
-  </div>
-  <div class="info-item">
-    <span class="info-label">Power:</span>
-    <span class="info-value">{{ transaction.power_rate /1000 | number: '1.1-1'}} kW</span>
-  </div>
-  <div class="info-item">
-    <span class="info-label">Consumed:</span>
-    <span class="info-value">{{ transaction.consumed /1000 | number: '1.2-2'}} kWh</span>
-  </div>
-  <div class="info-item">
-    <span class="info-label">Price:</span>
-    <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} €</span>
-  </div>
-  <div class="info-item" *ngIf="transaction.battery">
-    <span class="info-label">Battery:</span>
-    <span class="info-value">{{ transaction.battery | number}} %</span>
-  </div>
-  <mat-progress-bar *ngIf="transactionService.isWaiting" mode="indeterminate"></mat-progress-bar>
-  <ng-template *ngIf="transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)">
-    <button mat-raised-button  color="accent" (click)="stop()">Stop</button>
-  </ng-template>
-</ng-template>
-<ng-template [ngIf]="!transaction">
-  <mat-progress-bar mode="indeterminate" color="primary" class="progressbar"></mat-progress-bar>
-</ng-template>
+<mat-card>
+    <mat-card-content class="info-container">
+      <ng-template [ngIf]="transaction">
+        <div class="info-item">
+          <span class="info-label">{{ transaction.charge_point_title}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-value">{{ transaction.charge_point_address }}</span>
+        </div>
+        <div class="info-item" *ngIf="chargePoint">
+          <span class="info-value">{{chargePoint.description}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Status:</span>
+          <span class="info-value">{{ transaction.status }}</span>
+        </div>
+        <mat-progress-bar *ngIf="isCharging(); else notCharging" mode="indeterminate"></mat-progress-bar>
+        <ng-template #notCharging>
+          <mat-progress-bar mode="determinate" [value]="0"></mat-progress-bar>
+        </ng-template>
+        <div class="info-item">
+          <span class="info-label">Start time:</span>
+          <span class="info-value">{{ transaction.time_started | date:"hh:mm"}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Duration:</span>
+          <span class="info-value">{{ getDuration()}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Power:</span>
+          <span class="info-value">{{ transaction.power_rate /1000 | number: '1.1-1'}} kW</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Consumed:</span>
+          <span class="info-value">{{ transaction.consumed /1000 | number: '1.2-2'}} kWh</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Price:</span>
+          <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} €</span>
+        </div>
+        <div class="info-item" *ngIf="transaction.battery">
+          <span class="info-label">Battery:</span>
+          <span class="info-value">{{ transaction.battery | number}} %</span>
+        </div>
+        <mat-progress-bar *ngIf="transactionService.isWaiting" mode="indeterminate"></mat-progress-bar>
+        <ng-template [ngIf]="!transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)">
+          <button mat-raised-button  color="accent" (click)="stop()">Stop</button>
+        </ng-template>
+      </ng-template>
+      <ng-template [ngIf]="!transaction">
+        <mat-progress-bar mode="indeterminate" color="primary" class="progressbar"></mat-progress-bar>
+      </ng-template>
+    </mat-card-content>
+
+  <mat-card-actions class="flex-container">
+    <button mat-raised-button (click)="close()">Close</button>
+    <div class="flex-spacer"></div>
+    <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
+    <ng-template #isNotOnline>
+      <mat-icon color="warn">cloud_off</mat-icon>
+    </ng-template>
+  </mat-card-actions>
+</mat-card>
 
 

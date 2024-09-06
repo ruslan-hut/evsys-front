@@ -31,6 +31,7 @@ export class ChargepointScreenComponent implements OnInit{
   paymentPlan: PaymentPlan | undefined;
   isStarted: boolean = false;
   isAvailable: boolean = false;
+  transactionId: number = -1;
   constructor(
     private authService: AccountService,
     private chargePointService: ChargepointService,
@@ -61,6 +62,10 @@ export class ChargepointScreenComponent implements OnInit{
               if (connector) {
                 this.isAvailable = connector.status != "Faulted";
                 this.connectorName = getConnectorName(connector);
+                this.transactionId = connector.current_transaction_id;
+                if(this.transactionId != -1){
+                  this.goToTransaction();
+                }
 
                 if(!this.isAvailable && connector.current_transaction_id == -1){
                   this.alertDialog("Connector is not available");
@@ -73,6 +78,15 @@ export class ChargepointScreenComponent implements OnInit{
             });
           }
         });
+
+        this.transactionService.transactionId.subscribe((transactionId) => {
+          if(transactionId != -1){
+            this.transactionId = transactionId;
+            this.goToTransaction();
+          }
+        });
+
+
       });
 
 
@@ -92,6 +106,10 @@ export class ChargepointScreenComponent implements OnInit{
     setTimeout(() => {
       this.isStarted = false;
     }, 10000);
+  }
+
+  goToTransaction(): void {
+    this.router.navigate(['/current-transaction'], { queryParams: { transaction_id: this.transactionId } });
   }
 
   alertDialog(text: string): void {

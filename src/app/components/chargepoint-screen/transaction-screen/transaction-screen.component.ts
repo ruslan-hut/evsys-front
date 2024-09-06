@@ -11,6 +11,7 @@ import {ChargepointService} from "../../../service/chargepoint.service";
 import {Chargepoint} from "../../../models/chargepoint";
 import {environment} from "../../../../environments/environment";
 import {AccountService} from "../../../service/account.service";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 @Component({
   selector: 'app-transaction-screen',
@@ -20,7 +21,7 @@ import {AccountService} from "../../../service/account.service";
 export class TransactionScreenComponent implements OnInit, OnDestroy {
 
   transaction: Transaction;
-  @Input() transactionId!: number;
+  transactionId!: number;
   canStop: boolean = false;
   chargePoint: Chargepoint;
 
@@ -28,29 +29,45 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public transactionService: TransactionService,
     private chargePointService: ChargepointService,
-    public accountService: AccountService
+    public accountService: AccountService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AccountService,
   ) {
   }
 
   ngOnInit(): void {
-    this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
-      this.transaction = transaction;
-      if(transaction){
-        this.canStop = transaction.can_stop;
-        this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
-        this.transactionService.getTransactions().subscribe((transactions) => {
-          transactions.forEach((transaction) => {
-            if (transaction.transaction_id === this.transaction.transaction_id) {
-              this.transaction = transaction;
-              this.canStop = transaction.can_stop;
-            }
-          });
-        });
+    this.route.queryParams.subscribe((params: Params) => {
+      this.transactionId = parseInt(params['transaction_id']);
+      this.authService.user.subscribe((user) => {
+        if(!user){
+          this.router.navigate(['account/login']);
+        }
 
-        this.chargePointService.getChargePoint(this.transaction.charge_point_id).subscribe((chargePoint) => {
-          this.chargePoint = chargePoint;
+        this.authService.authState$.subscribe((auth) => {
+          if (auth) {
+            this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
+              this.transaction = transaction;
+              if(transaction){
+                this.canStop = transaction.can_stop;
+                this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
+                this.transactionService.getTransactions().subscribe((transactions) => {
+                  transactions.forEach((transaction) => {
+                    if (transaction.transaction_id === this.transaction.transaction_id) {
+                      this.transaction = transaction;
+                      this.canStop = transaction.can_stop;
+                    }
+                  });
+                });
+
+                this.chargePointService.getChargePoint(this.transaction.charge_point_id).subscribe((chargePoint) => {
+                  this.chargePoint = chargePoint;
+                });
+              }
+            });
+          }
         });
-      }
+      });
     });
 
   }
@@ -111,6 +128,10 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
     }
 
     return this.transaction.power_rate;
+  }
+
+  close(): void {
+    this.router.navigate(['/points']);
   }
 
 }
