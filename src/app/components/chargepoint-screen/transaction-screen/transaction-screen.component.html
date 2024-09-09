@@ -44,7 +44,7 @@
         </div>
         <mat-progress-bar *ngIf="transactionService.isWaiting" mode="indeterminate"></mat-progress-bar>
         <ng-template [ngIf]="!transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)">
-          <button mat-raised-button  color="accent" (click)="stop()">Stop</button>
+          <button mat-flat-button  color="accent" (click)="stop()">Stop</button>
         </ng-template>
       </ng-template>
       <ng-template [ngIf]="!transaction">
@@ -53,7 +53,7 @@
     </mat-card-content>
 
   <mat-card-actions class="flex-container">
-    <button mat-raised-button (click)="close()">Close</button>
+    <button mat-stroked-button (click)="close()">Close</button>
     <div class="flex-spacer"></div>
     <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
     <ng-template #isNotOnline>

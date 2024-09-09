@@ -18,29 +18,28 @@
   </mat-card-content>
   <ng-template [ngIf]="!isEditing && paymentMethod.selected">
     <mat-card-actions align="start" class="tool-panel" *ngIf="paymentMethod.selected">
-        <button mat-raised-button class="title-with-icon" color="primary" (click)="setDefault()" *ngIf="!paymentMethod.is_default">
-          <mat-icon class="edit-icon">star</mat-icon>
-          Set default
-        </button>
-        <button mat-raised-button class="title-with-icon" color="primary" (click)="editDescription()">
-          <mat-icon class="edit-icon">edit</mat-icon>
-          Edit description
-        </button>
-        <button mat-raised-button class="title-with-icon" color="accent" (click)="delete()">
-          <mat-icon>delete</mat-icon>
-          Delete
-        </button>
+      <button mat-flat-button class="title-with-icon" color="accent" (click)="delete()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+      <button mat-flat-button class="title-with-icon" color="primary" (click)="editDescription()">
+        <mat-icon class="edit-icon">edit</mat-icon>
+        Edit description
+      </button>
+      <button mat-flat-button class="title-with-icon" color="primary" (click)="setDefault()" *ngIf="!paymentMethod.is_default">
+        <mat-icon class="edit-icon">star</mat-icon>
+        Set default
+      </button>
     </mat-card-actions>
   </ng-template>
   <ng-template [ngIf]="isEditing">
     <mat-card-actions align="start" class="tool-panel">
-      <button mat-raised-button class="title-with-icon" color="primary" (click)="saveDescription()">
+      <button mat-flat-button color="accent" (click)="cancelEdit()">
+        Close
+      </button>
+      <button mat-flat-button class="title-with-icon" color="primary" (click)="saveDescription()">
         <mat-icon class="edit-icon">save</mat-icon>
         Save
-      </button>
-      <button mat-raised-button class="title-with-icon" color="accent" (click)="cancelEdit()">
-        <mat-icon class="edit-icon">cancel</mat-icon>
-        Cancel
       </button>
     </mat-card-actions>
   </ng-template>
