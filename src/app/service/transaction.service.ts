@@ -82,6 +82,7 @@ export class TransactionService  {
 
     switch (message.status) {
       case 'value':
+        this.isWaiting = false;
         this.updateTransaction(message);
         break;
       case 'waiting':
@@ -93,7 +94,11 @@ export class TransactionService  {
         if(message.stage == 'start' || message.stage == 'stop') {
           this.isWaiting = false;
           this.isStarted = message.stage == 'start';
-          this.transactionId.next(message.id!!);
+          if(this.isStarted) {
+            this.transactionId.next(message.id!!);
+          }else {
+            this.transactionId.next(-1);
+          }
         }
         break;
       case 'error':

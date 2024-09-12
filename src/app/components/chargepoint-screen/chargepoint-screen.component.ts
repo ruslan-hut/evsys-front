@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Chargepoint} from "../../models/chargepoint";
 import {ChargepointService} from "../../service/chargepoint.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {CSService} from "../../service/cs.service";
 import {ErrorService} from "../../service/error.service";
@@ -44,7 +44,10 @@ export class ChargepointScreenComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.refreshData();
+  }
 
+  refreshData() {
     this.route.queryParams.subscribe((params: Params) => {
       this.chargePointId = params['charge_point_id'];
       this.connectorId = parseInt(params['connector_id']);
@@ -93,7 +96,6 @@ export class ChargepointScreenComponent implements OnInit{
     });
 
     window.scrollTo(0, 0);
-
   }
 
   close(): void {

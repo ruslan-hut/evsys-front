@@ -24,7 +24,8 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
   transactionId!: number;
   canStop: boolean = false;
   chargePoint: Chargepoint;
-
+  isClose: boolean = false;
+  isStoped: boolean = false;
   constructor(
     public dialog: MatDialog,
     public transactionService: TransactionService,
@@ -65,6 +66,7 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
                     if (transaction.transaction_id === this.transaction.transaction_id) {
                       this.transaction = transaction;
                       this.canStop = transaction.can_stop;
+                      this.isClose = false;
                     }
                   });
                 });
@@ -78,9 +80,16 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
         });
       });
     });
+
+    this.transactionService.transactionId.subscribe((transactionId) => {
+      if(!this.transactionService.isWaiting && !this.transactionService.isStarted && transactionId == -1 && this.isClose){
+        this.close();
+      }
+    });
   }
 
   ngOnDestroy() {
+    this.isClose = false;
     this.transactionService.unsubscribeFromUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
   }
 
@@ -90,8 +99,10 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
 
   getDuration(): string {
     let duration = 0;
-    if (this.transaction.meter_values.length > 0) {
-      duration = (new Date(this.transaction.meter_values[this.transaction.meter_values.length - 1].time).getTime() - new Date(this.transaction.time_started).getTime()) / 1000;
+    if(this.transaction.meter_values){
+      if (this.transaction.meter_values.length > 0) {
+        duration = (new Date(this.transaction.meter_values[this.transaction.meter_values.length - 1].time).getTime() - new Date(this.transaction.time_started).getTime()) / 1000;
+      }
     }
 
     return this.formatDuration(duration);
@@ -105,17 +116,15 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
   }
 
   stop(): void {
-    if (this.canStop) {
-      this.transactionService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id);
-    }
+    this.stopDialog("Are you sure?");
   }
 
-  alertDialog(text: string): void {
+  stopDialog(text: string): void {
     let dialogData: DialogData = {
-      title: "Alert",
+      title: "Stop transaction",
       content: text,
-      buttonYes: "Ok",
-      buttonNo: "",
+      buttonYes: "Yes",
+      buttonNo: "No",
       checkboxes: []
     };
 
@@ -126,7 +135,12 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
-
+        this.isClose = true;
+        this.isStoped = true;
+        this.transactionService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id);
+        setTimeout(() => {
+          this.isStoped = false;
+        }, 10000);
       }
     });
   }
@@ -140,7 +154,14 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
   }
 
   close(): void {
+    this.isClose = true;
     this.router.navigate(['/points']);
+  }
+
+  newTransaction(): void {
+    this.router.navigate(['new-transactions'], {
+      queryParams: { charge_point_id: this.transaction.charge_point_id, connector_id: this.transaction.connector_id }
+    });
   }
 
 }
