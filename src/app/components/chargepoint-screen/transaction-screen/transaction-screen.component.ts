@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, AfterViewChecked, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Transaction} from "../../../models/transaction";
 import {CSService} from "../../../service/cs.service";
 import {ErrorService} from "../../../service/error.service";
@@ -11,14 +11,14 @@ import {ChargepointService} from "../../../service/chargepoint.service";
 import {Chargepoint} from "../../../models/chargepoint";
 import {environment} from "../../../../environments/environment";
 import {AccountService} from "../../../service/account.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 
 @Component({
   selector: 'app-transaction-screen',
   templateUrl: './transaction-screen.component.html',
   styleUrl: './transaction-screen.component.css'
 })
-export class TransactionScreenComponent implements OnInit, OnDestroy {
+export class TransactionScreenComponent implements OnInit, OnDestroy{
 
   transaction: Transaction;
   transactionId!: number;
@@ -37,6 +37,15 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.refreshData();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.refreshData();
+      }
+    });
+  }
+
+  refreshData() {
     this.route.queryParams.subscribe((params: Params) => {
       this.transactionId = parseInt(params['transaction_id']);
       this.authService.user.subscribe((user) => {
@@ -69,7 +78,6 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
         });
       });
     });
-
   }
 
   ngOnDestroy() {
@@ -92,7 +100,8 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
   formatDuration(duration: number): string {
     let hours = Math.floor(duration / 3600);
     let minutes = Math.floor((duration % 3600) / 60);
-    return `${hours}:${minutes}`;
+    let minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    return `${hours}:${minutesString}`;
   }
 
   stop(): void {
