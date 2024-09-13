@@ -1,8 +1,6 @@
 import {Component, Input} from "@angular/core"
 import {Connector} from "../../models/connector";
 import {MatDialog} from "@angular/material/dialog";
-import {ConnectorInfoComponent} from "../connector-info/connector-info.component";
-import {TransactionInfoComponent} from "../transaction-info/transaction-info.component";
 import {Router} from "@angular/router";
 
 @Component({
@@ -68,17 +66,17 @@ export class ConnectorComponent {
 
     this.router.navigate(['new-transactions'], {
       queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
-    });
+    }).then(_ => {});
 
   }
 
-  transactionInfo() {
-    // const dialogRef = this.dialog.open(TransactionInfoComponent, {
-    //   width: '350px',
-    //   data: this.connector.current_transaction_id,
-    // });
-    this.router.navigate(['new-transactions'], {
-      queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
-    });
-  }
+  // transactionInfo() {
+  //   // const dialogRef = this.dialog.open(TransactionInfoComponent, {
+  //   //   width: '350px',
+  //   //   data: this.connector.current_transaction_id,
+  //   // });
+  //   this.router.navigate(['new-transactions'], {
+  //     queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
+  //   });
+  // }
 }

@@ -44,7 +44,7 @@
         </div>
         <mat-progress-bar *ngIf="transactionService.isWaiting" mode="indeterminate"></mat-progress-bar>
         <ng-template [ngIf]="!transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)">
-          <button mat-flat-button  color="accent" (click)="stop()" [disabled]="isStoped">Stop</button>
+          <button mat-flat-button  color="accent" (click)="stop()" [disabled]="stopButtonIsDisabled">Stop</button>
         </ng-template>
       </ng-template>
       <ng-template [ngIf]="!transaction">

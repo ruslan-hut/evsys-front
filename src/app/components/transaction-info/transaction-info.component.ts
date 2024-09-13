@@ -1,4 +1,4 @@
-import {Component, Inject, Optional} from "@angular/core";
+import {Component, Inject, OnInit, Optional} from "@angular/core";
 import {TransactionService} from "../../service/transaction.service";
 import {Transaction} from "../../models/transaction";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
@@ -11,9 +11,10 @@ import {CSService} from "../../service/cs.service";
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.css']
 })
-export class TransactionInfoComponent{
+export class TransactionInfoComponent implements OnInit{
 
   transaction: Transaction;
+  transactionId = -1;
 
   constructor(
     private csService: CSService,
@@ -23,19 +24,7 @@ export class TransactionInfoComponent{
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: number,
   ) {
     if (data) {
-      // data = 400;
-      this.transactionService.getTransaction(data).subscribe((transaction) => {
-        this.transaction= transaction;
-
-        this.transactionService.subscribeOnUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
-        this.transactionService.getTransactions().subscribe((transactions) => {
-          transactions.forEach((transaction) => {
-            if (transaction.transaction_id === this.transaction.transaction_id) {
-              this.transaction = transaction;
-            }
-          });
-        });
-      });
+      this.transactionId = data;
     }
   }
 
@@ -89,6 +78,25 @@ export class TransactionInfoComponent{
 
   isCharging(): boolean {
     return this.transaction.status.toLowerCase() === 'charging';
+  }
+
+  ngOnInit(): void {
+    if (this.transactionId >= 0) {
+      this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
+
+        this.transaction= transaction;
+
+        this.transactionService.subscribeOnUpdates(this.transactionId, this.transaction.charge_point_id, this.transaction.connector_id);
+
+        // this.transactionService.getTransactions().subscribe((transactions) => {
+        //   transactions.forEach((transaction) => {
+        //     if (transaction.transaction_id === this.transaction.transaction_id) {
+        //       this.transaction = transaction;
+        //     }
+        //   });
+        // });
+      });
+    }
   }
 
 }

@@ -1,17 +1,12 @@
-import {AfterContentChecked, AfterViewChecked, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {  Component, OnDestroy, OnInit} from '@angular/core';
 import {Transaction} from "../../../models/transaction";
-import {CSService} from "../../../service/cs.service";
-import {ErrorService} from "../../../service/error.service";
 import {MatDialog} from "@angular/material/dialog";
 import {TransactionService} from "../../../service/transaction.service";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
-import {CsResponse} from "../../../models/cs-response";
 import {DialogData} from "../../../models/dialog-data";
-import {ChargepointService} from "../../../service/chargepoint.service";
 import {Chargepoint} from "../../../models/chargepoint";
-import {environment} from "../../../../environments/environment";
 import {AccountService} from "../../../service/account.service";
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 @Component({
   selector: 'app-transaction-screen',
@@ -20,77 +15,66 @@ import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 })
 export class TransactionScreenComponent implements OnInit, OnDestroy{
 
+  private visibilityChangeEvent: any;
+
   transaction: Transaction;
   transactionId!: number;
   canStop: boolean = false;
   chargePoint: Chargepoint;
-  isClose: boolean = false;
-  isStoped: boolean = false;
+  stopButtonIsDisabled: boolean = false;
+
   constructor(
     public dialog: MatDialog,
     public transactionService: TransactionService,
-    private chargePointService: ChargepointService,
     public accountService: AccountService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AccountService,
   ) {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.transactionId = parseInt(params['transaction_id']);
+    });
   }
 
   ngOnInit(): void {
     this.refreshData();
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.refreshData();
-      }
-    });
+    this.visibilityChangeEvent = this.handleVisibilityChange.bind(this);
+    document.addEventListener('visibilitychange', this.visibilityChangeEvent)
   }
 
-  refreshData() {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.transactionId = parseInt(params['transaction_id']);
-      this.authService.user.subscribe((user) => {
-        if(!user){
-          this.router.navigate(['account/login']);
-        }
+  handleVisibilityChange(): void {
+    if (document.visibilityState === 'visible') {
+      this.refreshData();
+    }
+  }
 
-        this.authService.authState$.subscribe((auth) => {
-          if (auth) {
-            this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
+  private refreshData(): void {
+
+    this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
+
+      this.transaction = transaction;
+
+      if(transaction) {
+        this.canStop = transaction.can_stop;
+        this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
+
+        this.transactionService.getTransactions().subscribe((transactions) => {
+          transactions.forEach((transaction) => {
+            if (transaction.transaction_id === this.transaction.transaction_id) {
               this.transaction = transaction;
-              if(transaction){
-                this.canStop = transaction.can_stop;
-                this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
-                this.transactionService.getTransactions().subscribe((transactions) => {
-                  transactions.forEach((transaction) => {
-                    if (transaction.transaction_id === this.transaction.transaction_id) {
-                      this.transaction = transaction;
-                      this.canStop = transaction.can_stop;
-                      this.isClose = false;
-                    }
-                  });
-                });
-
-                this.chargePointService.getChargePoint(this.transaction.charge_point_id).subscribe((chargePoint) => {
-                  this.chargePoint = chargePoint;
-                });
-              }
-            });
-          }
+              this.canStop = transaction.can_stop;
+            }
+          });
         });
-      });
-    });
-
-    this.transactionService.transactionId.subscribe((transactionId) => {
-      if(!this.transactionService.isWaiting && !this.transactionService.isStarted && transactionId == -1 && this.isClose){
-        this.close();
+      } else {
+        this.close()
       }
     });
+
   }
 
   ngOnDestroy() {
-    this.isClose = false;
     this.transactionService.unsubscribeFromUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
+    document.removeEventListener('visibilitychange', this.visibilityChangeEvent)
   }
 
   isCharging(): boolean {
@@ -135,33 +119,36 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
-        this.isClose = true;
-        this.isStoped = true;
+        this.stopButtonIsDisabled = true;
         this.transactionService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id);
-        setTimeout(() => {
-          this.isStoped = false;
-        }, 10000);
+        // setTimeout(() => {
+        //   this.isStopped = false;
+        // }, 10000);
+        this.transactionService.transactionId.subscribe((transactionId) => {
+          if(transactionId == -1){
+            this.close();
+          }
+        });
       }
     });
   }
 
-  getPowerRate(){
-    if(this.isCharging()){
-      return this.transaction.meter_values[this.transaction.meter_values.length - 1].power_rate;
-    }
-
-    return this.transaction.power_rate;
-  }
+  // getPowerRate(){
+  //   if(this.isCharging()){
+  //     return this.transaction.meter_values[this.transaction.meter_values.length - 1].power_rate;
+  //   }
+  //
+  //   return this.transaction.power_rate;
+  // }
 
   close(): void {
-    this.isClose = true;
-    this.router.navigate(['/points']);
+    this.router.navigate(['/points']).then(_ => {});
   }
 
-  newTransaction(): void {
-    this.router.navigate(['new-transactions'], {
-      queryParams: { charge_point_id: this.transaction.charge_point_id, connector_id: this.transaction.connector_id }
-    });
-  }
+  // newTransaction(): void {
+  //   this.router.navigate(['new-transactions'], {
+  //     queryParams: { charge_point_id: this.transaction.charge_point_id, connector_id: this.transaction.connector_id }
+  //   });
+  // }
 
 }

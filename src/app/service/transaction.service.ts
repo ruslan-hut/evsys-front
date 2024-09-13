@@ -6,7 +6,6 @@ import {environment} from "../../environments/environment";
 import {Transaction} from "../models/transaction";
 import {WebsocketService} from "./websocket.service";
 import {WsMessage} from "../models/ws-message";
-import {Chargepoint} from "../models/chargepoint";
 import {AccountService} from "./account.service";
 
 @Injectable({

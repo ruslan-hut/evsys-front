@@ -115,7 +115,7 @@ export class WebsocketService implements OnDestroy {
       return;
     }
     if (environment.debug) {
-      console.log('WS >> ', message.command);
+      console.log('WS >> ', message.command, message.charge_point_id, message.connector_id, message.transaction_id);
     }
     if (this.token) {
       message.token = this.token;

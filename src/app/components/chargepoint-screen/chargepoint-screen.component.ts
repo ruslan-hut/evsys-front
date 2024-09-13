@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Chargepoint} from "../../models/chargepoint";
 import {ChargepointService} from "../../service/chargepoint.service";
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {CSService} from "../../service/cs.service";
-import {ErrorService} from "../../service/error.service";
-import {CsResponse} from "../../models/cs-response";
 import {DialogData} from "../../models/dialog-data";
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {AccountService} from "../../service/account.service";
@@ -13,9 +10,7 @@ import {PaymentMethod} from "../../models/payment-method";
 import {PaymentPlan} from "../../models/payment-plan";
 import {getConnectorName} from "../../models/connector";
 import {LocalStorageService} from "../../service/local-storage.service";
-import {environment} from "../../../environments/environment";
 import {TransactionService} from "../../service/transaction.service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chargepoint-screen',
@@ -23,6 +18,7 @@ import {Subscription} from "rxjs";
   styleUrl: './chargepoint-screen.component.css'
 })
 export class ChargepointScreenComponent implements OnInit{
+
   chargePointId: string;
   connectorId: number;
   chargePoint: Chargepoint;
@@ -32,6 +28,7 @@ export class ChargepointScreenComponent implements OnInit{
   isStarted: boolean = false;
   isAvailable: boolean = false;
   transactionId: number = -1;
+
   constructor(
     private authService: AccountService,
     private chargePointService: ChargepointService,
@@ -49,23 +46,29 @@ export class ChargepointScreenComponent implements OnInit{
 
   refreshData() {
     this.route.queryParams.subscribe((params: Params) => {
+
       this.chargePointId = params['charge_point_id'];
       this.connectorId = parseInt(params['connector_id']);
+
       this.authService.user.subscribe((user) => {
         if(!user){
           this.localStorageService.saveRedirectUrl(this.chargePointId, this.connectorId);
-          this.router.navigate(['account/login']);
+          this.router.navigate(['account/login']).then(() => {});
         }
 
         this.authService.authState$.subscribe((auth) => {
           if (auth) {
+
             this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
+
               this.chargePoint= chargePoint;
               const connector = chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
+
               if (connector) {
                 this.isAvailable = connector.status != "Faulted";
                 this.connectorName = getConnectorName(connector);
                 this.transactionId = connector.current_transaction_id;
+
                 if(this.transactionId != -1){
                   this.goToTransaction();
                 }
@@ -74,11 +77,14 @@ export class ChargepointScreenComponent implements OnInit{
                   this.alertDialog("Connector is not available");
                 }
               }
+
             });
+
             this.authService.getUserInfo(user.username).subscribe((info) => {
               this.paymentMethod = info.payment_methods?.find((pm) => pm.is_default);
               this.paymentPlan = info.payment_plans?.find((pp) => pp.is_active);
             });
+
           }
         });
 
@@ -99,7 +105,7 @@ export class ChargepointScreenComponent implements OnInit{
   }
 
   close(): void {
-    this.router.navigate(['/points']);
+    this.router.navigate(['/points']).then(_ => {});
   }
 
   start(): void {
@@ -111,7 +117,7 @@ export class ChargepointScreenComponent implements OnInit{
   }
 
   goToTransaction(): void {
-    this.router.navigate(['/current-transaction'], { queryParams: { transaction_id: this.transactionId } });
+    this.router.navigate(['/current-transaction'], { queryParams: { transaction_id: this.transactionId } }).then(() => {});
   }
 
   alertDialog(text: string): void {
