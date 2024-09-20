@@ -48,27 +48,32 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
   }
 
   private refreshData(): void {
+    this.accountService.authState$.subscribe((auth) => {
+      if(auth){
+        this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
 
-    this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
+          this.transaction = transaction;
 
-      this.transaction = transaction;
+          if(transaction) {
+            this.canStop = transaction.can_stop;
+            this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
 
-      if(transaction) {
-        this.canStop = transaction.can_stop;
-        this.transactionService.subscribeOnUpdates(transaction.transaction_id, transaction.charge_point_id, transaction.connector_id);
-
-        this.transactionService.getTransactions().subscribe((transactions) => {
-          transactions.forEach((transaction) => {
-            if (transaction.transaction_id === this.transaction.transaction_id) {
-              this.transaction = transaction;
-              this.canStop = transaction.can_stop;
-            }
-          });
+            this.transactionService.getTransactions().subscribe((transactions) => {
+              transactions.forEach((transaction) => {
+                if (transaction.transaction_id === this.transaction.transaction_id) {
+                  this.transaction = transaction;
+                  this.canStop = transaction.can_stop;
+                }
+              });
+            });
+          } else {
+            this.close()
+          }
         });
-      } else {
-        this.close()
       }
-    });
+    })
+
+
 
   }
 
