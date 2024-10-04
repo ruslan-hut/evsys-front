@@ -39,6 +39,7 @@ export class TransactionService  {
   }
 
   getTransaction(id: number): Observable<Transaction> {
+    this.transactionId = new BehaviorSubject<number>(id);
     return this.http.get<Transaction>(environment.apiUrl + environment.transactionInfo + id)
       .pipe(
         catchError(this.errorHandler.bind(this))
