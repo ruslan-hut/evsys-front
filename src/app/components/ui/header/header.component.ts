@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
         } else {
           this.username = user.username;
         }
-        this.isAdmin = user.role === environment.admin;
+        this.isAdmin = (user.role === environment.admin || user.role === environment.operator);
       } else {
         this.username = '';
       }
