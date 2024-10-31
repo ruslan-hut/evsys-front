@@ -1,10 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import {BehaviorSubject, Observable, Subscription, timer} from "rxjs";
+import { BehaviorSubject, Observable, Subscription, timer, throwError } from "rxjs";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from "../../environments/environment";
 import { WsMessage } from "../models/ws-message";
 import { AccountService } from "./account.service";
 import { WsRequest } from "../models/ws-request";
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,9 @@ export class WebsocketService implements OnDestroy {
   ngOnDestroy() {
     this.stopPing();
     this.close();
+    if (this.pingSubscription) {
+      this.pingSubscription.unsubscribe();
+    }
   }
 
   private connect(): void {
@@ -65,18 +69,26 @@ export class WebsocketService implements OnDestroy {
     });
 
     this.messages$ = this.socket$.pipe(
-      // timeout(60000), // 60 seconds to receive a message/ping response
-      // catchError(err => {
-      //   if (err.name === 'TimeoutError') {
-      //     this.reconnect();
-      //   }
-      //   return throwError(() => new Error('WS: connection error'));
-      // })
+      catchError(err => {
+        if (environment.debug) {
+          console.log('WS: connection error', err);
+        }
+        this.reconnect();
+        return throwError(() => new Error('WS: connection error'));
+      })
     );
 
-    this.socket$.subscribe(message => {
-      if (environment.debug) {
-        console.log('WS << ', message);
+    this.socket$.subscribe({
+      next: message => {
+        if (environment.debug) {
+          console.log('WS << ', message);
+        }
+      },
+      error: err => {
+        if (environment.debug) {
+          console.log('WS: subscription error', err);
+        }
+        this.reconnect();
       }
     });
   }
