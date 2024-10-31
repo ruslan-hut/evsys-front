@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, timer, throwError } from "rxjs";
+import {BehaviorSubject, Observable, Subscription, timer, throwError, retry} from "rxjs";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from "../../environments/environment";
 import { WsMessage } from "../models/ws-message";
@@ -16,14 +16,10 @@ export class WebsocketService implements OnDestroy {
   private pingInterval$: Observable<number> = timer(10000, 30000); // Ping every 30 seconds
   private pingSubscription: Subscription;
 
+  private connectionCount = 0;
   private isConnected = new BehaviorSubject<boolean>(false);
   isConnected$ = this.isConnected.asObservable();
-
   token: string | null = null;
-
-  private reconnectionAttempts = 0;
-  private readonly maxReconnectionAttempts = 20; // Set max attempts to prevent infinite retrying
-  private reconnectionInterval = 1000; // Start with 1 second
 
   constructor(
     private accountService: AccountService
@@ -34,7 +30,6 @@ export class WebsocketService implements OnDestroy {
         this.connect();
       }
     });
-    this.startPing();
   }
 
   ngOnDestroy() {
@@ -50,11 +45,12 @@ export class WebsocketService implements OnDestroy {
       url: environment.wsUrl,
       openObserver: {
         next: () => {
+          this.connectionCount++;
           if (environment.debug) {
-            console.log('WS: connection opened');
+            console.log('WS: connection opened', this.connectionCount);
           }
           this.isConnected.next(true);
-          this.reconnectionAttempts = 0; // Reset on successful connection
+          this.startPing();
         }
       },
       closeObserver: {
@@ -63,7 +59,7 @@ export class WebsocketService implements OnDestroy {
             console.log('WS: connection closed');
           }
           this.isConnected.next(false);
-          this.reconnect();
+          this.stopPing();
         }
       }
     });
@@ -73,9 +69,9 @@ export class WebsocketService implements OnDestroy {
         if (environment.debug) {
           console.log('WS: connection error', err);
         }
-        this.reconnect();
         return throwError(() => new Error('WS: connection error'));
-      })
+      }),
+      retry({delay: 5000}),
     );
 
     this.socket$.subscribe({
@@ -86,24 +82,10 @@ export class WebsocketService implements OnDestroy {
       },
       error: err => {
         if (environment.debug) {
-          console.log('WS: subscription error', err);
+          console.log('WS: message reading error', err);
         }
-        this.reconnect();
       }
     });
-  }
-
-  private reconnect(): void {
-    if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
-      setTimeout(() => {
-        this.reconnectionAttempts++;
-        this.connect();
-      }, this.reconnectionInterval * this.reconnectionAttempts);
-
-      this.reconnectionInterval = Math.min(this.reconnectionInterval * 2, 30000);
-    } else if (environment.debug) {
-      console.log('WS: max reconnection attempts reached; giving up');
-    }
   }
 
   private startPing(): void {
