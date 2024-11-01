@@ -14,6 +14,9 @@
         <span>Profile</span>
       </button>
       <div *ngIf="isAdmin">
+        <button mat-menu-item (click)="navigateTo('/statistic')">
+          <span>Statistic</span>
+        </button>
         <button mat-menu-item (click)="navigateTo('/log/system')">
           <span>System log</span>
         </button>

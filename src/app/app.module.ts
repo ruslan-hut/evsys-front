@@ -29,6 +29,7 @@ import {SortConnectorsPipe} from "./components/pipes/sortConnectorsPipe";
 import {PromoComponent} from "./components/promo/promo.component";
 import {PromoDialogComponent} from "./components/dialogs/promo-dialog/promo-dialog.component";
 import {PromoListComponent} from "./components/promo-list/promo-list.component";
+import {StatisticComponent} from "./components/statistic/statistic.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -66,6 +67,11 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ChargepointScreenComponent} from "./components/chargepoint-screen/chargepoint-screen.component";
 import {PaymentMethodComponent} from "./components/user-profile/payment-method/payment-method.component";
 import {TransactionScreenComponent} from "./components/chargepoint-screen/transaction-screen/transaction-screen.component";
+import {
+  MatDatepickerModule,
+} from "@angular/material/datepicker";
+import {MatNativeDateModule, MatOption} from "@angular/material/core";
+import {MatSelect} from "@angular/material/select";
 
 export function initializeApp(firebaseService: FirebaseService) {
   return () => firebaseService.loadConfig();
@@ -107,7 +113,8 @@ export function initializeApp(firebaseService: FirebaseService) {
     PromoListComponent,
     ChargepointConfigComponent,
     ChargepointScreenComponent,
-    TransactionScreenComponent
+    TransactionScreenComponent,
+    StatisticComponent
   ],
   bootstrap: [AppComponent], imports: [BrowserModule,
     AppRoutingModule,
@@ -132,7 +139,9 @@ export function initializeApp(firebaseService: FirebaseService) {
     MatDialogModule,
     MatListModule,
     MatCheckboxModule,
-    MatRadioModule, MatProgressSpinner, PaymentMethodComponent],
+    MatRadioModule, MatProgressSpinner, PaymentMethodComponent, MatDatepickerModule,
+    MatNativeDateModule, MatSelect, MatOption,
+  ],
   exports: [
     TransactionInfoComponent
   ],

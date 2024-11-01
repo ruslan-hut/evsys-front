@@ -25,6 +25,7 @@ import {ChargepointScreenComponent} from "./components/chargepoint-screen/charge
 import {
   TransactionScreenComponent
 } from "./components/chargepoint-screen/transaction-screen/transaction-screen.component";
+import {StatisticComponent} from "./components/statistic/statistic.component";
 
 const routes: Routes = [
   {path: 'log/system', component: LoggerComponent, canActivate: [authGuard]},
@@ -51,6 +52,7 @@ const routes: Routes = [
   {path: 'payment-methods', component: PaymentMethodListComponent},
   {path: 'new-transactions', component: ChargepointScreenComponent},
   {path: 'current-transaction', component: TransactionScreenComponent},
+  {path: 'statistic', component: StatisticComponent}
 ];
 
 @NgModule({
