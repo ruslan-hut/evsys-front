@@ -32,7 +32,7 @@
   <!-- User Role Dropdown -->
   <mat-form-field appearance="outline">
     <mat-label>Select Group</mat-label>
-    <mat-select [(value)]="selectedGroup" (selectionChange)="onFilterChange()">
+    <mat-select [(value)]="selectedGroup">
       <mat-option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -40,7 +40,7 @@
   <!-- Data Type Dropdown -->
   <mat-form-field appearance="outline">
     <mat-label>Select Report Type</mat-label>
-    <mat-select [(value)]="selectedDataType" (selectionChange)="onFilterChange()">
+    <mat-select [(value)]="selectedDataType">
       <mat-option value="month">Month</mat-option>
       <mat-option value="user">User</mat-option>
     </mat-select>
@@ -56,52 +56,64 @@
 <mat-card>
   <table mat-table [dataSource]="displayedData">
     <ng-container matColumnDef="name" *ngIf="selectedDataType === 'user'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Name </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Name </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ user.user }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell">Total</td>
     </ng-container>
 
     <ng-container matColumnDef="userCount" *ngIf="selectedDataType === 'user'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Count </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell" > Count </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ user.count }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ totalUserCount }} </td>
     </ng-container>
 
     <ng-container matColumnDef="userWatts" *ngIf="selectedDataType === 'user'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> kWatts </th>
-      <td mat-cell *matCellDef="let user" class="center-text"> {{ (user.total / 1000) | number:'1.1-1'  }} </td>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> kWatts </th>
+      <td mat-cell *matCellDef="let user" class="center-text"> {{ (user.total / 1000) | number:'1.1-1' }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ (totalUserWatts  / 1000) | number:'1.1-1' }} </td>
     </ng-container>
 
     <ng-container matColumnDef="userAvgWatts" *ngIf="selectedDataType === 'user'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Avg kWatts </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Avg kWatts </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ (user.average / 1000) | number:'1.1-1' }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ (avgUserWatts / 1000) | number:'1.1-1' }} </td>
     </ng-container>
 
+    <!-- Columns for 'month' data type -->
     <ng-container matColumnDef="year" *ngIf="selectedDataType === 'month'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Year </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Year </th>
       <td mat-cell *matCellDef="let month" class="center-text"> {{ month.year }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> Total </td>
     </ng-container>
 
     <ng-container matColumnDef="month" *ngIf="selectedDataType === 'month'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Month </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Month </th>
       <td mat-cell *matCellDef="let month" class="center-text"> {{ month.month }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> </td>
     </ng-container>
 
     <ng-container matColumnDef="count" *ngIf="selectedDataType === 'month'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Count </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Count </th>
       <td mat-cell *matCellDef="let month" class="center-text"> {{ month.count }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ totalMonthCount }} </td>
     </ng-container>
 
     <ng-container matColumnDef="watts" *ngIf="selectedDataType === 'month'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> kWatts </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> kWatts </th>
       <td mat-cell *matCellDef="let month" class="center-text"> {{ (month.total / 1000) | number:'1.1-1' }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ (totalMonthWatts / 1000) | number:'1.1-1' }} </td>
     </ng-container>
 
     <ng-container matColumnDef="avgWatts" *ngIf="selectedDataType === 'month'">
-      <th mat-header-cell *matHeaderCellDef class="center-text"> Avg kWatts </th>
+      <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Avg kWatts </th>
       <td mat-cell *matCellDef="let month" class="center-text"> {{ (month.average / 1000) | number:'1.1-1' }} </td>
+      <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ (avgMonthWatts / 1000) | number:'1.1-1' }} </td>
     </ng-container>
 
+    <!-- Table Rows -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
   </table>
 </mat-card>
 

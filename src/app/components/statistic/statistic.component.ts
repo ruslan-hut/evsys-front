@@ -31,12 +31,32 @@ export class StatisticComponent {
 
   inProgress = false;
 
+  totalUserCount = 0;
+  totalUserWatts = 0;
+  avgUserWatts = 0;
+
+  totalMonthCount = 0;
+  totalMonthWatts = 0;
+  avgMonthWatts = 0;
+
   constructor(
     private statsService: StatsService
   ) {
     this.groups = this.statsService.getGroups()
     this.selectedGroup = this.groups[0].id;
     this.updateDisplayedData();
+  }
+
+  calculateAggregates() {
+    if (this.selectedDataType === 'user') {
+      this.totalUserCount = this.displayedData.reduce((sum, user) => sum + user.count, 0);
+      this.totalUserWatts = this.displayedData.reduce((sum, user) => sum + user.total, 0);
+      this.avgUserWatts = this.totalUserWatts / this.totalUserCount;
+    } else if (this.selectedDataType === 'month') {
+      this.totalMonthCount = this.displayedData.reduce((sum, month) => sum + month.count, 0);
+      this.totalMonthWatts = this.displayedData.reduce((sum, month) => sum + month.total, 0);
+      this.avgMonthWatts = this.totalMonthWatts / this.totalMonthCount;
+    }
   }
 
   // Method to set the date range
@@ -68,11 +88,6 @@ export class StatisticComponent {
     return { start, end };
   }
 
-  // Method to handle filter change
-  onFilterChange() {
-    this.updateDisplayedData();
-  }
-
   // Method to update displayed data based on selected data type
   updateDisplayedData() {
     if (this.selectedDataType === 'month') {
@@ -82,6 +97,7 @@ export class StatisticComponent {
       this.displayedData = this.userStats;
       this.displayedColumns = ['name', 'userCount', 'userWatts', 'userAvgWatts'];
     }
+    this.calculateAggregates();
     this.inProgress = false;
   }
 

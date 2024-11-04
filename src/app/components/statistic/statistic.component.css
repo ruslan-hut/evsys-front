@@ -41,6 +41,21 @@ mat-card {
   margin: 10px;
 }
 
+.footer-cell {
+  font-weight: bold; /* Bold text */
+  color: #333; /* Dark text for contrast */
+  border-top: 2px solid #ccc; /* Top border to separate from rows above */
+  padding: 8px; /* Add padding for spacing */
+  text-align: center;
+}
+
+.header-cell {
+  font-weight: bold; /* Bold text */
+  color: #333; /* Dark text for contrast */
+  padding: 8px; /* Add padding for spacing */
+  text-align: center;
+}
+
 
 
 
