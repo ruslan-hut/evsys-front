@@ -11,6 +11,9 @@ export const environment = {
   transactionInfo: '/transactions/info/',
   wsUrl: 'wss://wattbrews.me/ws',
   sendCommand: '/csc',
+  report: '/report',
+  monthReport: '/month',
+  userReport: '/user',
   debug: false,
   firebaseConfig: {
     apiKey: "fb-api-key",

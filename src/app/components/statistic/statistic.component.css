@@ -37,6 +37,10 @@
   flex-grow: 1; /* Allow the form field to grow and fill available space */
 }
 
+mat-card {
+  margin: 10px;
+}
+
 
 
 

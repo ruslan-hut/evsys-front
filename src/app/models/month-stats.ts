@@ -1,7 +1,7 @@
 export interface MonthStats {
   year: number;
   month: number;
+  total: number;
   count: number;
-  watts: number;
-  avgWatts: number;
+  average: number;
 }

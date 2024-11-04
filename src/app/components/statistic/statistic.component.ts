@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {MonthStats} from "../../models/month-stats";
 import {UserStats} from "../../models/user-stats";
+import {StatsService} from "../../service/stats.service";
+import {Group} from "../../models/group";
 
 @Component({
   selector: 'app-statistic',
@@ -8,14 +10,8 @@ import {UserStats} from "../../models/user-stats";
   styleUrl: './statistic.component.css'
 })
 export class StatisticComponent {
-  monthStats: MonthStats[] = [
-    { year: 2023, month: 5, count: 120, watts: 50000, avgWatts: 50 },
-    { year: 2023, month: 6, count: 150, watts: 60000, avgWatts: 60 }
-  ];
-  userStats: UserStats[] = [
-    { name: 'Alice', total: 200, count: 10 },
-    { name: 'Bob', total: 300, count: 15 }
-  ];
+  monthStats: MonthStats[] = [];
+  userStats: UserStats[] = [];
 
   predefinedRanges = [
     { label: 'Previous Month', range: this.getPreviousMonth() },
@@ -27,13 +23,19 @@ export class StatisticComponent {
   displayedColumns: string[] = [];
 
   // Selected filters
+  groups: Group[] = [];
   startDate: Date = new Date();
   endDate: Date = new Date();
-  selectedRole: string = '';
   selectedDataType: string = 'month';
-  groups: string[] = ['Client', 'Office'];
+  selectedGroup: string = '';
 
-  constructor() {
+  inProgress = false;
+
+  constructor(
+    private statsService: StatsService
+  ) {
+    this.groups = this.statsService.getGroups()
+    this.selectedGroup = this.groups[0].id;
     this.updateDisplayedData();
   }
 
@@ -78,12 +80,26 @@ export class StatisticComponent {
       this.displayedColumns = ['year', 'month', 'count', 'watts', 'avgWatts'];
     } else if (this.selectedDataType === 'user') {
       this.displayedData = this.userStats;
-      this.displayedColumns = ['name', 'total', 'count'];
+      this.displayedColumns = ['name', 'userCount', 'userWatts', 'userAvgWatts'];
     }
+    this.inProgress = false;
   }
 
   // Method to request data
   requestData() {
-    this.updateDisplayedData();
+    this.inProgress = true;
+    if (this.selectedDataType === 'month') {
+      this.statsService.getMonthlyReport(this.startDate, this.endDate, this.selectedGroup)
+        .subscribe(data => {
+          this.monthStats = data;
+          this.updateDisplayedData();
+        });
+    } else if (this.selectedDataType === 'user') {
+      this.statsService.getUserReport(this.startDate, this.endDate, this.selectedGroup)
+        .subscribe(data => {
+          this.userStats = data;
+          this.updateDisplayedData();
+        });
+    }
   }
 }

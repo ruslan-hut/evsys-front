@@ -1,5 +1,6 @@
 export interface UserStats {
-  name: string;
+  user: string;
   total: number;
   count: number;
+  average: number;
 }
