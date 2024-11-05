@@ -143,6 +143,7 @@ export class TransactionService  {
     this.websocketService.isConnected$.subscribe(status =>{
       if (status) {
         this.websocketService.send({command: 'StopListenTransaction', transaction_id: transactionID, charge_point_id: chargePointID, connector_id: connectorID});
+        this.transactionId.next(-1);
       }
     });
   }

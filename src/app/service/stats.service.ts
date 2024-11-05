@@ -41,7 +41,7 @@ export class StatsService {
 
   getMonthlyReport(from: Date, to: Date, group: string): Observable<MonthStats[]> {
     const formattedFrom = this.formatDate(from);
-    const formattedTo = this.formatDate(to);
+    const formattedTo = this.formatDateTimeEndOfDay(to);
 
     const params = new HttpParams()
       .set('from', formattedFrom)
