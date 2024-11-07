@@ -44,21 +44,13 @@ export class AccountService {
       }
     })
 
-    // check and login if user is authenticated with name and password
-    // without using Firebase service - we have to request API for authentication
+    // listen for user data loading and update token
     this.user.subscribe(user => {
       if (user && user.token) {
-        if (this.tokenSubject.value !== user.token) {
-          this.loginWithToken(user.token).subscribe({
-              next: (result) => {
-                if (result.token) {
-                  this.tokenSubject.next(result.token)
-                  this.authState.next(true)
-                }
-              }
-            }
-          )
+        if (environment.debug) {
+          console.log("Call token update", user.username);
         }
+        this.updateToken();
       }
     })
   }
@@ -66,6 +58,9 @@ export class AccountService {
   private updateToken() {
     const auth = getAuth();
     auth.currentUser?.getIdToken().then((token) => {
+      if (environment.debug) {
+        console.log("Received new token from Firebase");
+      }
       this.tokenSubject.next(token)
       this.authState.next(true)
     })
