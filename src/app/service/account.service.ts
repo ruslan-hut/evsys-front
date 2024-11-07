@@ -59,7 +59,7 @@ export class AccountService {
     const auth = getAuth();
     auth.currentUser?.getIdToken().then((token) => {
       if (environment.debug) {
-        console.log("Received new token from Firebase");
+        console.log("Received token from Firebase");
       }
       this.tokenSubject.next(token)
       this.authState.next(true)
@@ -76,6 +76,13 @@ export class AccountService {
 
   public get isOperator(): boolean {
     return this.userValue?.role === environment.operator;
+  }
+
+  reAuthenticate() {
+    if (environment.debug) {
+      console.log("Reauthenticate called");
+    }
+    this.updateToken();
   }
 
   login(username: string, password: string) {

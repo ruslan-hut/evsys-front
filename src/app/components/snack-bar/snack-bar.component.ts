@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ErrorService} from "../../service/error.service";
+import {AccountService} from "../../service/account.service";
 
 @Component({
   selector: 'app-snack-bar',
@@ -10,6 +11,7 @@ import {ErrorService} from "../../service/error.service";
 export class SnackBarComponent implements OnInit {
   constructor(
     private snack: MatSnackBar,
+    private accountService: AccountService,
     private errorService: ErrorService) {
   }
   openSnackBar(message: string, action: string){
@@ -18,7 +20,11 @@ export class SnackBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.errorService.error$.subscribe(error => {
-      this.openSnackBar(error, "Dismiss");
+      if (error == "Not authorized") {
+        this.accountService.reAuthenticate();
+      } else {
+        this.openSnackBar(error, "Dismiss");
+      }
     })
   }
 }
