@@ -14,8 +14,9 @@ export class StatisticComponent {
   userStats: UserStats[] = [];
 
   predefinedRanges = [
-    { label: 'Previous Month', range: this.getPreviousMonth() },
+    { label: 'Today', range: this.getToday() },
     { label: 'Current Month', range: this.getCurrentMonth() },
+    { label: 'Previous Month', range: this.getPreviousMonth() },
     { label: 'Current Year', range: this.getCurrentYear() }
   ];
 
@@ -85,6 +86,13 @@ export class StatisticComponent {
     const date = new Date();
     const start = new Date(date.getFullYear(), 0, 1);
     const end = new Date(date.getFullYear() + 1, 0, 0);
+    return { start, end };
+  }
+
+  private getToday() {
+    const date = new Date();
+    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const end = start;
     return { start, end };
   }
 
