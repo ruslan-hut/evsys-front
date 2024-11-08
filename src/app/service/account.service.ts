@@ -47,10 +47,22 @@ export class AccountService {
     // listen for user data loading and update token
     this.user.subscribe(user => {
       if (user) {
-        if (environment.debug) {
-          console.log("Call token update", user.username);
+        if (user.token?.length == 32) {
+          if (environment.debug) {
+            console.log("Call API token update", user.username);
+          }
+          this.loginWithToken(user.token).subscribe(user => {
+              if (environment.debug) {
+                console.log("User authenticated", user.username);
+              }
+            }
+          )
+        }else{
+          if (environment.debug) {
+            console.log("Call Firebase token update", user.username);
+          }
+          this.updateToken();
         }
-        this.updateToken();
       }
     })
   }
@@ -89,10 +101,11 @@ export class AccountService {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {username, password})
       .pipe(map(user => {
         localStorage.setItem('user', JSON.stringify(user));
-        if (user.token) {
-          this.tokenSubject.next(user.token)
+        if (user.token && user.token != this.tokenSubject.value) {
+          this.tokenSubject.next(user.token);
+          this.userSubject.next(user);
         }
-        this.userSubject.next(user);
+        this.authState.next(true)
         return user;
       }));
   }
