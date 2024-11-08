@@ -46,7 +46,7 @@ export class AccountService {
 
     // listen for user data loading and update token
     this.user.subscribe(user => {
-      if (user && user.token) {
+      if (user) {
         if (environment.debug) {
           console.log("Call token update", user.username);
         }
