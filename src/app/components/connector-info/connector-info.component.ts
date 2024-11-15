@@ -63,7 +63,7 @@ export class ConnectorInfoComponent implements OnInit {
   }
 
   onStartConnector(connector: Connector) {
-    this.accountService.user.subscribe((user: User | null) => {
+    this.accountService.user$.subscribe((user: User | null) => {
       if (user) {
         this.accountService.getUserInfo(user.username).subscribe((userInfo) => {
           if (userInfo.payment_methods) {

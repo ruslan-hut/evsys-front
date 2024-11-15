@@ -50,42 +50,37 @@ export class ChargepointScreenComponent implements OnInit{
       this.chargePointId = params['charge_point_id'];
       this.connectorId = parseInt(params['connector_id']);
 
-      this.authService.user.subscribe((user) => {
+      this.authService.user$.subscribe((user) => {
         if(!user){
           this.localStorageService.saveRedirectUrl(this.chargePointId, this.connectorId);
           this.router.navigate(['account/login']).then(() => {});
+          return
         }
 
-        this.authService.authState$.subscribe((auth) => {
-          if (auth) {
+        this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
 
-            this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
+          this.chargePoint= chargePoint;
+          const connector = chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
 
-              this.chargePoint= chargePoint;
-              const connector = chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
+          if (connector) {
+            this.isAvailable = connector.status != "Faulted";
+            this.connectorName = getConnectorName(connector);
+            this.transactionId = connector.current_transaction_id;
 
-              if (connector) {
-                this.isAvailable = connector.status != "Faulted";
-                this.connectorName = getConnectorName(connector);
-                this.transactionId = connector.current_transaction_id;
+            if(this.transactionId != -1){
+              this.goToTransaction();
+            }
 
-                if(this.transactionId != -1){
-                  this.goToTransaction();
-                }
-
-                if(!this.isAvailable && connector.current_transaction_id == -1){
-                  this.alertDialog("Connector is not available");
-                }
-              }
-
-            });
-
-            this.authService.getUserInfo(user.username).subscribe((info) => {
-              this.paymentMethod = info.payment_methods?.find((pm) => pm.is_default);
-              this.paymentPlan = info.payment_plans?.find((pp) => pp.is_active);
-            });
-
+            if(!this.isAvailable && connector.current_transaction_id == -1){
+              this.alertDialog("Connector is not available");
+            }
           }
+
+        });
+
+        this.authService.getUserInfo(user.username).subscribe((info) => {
+          this.paymentMethod = info.payment_methods?.find((pm) => pm.is_default);
+          this.paymentPlan = info.payment_plans?.find((pp) => pp.is_active);
         });
 
         this.transactionService.transactionId.subscribe((transactionId) => {
@@ -95,9 +90,7 @@ export class ChargepointScreenComponent implements OnInit{
           }
         });
 
-
       });
-
 
     });
 

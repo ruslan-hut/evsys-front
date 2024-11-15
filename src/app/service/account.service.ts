@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {User} from "../models/user";
-import {BehaviorSubject, map, Observable} from "rxjs";
+import {BehaviorSubject, map} from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
@@ -12,76 +12,84 @@ import {PaymentMethod} from "../models/payment-method";
 })
 export class AccountService {
 
-  private userSubject: BehaviorSubject<User>;
-  public user: Observable<User>;
-  private tokenSubject = new BehaviorSubject<string|null>(null);
-  public token$ = this.tokenSubject.asObservable();
+  private userSubject = new BehaviorSubject<User|null>(null);
+  public user$ = this.userSubject.asObservable();
 
-  private authState = new BehaviorSubject<boolean>(false);
-  authState$ = this.authState.asObservable();
+  private token : string|null = null;
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) {
-    // @ts-ignore
-    const localUser = JSON.parse(localStorage.getItem('user'))
-    this.userSubject = new BehaviorSubject<User>(localUser);
-    this.user = this.userSubject.asObservable();
-  }
+    this.token = localStorage.getItem('token');
+    if (environment.debug) {
+      console.log("Loaded account service with token: ", this.token?.substring(0, 10), "; is local:", this.isLocalUser());
+    }
 
-  userToken() : string|null {
-    return this.tokenSubject.value
-  }
-
-  // called on app initialization, after loading Firebase service
-  afterFirebaseLoad() {
-    const auth = getAuth();
-
-    onAuthStateChanged(auth, (user) => {
+    this.user$.subscribe(user => {
       if (user) {
-        this.updateToken();
-        setInterval(() => this.updateToken(), 60*60*1000);
-      }
-    })
-
-    // listen for user data loading and update token
-    this.user.subscribe(user => {
-      if (user) {
-        if (auth.currentUser) { // firebase user
-          if (environment.debug) {
-            console.log("Call Firebase token update", user.username);
-          }
-          this.updateToken();
-        } else if (user.token) { // local user
-          if (environment.debug) {
-            console.log("Authenticate with stored token", user.username, ">>", user.token.substring(0, 5));
-          }
-          this.tokenSubject.next(user.token);
-          this.authState.next(true);
-        } else { // no token for local user
-          this.logout();
+        if (environment.debug) {
+          console.log("User logged in: ", user.username);
+        }
+        if (user.token) {
+          this.token = user.token;
+          localStorage.setItem('token', this.token);
         }
       }
     })
   }
 
+  userToken() : string|null {
+    return this.token;
+  }
+
+  private isLocalUser() : boolean {
+    if (!this.token) {
+      return false;
+    }
+    return this.token.length === 32;
+  }
+
+  // called on app initialization, after loading Firebase service
+  afterFirebaseLoad() {
+
+    if (this.isLocalUser()) {
+      this.onNewToken(this.token);
+    } else {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.updateFirebaseToken();
+          setInterval(() => this.updateFirebaseToken(), 60*60*1000);
+        }
+      })
+    }
+
+  }
+
+  private onNewToken(token: string|null) {
+    if (!token) {
+      this.userSubject.next(null);
+      return
+    }
+    this.loginWithToken(token).subscribe(() => {})
+  }
+
   /**
    * Updates the authentication token for the current user.
-   * Retrieves the ID token from Firebase and updates the tokenSubject and authState.
+   * Retrieves the ID token from Firebase and calls local authorization.
    */
-  private updateToken() {
+  private updateFirebaseToken() {
     const auth = getAuth();
     auth.currentUser?.getIdToken().then((token) => {
       if (environment.debug) {
         console.log("Received token from Firebase");
       }
-      this.tokenSubject.next(token)
-      this.authState.next(true)
+      this.onNewToken(token);
     })
   }
 
-  public get userValue(): User{
+  public get userValue(): User|null {
     return this.userSubject?.value;
   }
 
@@ -100,13 +108,12 @@ export class AccountService {
    */
   reAuthenticate() {
     if (environment.debug) {
-      console.log("Reauthenticate called");
+      console.log("Reauthenticate: local user:", this.isLocalUser());
     }
-    const auth = getAuth();
-    if (auth.currentUser) {
-      this.updateToken();
-    } else {
+    if (this.isLocalUser()) {
       this.logout();
+    } else {
+      this.updateFirebaseToken();
     }
   }
 
@@ -122,7 +129,6 @@ export class AccountService {
   login(username: string, password: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {username, password})
       .pipe(map(user => {
-        localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
       }));
@@ -145,13 +151,12 @@ export class AccountService {
   logout() {
     const auth = getAuth();
     if (auth.currentUser) {
-      auth.signOut().then(() => localStorage.removeItem('user'));
+      auth.signOut().then(() => localStorage.removeItem('token'));
     } else {
-      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
-    // @ts-ignore
+    this.token = null;
     this.userSubject.next(null);
-    this.tokenSubject.next(null);
     this.router.navigate(['/account/login']).then(() => {});
   }
 

@@ -48,8 +48,8 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
   }
 
   private refreshData(): void {
-    this.accountService.authState$.subscribe((auth) => {
-      if(auth){
+    this.accountService.user$.subscribe((user) => {
+      if(user){
         this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
 
           this.transaction = transaction;
@@ -73,12 +73,12 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
       }
     })
 
-
-
   }
 
   ngOnDestroy() {
-    this.transactionService.unsubscribeFromUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
+    if (this.transaction) {
+      this.transactionService.unsubscribeFromUpdates(this.transaction.transaction_id, this.transaction.charge_point_id, this.transaction.connector_id);
+    }
     document.removeEventListener('visibilitychange', this.visibilityChangeEvent)
   }
 

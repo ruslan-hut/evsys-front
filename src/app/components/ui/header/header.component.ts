@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
     private accountService: AccountService,
   ) {
   }
+
   navigateTo(destination: string) {
     this.router.navigateByUrl(destination).then(r => {
         if (!r) {
@@ -36,7 +37,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
   }
 
   ngOnInit(): void {
-    this.accountService.user.subscribe(user => {
+    this.accountService.user$.subscribe(user => {
       if (user) {
         if (user.name) {
           this.username = user.name;
@@ -46,8 +47,9 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
         this.isAdmin = (user.role === environment.admin || user.role === environment.operator);
       } else {
         this.username = '';
+        this.isAdmin = false;
       }
-    });
+    })
   }
 
   ngAfterContentChecked(): void {
@@ -58,7 +60,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked{
     this.router.navigate(['/user-profile']).then(r =>
       {
         if (!r) {
-          this.errorService.handle("Failed to navigate: /user-profile")
+          this.errorService.handle("Failed to navigate: user profile")
         }
       }
     );

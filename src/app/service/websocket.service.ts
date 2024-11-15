@@ -24,9 +24,9 @@ export class WebsocketService implements OnDestroy {
   constructor(
     private accountService: AccountService
   ) {
-    this.accountService.token$.subscribe(token => {
-      if (token && token !== this.token) {
-        this.token = token;
+    this.accountService.user$.subscribe(user => {
+      if (user && user.token && user.token !== this.token) {
+        this.token = user.token;
         this.connect();
       }
     });

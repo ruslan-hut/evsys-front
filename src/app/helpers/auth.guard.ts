@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import { Observable } from 'rxjs';
+import {ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot} from '@angular/router';
 import {AccountService} from "../service/account.service";
 import {environment} from "../../environments/environment";
 
@@ -10,13 +9,15 @@ import {environment} from "../../environments/environment";
 export class AuthGuard {
 
   constructor(
-    private router: Router,
     private accountService: AccountService
   ) {
   }
 
   canActivate(): boolean {
     const user = this.accountService.userValue;
+    if (!user) {
+      return false;
+    }
     return user.role === environment.admin || user.role === environment.operator;
   }
 

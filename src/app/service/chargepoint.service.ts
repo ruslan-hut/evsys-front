@@ -23,8 +23,8 @@ export class ChargepointService {
     private errorService: ErrorService,
     private accountService: AccountService,
   ) {
-    this.accountService.authState$.subscribe(status =>{
-      if (status) {
+    this.accountService.user$.subscribe(user =>{
+      if (user) {
         this.init();
       }
     });
