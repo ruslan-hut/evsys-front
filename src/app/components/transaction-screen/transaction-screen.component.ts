@@ -1,11 +1,11 @@
 import {  Component, OnDestroy, OnInit} from '@angular/core';
-import {Transaction} from "../../../models/transaction";
+import {Transaction} from "../../models/transaction";
 import {MatDialog} from "@angular/material/dialog";
-import {TransactionService} from "../../../service/transaction.service";
-import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
-import {DialogData} from "../../../models/dialog-data";
-import {Chargepoint} from "../../../models/chargepoint";
-import {AccountService} from "../../../service/account.service";
+import {TransactionService} from "../../service/transaction.service";
+import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
+import {DialogData} from "../../models/dialog-data";
+import {Chargepoint} from "../../models/chargepoint";
+import {AccountService} from "../../service/account.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 
 @Component({

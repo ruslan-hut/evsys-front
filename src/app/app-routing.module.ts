@@ -24,7 +24,7 @@ import {PaymentMethodListComponent} from "./components/user-profile/payment-meth
 import {ChargepointScreenComponent} from "./components/chargepoint-screen/chargepoint-screen.component";
 import {
   TransactionScreenComponent
-} from "./components/chargepoint-screen/transaction-screen/transaction-screen.component";
+} from "./components/transaction-screen/transaction-screen.component";
 import {StatisticComponent} from "./components/statistic/statistic.component";
 
 const routes: Routes = [

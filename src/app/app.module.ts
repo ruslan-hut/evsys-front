@@ -66,7 +66,7 @@ import { ChargepointConfigComponent } from './components/chargepoint-config/char
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ChargepointScreenComponent} from "./components/chargepoint-screen/chargepoint-screen.component";
 import {PaymentMethodComponent} from "./components/user-profile/payment-method/payment-method.component";
-import {TransactionScreenComponent} from "./components/chargepoint-screen/transaction-screen/transaction-screen.component";
+import {TransactionScreenComponent} from "./components/transaction-screen/transaction-screen.component";
 import {
   MatDatepickerModule,
 } from "@angular/material/datepicker";
