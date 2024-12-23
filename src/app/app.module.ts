@@ -30,6 +30,7 @@ import {PromoComponent} from "./components/promo/promo.component";
 import {PromoDialogComponent} from "./components/dialogs/promo-dialog/promo-dialog.component";
 import {PromoListComponent} from "./components/promo-list/promo-list.component";
 import {StatisticComponent} from "./components/statistic/statistic.component";
+import {TariffComponent} from "./components/tariff/tariff.component";
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -114,7 +115,8 @@ export function initializeApp(firebaseService: FirebaseService) {
     ChargepointConfigComponent,
     ChargepointScreenComponent,
     TransactionScreenComponent,
-    StatisticComponent
+    StatisticComponent,
+    TariffComponent
   ],
   bootstrap: [AppComponent], imports: [BrowserModule,
     AppRoutingModule,

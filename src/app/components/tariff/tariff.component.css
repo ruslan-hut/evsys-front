@@ -1,0 +1,23 @@
+mat-card-content {
+  justify-content: center;
+  align-items: center;
+  margin: 0 20%;
+  padding: 16px;
+}
+
+mat-card-footer {
+  justify-content: center;
+  align-items: center;
+  margin: 0 20%;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card-title {
+  text-align: center;
+}
+
