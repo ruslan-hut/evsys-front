@@ -104,6 +104,9 @@ export class StatisticComponent {
     } else if (this.selectedDataType === 'user') {
       this.displayedData = this.userStats;
       this.displayedColumns = ['name', 'userCount', 'userWatts', 'userAvgWatts'];
+    } else if (this.selectedDataType === 'charger') {
+      this.displayedData = this.userStats;
+      this.displayedColumns = ['name', 'userCount', 'userWatts', 'userAvgWatts'];
     }
     this.calculateAggregates();
     this.inProgress = false;
