@@ -43,6 +43,7 @@
     <mat-select [(value)]="selectedDataType">
       <mat-option value="month">Month</mat-option>
       <mat-option value="user">User</mat-option>
+      <mat-option value="charger">Charger</mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -55,25 +56,25 @@
 <!-- Data Table -->
 <mat-card>
   <table mat-table [dataSource]="displayedData">
-    <ng-container matColumnDef="name" *ngIf="selectedDataType === 'user'">
+    <ng-container matColumnDef="name" *ngIf="selectedDataType === 'user' || selectedDataType === 'charger'">
       <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Name </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ user.user }} </td>
       <td mat-footer-cell *matFooterCellDef class="center-text footer-cell">Total</td>
     </ng-container>
 
-    <ng-container matColumnDef="userCount" *ngIf="selectedDataType === 'user'">
+    <ng-container matColumnDef="userCount" *ngIf="selectedDataType === 'user' || selectedDataType === 'charger'">
       <th mat-header-cell *matHeaderCellDef class="center-text header-cell" > Count </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ user.count }} </td>
       <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ totalUserCount }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="userWatts" *ngIf="selectedDataType === 'user'">
+    <ng-container matColumnDef="userWatts" *ngIf="selectedDataType === 'user' || selectedDataType === 'charger'">
       <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> kWatts </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ (user.total / 1000) | number:'1.1-1' }} </td>
       <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ (totalUserWatts  / 1000) | number:'1.1-1' }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="userAvgWatts" *ngIf="selectedDataType === 'user'">
+    <ng-container matColumnDef="userAvgWatts" *ngIf="selectedDataType === 'user' || selectedDataType === 'charger'">
       <th mat-header-cell *matHeaderCellDef class="center-text header-cell"> Avg kWatts </th>
       <td mat-cell *matCellDef="let user" class="center-text"> {{ (user.average / 1000) | number:'1.1-1' }} </td>
       <td mat-footer-cell *matFooterCellDef class="center-text footer-cell"> {{ (avgUserWatts / 1000) | number:'1.1-1' }} </td>

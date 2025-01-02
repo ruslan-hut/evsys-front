@@ -49,7 +49,7 @@ export class StatisticComponent {
   }
 
   calculateAggregates() {
-    if (this.selectedDataType === 'user') {
+    if (this.selectedDataType === 'user' || this.selectedDataType === 'charger') {
       this.totalUserCount = this.displayedData.reduce((sum, user) => sum + user.count, 0);
       this.totalUserWatts = this.displayedData.reduce((sum, user) => sum + user.total, 0);
       this.avgUserWatts = this.totalUserWatts / this.totalUserCount;
@@ -120,6 +120,12 @@ export class StatisticComponent {
         });
     } else if (this.selectedDataType === 'user') {
       this.statsService.getUserReport(this.startDate, this.endDate, this.selectedGroup)
+        .subscribe(data => {
+          this.userStats = data;
+          this.updateDisplayedData();
+        });
+    } else if (this.selectedDataType === 'charger') {
+      this.statsService.getChargerReport(this.startDate, this.endDate, this.selectedGroup)
         .subscribe(data => {
           this.userStats = data;
           this.updateDisplayedData();

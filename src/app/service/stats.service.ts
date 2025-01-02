@@ -69,5 +69,19 @@ export class StatsService {
       );
   }
 
+  getChargerReport(from: Date, to: Date, group: string): Observable<UserStats[]> {
+    const formattedFrom = this.formatDate(from);
+    const formattedTo = this.formatDateTimeEndOfDay(to);
+
+    const params = new HttpParams()
+      .set('from', formattedFrom)
+      .set('to', formattedTo)
+      .set('group', group);
+
+    return this.http.get<UserStats[]>(environment.apiUrl + environment.report + environment.chargerReport, { params })
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
 
 }
