@@ -49,11 +49,26 @@ jobs:
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "rm -rf /var/www/html/wattbrews.me/*"
-          sshpass -p "$SERVER_PASSWORD" scp angular-app.tar.gz $SERVER_USERNAME@$SERVER_IP:/var/www/html/wattbrews.me/
-          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "tar -xzf /var/www/html/wattbrews.me/angular-app.tar.gz -C /var/www/html/wattbrews.me/"
+          sudo apt-get update && sudo apt-get install -y rsync
+              mkdir -p ~/.ssh
+              echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+              chmod 600 ~/.ssh/id_ed25519
+
+              # create target dir just in case
+              ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 "$SERVER_USERNAME@$SERVER_IP" \
+                "sudo mkdir -p /var/www/html/wattbrews.me"
+
+              # sync build output to server (delete removed files)
+              rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519" \
+                dist/ /var/www/html/wattbrews.me/ \
+                "$SERVER_USERNAME@$SERVER_IP:/var/www/html/wattbrews.me/"
+
+              ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" \
+                "sudo chown -R www-data:www-data /var/www/html/wattbrews.me && \
+                 sudo find /var/www/html/wattbrews.me -type d -exec chmod 755 {} \; && \
+                 sudo find /var/www/html/wattbrews.me -type f -exec chmod 644 {} \;"
 
       - name: Clean up local artifacts
         run: rm angular-app.tar.gz
