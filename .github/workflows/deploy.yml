@@ -45,30 +45,28 @@ jobs:
       - name: Archive production artifacts
         run: tar -czf angular-app.tar.gz -C dist/evsys-front/browser .
 
-      - name: Deploy to server
+      - name: Deploy via rsync (SSH key)
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          sudo apt-get update && sudo apt-get install -y rsync
-              mkdir -p ~/.ssh
-              echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-              chmod 600 ~/.ssh/id_ed25519
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
 
-              # create target dir just in case
-              ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 "$SERVER_USERNAME@$SERVER_IP" \
-                "sudo mkdir -p /var/www/html/wattbrews.me"
+          # ensure remote dir exists
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 "$SERVER_USERNAME@$SERVER_IP" \
+            "sudo mkdir -p /var/www/html/wattbrews.me"
 
-              # sync build output to server (delete removed files)
-              rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519" \
-                dist/ /var/www/html/wattbrews.me/ \
-                "$SERVER_USERNAME@$SERVER_IP:/var/www/html/wattbrews.me/"
+          # deploy the build
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519" \
+            dist/evsys-front/browser/ \
+            "$SERVER_USERNAME@$SERVER_IP:/var/www/html/wattbrews.me/"
 
-              ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" \
-                "sudo chown -R www-data:www-data /var/www/html/wattbrews.me && \
-                 sudo find /var/www/html/wattbrews.me -type d -exec chmod 755 {} \; && \
-                 sudo find /var/www/html/wattbrews.me -type f -exec chmod 644 {} \;"
-
-      - name: Clean up local artifacts
-        run: rm angular-app.tar.gz
+          # normalize ownership/permissions
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 "$SERVER_USERNAME@$SERVER_IP" \
+            "sudo chown -R www-data:www-data /var/www/html/wattbrews.me && \
+             sudo find /var/www/html/wattbrews.me -type d -exec chmod 755 {} \; && \
+             sudo find /var/www/html/wattbrews.me -type f -exec chmod 644 {} \;"
