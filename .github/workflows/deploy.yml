@@ -51,9 +51,9 @@ jobs:
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
-          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "rm -rf /var/www/html/*"
-          sshpass -p "$SERVER_PASSWORD" scp angular-app.tar.gz $SERVER_USERNAME@$SERVER_IP:/var/www/html/
-          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "tar -xzf /var/www/html/angular-app.tar.gz -C /var/www/html/"
+          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "rm -rf /var/www/html/wattbrews.me/*"
+          sshpass -p "$SERVER_PASSWORD" scp angular-app.tar.gz $SERVER_USERNAME@$SERVER_IP:/var/www/html/wattbrews.me/
+          echo "$SERVER_PASSWORD" | sshpass ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP "tar -xzf /var/www/html/wattbrews.me/angular-app.tar.gz -C /var/www/html/wattbrews.me/"
 
       - name: Clean up local artifacts
         run: rm angular-app.tar.gz
