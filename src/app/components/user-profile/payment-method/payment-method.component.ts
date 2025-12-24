@@ -1,18 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {PaymentMethod} from "../../../models/payment-method";
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {MatIcon} from "@angular/material/icon";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import { NgClass } from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {AccountService} from "../../../service/account.service";
-import {ErrorService} from "../../../service/error.service";
-import {MatFormField} from "@angular/material/form-field";
-import {MatInput} from "@angular/material/input";
-import {DialogData} from "../../../models/dialog-data";
-import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {environment} from "../../../../environments/environment";
+import { Component, Input, OnInit } from '@angular/core';
+import { PaymentMethod } from "../../../models/payment-method";
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader } from "@angular/material/card";
+import { MatIcon } from "@angular/material/icon";
+import { MatButton } from "@angular/material/button";
+
+import { FormsModule } from "@angular/forms";
+import { AccountService } from "../../../service/account.service";
+import { ErrorService } from "../../../service/error.service";
+import { MatFormField } from "@angular/material/form-field";
+import { MatInput } from "@angular/material/input";
+import { DialogData } from "../../../models/dialog-data";
+import { BasicDialogComponent } from "../../dialogs/basic/basic-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'app-payment-method',
@@ -22,15 +22,12 @@ import {environment} from "../../../../environments/environment";
     MatCardActions,
     MatCardContent,
     MatCardHeader,
-    MatCardTitle,
     MatIcon,
-    MatIconButton,
     MatButton,
     FormsModule,
     MatFormField,
-    MatInput,
-    NgClass
-],
+    MatInput
+  ],
   templateUrl: './payment-method.component.html',
   styleUrl: './payment-method.component.css'
 })
@@ -121,7 +118,7 @@ export class PaymentMethodComponent implements OnInit {
       (result) => {
         if (result) {
           this.paymentMethod.description = result.description
-        }else {
+        } else {
           if (environment.debug) {
             console.log(result)
           }
