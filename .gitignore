@@ -10,6 +10,7 @@
 /bazel-out
 
 # Node
+.npm-cache
 /node_modules
 npm-debug.log
 yarn-error.log

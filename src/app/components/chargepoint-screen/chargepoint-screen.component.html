@@ -1,55 +1,51 @@
-
 @if (chargePoint) {
-  <mat-card>
-    <mat-card-content class="info-container">
-      <div class="info-item">
-        <span class="info-label">{{chargePoint.title}}</span>
-      </div>
-      <div class="info-item">
-        <span class="info-value">{{chargePoint.address}}</span>
-      </div>
-      @if (chargePoint.description) {
-        <div class="info-item">
-          <span class="info-value">{{chargePoint.description}}</span>
-        </div>
-      }
-      <div class="info-item">
-        <span class="info-label">Connector:</span>
-        <span class="info-value">{{connectorName}}</span>
-      </div>
-      @if (paymentMethod) {
-        <div class="info-item">
-          <span class="info-label">Payment method:</span>
-        </div>
-        <app-payment-method [paymentMethod]="paymentMethod" ></app-payment-method>
-      }
-      @if (!paymentMethod) {
-        <button mat-raised-button class="title-with-icon" color="primary" (click)="addPaymentMethod()">
-          <mat-icon class="edit-icon">add</mat-icon>
-          Add payment method
-        </button>
-      }
-      <div class="info-item">
-        <span class="info-label">Cost:</span>
-        <span class="info-value">{{ paymentPlan?.price_per_kwh!!/100 | number: '1.2-2'}} €/kWh</span>
-      </div>
-      @if (transactionService.isWaiting) {
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      } @else {
-        <button mat-flat-button color="primary" (click)="start()" [disabled]="!isAvailable || isStarted">Start</button>
-      }
-    </mat-card-content>
-    <mat-card-actions class="flex-container">
-      <button mat-stroked-button (click)="close()">Close</button>
-      <div class="flex-spacer"></div>
-      @if (chargePoint.is_online) {
-        <mat-icon class="online-status">cloud_queue</mat-icon>
-      } @else {
-        <mat-icon color="warn">cloud_off</mat-icon>
-      }
-    </mat-card-actions>
-  </mat-card>
+<mat-card>
+  <mat-card-content class="info-container">
+    <div class="info-item">
+      <span class="info-label">{{chargePoint.title}}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-value">{{chargePoint.address}}</span>
+    </div>
+    @if (chargePoint.description) {
+    <div class="info-item">
+      <span class="info-value">{{chargePoint.description}}</span>
+    </div>
+    }
+    <div class="info-item">
+      <span class="info-label">Connector:</span>
+      <span class="info-value">{{connectorName}}</span>
+    </div>
+    @if (paymentMethod) {
+    <div class="info-item">
+      <span class="info-label">Payment method:</span>
+    </div>
+    <app-payment-method [paymentMethod]="paymentMethod"></app-payment-method>
+    }
+    @if (!paymentMethod) {
+    <button mat-raised-button class="title-with-icon" color="primary" (click)="addPaymentMethod()">
+      <mat-icon class="edit-icon">add</mat-icon>
+      Add payment method
+    </button>
+    }
+    <div class="info-item">
+      <span class="info-label">Cost:</span>
+      <span class="info-value">{{ (paymentPlan?.price_per_kwh || 0) / 100 | number: '1.2-2'}} €/kWh</span>
+    </div>
+    @if (transactionService.isWaiting) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else {
+    <button mat-flat-button color="primary" (click)="start()" [disabled]="!isAvailable || isStarted">Start</button>
+    }
+  </mat-card-content>
+  <mat-card-actions class="flex-container">
+    <button mat-stroked-button (click)="close()">Close</button>
+    <div class="flex-spacer"></div>
+    @if (chargePoint.is_online) {
+    <mat-icon class="online-status">cloud_queue</mat-icon>
+    } @else {
+    <mat-icon color="warn">cloud_off</mat-icon>
+    }
+  </mat-card-actions>
+</mat-card>
 }
-
-
-
