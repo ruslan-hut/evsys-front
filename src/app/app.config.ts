@@ -2,6 +2,7 @@ import { ApplicationConfig, APP_INITIALIZER, importProvidersFrom, provideZoneCha
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FirebaseService } from './service/firebase.service';
 import { TokenInterceptor } from './helpers/token.interceptor';
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideAnimations(),
         provideHttpClient(withInterceptorsFromDi()),
+        provideNativeDateAdapter(),
         {
             provide: APP_INITIALIZER,
             useFactory: initializeAppFactory,
