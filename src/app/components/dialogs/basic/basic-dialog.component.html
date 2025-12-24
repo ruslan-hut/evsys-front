@@ -2,21 +2,27 @@
 <div mat-dialog-content >
   <div [innerHTML]="getContent()"></div>
   <table>
-    <tr *ngFor="let checkbox of data.checkboxes; let i = index">
-      <mat-checkbox [checked]="checked[i]"
-                    (change)="onChecked(i)">
-        {{ checkbox }}
-      </mat-checkbox>
-    </tr>
+    @for (checkbox of data.checkboxes; track checkbox; let i = $index) {
+      <tr>
+        <mat-checkbox [checked]="checked[i]"
+          (change)="onChecked(i)">
+          {{ checkbox }}
+        </mat-checkbox>
+      </tr>
+    }
   </table>
 
 </div>
 <div mat-dialog-actions align="end">
-  <div *ngIf="this.data.buttonNo">
-    <button mat-button (click)="dialogRef.close('no')">{{this.data.buttonNo}}</button>
-  </div>
+  @if (this.data.buttonNo) {
+    <div>
+      <button mat-button (click)="dialogRef.close('no')">{{this.data.buttonNo}}</button>
+    </div>
+  }
   <button [disabled]="!isConfirm" mat-button color="primary" (click)="dialogRef.close('yes')">{{this.data.buttonYes}}</button>
-  <div *ngIf="this.data.buttonAction">
-    <button mat-button color="accent" (click)="dialogRef.close('action')">{{this.data.buttonAction}}</button>
-  </div>
+  @if (this.data.buttonAction) {
+    <div>
+      <button mat-button color="accent" (click)="dialogRef.close('action')">{{this.data.buttonAction}}</button>
+    </div>
+  }
 </div>

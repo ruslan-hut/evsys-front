@@ -9,10 +9,18 @@ import {Chargepoint} from "../../models/chargepoint";
 import {ChargepointService} from "../../service/chargepoint.service";
 import {Connector} from "../../models/connector";
 
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from '@angular/material/expansion';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
+
 @Component({
-  selector: 'app-promo',
-  templateUrl: './promo.component.html',
-  styleUrls: ['./promo.component.css']
+    selector: 'app-promo',
+    templateUrl: './promo.component.html',
+    styleUrls: ['./promo.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, MatCardActions, MatIcon, SortConnectorsPipe]
 })
 export class PromoComponent implements OnInit, AfterViewInit{
   private promoCode: string;

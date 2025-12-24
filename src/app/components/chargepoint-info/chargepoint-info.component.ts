@@ -9,11 +9,20 @@ import {DialogData} from "../../models/dialog-data";
 import {TimeService} from "../../service/time.service";
 import {CSService} from "../../service/cs.service";
 
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatAccordion } from '@angular/material/expansion';
+import { ConnectorInfoComponent } from '../connector-info/connector-info.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
+
 
 @Component({
-  selector: 'app-chargepoint-info',
-  templateUrl: './chargepoint-info.component.html',
-  styleUrls: ['./chargepoint-info.component.css']
+    selector: 'app-chargepoint-info',
+    templateUrl: './chargepoint-info.component.html',
+    styleUrls: ['./chargepoint-info.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe]
 })
 export class ChargepointInfoComponent implements OnInit{
 

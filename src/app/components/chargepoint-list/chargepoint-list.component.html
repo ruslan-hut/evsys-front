@@ -4,5 +4,7 @@
 <!--</div>-->
 
 <!--<div class="mat-elevation-z8 box-margin">-->
-  <app-chargepoint *ngFor="let chp of dataSource.data" [chargepoint]="chp"></app-chargepoint>
+@for (chp of chargePoints$ | async; track chp) {
+  <app-chargepoint [chargepoint]="chp"></app-chargepoint>
+}
 <!--</div>-->

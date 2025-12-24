@@ -5,11 +5,17 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../models/dialog-data";
 import {CSService} from "../../service/cs.service";
+import { DecimalPipe, DatePipe } from "@angular/common";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import { MatProgressBar } from "@angular/material/progress-bar";
+import { MatButton } from "@angular/material/button";
 
 @Component({
-  selector: 'transaction-info',
-  templateUrl: './transaction-info.component.html',
-  styleUrls: ['./transaction-info.component.css']
+    selector: 'transaction-info',
+    templateUrl: './transaction-info.component.html',
+    styleUrls: ['./transaction-info.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe]
 })
 export class TransactionInfoComponent implements OnInit{
 

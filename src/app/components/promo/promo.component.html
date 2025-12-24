@@ -1,44 +1,52 @@
-<mat-card *ngIf="chargePoint">
-  <mat-card-header>
-    <mat-card-title class="center-content">
-      {{chargePoint.charge_point_id}}
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <mat-accordion >
-      <div *ngFor="let connector of chargePoint.connectors| sortConnectors ">
-        <mat-expansion-panel [expanded]="false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
-              </div>
-              {{connector.connector_id}}
-            </mat-panel-title>
-            <mat-panel-description>
-
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <mat-action-row class="connector-buttons">
-            <button *ngIf="connector.state === 'available'; else notAvailable" mat-button color="primary" (click)="startConnector(connector)">Start</button>
-
-            <ng-template #notAvailable>
-              <ng-container *ngIf="connector.state !== 'unavailable'">
-                <button *ngIf="connector.current_transaction_id > 0" mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
-                <button *ngIf="connector.current_transaction_id < 0" mat-button color="warn" (click)="unlockConnector(connector)">Unlock</button>
-              </ng-container>
-            </ng-template>
-          </mat-action-row>
-        </mat-expansion-panel>
-      </div>
-    </mat-accordion>
-  </mat-card-content>
-  <br>
-  <mat-card-actions class="flex-container">
-    <button mat-raised-button color="warn" (click)="close()">Close</button>
-    <div class="flex-spacer"></div>
-    <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
-    <ng-template #isNotOnline>
-      <mat-icon color="warn">cloud_off</mat-icon>
-    </ng-template>
-  </mat-card-actions>
-</mat-card>
+@if (chargePoint) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="center-content">
+        {{chargePoint.charge_point_id}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-accordion >
+        @for (connector of chargePoint.connectors| sortConnectors ; track connector) {
+          <div>
+            <mat-expansion-panel [expanded]="false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
+                  </div>
+                  {{connector.connector_id}}
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-action-row class="connector-buttons">
+                @if (connector.state === 'available') {
+                  <button mat-button color="primary" (click)="startConnector(connector)">Start</button>
+                } @else {
+                  @if (connector.state !== 'unavailable') {
+                    @if (connector.current_transaction_id > 0) {
+                      <button mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
+                    }
+                    @if (connector.current_transaction_id < 0) {
+                      <button mat-button color="warn" (click)="unlockConnector(connector)">Unlock</button>
+                    }
+                  }
+                }
+              </mat-action-row>
+            </mat-expansion-panel>
+          </div>
+        }
+      </mat-accordion>
+    </mat-card-content>
+    <br>
+      <mat-card-actions class="flex-container">
+        <button mat-raised-button color="warn" (click)="close()">Close</button>
+        <div class="flex-spacer"></div>
+        @if (chargePoint.is_online) {
+          <mat-icon class="online-status">cloud_queue</mat-icon>
+        } @else {
+          <mat-icon color="warn">cloud_off</mat-icon>
+        }
+      </mat-card-actions>
+    </mat-card>
+  }

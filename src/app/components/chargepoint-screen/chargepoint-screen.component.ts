@@ -11,11 +11,19 @@ import {PaymentPlan} from "../../models/payment-plan";
 import {getConnectorName} from "../../models/connector";
 import {LocalStorageService} from "../../service/local-storage.service";
 import {TransactionService} from "../../service/transaction.service";
+import { DecimalPipe } from '@angular/common';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { PaymentMethodComponent } from '../user-profile/payment-method/payment-method.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-chargepoint-screen',
-  templateUrl: './chargepoint-screen.component.html',
-  styleUrl: './chargepoint-screen.component.css'
+    selector: 'app-chargepoint-screen',
+    templateUrl: './chargepoint-screen.component.html',
+    styleUrl: './chargepoint-screen.component.css',
+    standalone: true,
+    imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe]
 })
 export class ChargepointScreenComponent implements OnInit{
 

@@ -1,10 +1,26 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-promo-dialog',
-  templateUrl: './promo-dialog.component.html',
-  styleUrls: ['./promo-dialog.component.css'],
+    selector: 'app-promo-dialog',
+    templateUrl: './promo-dialog.component.html',
+    styleUrls: ['./promo-dialog.component.css'],
+    standalone: true,
+    imports: [
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        MatFormField,
+        MatInput,
+        FormsModule,
+        MatDialogActions,
+        MatButton,
+    ],
 })
 export class PromoDialogComponent {
   promoCode: string;

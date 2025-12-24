@@ -1,5 +1,5 @@
-
-<mat-card *ngIf="tariffData?.data != undefined">
+@if (tariffData.data != undefined) {
+<mat-card>
   <mat-card-header>
     <mat-card-title>Roaming Tariffs</mat-card-title>
     <mat-card-title>Updated by H2PLT on {{ getUpdatedString() }}</mat-card-title>
@@ -9,35 +9,30 @@
   </mat-card-content>
   <mat-card-content>
     <table mat-table [dataSource]="tariffData.data">
-
       <ng-container matColumnDef="tariffID">
         <th mat-header-cell *matHeaderCellDef> Tariff ID </th>
         <td mat-cell *matCellDef="let item">
           {{ item.id }}
         </td>
       </ng-container>
-
       <ng-container matColumnDef="network">
         <th mat-header-cell *matHeaderCellDef> Network </th>
         <td mat-cell *matCellDef="let item">
           ES*H2P
         </td>
       </ng-container>
-
       <ng-container matColumnDef="country">
         <th mat-header-cell *matHeaderCellDef> Country </th>
         <td mat-cell *matCellDef="let item">
           Spain
         </td>
       </ng-container>
-
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef> Price (kW/h)</th>
         <td mat-cell *matCellDef="let item">
           {{ item.elements[0]?.price_components[0]?.price | currency:item.currency }}
         </td>
       </ng-container>
-
       <!-- Header and Row Declarations -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -46,5 +41,5 @@
   <mat-card-content>
     <h5>Excluding tax per kWh, billed in steps of 1 Wh (rounding to the upper unit)</h5>
   </mat-card-content>
-
 </mat-card>
+}

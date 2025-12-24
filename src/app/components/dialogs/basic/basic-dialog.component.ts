@@ -1,12 +1,25 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import {DialogData} from "../../../models/dialog-data";
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-basic-dialog',
-  templateUrl: './basic-dialog.component.html',
-  styleUrls: ['./basic-dialog.component.css'],
+    selector: 'app-basic-dialog',
+    templateUrl: './basic-dialog.component.html',
+    styleUrls: ['./basic-dialog.component.css'],
+    standalone: true,
+    imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatCheckbox,
+    MatDialogActions,
+    MatButton
+],
 })
 export class BasicDialogComponent {
 

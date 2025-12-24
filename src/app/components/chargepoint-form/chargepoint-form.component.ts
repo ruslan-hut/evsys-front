@@ -1,13 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import { FormControl, FormGroup, FormsModule } from "@angular/forms";
 import {ChargepointService} from "../../service/chargepoint.service";
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import {Chargepoint} from "../../models/chargepoint";
 
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { ConnectorFormComponent } from '../connector-form/connector-form.component';
+import { MatButton } from '@angular/material/button';
+import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
+
 @Component({
-  selector: 'app-chargepoint-form',
-  templateUrl: './chargepoint-form.component.html',
-  styleUrls: ['./chargepoint-form.component.css']
+    selector: 'app-chargepoint-form',
+    templateUrl: './chargepoint-form.component.html',
+    styleUrls: ['./chargepoint-form.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, FormsModule, MatInput, CdkTextareaAutosize, ConnectorFormComponent, MatCardActions, MatButton, SortConnectorsPipe]
 })
 export class ChargepointFormComponent implements OnInit{
 

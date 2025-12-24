@@ -1,16 +1,26 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {User} from "../../../models/user";
 import {AccountService} from "../../../service/account.service";
 import {MatDialog} from "@angular/material/dialog";
 import {UserInfoComponent} from "../user-info/user-info.component";
 
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+    selector: 'app-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.css'],
+    standalone: true,
+    imports: [MatProgressBar, MatFormField, MatLabel, MatInput, FormsModule, MatIconButton, MatSuffix, MatIcon, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
 })
 export class UsersComponent implements OnInit {
   //displayedColumn: string[] = ['username', 'name', 'role', 'level', 'plan', 'registered', 'last_seen', 'actions'];

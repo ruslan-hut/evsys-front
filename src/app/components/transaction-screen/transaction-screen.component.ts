@@ -7,11 +7,18 @@ import {DialogData} from "../../models/dialog-data";
 import {Chargepoint} from "../../models/chargepoint";
 import {AccountService} from "../../service/account.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { DecimalPipe, DatePipe } from '@angular/common';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-transaction-screen',
-  templateUrl: './transaction-screen.component.html',
-  styleUrl: './transaction-screen.component.css'
+    selector: 'app-transaction-screen',
+    templateUrl: './transaction-screen.component.html',
+    styleUrl: './transaction-screen.component.css',
+    standalone: true,
+    imports: [MatCard, MatCardContent, MatProgressBar, MatButton, MatCardActions, MatIcon, DecimalPipe, DatePipe]
 })
 export class TransactionScreenComponent implements OnInit, OnDestroy{
 

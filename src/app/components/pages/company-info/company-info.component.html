@@ -1,12 +1,22 @@
-<div *ngIf="pageContent">
-
-  <div *ngFor="let section of pageContent.sections">
-    <h3 *ngIf="section.title" [innerHTML]="section.title"></h3>
-    <p *ngFor="let paragraph of section.content" [innerHTML]="paragraph"></p>
+@if (pageContent) {
+  <div>
+    @for (section of pageContent.sections; track section) {
+      <div>
+        @if (section.title) {
+          <h3 [innerHTML]="section.title"></h3>
+        }
+        @for (paragraph of section.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+      </div>
+    }
+    @if (pageContent.contactInfo) {
+      <div>
+        <h3 [innerHTML]="pageContent.contactInfo.title"></h3>
+        @for (paragraph of pageContent.contactInfo.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+      </div>
+    }
   </div>
-
-  <div *ngIf="pageContent.contactInfo">
-    <h3 [innerHTML]="pageContent.contactInfo.title"></h3>
-    <p *ngFor="let paragraph of pageContent.contactInfo.content" [innerHTML]="paragraph"></p>
-  </div>
-</div>
+}

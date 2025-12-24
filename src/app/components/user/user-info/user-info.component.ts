@@ -6,11 +6,18 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {DataObject, SimpleDataObject} from "../../../models/data-object";
 import {environment} from "../../../../environments/environment";
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { TitleCasePipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-user-info',
-  templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.css']
+    selector: 'app-user-info',
+    templateUrl: './user-info.component.html',
+    styleUrls: ['./user-info.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardContent, MatList, MatListItem, MatCardActions, MatButton, MatIcon, TitleCasePipe]
 })
 export class UserInfoComponent implements OnInit {
   user: User;

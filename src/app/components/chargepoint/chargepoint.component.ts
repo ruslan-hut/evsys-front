@@ -5,11 +5,19 @@ import {AccountService} from "../../service/account.service";
 import {environment} from "../../../environments/environment";
 import {TimeService} from "../../service/time.service";
 import {Connector} from "../../models/connector";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import { NgStyle } from "@angular/common";
+import { ConnectorComponent } from "../connector/connector.component";
+import { MatIconButton } from "@angular/material/button";
+import { MatIcon } from "@angular/material/icon";
+import { SortConnectorsPipe } from "../pipes/sortConnectorsPipe";
 
 @Component({
-  selector: 'app-chargepoint',
-  templateUrl: './chargepoint.component.html',
-  styleUrls: ['./chargepoint.component.css']
+    selector: 'app-chargepoint',
+    templateUrl: './chargepoint.component.html',
+    styleUrls: ['./chargepoint.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgStyle, ConnectorComponent, MatCardActions, MatIconButton, MatIcon, SortConnectorsPipe]
 })
 export class ChargepointComponent{
   @Input() chargepoint: Chargepoint

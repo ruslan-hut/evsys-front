@@ -3,7 +3,7 @@ import {PaymentMethodComponent} from "../payment-method/payment-method.component
 import {MatTableDataSource} from "@angular/material/table";
 import {PaymentMethod} from "../../../models/payment-method";
 import {AccountService} from "../../../service/account.service";
-import {NgForOf} from "@angular/common";
+
 import {Router} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
@@ -14,10 +14,9 @@ import { Location } from '@angular/common';
   standalone: true,
   imports: [
     PaymentMethodComponent,
-    NgForOf,
     MatButton,
     MatIcon
-  ],
+],
   templateUrl: './payment-method-list.component.html',
   styleUrl: './payment-method-list.component.css'
 })

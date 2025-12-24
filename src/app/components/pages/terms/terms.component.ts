@@ -2,10 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
+
 @Component({
-  selector: 'app-terms',
-  templateUrl: './terms.component.html',
-  styleUrls: ['./terms.component.css']
+    selector: 'app-terms',
+    templateUrl: './terms.component.html',
+    styleUrls: ['./terms.component.css'],
+    standalone: true,
+    imports: []
 })
 export class TermsComponent implements OnInit {
   pageContent: any;

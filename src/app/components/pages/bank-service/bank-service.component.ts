@@ -1,15 +1,18 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AccountService} from "../../../service/account.service";
+import { FormsModule } from '@angular/forms';
 
 declare var getInSiteFormJSON: any;
 declare var storeIdOper: any;
 
 @Component({
-  selector: 'app-bank-service',
-  templateUrl: './bank-service.component.html',
-  styleUrls: ['./bank-service.component.css'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-bank-service',
+    templateUrl: './bank-service.component.html',
+    styleUrls: ['./bank-service.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [FormsModule]
 })
 export class BankServiceComponent implements OnInit {
 

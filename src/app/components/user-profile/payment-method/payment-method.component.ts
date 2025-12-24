@@ -3,7 +3,7 @@ import {PaymentMethod} from "../../../models/payment-method";
 import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import { NgClass } from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
@@ -25,14 +25,12 @@ import {environment} from "../../../../environments/environment";
     MatCardTitle,
     MatIcon,
     MatIconButton,
-    NgForOf,
-    NgIf,
     MatButton,
     FormsModule,
     MatFormField,
     MatInput,
     NgClass
-  ],
+],
   templateUrl: './payment-method.component.html',
   styleUrl: './payment-method.component.css'
 })

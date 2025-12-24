@@ -1,24 +1,39 @@
-<div *ngIf="pageContent">
-  <h1 [innerHTML]="pageContent.title"></h1>
-  <p [innerHTML]="pageContent.introduction"></p>
-  <p [innerHTML]="pageContent.thirdPartyNotice"></p>
-
-  <div *ngFor="let section of pageContent.sections">
-    <h2 [innerHTML]="section.title"></h2>
-    <p *ngFor="let paragraph of section.content" [innerHTML]="paragraph"></p>
-    <ul *ngIf="section.list">
-      <li *ngFor="let listItem of section.list" [innerHTML]="listItem"></li>
-    </ul>
+@if (pageContent) {
+  <div>
+    <h1 [innerHTML]="pageContent.title"></h1>
+    <p [innerHTML]="pageContent.introduction"></p>
+    <p [innerHTML]="pageContent.thirdPartyNotice"></p>
+    @for (section of pageContent.sections; track section) {
+      <div>
+        <h2 [innerHTML]="section.title"></h2>
+        @for (paragraph of section.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+        @if (section.list) {
+          <ul>
+            @for (listItem of section.list; track listItem) {
+              <li [innerHTML]="listItem"></li>
+            }
+          </ul>
+        }
+      </div>
+    }
+    @if (pageContent.unsubscribeSection) {
+      <div>
+        <h2 [innerHTML]="pageContent.unsubscribeSection.title"></h2>
+        @for (paragraph of pageContent.unsubscribeSection.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+      </div>
+    }
+    @if (pageContent.contactInfo) {
+      <div>
+        <h2 [innerHTML]="pageContent.contactInfo.title"></h2>
+        @for (paragraph of pageContent.contactInfo.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+      </div>
+    }
   </div>
-
-  <div *ngIf="pageContent.unsubscribeSection">
-    <h2 [innerHTML]="pageContent.unsubscribeSection.title"></h2>
-    <p *ngFor="let paragraph of pageContent.unsubscribeSection.content" [innerHTML]="paragraph"></p>
-  </div>
-
-  <div *ngIf="pageContent.contactInfo">
-    <h2 [innerHTML]="pageContent.contactInfo.title"></h2>
-    <p *ngFor="let paragraph of pageContent.contactInfo.content" [innerHTML]="paragraph"></p>
-  </div>
-</div>
+}
 

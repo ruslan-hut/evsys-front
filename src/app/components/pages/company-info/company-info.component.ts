@@ -2,10 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
+
 @Component({
-  selector: 'app-company-info',
-  templateUrl: './company-info.component.html',
-  styleUrls: ['./company-info.component.css']
+    selector: 'app-company-info',
+    templateUrl: './company-info.component.html',
+    styleUrls: ['./company-info.component.css'],
+    standalone: true,
+    imports: []
 })
 export class CompanyInfoComponent implements OnInit{
   pageContent: any;

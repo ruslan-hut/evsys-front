@@ -1,11 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {TariffService} from "../../service/tariff.service";
 import {Tariff} from "../../models/tariff";
+import { CurrencyPipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 
 @Component({
-  selector: 'app-tariff',
-  templateUrl: './tariff.component.html',
-  styleUrl: './tariff.component.css'
+    selector: 'app-tariff',
+    templateUrl: './tariff.component.html',
+    styleUrl: './tariff.component.css',
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, CurrencyPipe]
 })
 export class TariffComponent implements OnInit {
 

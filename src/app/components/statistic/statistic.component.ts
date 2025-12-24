@@ -3,11 +3,25 @@ import {MonthStats} from "../../models/month-stats";
 import {UserStats} from "../../models/user-stats";
 import {StatsService} from "../../service/stats.service";
 import {Group} from "../../models/group";
+import { MatFormField, MatLabel, MatHint, MatSuffix } from '@angular/material/form-field';
+import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDateRangePicker } from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { DecimalPipe } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatCard } from '@angular/material/card';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow } from '@angular/material/table';
 
 @Component({
-  selector: 'app-statistic',
-  templateUrl: './statistic.component.html',
-  styleUrl: './statistic.component.css'
+    selector: 'app-statistic',
+    templateUrl: './statistic.component.html',
+    styleUrl: './statistic.component.css',
+    standalone: true,
+    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressSpinner, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe]
 })
 export class StatisticComponent {
   monthStats: MonthStats[] = [];

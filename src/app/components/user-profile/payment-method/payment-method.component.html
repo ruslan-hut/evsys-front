@@ -1,38 +1,44 @@
 
 <mat-card>
   <mat-card-header>
-    <ng-template [ngIf]="isEditing">
+    @if (isEditing) {
       <mat-form-field>
         <input matInput placeholder="Description" [(ngModel)]="paymentMethod.description">
       </mat-form-field>
-    </ng-template>
-    <ng-template [ngIf]="!isEditing">
+    }
+    @if (!isEditing) {
       {{paymentMethod.description}}
-    </ng-template>
+    }
   </mat-card-header>
   <mat-card-content>
     <table>
       <tr><td></td><td>Expiry {{expiryDate(paymentMethod.expiry_date)}}</td><td>{{cardLogo(paymentMethod.card_brand)}}</td></tr>
-      <tr *ngIf="paymentMethod.is_default" class="warn" ><td>default</td><td></td><td></td></tr>
+      @if (paymentMethod.is_default) {
+        <tr class="warn" ><td>default</td><td></td><td></td></tr>
+      }
     </table>
   </mat-card-content>
-  <ng-template [ngIf]="!isEditing && paymentMethod.selected">
-    <mat-card-actions align="start" class="tool-panel" *ngIf="paymentMethod.selected">
-      <button mat-flat-button class="title-with-icon" color="accent" (click)="delete()">
-        <mat-icon>delete</mat-icon>
-        Delete
-      </button>
-      <button mat-flat-button class="title-with-icon" color="primary" (click)="editDescription()">
-        <mat-icon class="edit-icon">edit</mat-icon>
-        Edit description
-      </button>
-      <button mat-flat-button class="title-with-icon" color="primary" (click)="setDefault()" *ngIf="!paymentMethod.is_default">
-        <mat-icon class="edit-icon">star</mat-icon>
-        Set default
-      </button>
-    </mat-card-actions>
-  </ng-template>
-  <ng-template [ngIf]="isEditing">
+  @if (!isEditing && paymentMethod.selected) {
+    @if (paymentMethod.selected) {
+      <mat-card-actions align="start" class="tool-panel">
+        <button mat-flat-button class="title-with-icon" color="accent" (click)="delete()">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+        <button mat-flat-button class="title-with-icon" color="primary" (click)="editDescription()">
+          <mat-icon class="edit-icon">edit</mat-icon>
+          Edit description
+        </button>
+        @if (!paymentMethod.is_default) {
+          <button mat-flat-button class="title-with-icon" color="primary" (click)="setDefault()">
+            <mat-icon class="edit-icon">star</mat-icon>
+            Set default
+          </button>
+        }
+      </mat-card-actions>
+    }
+  }
+  @if (isEditing) {
     <mat-card-actions align="start" class="tool-panel">
       <button mat-flat-button color="accent" (click)="cancelEdit()">
         Close
@@ -42,7 +48,7 @@
         Save
       </button>
     </mat-card-actions>
-  </ng-template>
+  }
 </mat-card>
 
 

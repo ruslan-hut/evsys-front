@@ -5,14 +5,23 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ConfigKey, CsConfigResponse} from "../../models/cs-config-response";
 import {CsResponse} from "../../models/cs-response";
-import {MatTableDataSource} from "@angular/material/table";
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from "@angular/material/table";
 import {ErrorService} from "../../service/error.service";
 import {AccountService} from "../../service/account.service";
 
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+
 @Component({
-  selector: 'app-chargepoint-config',
-  templateUrl: './chargepoint-config.component.html',
-  styleUrls: ['./chargepoint-config.component.css']
+    selector: 'app-chargepoint-config',
+    templateUrl: './chargepoint-config.component.html',
+    styleUrls: ['./chargepoint-config.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatProgressSpinner, MatInput, MatButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatProgressBar, MatCardActions, MatIcon]
 })
 export class ChargepointConfigComponent implements OnInit {
   chargePointId: string;

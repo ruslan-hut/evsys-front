@@ -20,9 +20,11 @@
       <div>
         <p class="mat-body-1">Easily access all our features by signing in with your Google account. No need for remembering another password – just one click and you're in! You will be redirected to Google to sign in or register. We will not have access to your password.</p>
       </div>
-      <mat-card-footer *ngIf="loading">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </mat-card-footer>
+      @if (loading) {
+        <mat-card-footer>
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
+      }
       <mat-action-row>
         <button [disabled]="loading" mat-flat-button color="primary" (click)="onGoogleAccountSignIn()">Sign In</button>
       </mat-action-row>
@@ -44,9 +46,11 @@
         <mat-form-field class="form-field">
           <input matInput placeholder="e-mail address" type="text" formControlName="email">
         </mat-form-field>
-        <mat-card-footer *ngIf="loading">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </mat-card-footer>
+        @if (loading) {
+          <mat-card-footer>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </mat-card-footer>
+        }
         <mat-action-row>
           <button [disabled]="loading" mat-flat-button class="button-spacing" color="primary" type="submit">Sign In</button>
         </mat-action-row>
@@ -75,9 +79,11 @@
         <mat-form-field class="form-field">
           <input matInput placeholder="Password" type="password" formControlName="password">
         </mat-form-field>
-        <mat-card-footer *ngIf="loading">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </mat-card-footer>
+        @if (loading) {
+          <mat-card-footer>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </mat-card-footer>
+        }
         <mat-action-row>
           <button [disabled]="loading" mat-flat-button class="button-spacing" color="primary" type="submit">Sign In</button>
           <button [disabled]="loading" mat-flat-button color="warn" (click)="navigateTo('/account/register')">Sign Up</button>

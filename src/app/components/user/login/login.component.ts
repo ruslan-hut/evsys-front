@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
 import {Router} from "@angular/router";
@@ -15,11 +15,20 @@ import { GoogleAuthProvider } from "firebase/auth";
 import {MatDialog} from "@angular/material/dialog";
 import {BasicDialogComponent} from "../../dialogs/basic/basic-dialog.component";
 import {DialogData} from "../../../models/dialog-data";
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from '@angular/material/expansion';
+
+import { MatCardFooter } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: true,
+    imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatCardFooter, MatProgressBar, MatExpansionPanelActionRow, MatButton, FormsModule, ReactiveFormsModule, MatFormField, MatInput]
 })
 export class LoginComponent implements OnInit, AfterViewInit{
   formUsername: FormGroup;

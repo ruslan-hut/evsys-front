@@ -1,34 +1,36 @@
 <div>
-  <div *ngFor="let connector of connectors; let i = index">
-    <table>
-      <tr>
-        <mat-card-content class="connector-content">
-          <div class="title-with-indicator">
-            <div [style.background-color]="getConnectorColor(connector)" class="status-indicator"></div>
-            <mat-card-title class="connector-title">{{connector.connector_id}}:</mat-card-title>
-          </div>
-        </mat-card-content>
-      </tr>
-      <tr>
-        <td></td>
-        <td>ID: </td>
-        <div class="space"></div>
-        <td><input [(ngModel)]="connector.connector_id_name" /></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>Type: </td>
-        <div class="space"></div>
-        <td><input [(ngModel)]="connector.type" /></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>kW: </td>
-        <div class="space"></div>
-        <td><input [(ngModel)]="connector.power" type="number" /></td>
-      </tr>
-    </table>
-  </div>
+  @for (connector of connectors; track connector; let i = $index) {
+    <div>
+      <table>
+        <tr>
+          <mat-card-content class="connector-content">
+            <div class="title-with-indicator">
+              <div [style.background-color]="getConnectorColor(connector)" class="status-indicator"></div>
+              <mat-card-title class="connector-title">{{connector.connector_id}}:</mat-card-title>
+            </div>
+          </mat-card-content>
+        </tr>
+        <tr>
+          <td></td>
+          <td>ID: </td>
+          <div class="space"></div>
+          <td><input [(ngModel)]="connector.connector_id_name" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Type: </td>
+          <div class="space"></div>
+          <td><input [(ngModel)]="connector.type" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>kW: </td>
+          <div class="space"></div>
+          <td><input [(ngModel)]="connector.power" type="number" /></td>
+        </tr>
+      </table>
+    </div>
+  }
 </div>
 
 

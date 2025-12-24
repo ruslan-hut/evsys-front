@@ -20,25 +20,32 @@
     </div>
   </mat-card-content>
   <div class="connector-container">
-    <ng-container *ngFor="let connector of chargepoint.connectors| sortConnectors">
+    @for (connector of chargepoint.connectors| sortConnectors; track connector) {
       <app-connector [connector]="connector"></app-connector>
-    </ng-container>
+    }
   </div>
   <mat-card-actions align="end" class="tool-panel">
-    <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()" *ngIf="accountService.isAdmin || accountService.isOperator">
-      <mat-icon class="edit-icon">settings</mat-icon>
-    </button>
-    <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()" *ngIf="accountService.isAdmin">
-      <mat-icon class="edit-icon">edit</mat-icon>
-    </button>
-    <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()" *ngIf="accountService.isAdmin || accountService.isOperator">
-      <mat-icon class="edit-icon">remove_red_eye</mat-icon>
-    </button>
+    @if (accountService.isAdmin || accountService.isOperator) {
+      <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()">
+        <mat-icon class="edit-icon">settings</mat-icon>
+      </button>
+    }
+    @if (accountService.isAdmin) {
+      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()">
+        <mat-icon class="edit-icon">edit</mat-icon>
+      </button>
+    }
+    @if (accountService.isAdmin || accountService.isOperator) {
+      <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()">
+        <mat-icon class="edit-icon">remove_red_eye</mat-icon>
+      </button>
+    }
     <div class="space"></div>
-    <mat-icon class="online-status" *ngIf="chargepoint.is_online; else isNotOnline">cloud_queue</mat-icon>
-    <ng-template #isNotOnline>
+    @if (chargepoint.is_online) {
+      <mat-icon class="online-status">cloud_queue</mat-icon>
+    } @else {
       <mat-icon color="warn">cloud_off</mat-icon>
-    </ng-template>
+    }
   </mat-card-actions>
 </mat-card>
 

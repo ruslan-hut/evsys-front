@@ -11,41 +11,44 @@
 
 <!--</form>-->
 
-<mat-card *ngIf="chargePoint">
-  <mat-card-header>
-    <mat-card-title class="center-content">
-      {{chargePointId}}
-      <mat-icon *ngIf="isSaved" color="primary">check_circle</mat-icon>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <table>
-      <tr><td >Title</td><td ><input class="equal-height-input"
-                                     [(ngModel)]="chargePoint.title" /></td><td></td></tr>
-      <tr><td >Access type</td><td ><input class="equal-height-input"
-                                     [(ngModel)]="chargePoint.access_type" /></td><td></td></tr>
-      <tr><td >Access level</td><td ><input class="equal-height-input"
-                                     [(ngModel)]="chargePoint.access_level" type="number"
-                                            step="1" pattern="[0-9]*" inputmode="numeric"/></td><td></td></tr>
-      <tr><td >Address</td><td ><textarea class="equal-height-input"
-                                          matInput
-                                          cdkTextareaAutosize
-                                          #autosize="cdkTextareaAutosize"
-                                          cdkAutosizeMinRows="1"
-                                          [(ngModel)]="chargePoint.address"></textarea></td><td></td></tr>
-      <tr>
-        <td>Location</td>
-        <td colspan="2" class="two-in-one">
-          <input [(ngModel)]="chargePoint.location.latitude" class="two-in-one_input" type="number"/>
-          <input [(ngModel)]="chargePoint.location.longitude" class="two-in-one_input" type="number"/>
-        </td>
-      </tr>
-      <tr><td >Description</td><td ><textarea class="equal-height-input"
-                                              matInput
-                                              cdkTextareaAutosize
-                                              #autosize="cdkTextareaAutosize"
-                                              cdkAutosizeMinRows="1"
-                                              [(ngModel)]="chargePoint.description"></textarea>
+@if (chargePoint) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="center-content">
+        {{chargePointId}}
+        @if (isSaved) {
+          <mat-icon color="primary">check_circle</mat-icon>
+        }
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <tr><td >Title</td><td ><input class="equal-height-input"
+        [(ngModel)]="chargePoint.title" /></td><td></td></tr>
+        <tr><td >Access type</td><td ><input class="equal-height-input"
+        [(ngModel)]="chargePoint.access_type" /></td><td></td></tr>
+        <tr><td >Access level</td><td ><input class="equal-height-input"
+        [(ngModel)]="chargePoint.access_level" type="number"
+        step="1" pattern="[0-9]*" inputmode="numeric"/></td><td></td></tr>
+        <tr><td >Address</td><td ><textarea class="equal-height-input"
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        [(ngModel)]="chargePoint.address"></textarea></td><td></td></tr>
+        <tr>
+          <td>Location</td>
+          <td colspan="2" class="two-in-one">
+            <input [(ngModel)]="chargePoint.location.latitude" class="two-in-one_input" type="number"/>
+            <input [(ngModel)]="chargePoint.location.longitude" class="two-in-one_input" type="number"/>
+          </td>
+        </tr>
+        <tr><td >Description</td><td ><textarea class="equal-height-input"
+        matInput
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+      [(ngModel)]="chargePoint.description"></textarea>
       </td><td></td></tr>
     </table>
   </mat-card-content>
@@ -56,9 +59,11 @@
     <button mat-stroked-button (click)="close()">Close</button>
     <button mat-flat-button color="primary" (click)="save()">Save</button>
     <div class="flex-spacer"></div>
-    <mat-icon class="online-status" *ngIf="chargePoint.is_online; else isNotOnline">cloud_queue</mat-icon>
-    <ng-template #isNotOnline>
+    @if (chargePoint.is_online) {
+      <mat-icon class="online-status">cloud_queue</mat-icon>
+    } @else {
       <mat-icon color="warn">cloud_off</mat-icon>
-    </ng-template>
+    }
   </mat-card-actions>
 </mat-card>
+}

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {Chargepoint} from "../models/chargepoint";
 
 @Pipe({
-  name: 'filerChargepoints'
+    name: 'filerChargepoints',
+    standalone: true
 })
 export class FilerChargepointsPipe implements PipeTransform {
 

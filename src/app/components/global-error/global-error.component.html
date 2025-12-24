@@ -1,6 +1,7 @@
-<div
-  *ngIf="errorService.error$ | async as error"
-  class="h-[50px] flex justify-center items-center bg-red-600 text-white"
->
-  {{error}}
-</div>
+@if (errorService.error$ | async; as error) {
+  <div
+    class="h-[50px] flex justify-center items-center bg-red-600 text-white"
+    >
+    {{error}}
+  </div>
+}

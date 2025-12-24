@@ -1,23 +1,38 @@
-<div *ngIf="policyContent">
-  <h1 [innerHTML]="policyContent.title"></h1>
-  <p [innerHTML]="policyContent.introduction"></p>
-  <p [innerHTML]="policyContent.thirdPartyNotice"></p>
-
-  <div *ngFor="let section of policyContent.sections">
-    <h2 [innerHTML]="section.title"></h2>
-    <p *ngFor="let paragraph of section.content" [innerHTML]="paragraph"></p>
-    <ul *ngIf="section.list">
-      <li *ngFor="let listItem of section.list" [innerHTML]="listItem"></li>
-    </ul>
+@if (policyContent) {
+  <div>
+    <h1 [innerHTML]="policyContent.title"></h1>
+    <p [innerHTML]="policyContent.introduction"></p>
+    <p [innerHTML]="policyContent.thirdPartyNotice"></p>
+    @for (section of policyContent.sections; track section) {
+      <div>
+        <h2 [innerHTML]="section.title"></h2>
+        @for (paragraph of section.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+        @if (section.list) {
+          <ul>
+            @for (listItem of section.list; track listItem) {
+              <li [innerHTML]="listItem"></li>
+            }
+          </ul>
+        }
+      </div>
+    }
+    @if (policyContent.unsubscribeSection) {
+      <div>
+        <h2 [innerHTML]="policyContent.unsubscribeSection.title"></h2>
+        @for (paragraph of policyContent.unsubscribeSection.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+      </div>
+    }
+    @if (policyContent.contactInfo) {
+      <div>
+        <h2 [innerHTML]="policyContent.contactInfo.title"></h2>
+        @for (paragraph of policyContent.contactInfo.content; track paragraph) {
+          <p [innerHTML]="paragraph"></p>
+        }
+      </div>
+    }
   </div>
-
-  <div *ngIf="policyContent.unsubscribeSection">
-    <h2 [innerHTML]="policyContent.unsubscribeSection.title"></h2>
-    <p *ngFor="let paragraph of policyContent.unsubscribeSection.content" [innerHTML]="paragraph"></p>
-  </div>
-
-  <div *ngIf="policyContent.contactInfo">
-    <h2 [innerHTML]="policyContent.contactInfo.title"></h2>
-    <p *ngFor="let paragraph of policyContent.contactInfo.content" [innerHTML]="paragraph"></p>
-  </div>
-</div>
+}

@@ -2,10 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
+
 @Component({
-  selector: 'app-privacy-policy',
-  templateUrl: './privacy-policy.component.html',
-  styleUrls: ['./privacy-policy.component.css']
+    selector: 'app-privacy-policy',
+    templateUrl: './privacy-policy.component.html',
+    styleUrls: ['./privacy-policy.component.css'],
+    standalone: true,
+    imports: []
 })
 export class PrivacyPolicyComponent implements OnInit{
   policyContent: any;

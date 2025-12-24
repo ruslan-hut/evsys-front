@@ -1,6 +1,8 @@
 
 <mat-card>
-  <button *ngFor="let cp of dataSource.data" mat-fab extended color="primary" (click)="selectChargePoint(cp)" >
-    {{cp.charge_point_id}}
-  </button>
+  @for (cp of dataSource.data; track cp) {
+    <button mat-fab extended color="primary" (click)="selectChargePoint(cp)" >
+      {{cp.charge_point_id}}
+    </button>
+  }
 </mat-card>

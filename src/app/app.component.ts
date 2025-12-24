@@ -1,9 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {filter, map} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from "@angular/router";
+import { filter, map } from "rxjs";
+
+import { HeaderComponent } from "./components/ui/header/header.component";
+import { SnackBarComponent } from "./components/snack-bar/snack-bar.component";
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, HeaderComponent, SnackBarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -34,6 +39,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
 }

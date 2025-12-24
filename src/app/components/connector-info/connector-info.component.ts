@@ -12,10 +12,15 @@ import {ErrorService} from "../../service/error.service";
 import {ChargepointService} from "../../service/chargepoint.service";
 import {Router} from "@angular/router";
 
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from "@angular/material/expansion";
+import { MatButton } from "@angular/material/button";
+
 @Component({
-  selector: 'app-connector-info',
-  templateUrl: './connector-info.component.html',
-  styleUrls: ['./connector-info.component.css']
+    selector: 'app-connector-info',
+    templateUrl: './connector-info.component.html',
+    styleUrls: ['./connector-info.component.css'],
+    standalone: true,
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton]
 })
 export class ConnectorInfoComponent implements OnInit {
 

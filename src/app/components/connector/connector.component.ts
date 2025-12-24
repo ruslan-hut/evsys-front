@@ -2,11 +2,16 @@ import {Component, Input} from "@angular/core"
 import {Connector} from "../../models/connector";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
+import { MatCardContent } from "@angular/material/card";
+import { MatButton } from "@angular/material/button";
+import { NgStyle, TitleCasePipe } from "@angular/common";
 
 @Component({
-  selector: 'app-connector',
-  templateUrl: './connector.component.html',
-  styleUrls: ['./connector.component.css']
+    selector: 'app-connector',
+    templateUrl: './connector.component.html',
+    styleUrls: ['./connector.component.css'],
+    standalone: true,
+    imports: [MatCardContent, MatButton, NgStyle, TitleCasePipe]
 })
 export class ConnectorComponent {
   @Input() connector: Connector

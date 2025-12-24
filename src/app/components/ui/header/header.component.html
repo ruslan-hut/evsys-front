@@ -1,32 +1,35 @@
 <mat-toolbar class= "toolbar mat-elevation-z8" color="primary">
-  <div *ngIf="menuEnabled && username">
-    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <mat-menu #mainMenu="matMenu">
-      <button mat-menu-item (click)="navigateTo('/')">
-        <span>Home</span>
+  @if (menuEnabled && username) {
+    <div>
+      <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
+        <mat-icon>menu</mat-icon>
       </button>
-<!--      <button mat-menu-item (click)="navigateTo('/promo')">-->
-<!--        <span>Promo</span>-->
-<!--      </button>-->
+      <mat-menu #mainMenu="matMenu">
+        <button mat-menu-item (click)="navigateTo('/')">
+          <span>Home</span>
+        </button>
+        <!--      <button mat-menu-item (click)="navigateTo('/promo')">-->
+        <!--        <span>Promo</span>-->
+      <!--      </button>-->
       <button mat-menu-item (click)="navigateTo('/user-profile')">
         <span>Profile</span>
       </button>
-      <div *ngIf="isAdmin">
-        <button mat-menu-item (click)="navigateTo('/statistic')">
-          <span>Statistic</span>
-        </button>
-        <button mat-menu-item (click)="navigateTo('/log/system')">
-          <span>System log</span>
-        </button>
-        <button mat-menu-item (click)="navigateTo('/log/pay')">
-          <span>Payment log</span>
-        </button>
-        <button mat-menu-item (click)="navigateTo('/users')">
-          <span>Users list</span>
-        </button>
-      </div>
+      @if (isAdmin) {
+        <div>
+          <button mat-menu-item (click)="navigateTo('/statistic')">
+            <span>Statistic</span>
+          </button>
+          <button mat-menu-item (click)="navigateTo('/log/system')">
+            <span>System log</span>
+          </button>
+          <button mat-menu-item (click)="navigateTo('/log/pay')">
+            <span>Payment log</span>
+          </button>
+          <button mat-menu-item (click)="navigateTo('/users')">
+            <span>Users list</span>
+          </button>
+        </div>
+      }
       <button mat-menu-item (click)="navigateTo('/privacy/en')">
         <span>Privacy policy</span>
       </button>
@@ -35,27 +38,33 @@
       </button>
     </mat-menu>
   </div>
-  <button mat-icon-button *ngIf="!menuEnabled && isAdmin" (click)="navigateTo('/')" aria-label="Back button">
+}
+@if (!menuEnabled && isAdmin) {
+  <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
     <mat-icon>arrow_back</mat-icon>
   </button>
+}
 
-  <span>{{title}}</span>
-  <span class="bar-spacer"></span>
+<span>{{title}}</span>
+<span class="bar-spacer"></span>
 
-  <button mat-icon-button *ngIf="menuEnabled && username" (click)="openUserProfile()">
+@if (menuEnabled && username) {
+  <button mat-icon-button (click)="openUserProfile()">
     <mat-icon>account_circle</mat-icon>
   </button>
-  <span>{{username}}</span>
+}
+<span>{{username}}</span>
 
-  <div *ngIf="username; else showLoginButton">
+@if (username) {
+  <div>
     <button mat-icon-button aria-label="User account" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </div>
-  <ng-template #showLoginButton>
-    <button mat-icon-button aria-label="User account" (click)="navigateTo('/account/login')">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-  </ng-template>
+} @else {
+  <button mat-icon-button aria-label="User account" (click)="navigateTo('/account/login')">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+}
 
 </mat-toolbar>
