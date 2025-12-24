@@ -1,34 +1,33 @@
-<mat-toolbar class= "toolbar mat-elevation-z8" color="primary">
+<mat-toolbar class="toolbar mat-elevation-z8" color="primary">
+  @if (isHandset$ | async; as handset) {
+  @if (handset.matches) {
   @if (menuEnabled && username) {
-    <div>
-      <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
-        <mat-icon>menu</mat-icon>
+  <div>
+    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #mainMenu="matMenu">
+      <button mat-menu-item (click)="navigateTo('/')">
+        <span>Home</span>
       </button>
-      <mat-menu #mainMenu="matMenu">
-        <button mat-menu-item (click)="navigateTo('/')">
-          <span>Home</span>
-        </button>
-        <!--      <button mat-menu-item (click)="navigateTo('/promo')">-->
-        <!--        <span>Promo</span>-->
-      <!--      </button>-->
       <button mat-menu-item (click)="navigateTo('/user-profile')">
         <span>Profile</span>
       </button>
       @if (isAdmin) {
-        <div>
-          <button mat-menu-item (click)="navigateTo('/statistic')">
-            <span>Statistic</span>
-          </button>
-          <button mat-menu-item (click)="navigateTo('/log/system')">
-            <span>System log</span>
-          </button>
-          <button mat-menu-item (click)="navigateTo('/log/pay')">
-            <span>Payment log</span>
-          </button>
-          <button mat-menu-item (click)="navigateTo('/users')">
-            <span>Users list</span>
-          </button>
-        </div>
+      <div>
+        <button mat-menu-item (click)="navigateTo('/statistic')">
+          <span>Statistic</span>
+        </button>
+        <button mat-menu-item (click)="navigateTo('/log/system')">
+          <span>System log</span>
+        </button>
+        <button mat-menu-item (click)="navigateTo('/log/pay')">
+          <span>Payment log</span>
+        </button>
+        <button mat-menu-item (click)="navigateTo('/users')">
+          <span>Users list</span>
+        </button>
+      </div>
       }
       <button mat-menu-item (click)="navigateTo('/privacy/en')">
         <span>Privacy policy</span>
@@ -38,33 +37,55 @@
       </button>
     </mat-menu>
   </div>
-}
-@if (!menuEnabled && isAdmin) {
+  }
+  } @else {
+  @if (menuEnabled && username) {
+  <div class="desktop-menu">
+    <button mat-button (click)="navigateTo('/')">Home</button>
+    @if (isAdmin) {
+    <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
+    <mat-menu #adminMenu="matMenu">
+      <button mat-menu-item (click)="navigateTo('/statistic')">Statistic</button>
+      <button mat-menu-item (click)="navigateTo('/log/system')">System log</button>
+      <button mat-menu-item (click)="navigateTo('/log/pay')">Payment log</button>
+      <button mat-menu-item (click)="navigateTo('/users')">Users list</button>
+    </mat-menu>
+    }
+    <button mat-button [matMenuTriggerFor]="legalMenu">Legal</button>
+    <mat-menu #legalMenu="matMenu">
+      <button mat-menu-item (click)="navigateTo('/privacy/en')">Privacy policy</button>
+      <button mat-menu-item (click)="navigateTo('/terms/en')">Terms and conditions</button>
+    </mat-menu>
+  </div>
+  }
+  }
+  }
+  @if (!menuEnabled && isAdmin) {
   <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
     <mat-icon>arrow_back</mat-icon>
   </button>
-}
+  }
 
-<span>{{title}}</span>
-<span class="bar-spacer"></span>
+  <span>{{title}}</span>
+  <span class="bar-spacer"></span>
 
-@if (menuEnabled && username) {
+  @if (menuEnabled && username) {
   <button mat-icon-button (click)="openUserProfile()">
     <mat-icon>account_circle</mat-icon>
   </button>
-}
-<span>{{username}}</span>
+  }
+  <span>{{username}}</span>
 
-@if (username) {
+  @if (username) {
   <div>
     <button mat-icon-button aria-label="User account" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </div>
-} @else {
+  } @else {
   <button mat-icon-button aria-label="User account" (click)="navigateTo('/account/login')">
     <mat-icon>account_circle</mat-icon>
   </button>
-}
+  }
 
 </mat-toolbar>

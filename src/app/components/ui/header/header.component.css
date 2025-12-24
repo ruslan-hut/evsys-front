@@ -6,3 +6,9 @@
   top: 0;
   z-index: 1;
 }
+
+.desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
