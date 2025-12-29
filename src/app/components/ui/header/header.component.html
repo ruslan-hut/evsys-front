@@ -70,20 +70,20 @@
   <span class="bar-spacer"></span>
 
   @if (menuEnabled && username) {
-  <button mat-icon-button (click)="openUserProfile()">
+  <button mat-icon-button (click)="openUserProfile()" aria-label="View profile for {{username}}">
     <mat-icon>account_circle</mat-icon>
   </button>
   }
-  <span>{{username}}</span>
+  <span class="username-display">{{username}}</span>
 
   @if (username) {
   <div>
-    <button mat-icon-button aria-label="User account" (click)="logout()">
+    <button mat-icon-button aria-label="Log out" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </div>
   } @else {
-  <button mat-icon-button aria-label="User account" (click)="navigateTo('/account/login')">
+  <button mat-icon-button aria-label="Log in to your account" (click)="navigateTo('/account/login')">
     <mat-icon>account_circle</mat-icon>
   </button>
   }

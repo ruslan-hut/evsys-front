@@ -190,7 +190,8 @@ export class LoginComponent implements OnInit, AfterViewInit{
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '250px',
+      width: '100%',
+      maxWidth: '350px',
       data: dialogData,
     });
 
@@ -210,6 +211,8 @@ export class LoginComponent implements OnInit, AfterViewInit{
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
+      width: '100%',
+      maxWidth: '400px',
       data: dialogData,
     });
 

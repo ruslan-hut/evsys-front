@@ -1,9 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from "@angular/router";
-import { filter, map } from "rxjs";
+import { filter, map, take } from "rxjs";
 
 import { HeaderComponent } from "./components/ui/header/header.component";
 import { SnackBarComponent } from "./components/snack-bar/snack-bar.component";
+import { AccountService } from "./service/account.service";
+
+// Routes that don't require authentication
+const PUBLIC_ROUTES = [
+  '/account/login',
+  '/account/register',
+  '/privacy',
+  '/terms',
+  '/company-info',
+  '/bank'
+];
 
 @Component({
   selector: 'app-root',
@@ -19,6 +30,7 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private accountService: AccountService,
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -39,6 +51,18 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    // Wait for auth initialization to complete, then redirect if not logged in
+    this.accountService.authReady$.pipe(take(1)).subscribe(() => {
+      if (!this.accountService.userValue && !this.isPublicRoute()) {
+        this.router.navigate(['/account/login']);
+      }
+    });
+  }
+
+  private isPublicRoute(): boolean {
+    const currentUrl = this.router.url.split('?')[0]; // Remove query params
+    return PUBLIC_ROUTES.some(route => currentUrl.startsWith(route));
+  }
 
 }

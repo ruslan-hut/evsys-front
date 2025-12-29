@@ -1,24 +1,24 @@
 <mat-card-content class="connector-content">
   <button mat-flat-button
-          [ngStyle]="{ 'border-color': getConnectorColor(), 'border-width': '2px' }"
+          [ngStyle]="{ 'border-color': getConnectorColor(), 'border-width': '2px', 'background-color': getConnectorBackgroundColor() }"
           class="custom-button fix-width"
           (click)="openInfo()"
-          [disabled]="isDisabled()">
+          [disabled]="isDisabled()"
+          [attr.aria-label]="'Connector ' + getConnectorName() + ', ' + connector.type + ', ' + connector.power + ' kW, status: ' + connector.status">
     <div class="button-content">
-      <div class="connector-number">
+      <div class="connector-number" aria-hidden="true">
         {{getConnectorName()}}
       </div>
-      <div class="connector-info">
+      <div class="connector-info" aria-hidden="true">
         <div class="info-item">
-          <img src="{{getConnectorTypeIcon()}}" alt="Type" class="icon"/>
-          {{ this.connector.type }}
+          <img src="{{getConnectorTypeIcon()}}" alt="" class="icon"/>
+          <span class="info-text">{{ this.connector.type }}</span>
         </div>
         <div class="info-item">
-          <img src="assets/icons/bolt.svg" alt="Power" class="icon"/>
-          {{ this.connector.power }} kW
+          <img src="assets/icons/bolt.svg" alt="" class="icon"/>
+          <span class="info-text">{{ this.connector.power }} kW</span>
         </div>
-        <div class="info-item" [ngStyle]="{ 'color': getConnectorColor() }">
-<!--          <img src="available-icon.svg" alt="Status" class="icon"/>-->
+        <div class="info-item status-item" [ngStyle]="{ 'color': getConnectorColor() }">
           {{ this.connector.status | titlecase }}
         </div>
       </div>

@@ -19,151 +19,100 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <table>
-        <tr>
-          <td>Title:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.title}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Description:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.description}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Address:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.address}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Location:</td>
-          <td>
-            <a href="https://www.google.com/maps?q={{chargePoint.location.latitude}},{{chargePoint.location.longitude}}" target="_blank">
+      <dl class="info-list">
+        <div class="info-item">
+          <dt>Title</dt>
+          <dd>{{chargePoint.title}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Description</dt>
+          <dd>{{chargePoint.description}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Address</dt>
+          <dd>{{chargePoint.address}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Location</dt>
+          <dd>
+            <a href="https://www.google.com/maps?q={{chargePoint.location.latitude}},{{chargePoint.location.longitude}}"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Open location in Google Maps">
               {{chargePoint.location.latitude.toFixed(3)}};{{chargePoint.location.longitude.toFixed(3)}}
             </a>
-          </td>
-        </tr>
-        <tr>
-          <td>Access type:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.access_type}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Model:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.model}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Serial Number:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.serial_number}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Vendor:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.vendor}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Firmware Version:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.firmware_version}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>ErrorCode:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.error_code}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Info:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.info}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Status:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.status}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Event time:</td>
-          <td>
-            <div class="like-input">
-              {{timeService.getTimeDifference(chargePoint.event_time)}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Status time:</td>
-          <td>
-            <div class="like-input">
-              {{timeService.getTimeDifference(chargePoint.status_time)}}
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Access level:</td>
-          <td>
-            <div class="like-input">
-              {{chargePoint.access_level}}
-            </div>
-          </td>
-        </tr>
-      </table>
-      <br>
-        <mat-accordion >
-          @for (connector of chargePoint.connectors| sortConnectors ; track connector) {
-            <div>
-              <app-connector-info [connector]="connector"></app-connector-info>
-            </div>
-          }
-        </mat-accordion>
-      </mat-card-content>
-      <br>
-        <mat-card-actions class="flex-container">
-          <button mat-stroked-button (click)="close()">Close</button>
-          <button mat-flat-button color="primary" (click)="reboot(1)">Soft Reset</button>
-          <button mat-flat-button color="primary" (click)="reboot(0)">Hard Reset</button>
-          <div class="flex-spacer"></div>
-          @if (chargePoint.is_online) {
-            <mat-icon class="online-status">cloud_queue</mat-icon>
-          } @else {
-            <mat-icon color="warn">cloud_off</mat-icon>
-          }
-        </mat-card-actions>
-      </mat-card>
-    }
+          </dd>
+        </div>
+        <div class="info-item">
+          <dt>Access type</dt>
+          <dd>{{chargePoint.access_type}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Model</dt>
+          <dd>{{chargePoint.model}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Serial Number</dt>
+          <dd>{{chargePoint.serial_number}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Vendor</dt>
+          <dd>{{chargePoint.vendor}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Firmware Version</dt>
+          <dd>{{chargePoint.firmware_version}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Error Code</dt>
+          <dd>{{chargePoint.error_code}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Info</dt>
+          <dd>{{chargePoint.info}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Status</dt>
+          <dd>{{chargePoint.status}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Event time</dt>
+          <dd>{{timeService.getTimeDifference(chargePoint.event_time)}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Status time</dt>
+          <dd>{{timeService.getTimeDifference(chargePoint.status_time)}}</dd>
+        </div>
+        <div class="info-item">
+          <dt>Access level</dt>
+          <dd>{{chargePoint.access_level}}</dd>
+        </div>
+      </dl>
+
+      <mat-accordion>
+        @for (connector of chargePoint.connectors| sortConnectors ; track connector) {
+          <div>
+            <app-connector-info [connector]="connector"></app-connector-info>
+          </div>
+        }
+      </mat-accordion>
+    </mat-card-content>
+
+    <mat-card-actions class="flex-container">
+      <button mat-stroked-button (click)="close()">Close</button>
+      <button mat-flat-button color="primary" (click)="reboot(1)">Soft Reset</button>
+      <button mat-flat-button color="primary" (click)="reboot(0)">Hard Reset</button>
+      <div class="flex-spacer"></div>
+      @if (chargePoint.is_online) {
+        <mat-icon class="status-online" aria-hidden="true">cloud_queue</mat-icon>
+        <span class="sr-only">Charger is online</span>
+      } @else {
+        <mat-icon color="warn" aria-hidden="true">cloud_off</mat-icon>
+        <span class="sr-only">Charger is offline</span>
+      }
+    </mat-card-actions>
+  </mat-card>
+}
 
 
 

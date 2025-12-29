@@ -17,53 +17,75 @@
       <mat-card-title class="center-content">
         {{chargePointId}}
         @if (isSaved) {
-          <mat-icon color="primary">check_circle</mat-icon>
+          <mat-icon color="primary" aria-label="Changes saved">check_circle</mat-icon>
         }
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <table>
-        <tr><td >Title</td><td ><input class="equal-height-input"
-        [(ngModel)]="chargePoint.title" /></td><td></td></tr>
-        <tr><td >Access type</td><td ><input class="equal-height-input"
-        [(ngModel)]="chargePoint.access_type" /></td><td></td></tr>
-        <tr><td >Access level</td><td ><input class="equal-height-input"
-        [(ngModel)]="chargePoint.access_level" type="number"
-        step="1" pattern="[0-9]*" inputmode="numeric"/></td><td></td></tr>
-        <tr><td >Address</td><td ><textarea class="equal-height-input"
-        matInput
-        cdkTextareaAutosize
-        #autosize="cdkTextareaAutosize"
-        cdkAutosizeMinRows="1"
-        [(ngModel)]="chargePoint.address"></textarea></td><td></td></tr>
-        <tr>
-          <td>Location</td>
-          <td colspan="2" class="two-in-one">
-            <input [(ngModel)]="chargePoint.location.latitude" class="two-in-one_input" type="number"/>
-            <input [(ngModel)]="chargePoint.location.longitude" class="two-in-one_input" type="number"/>
-          </td>
-        </tr>
-        <tr><td >Description</td><td ><textarea class="equal-height-input"
-        matInput
-        cdkTextareaAutosize
-        #autosize="cdkTextareaAutosize"
-        cdkAutosizeMinRows="1"
-      [(ngModel)]="chargePoint.description"></textarea>
-      </td><td></td></tr>
-    </table>
-  </mat-card-content>
-  <mat-card>
-    <app-connector-form [connectors]="chargePoint.connectors | sortConnectors"></app-connector-form>
+      <div class="form-grid">
+        <div class="form-row form-row--inline">
+          <label for="cp-title">Title</label>
+          <input id="cp-title" class="equal-height-input" [(ngModel)]="chargePoint.title" />
+        </div>
+        <div class="form-row form-row--inline">
+          <label for="cp-access-type">Access type</label>
+          <input id="cp-access-type" class="equal-height-input" [(ngModel)]="chargePoint.access_type" />
+        </div>
+        <div class="form-row form-row--inline">
+          <label for="cp-access-level">Access level</label>
+          <input id="cp-access-level" class="equal-height-input"
+                 [(ngModel)]="chargePoint.access_level" type="number"
+                 step="1" pattern="[0-9]*" inputmode="numeric"/>
+        </div>
+        <div class="form-row form-row--inline">
+          <label for="cp-address">Address</label>
+          <textarea id="cp-address" class="equal-height-input"
+                    matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    [(ngModel)]="chargePoint.address"></textarea>
+        </div>
+        <div class="form-row form-row--inline">
+          <label>Location</label>
+          <div class="form-row-two-col location-inputs">
+            <input [(ngModel)]="chargePoint.location.latitude"
+                   class="equal-height-input"
+                   type="number"
+                   placeholder="Latitude"
+                   aria-label="Latitude"/>
+            <input [(ngModel)]="chargePoint.location.longitude"
+                   class="equal-height-input"
+                   type="number"
+                   placeholder="Longitude"
+                   aria-label="Longitude"/>
+          </div>
+        </div>
+        <div class="form-row form-row--inline">
+          <label for="cp-description">Description</label>
+          <textarea id="cp-description" class="equal-height-input"
+                    matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    [(ngModel)]="chargePoint.description"></textarea>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card>
+      <app-connector-form [connectors]="chargePoint.connectors | sortConnectors"></app-connector-form>
+    </mat-card>
+    <mat-card-actions>
+      <button mat-stroked-button (click)="close()">Close</button>
+      <button mat-flat-button color="primary" (click)="save()">Save</button>
+      <div class="flex-spacer"></div>
+      @if (chargePoint.is_online) {
+        <mat-icon class="status-online" aria-hidden="true">cloud_queue</mat-icon>
+        <span class="sr-only">Charger is online</span>
+      } @else {
+        <mat-icon color="warn" aria-hidden="true">cloud_off</mat-icon>
+        <span class="sr-only">Charger is offline</span>
+      }
+    </mat-card-actions>
   </mat-card>
-  <mat-card-actions>
-    <button mat-stroked-button (click)="close()">Close</button>
-    <button mat-flat-button color="primary" (click)="save()">Save</button>
-    <div class="flex-spacer"></div>
-    @if (chargePoint.is_online) {
-      <mat-icon class="online-status">cloud_queue</mat-icon>
-    } @else {
-      <mat-icon color="warn">cloud_off</mat-icon>
-    }
-  </mat-card-actions>
-</mat-card>
 }

@@ -1,8 +1,6 @@
-
-
 .connector-content {
   padding: 0;
-  margin-left: 16px;
+  margin-left: var(--spacing-md);
   display: flex;
   align-items: flex-start;
 }
@@ -18,7 +16,7 @@
   border-radius: 50%;
 }
 
-.data{
+.data {
   display: inline-block;
   vertical-align: middle;
   text-align: center;
@@ -30,14 +28,17 @@
   align-items: center;
   border: 1px solid;
   border-radius: 8px;
-  padding: 10px;
-  font-family: Arial, sans-serif;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: inherit;
   font-size: 14px;
   color: black;
   background-color: white;
-  width: 250px;
+  width: 100%;
+  max-width: 250px;
+  min-height: var(--touch-target-min);
   height: fit-content;
   z-index: 0;
+  box-sizing: border-box;
 }
 
 .button-content {
@@ -45,23 +46,26 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-sm);
 }
 
 .connector-number {
   font-size: 24px;
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: var(--spacing-sm);
+  flex-shrink: 0;
 }
 
 .connector-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .info-item:last-child {
@@ -72,28 +76,41 @@
   width: 16px;
   height: 16px;
   margin-right: 5px;
+  flex-shrink: 0;
 }
 
-/* Пример динамического стиля */
+/* Dynamic status styles */
 [data-available='true'] {
-  color: green;
+  color: var(--color-online);
 }
 
 [data-available='false'] {
-  color: red;
+  color: var(--color-error);
 }
 
 .fix-width {
-  width: 140px;
+  width: 100%;
+  max-width: 160px;
 }
 
 .button-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
+/* Responsive breakpoints */
+@media screen and (max-width: 599px) {
+  .custom-button {
+    max-width: 100%;
+    padding: var(--spacing-sm);
+  }
 
-@media screen and (max-width: 400px) {
+  .fix-width {
+    max-width: 100%;
+  }
+
   .button-container {
     flex-direction: column;
   }
@@ -102,7 +119,43 @@
     vertical-align: top;
   }
 
-  .space{
-    height: 4px;
+  .space {
+    height: var(--spacing-xs);
+  }
+
+  /* Compact mobile layout - info in one line */
+  .connector-info {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    margin-bottom: 0;
+  }
+
+  /* Hide status text on mobile - background color indicates status */
+  .status-item {
+    display: none;
+  }
+
+  .connector-number {
+    font-size: 20px;
+  }
+
+  .info-text {
+    font-size: 12px;
+  }
+
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 899px) {
+  .custom-button {
+    max-width: 200px;
   }
 }

@@ -21,40 +21,40 @@
 </div>
 
 <div class="mat-elevation-z8 box-margin">
-  <table mat-table matSort [dataSource]="dataSource">
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-      <td mat-cell *matCellDef="let row">{{row.time}}</td>
-    </ng-container>
-    <ng-container matColumnDef="feature">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Feature</th>
-      <td mat-cell *matCellDef="let row">{{row.feature}}</td>
-    </ng-container>
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Point ID</th>
-      <td mat-cell *matCellDef="let row">{{row.id}}</td>
-    </ng-container>
-    <ng-container matColumnDef="text">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Event</th>
-      <td mat-cell *matCellDef="let row">{{row.text}}</td>
-    </ng-container>
+  <div class="table-responsive">
+    <table mat-table matSort [dataSource]="dataSource">
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+        <td mat-cell *matCellDef="let row">{{row.time}}</td>
+      </ng-container>
+      <ng-container matColumnDef="feature">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Feature</th>
+        <td mat-cell *matCellDef="let row">{{row.feature}}</td>
+      </ng-container>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Point ID</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+      <ng-container matColumnDef="text">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Event</th>
+        <td mat-cell *matCellDef="let row">{{row.text}}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumn"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumn"></tr>
 
-    <tr *matNoDataRow>
-      @if (filter) {
-        <div>
+      <tr *matNoDataRow>
+        @if (filter) {
           <td class="mat-cell" colspan="4">No records with data '{{filter}}'</td>
-        </div>
-      }
-    </tr>
+        }
+      </tr>
 
-  </table>
+    </table>
+  </div>
 
   <mat-paginator
-    #logDataPaginator [pageSizeOptions]="[10, 50, 100]" [showFirstLastButtons]=true>
-
+    #logDataPaginator [pageSizeOptions]="[10, 50, 100]" [showFirstLastButtons]=true
+    aria-label="Select page of log entries">
   </mat-paginator>
 
 </div>

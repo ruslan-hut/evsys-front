@@ -121,7 +121,8 @@ export class ConnectorInfoComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '400px',
+      width: '100%',
+      maxWidth: '400px',
       data: dialogData,
     });
 
@@ -150,7 +151,8 @@ export class ConnectorInfoComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '250px',
+      width: '100%',
+      maxWidth: '300px',
       data: dialogData,
     });
 
@@ -177,7 +179,8 @@ export class ConnectorInfoComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '250px',
+      width: '100%',
+      maxWidth: '300px',
       data: dialogData,
     });
 
@@ -202,7 +205,8 @@ export class ConnectorInfoComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '250px',
+      width: '100%',
+      maxWidth: '300px',
       data: dialogData,
     });
 

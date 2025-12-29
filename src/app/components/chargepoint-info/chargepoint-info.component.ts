@@ -68,7 +68,8 @@ export class ChargepointInfoComponent implements OnInit{
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '250px',
+      width: '100%',
+      maxWidth: '300px',
       data: dialogData,
     });
 

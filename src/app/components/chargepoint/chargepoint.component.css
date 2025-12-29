@@ -1,19 +1,59 @@
 mat-card {
-  margin: 10px;
+  margin: var(--card-margin);
 }
-table {
-  table-layout: fixed;
-  border-collapse: collapse;
-  width: 100%;
+
+.chargepoint-card {
+  position: relative;
 }
-th,td {
-  padding: 2px;
+
+/* Status indicator dot */
+.status-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  z-index: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
-td {
-  max-width: 20%;
+
+.status-green {
+  background-color: #4caf50;
 }
+
+.status-yellow {
+  background-color: #ff9800;
+}
+
+.status-red {
+  background-color: #f44336;
+}
+
+/* Status and update line */
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
+
+.status-text {
+  font-weight: 600;
+}
+
+.status-separator {
+  color: #999;
+}
+
+.update-text {
+  color: #666;
+  font-size: 13px;
+}
+
 button {
-  margin: 5px;
+  margin: var(--spacing-xs);
 }
 
 mat-card-title {
@@ -27,18 +67,14 @@ mat-card-title {
   justify-content: center;
   width: 36px;
   height: 36px;
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
   margin-right: -4px;
   padding: 8px;
-  padding-top: 14px;
-}
-
-.online-status {
-  color: limegreen;
 }
 
 .edit-icon {
   font-size: 20px;
-
 }
 
 .details-container {
@@ -48,7 +84,7 @@ mat-card-title {
 
 .field {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-sm);
 }
 
 .label {
@@ -64,12 +100,35 @@ mat-card-title {
   width: 12px;
 }
 
-.connector-container{
+.connector-container {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 app-connector {
-  margin: 5px 0 0 0;
+  margin: var(--spacing-xs) 0 0 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 599px) {
+  mat-card {
+    margin: var(--spacing-sm);
+  }
+
+  mat-card-content {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
+  .connector-container {
+    flex-direction: column;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
+  mat-card-actions {
+    padding-right: var(--spacing-md);
+  }
 }

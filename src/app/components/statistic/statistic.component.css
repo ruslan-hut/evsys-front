@@ -1,9 +1,22 @@
 .filter-container {
   display: flex;
-  gap: 16px; /* Adds 16px spacing between each item in the container */
+  gap: var(--spacing-md);
   align-items: center;
   flex-wrap: wrap;
-  margin: 8px; /* Adds space below the container */
+  margin: var(--spacing-sm);
+  padding: var(--spacing-sm);
+}
+
+/* Responsive filter layout */
+@media (max-width: 599px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-container > * {
+    width: 100%;
+  }
 }
 
 .center-text {
@@ -16,43 +29,34 @@
 }
 
 .predefined-range-select {
-  min-width: 0; /* Adjust width as necessary */
-  margin-left: 8px; /* Space between the date picker toggle and dropdown */
+  min-width: 0;
+  margin-left: var(--spacing-sm);
 }
 
 .mat-form-field {
-  flex-grow: 1; /* Allow the form field to grow and fill available space */
-}
-
-.date-range-field {
-  display: flex;
-  align-items: center;
+  flex-grow: 1;
 }
 
 .mat-icon-button {
-  margin-left: 8px; /* Space between the date picker toggle and dropdown button */
-}
-
-.mat-form-field {
-  flex-grow: 1; /* Allow the form field to grow and fill available space */
+  margin-left: var(--spacing-sm);
 }
 
 mat-card {
-  margin: 10px;
+  margin: var(--card-margin);
 }
 
 .footer-cell {
-  font-weight: bold; /* Bold text */
-  color: #333; /* Dark text for contrast */
-  border-top: 2px solid #ccc; /* Top border to separate from rows above */
-  padding: 8px; /* Add padding for spacing */
+  font-weight: bold;
+  color: #333;
+  border-top: 2px solid #ccc;
+  padding: var(--spacing-sm);
   text-align: center;
 }
 
 .header-cell {
-  font-weight: bold; /* Bold text */
-  color: #333; /* Dark text for contrast */
-  padding: 8px; /* Add padding for spacing */
+  font-weight: bold;
+  color: #333;
+  padding: var(--spacing-sm);
   text-align: center;
 }
 

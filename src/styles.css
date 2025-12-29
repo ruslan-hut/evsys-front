@@ -1,28 +1,199 @@
+/* ===========================================
+   CSS Custom Properties (Design Tokens)
+   =========================================== */
+:root {
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Card styling */
+  --card-margin: 16px;
+  --card-border-radius: 8px;
+
+  /* Header heights */
+  --header-height-mobile: 56px;
+  --header-height-desktop: 64px;
+
+  /* Breakpoints (for reference, used in media queries) */
+  --breakpoint-xs: 400px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1200px;
+
+  /* Colors */
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-error: #f44336;
+  --color-online: #4caf50;
+  --color-offline: #9e9e9e;
+  --color-background: #f5f5f5;
+
+  /* Touch target minimum size (WCAG) */
+  --touch-target-min: 44px;
+}
+
+/* ===========================================
+   Base Styles
+   =========================================== */
 html, body {
   height: 100%;
 }
+
 body {
-  margin: 80px 0;
+  margin: 0;
+  padding-top: var(--header-height-mobile);
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f5f5f5;
+  background-color: var(--color-background);
 }
+
+@media (min-width: 600px) {
+  body {
+    padding-top: var(--header-height-desktop);
+  }
+}
+
+/* ===========================================
+   Utility Classes
+   =========================================== */
 .box-margin {
-  margin: 10px;
+  margin: var(--spacing-md);
 }
+
 .bg-dark {
   background: darkgray;
 }
+
 .flex-center-vertically {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
 }
+
 .max-width {
   max-width: 500px;
 }
+
 .button-spacing {
-  margin-right: 8px;
+  margin-right: var(--spacing-sm);
+}
+
+/* ===========================================
+   Responsive Table Wrapper
+   =========================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 600px;
+}
+
+/* ===========================================
+   Card Standardization
+   =========================================== */
+.card-standard {
+  margin: var(--card-margin);
+}
+
+/* ===========================================
+   Status Indicators (Accessible)
+   =========================================== */
+.status-online {
+  color: var(--color-online);
+}
+
+.status-offline {
+  color: var(--color-error);
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===========================================
+   Form Layout Utilities
+   =========================================== */
+.form-grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+@media (min-width: 600px) {
+  .form-row--inline {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .form-row--inline > label {
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+}
+
+.form-row-two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+}
+
+@media (min-width: 600px) {
+  .form-row-two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ===========================================
+   Touch-friendly Targets
+   =========================================== */
+.touch-target {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+}
+
+/* ===========================================
+   Focus Indicators (Accessibility)
+   =========================================== */
+:focus-visible {
+  outline: 2px solid #3f51b5;
+  outline-offset: 2px;
+}
+
+/* ===========================================
+   Responsive Visibility Utilities
+   =========================================== */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .hide-mobile {
+    display: initial;
+  }
+
+  .hide-desktop {
+    display: none;
+  }
 }

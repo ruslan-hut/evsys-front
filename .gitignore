@@ -17,6 +17,7 @@ yarn-error.log
 
 # IDEs and editors
 .idea/
+.claude/
 
 # Miscellaneous
 /.angular/cache

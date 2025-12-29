@@ -125,7 +125,8 @@ export class TransactionScreenComponent implements OnInit, OnDestroy{
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '250px',
+      width: '100%',
+      maxWidth: '300px',
       data: dialogData,
     });
 

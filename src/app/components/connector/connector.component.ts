@@ -29,8 +29,20 @@ export class ConnectorComponent {
       return "orange";
     } else if (this.connector.current_transaction_id>-1){
       return "indigo";
-    }else {
+    } else {
       return "red";
+    }
+  }
+
+  getConnectorBackgroundColor() {
+    if (this.connector.state === "available") {
+      return "#e8f5e9"; // light green
+    } else if (this.connector.state === "occupied") {
+      return "#fff3e0"; // light orange
+    } else if (this.connector.current_transaction_id > -1) {
+      return "#e8eaf6"; // light indigo
+    } else {
+      return "#ffebee"; // light red
     }
   }
 

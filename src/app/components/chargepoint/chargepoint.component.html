@@ -1,9 +1,14 @@
 
-<mat-card>
+<mat-card class="chargepoint-card">
+  <span class="status-dot"
+        [class.status-green]="getStatusColor() === 'green'"
+        [class.status-yellow]="getStatusColor() === 'yellow'"
+        [class.status-red]="getStatusColor() === 'red'"
+        [attr.aria-label]="getStatusLabel()"
+        role="img">
+  </span>
   <mat-card-header>
-    <mat-card-title >{{chargepoint.title}}
-
-    </mat-card-title>
+    <mat-card-title>{{chargepoint.title}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div>
@@ -12,11 +17,10 @@
     <div>
       {{chargepoint.description}}
     </div>
-    <div [ngStyle]="{'font-weight': 'bold'}">
-      {{chargepoint.status}}
-    </div>
-    <div>
-      Last Update: {{ timeService.getTimeDifference(chargepoint.event_time) }}
+    <div class="status-line">
+      <span class="status-text">{{chargepoint.status}}</span>
+      <span class="status-separator">•</span>
+      <span class="update-text">{{ timeService.getTimeDifference(chargepoint.event_time) }}</span>
     </div>
   </mat-card-content>
   <div class="connector-container">
@@ -26,25 +30,22 @@
   </div>
   <mat-card-actions align="end" class="tool-panel">
     @if (accountService.isAdmin || accountService.isOperator) {
-      <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()">
+      <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()"
+              aria-label="Configure {{chargepoint.title}}">
         <mat-icon class="edit-icon">settings</mat-icon>
       </button>
     }
     @if (accountService.isAdmin) {
-      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()">
+      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()"
+              aria-label="Edit {{chargepoint.title}}">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
     }
     @if (accountService.isAdmin || accountService.isOperator) {
-      <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()">
+      <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()"
+              aria-label="View details for {{chargepoint.title}}">
         <mat-icon class="edit-icon">remove_red_eye</mat-icon>
       </button>
-    }
-    <div class="space"></div>
-    @if (chargepoint.is_online) {
-      <mat-icon class="online-status">cloud_queue</mat-icon>
-    } @else {
-      <mat-icon color="warn">cloud_off</mat-icon>
     }
   </mat-card-actions>
 </mat-card>

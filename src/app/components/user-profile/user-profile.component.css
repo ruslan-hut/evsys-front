@@ -4,17 +4,17 @@
 }
 
 .title-with-icon mat-icon {
-  margin-right: 8px; /* Adjust the spacing as needed */
+  margin-right: var(--spacing-sm);
 }
 
 mat-card {
-  margin: 16px;
+  margin: var(--card-margin);
 }
 
 mat-card-header {
-  padding: 4px 16px;
+  padding: var(--spacing-xs) var(--spacing-md);
 }
 
-button{
-  margin: 16px;
+button {
+  margin: var(--spacing-md);
 }

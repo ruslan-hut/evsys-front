@@ -59,7 +59,8 @@ export class UsersComponent implements OnInit {
 
   openUserInfo(username: string) {
     this.dialog.open(UserInfoComponent, {
-      width: '400px',
+      width: '100%',
+      maxWidth: '400px',
       data: username,
     });
   }

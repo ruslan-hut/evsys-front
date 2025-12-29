@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {User} from "../models/user";
-import {BehaviorSubject, map} from "rxjs";
+import {BehaviorSubject, map, ReplaySubject} from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
@@ -14,6 +14,10 @@ export class AccountService {
 
   private userSubject = new BehaviorSubject<User|null>(null);
   public user$ = this.userSubject.asObservable();
+
+  // Emits true when auth initialization is complete (user logged in or confirmed not logged in)
+  private authReadySubject = new ReplaySubject<boolean>(1);
+  public authReady$ = this.authReadySubject.asObservable();
 
   private token : string|null = null;
 
@@ -61,6 +65,9 @@ export class AccountService {
         if (user) {
           this.updateFirebaseToken();
           setInterval(() => this.updateFirebaseToken(), 60*60*1000);
+        } else {
+          // No Firebase user and no local token - auth check complete, user not logged in
+          this.authReadySubject.next(true);
         }
       })
     }
@@ -70,9 +77,17 @@ export class AccountService {
   private onNewToken(token: string|null) {
     if (!token) {
       this.userSubject.next(null);
+      this.authReadySubject.next(true);
       return
     }
-    this.loginWithToken(token).subscribe(() => {})
+    this.loginWithToken(token).subscribe({
+      next: () => {
+        this.authReadySubject.next(true);
+      },
+      error: () => {
+        this.authReadySubject.next(true);
+      }
+    });
   }
 
   /**
