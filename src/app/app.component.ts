@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from "@angular/router";
-import { filter, map, take } from "rxjs";
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, map, take } from 'rxjs';
 
-import { HeaderComponent } from "./components/ui/header/header.component";
-import { SnackBarComponent } from "./components/snack-bar/snack-bar.component";
-import { AccountService } from "./service/account.service";
+import { HeaderComponent } from './components/ui/header/header.component';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { OfflineBannerComponent } from './components/offline-banner/offline-banner.component';
+import { AccountService } from './service/account.service';
+import { PwaUpdateService } from './service/pwa-update.service';
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -19,7 +21,7 @@ const PUBLIC_ROUTES = [
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, SnackBarComponent],
+  imports: [RouterOutlet, HeaderComponent, SnackBarComponent, OfflineBannerComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private accountService: AccountService,
+    private pwaUpdateService: PwaUpdateService // Inject to initialize update checks
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),

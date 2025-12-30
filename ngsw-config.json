@@ -26,5 +26,51 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-freshness",
+      "urls": [
+        "https://wattbrews.me/api/v1/charge-points",
+        "https://wattbrews.me/api/v1/charge-points/*",
+        "https://wattbrews.me/api/v1/transactions/*",
+        "https://wattbrews.me/api/v1/user/*"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 100,
+        "maxAge": "1h",
+        "timeout": "10s"
+      }
+    },
+    {
+      "name": "api-performance",
+      "urls": [
+        "https://wattbrews.me/api/v1/tariff/*",
+        "https://wattbrews.me/api/v1/config/*"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 50,
+        "maxAge": "1d"
+      }
+    },
+    {
+      "name": "external-fonts",
+      "urls": [
+        "https://fonts.googleapis.com/**",
+        "https://fonts.gstatic.com/**"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 20,
+        "maxAge": "30d"
+      }
+    }
+  ],
+  "navigationUrls": [
+    "/**",
+    "!/**/*.*",
+    "!/**/api/**"
   ]
 }
