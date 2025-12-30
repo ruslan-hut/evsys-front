@@ -39,7 +39,7 @@
         </mat-menu>
       }
       @if (!menuEnabled && isAdmin) {
-        <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
+        <button mat-icon-button (click)="navigateTo('/points')" aria-label="Back button">
           <mat-icon>arrow_back</mat-icon>
         </button>
       }
@@ -55,7 +55,7 @@
     } @else {
       <!-- Desktop Layout: Title | Menu | Spacer | Profile | Username | Logout -->
       @if (!menuEnabled && isAdmin) {
-        <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
+        <button mat-icon-button (click)="navigateTo('/points')" aria-label="Back button">
           <mat-icon>arrow_back</mat-icon>
         </button>
       }
