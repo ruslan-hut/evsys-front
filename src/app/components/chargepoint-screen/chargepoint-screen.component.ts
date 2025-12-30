@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {Chargepoint} from "../../models/chargepoint";
-import {ChargepointService} from "../../service/chargepoint.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogData} from "../../models/dialog-data";
-import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
-import {AccountService} from "../../service/account.service";
-import {PaymentMethod} from "../../models/payment-method";
-import {PaymentPlan} from "../../models/payment-plan";
-import {getConnectorName} from "../../models/connector";
-import {LocalStorageService} from "../../service/local-storage.service";
-import {TransactionService} from "../../service/transaction.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, combineLatest } from 'rxjs';
+import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { Chargepoint } from '../../models/chargepoint';
+import { ChargepointService } from '../../service/chargepoint.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData } from '../../models/dialog-data';
+import { BasicDialogComponent } from '../dialogs/basic/basic-dialog.component';
+import { AccountService } from '../../service/account.service';
+import { PaymentMethod } from '../../models/payment-method';
+import { PaymentPlan } from '../../models/payment-plan';
+import { getConnectorName } from '../../models/connector';
+import { LocalStorageService } from '../../service/local-storage.service';
+import { TransactionService } from '../../service/transaction.service';
 import { DecimalPipe } from '@angular/common';
 import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
 import { PaymentMethodComponent } from '../user-profile/payment-method/payment-method.component';
@@ -19,18 +21,19 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-    selector: 'app-chargepoint-screen',
-    templateUrl: './chargepoint-screen.component.html',
-    styleUrl: './chargepoint-screen.component.css',
-    standalone: true,
-    imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe]
+  selector: 'app-chargepoint-screen',
+  templateUrl: './chargepoint-screen.component.html',
+  styleUrl: './chargepoint-screen.component.css',
+  standalone: true,
+  imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe]
 })
-export class ChargepointScreenComponent implements OnInit{
+export class ChargepointScreenComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   chargePointId: string;
   connectorId: number;
   chargePoint: Chargepoint;
-  connectorName: string = "";
+  connectorName: string = '';
   paymentMethod: PaymentMethod | undefined;
   paymentPlan: PaymentPlan | undefined;
   isStarted: boolean = false;
@@ -45,64 +48,78 @@ export class ChargepointScreenComponent implements OnInit{
     public dialog: MatDialog,
     private localStorageService: LocalStorageService,
     public transactionService: TransactionService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.refreshData();
+    this.loadData();
+    window.scrollTo(0, 0);
   }
 
-  refreshData() {
-    this.route.queryParams.subscribe((params: Params) => {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
+  private loadData(): void {
+    // Combine route params with user state
+    combineLatest([
+      this.route.queryParams,
+      this.authService.user$
+    ]).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(([params, user]) => {
       this.chargePointId = params['charge_point_id'];
       this.connectorId = parseInt(params['connector_id']);
 
-      this.authService.user$.subscribe((user) => {
-        if(!user){
-          this.localStorageService.saveRedirectUrl(this.chargePointId, this.connectorId);
-          this.router.navigate(['account/login']).then(() => {});
-          return
-        }
+      if (!user) {
+        this.localStorageService.saveRedirectUrl(this.chargePointId, this.connectorId);
+        this.router.navigate(['account/login']).then(() => {});
+        return;
+      }
 
-        this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
-
-          this.chargePoint= chargePoint;
-          const connector = chargePoint.connectors.find((c) => c.connector_id == this.connectorId.toString());
-
-          if (connector) {
-            this.isAvailable = connector.status != "Faulted";
-            this.connectorName = getConnectorName(connector);
-            this.transactionId = connector.current_transaction_id;
-
-            if(this.transactionId != -1){
-              this.goToTransaction();
-            }
-
-            if(!this.isAvailable && connector.current_transaction_id == -1){
-              this.alertDialog("Connector is not available");
-            }
-          }
-
-        });
-
-        this.authService.getUserInfo(user.username).subscribe((info) => {
-          this.paymentMethod = info.payment_methods?.find((pm) => pm.is_default);
-          this.paymentPlan = info.payment_plans?.find((pp) => pp.is_active);
-        });
-
-        this.transactionService.transactionId.subscribe((transactionId) => {
-          if(transactionId != -1){
-            this.transactionId = transactionId;
-            this.goToTransaction();
-          }
-        });
-
-      });
-
+      this.loadChargePointData(user.username);
     });
 
-    window.scrollTo(0, 0);
+    // Listen for transaction start
+    this.transactionService.transactionId.pipe(
+      takeUntil(this.destroy$),
+      filter(id => id !== -1)
+    ).subscribe((transactionId) => {
+      this.transactionId = transactionId;
+      this.goToTransaction();
+    });
+  }
+
+  private loadChargePointData(username: string): void {
+    // Load charge point
+    this.chargePointService.getChargePoint(this.chargePointId).pipe(
+      take(1)
+    ).subscribe((chargePoint) => {
+      this.chargePoint = chargePoint;
+      const connector = chargePoint.connectors.find((c) => c.connector_id === this.connectorId.toString());
+
+      if (connector) {
+        this.isAvailable = connector.status !== 'Faulted';
+        this.connectorName = getConnectorName(connector);
+        this.transactionId = connector.current_transaction_id;
+
+        if (this.transactionId !== -1) {
+          this.goToTransaction();
+        }
+
+        if (!this.isAvailable && connector.current_transaction_id === -1) {
+          this.alertDialog('Connector is not available');
+        }
+      }
+    });
+
+    // Load user payment info
+    this.authService.getUserInfo(username).pipe(
+      take(1)
+    ).subscribe((info) => {
+      this.paymentMethod = info.payment_methods?.find((pm) => pm.is_default);
+      this.paymentPlan = info.payment_plans?.find((pp) => pp.is_active);
+    });
   }
 
   close(): void {
@@ -122,11 +139,11 @@ export class ChargepointScreenComponent implements OnInit{
   }
 
   alertDialog(text: string): void {
-    let dialogData: DialogData = {
-      title: "Alert",
+    const dialogData: DialogData = {
+      title: 'Alert',
       content: text,
-      buttonYes: "Ok",
-      buttonNo: "",
+      buttonYes: 'Ok',
+      buttonNo: '',
       checkboxes: []
     };
 
@@ -135,15 +152,14 @@ export class ChargepointScreenComponent implements OnInit{
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'yes') {
-
-      }
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(result => {
+      // Dialog closed
     });
   }
 
-  addPaymentMethod() {
+  addPaymentMethod(): void {
     this.router.navigate(['/user-profile']).then(() => {});
   }
-
 }
