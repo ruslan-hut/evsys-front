@@ -45,6 +45,23 @@ mat-card {
   margin: var(--card-margin);
 }
 
+.table-responsive {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+/* Flexible column widths for desktop */
+@media (min-width: 960px) {
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    flex: 1;
+  }
+}
+
 .footer-cell {
   font-weight: bold;
   color: #333;
