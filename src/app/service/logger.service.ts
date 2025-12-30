@@ -1,22 +1,28 @@
-import {Injectable} from '@angular/core';
-import {Message} from "../models/message";
-import {BehaviorSubject, catchError, Observable, Subject, throwError} from "rxjs";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import {ErrorService} from "./error.service";
-import {environment} from "../../environments/environment";
-import {WebsocketService} from "./websocket.service";
-import {AccountService} from "./account.service";
+import { Injectable, OnDestroy } from '@angular/core';
+import { Message } from '../models/message';
+import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ErrorService } from './error.service';
+import { environment } from '../../environments/environment';
+import { WebsocketService } from './websocket.service';
+import { AccountService } from './account.service';
+import { WsConnectionState } from '../models/ws-connection-state';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoggerService {
-
+export class LoggerService implements OnDestroy {
   private messages: Message[] = [];
   private messages$ = new Subject<Message[]>();
 
   private isOnline = new BehaviorSubject(false);
   isOnline$ = this.isOnline.asObservable();
+
+  private destroy$ = new Subject<void>();
+  private wsSubscription: Subscription | null = null;
+  private isSubscribed = false;
+  private isInitialized = false;
 
   constructor(
     private http: HttpClient,
@@ -24,43 +30,81 @@ export class LoggerService {
     private errorService: ErrorService,
     private accountService: AccountService,
   ) {
-    this.accountService.user$.subscribe(user =>{
-      if (user) {
-        this.init();
-      }
+    // Track connection state
+    this.websocketService.connectionState$.pipe(
+      takeUntil(this.destroy$),
+      map(state => state === WsConnectionState.CONNECTED)
+    ).subscribe(connected => {
+      this.isOnline.next(connected);
+    });
+
+    // Initialize once when user logs in
+    this.accountService.user$.pipe(
+      takeUntil(this.destroy$),
+      filter(user => !!user),
+      take(1)
+    ).subscribe(() => {
+      this.init();
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.unsubscribeFromWs();
+  }
+
+  /**
+   * Subscribe to log updates via WebSocket.
+   * Safe to call multiple times - prevents duplicate subscriptions.
+   */
   subscribeOnUpdates(): void {
-    this.websocketService.isConnected$.subscribe(status =>{
-      this.isOnline.next(status);
-      if (status) {
-        this.websocketService.send({command: 'ListenLog'});
-      }
+    if (this.isSubscribed) return;
+    this.isSubscribed = true;
+
+    this.wsSubscription = this.websocketService.subscribe({
+      command: 'ListenLog'
+    }).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(message => {
+      this.onWsMessage(message);
     });
+  }
+
+  private unsubscribeFromWs(): void {
+    if (!this.isSubscribed) return;
+    this.isSubscribed = false;
+
+    this.wsSubscription?.unsubscribe();
+    this.wsSubscription = null;
   }
 
   private init(): void {
-    this.loadFromApi().subscribe( messages => {
-        this.messages = messages;
+    if (this.isInitialized) return;
+    this.isInitialized = true;
+
+    this.loadFromApi().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(messages => {
+      this.messages = messages;
+      this.messages$.next(this.messages);
+    });
+  }
+
+  private onWsMessage(message: any): void {
+    if (message.status === 'error') {
+      if (message.info) {
+        this.errorService.handle(message.info);
+      }
+      return;
+    }
+    if (message.status === 'event' && message.stage === 'log-event') {
+      if (message.data) {
+        const newMessage: Message = JSON.parse(message.data);
+        this.messages.unshift(newMessage);
         this.messages$.next(this.messages);
       }
-    )
-    this.websocketService.receive().subscribe(message => {
-      if (message.status === 'error') {
-        if (message.info) {
-          this.errorService.handle(message.info);
-        }
-        return;
-      }
-      if (message.status === 'event' && message.stage === 'log-event') {
-        if (message.data) {
-          const newMessage: Message = JSON.parse(message.data);
-          this.messages.unshift(newMessage);
-          this.messages$.next(this.messages);
-        }
-      }
-    });
+    }
   }
 
   private loadFromApi(): Observable<Message[]> {
@@ -78,11 +122,11 @@ export class LoggerService {
   }
 
   private errorHandler(err: HttpErrorResponse) {
-    this.errorService.handle(err.message)
-    return throwError(() => err.message)
+    this.errorService.handle(err.message);
+    return throwError(() => err.message);
   }
 
   onStop(): void {
-    //this.websocketService.close();
+    this.unsubscribeFromWs();
   }
 }

@@ -1,28 +1,30 @@
-import {Component, Inject, Input, OnInit, Optional} from "@angular/core";
-import {Connector} from "../../models/connector";
-import {DialogData} from "../../models/dialog-data";
-import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {TimeService} from "../../service/time.service";
-import {AccountService} from "../../service/account.service";
-import {CSService} from "../../service/cs.service";
-import {environment} from "../../../environments/environment";
-import {User} from "../../models/user";
-import {ErrorService} from "../../service/error.service";
-import {ChargepointService} from "../../service/chargepoint.service";
-import {Router} from "@angular/router";
-
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from "@angular/material/expansion";
-import { MatButton } from "@angular/material/button";
+import { Component, Inject, Input, OnInit, OnDestroy, Optional } from '@angular/core';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
+import { Connector } from '../../models/connector';
+import { DialogData } from '../../models/dialog-data';
+import { BasicDialogComponent } from '../dialogs/basic/basic-dialog.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TimeService } from '../../service/time.service';
+import { AccountService } from '../../service/account.service';
+import { CSService } from '../../service/cs.service';
+import { environment } from '../../../environments/environment';
+import { User } from '../../models/user';
+import { ErrorService } from '../../service/error.service';
+import { ChargepointService } from '../../service/chargepoint.service';
+import { Router } from '@angular/router';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from '@angular/material/expansion';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-connector-info',
-    templateUrl: './connector-info.component.html',
-    styleUrls: ['./connector-info.component.css'],
-    standalone: true,
-    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton]
+  selector: 'app-connector-info',
+  templateUrl: './connector-info.component.html',
+  styleUrls: ['./connector-info.component.css'],
+  standalone: true,
+  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton]
 })
-export class ConnectorInfoComponent implements OnInit {
+export class ConnectorInfoComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   @Input() connector: Connector | undefined;
 
@@ -43,13 +45,16 @@ export class ConnectorInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.connector){
+    if (this.connector) {
       this.chargePointService.subscribeOnUpdates();
-      this.chargePointService.getChargePoints().subscribe((chargePoint) => {
+
+      this.chargePointService.getChargePoints().pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((chargePoint) => {
         const chargePointId = this.connector?.charge_point_id;
         const connectorId = this.connector?.connector_id;
         chargePoint.forEach((cp) => {
-          if (cp.charge_point_id=== chargePointId) {
+          if (cp.charge_point_id === chargePointId) {
             cp.connectors.forEach((c) => {
               if (c.connector_id === connectorId) {
                 this.connector = c;
@@ -59,29 +64,37 @@ export class ConnectorInfoComponent implements OnInit {
         });
       });
     }
+  }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.chargePointService.unsubscribeFromUpdates();
   }
 
   isDialog(): boolean {
     return !!this.data;
-
   }
 
-  onStartConnector(connector: Connector) {
-    this.accountService.user$.subscribe((user: User | null) => {
+  onStartConnector(connector: Connector): void {
+    this.accountService.user$.pipe(
+      take(1)
+    ).subscribe((user: User | null) => {
       if (user) {
-        this.accountService.getUserInfo(user.username).subscribe((userInfo) => {
+        this.accountService.getUserInfo(user.username).pipe(
+          take(1)
+        ).subscribe((userInfo) => {
           if (userInfo.payment_methods) {
             let hasPaymentMethod = false;
             userInfo.payment_methods.forEach((pm) => {
-                if(this.isPaymentMethodValid(pm.expiry_date)){
-                  hasPaymentMethod = true;
-                }
+              if (this.isPaymentMethodValid(pm.expiry_date)) {
+                hasPaymentMethod = true;
+              }
             });
 
             if (hasPaymentMethod) {
-                this.startConnector(connector);
-            }else {
+              this.startConnector(connector);
+            } else {
               this.addPaymentMethod();
             }
           } else {
@@ -95,14 +108,12 @@ export class ConnectorInfoComponent implements OnInit {
   isPaymentMethodValid(expiryDate: string): boolean {
     if (expiryDate && expiryDate.length === 4) {
       const month = parseInt(expiryDate.substring(2, 4), 10);
-      const year = parseInt('20' + expiryDate.substring(0, 2), 10); // Assuming dates are in the 2000s
+      const year = parseInt('20' + expiryDate.substring(0, 2), 10);
 
-      // Get the current date
       const now = new Date();
       const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth() + 1; // getMonth() is 0-indexed
+      const currentMonth = now.getMonth() + 1;
 
-      // Check if the expiry date is in the future
       if (year > currentYear || (year === currentYear && month >= currentMonth)) {
         return true;
       }
@@ -111,12 +122,12 @@ export class ConnectorInfoComponent implements OnInit {
     return false;
   }
 
-  addPaymentMethod() {
-    let dialogData: DialogData = {
-      title: "Add Payment Method",
-      content: "You need to add a payment method to start a transaction",
-      buttonYes: "Add Payment Method",
-      buttonNo: "Close",
+  addPaymentMethod(): void {
+    const dialogData: DialogData = {
+      title: 'Add Payment Method',
+      content: 'You need to add a payment method to start a transaction',
+      buttonYes: 'Add Payment Method',
+      buttonNo: 'Close',
       checkboxes: []
     };
 
@@ -126,27 +137,29 @@ export class ConnectorInfoComponent implements OnInit {
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(result => {
       if (result === 'yes') {
         this.dialog.closeAll();
         this.router.navigate(['/payment-methods']).then(() => {
           if (!result) {
             if (environment.debug) {
-              console.log(result)
+              console.log(result);
             }
-            this.errorService.handle("Failed to delete payment method")
+            this.errorService.handle('Failed to delete payment method');
           }
         });
       }
     });
   }
 
-  startConnector(connector: Connector) {
-    let dialogData: DialogData = {
-      title: "Start",
-      content: "",
-      buttonYes: "Start",
-      buttonNo: "Close",
+  startConnector(connector: Connector): void {
+    const dialogData: DialogData = {
+      title: 'Start',
+      content: '',
+      buttonYes: 'Start',
+      buttonNo: 'Close',
       checkboxes: []
     };
 
@@ -156,25 +169,27 @@ export class ConnectorInfoComponent implements OnInit {
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(result => {
       if (result === 'yes') {
-        this.csService.startTransaction(connector.charge_point_id, parseInt(connector.connector_id)).subscribe({
+        this.csService.startTransaction(connector.charge_point_id, parseInt(connector.connector_id)).pipe(
+          take(1)
+        ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, "Transaction started")
+            this.csService.processCentralSystemResponse(result, 'Transaction started');
           }
         });
       }
     });
   }
 
-
-
-  stopConnector(connector: Connector) {
-    let dialogData: DialogData = {
-      title: "Stop",
-      content: "",
-      buttonYes: "Stop",
-      buttonNo: "Close",
+  stopConnector(connector: Connector): void {
+    const dialogData: DialogData = {
+      title: 'Stop',
+      content: '',
+      buttonYes: 'Stop',
+      buttonNo: 'Close',
       checkboxes: []
     };
 
@@ -184,23 +199,27 @@ export class ConnectorInfoComponent implements OnInit {
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(result => {
       if (result === 'yes') {
-        this.csService.stopTransaction(connector.charge_point_id, parseInt(connector.connector_id), connector.current_transaction_id.toString()).subscribe({
+        this.csService.stopTransaction(connector.charge_point_id, parseInt(connector.connector_id), connector.current_transaction_id.toString()).pipe(
+          take(1)
+        ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, "Transaction stopped")
+            this.csService.processCentralSystemResponse(result, 'Transaction stopped');
           }
         });
       }
     });
   }
 
-  unlockConnector(connector: Connector) {
-    let dialogData: DialogData = {
-      title: "Unlock",
-      content: "",
-      buttonYes: "Unlock",
-      buttonNo: "Close",
+  unlockConnector(connector: Connector): void {
+    const dialogData: DialogData = {
+      title: 'Unlock',
+      content: '',
+      buttonYes: 'Unlock',
+      buttonNo: 'Close',
       checkboxes: []
     };
 
@@ -210,24 +229,28 @@ export class ConnectorInfoComponent implements OnInit {
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(result => {
       if (result === 'yes') {
-        this.csService.unlockConnector(connector.charge_point_id, parseInt(connector.connector_id)).subscribe({
+        this.csService.unlockConnector(connector.charge_point_id, parseInt(connector.connector_id)).pipe(
+          take(1)
+        ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, "Connector unlocked")
+            this.csService.processCentralSystemResponse(result, 'Connector unlocked');
           }
         });
       }
     });
   }
 
-  getConnectorColor(connector: Connector) {
-    if (connector.state === "available") {
-      return "limegreen";
-    } else if (connector.state === "occupied") {
-      return "orange";
+  getConnectorColor(connector: Connector): string {
+    if (connector.state === 'available') {
+      return 'limegreen';
+    } else if (connector.state === 'occupied') {
+      return 'orange';
     } else {
-      return "red";
+      return 'red';
     }
   }
 }

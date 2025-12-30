@@ -1,23 +1,26 @@
-import {Component, Inject, OnInit, Optional} from "@angular/core";
-import {TransactionService} from "../../service/transaction.service";
-import {Transaction} from "../../models/transaction";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {BasicDialogComponent} from "../dialogs/basic/basic-dialog.component";
-import {DialogData} from "../../models/dialog-data";
-import {CSService} from "../../service/cs.service";
-import { DecimalPipe, DatePipe } from "@angular/common";
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from "@angular/material/card";
-import { MatProgressBar } from "@angular/material/progress-bar";
-import { MatButton } from "@angular/material/button";
+import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TransactionService } from '../../service/transaction.service';
+import { Transaction } from '../../models/transaction';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { BasicDialogComponent } from '../dialogs/basic/basic-dialog.component';
+import { DialogData } from '../../models/dialog-data';
+import { CSService } from '../../service/cs.service';
+import { DecimalPipe, DatePipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'transaction-info',
-    templateUrl: './transaction-info.component.html',
-    styleUrls: ['./transaction-info.component.css'],
-    standalone: true,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe]
+  selector: 'transaction-info',
+  templateUrl: './transaction-info.component.html',
+  styleUrls: ['./transaction-info.component.css'],
+  standalone: true,
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe]
 })
-export class TransactionInfoComponent implements OnInit{
+export class TransactionInfoComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   transaction: Transaction;
   transactionId = -1;
@@ -34,6 +37,45 @@ export class TransactionInfoComponent implements OnInit{
     }
   }
 
+  ngOnInit(): void {
+    if (this.transactionId >= 0) {
+      this.transactionService.getTransaction(this.transactionId).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((transaction) => {
+        this.transaction = transaction;
+
+        this.transactionService.subscribeOnUpdates(
+          this.transactionId,
+          this.transaction.charge_point_id,
+          this.transaction.connector_id
+        );
+
+        // Listen for updates
+        this.transactionService.getTransactions().pipe(
+          takeUntil(this.destroy$)
+        ).subscribe((transactions) => {
+          const updated = transactions.find(t => t.transaction_id === this.transactionId);
+          if (updated) {
+            this.transaction = updated;
+          }
+        });
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    if (this.transaction) {
+      this.transactionService.unsubscribeFromUpdates(
+        this.transaction.transaction_id,
+        this.transaction.charge_point_id,
+        this.transaction.connector_id
+      );
+    }
+  }
+
   getDuration(duration: number): string {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor((duration % 3600) / 60);
@@ -45,7 +87,7 @@ export class TransactionInfoComponent implements OnInit{
     }
     if (hours > 0) {
       formattedDuration += hours + ':';
-    }else {
+    } else {
       formattedDuration += '0:';
     }
 
@@ -57,12 +99,12 @@ export class TransactionInfoComponent implements OnInit{
     return formattedDuration;
   }
 
-  stopTransaction() {
-    let dialogData: DialogData = {
-      title: "Stop",
-      content: "",
-      buttonYes: "Stop",
-      buttonNo: "Close",
+  stopTransaction(): void {
+    const dialogData: DialogData = {
+      title: 'Stop',
+      content: '',
+      buttonYes: 'Stop',
+      buttonNo: 'Close',
       checkboxes: []
     };
 
@@ -71,11 +113,19 @@ export class TransactionInfoComponent implements OnInit{
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(result => {
       if (result === 'yes') {
-        this.csService.stopTransaction(this.transaction.charge_point_id, this.transaction.connector_id, this.transaction.transaction_id.toString()).subscribe({
+        this.csService.stopTransaction(
+          this.transaction.charge_point_id,
+          this.transaction.connector_id,
+          this.transaction.transaction_id.toString()
+        ).pipe(
+          takeUntil(this.destroy$)
+        ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, "Transaction stopped")
+            this.csService.processCentralSystemResponse(result, 'Transaction stopped');
           }
         });
       }
@@ -85,24 +135,4 @@ export class TransactionInfoComponent implements OnInit{
   isCharging(): boolean {
     return this.transaction.status.toLowerCase() === 'charging';
   }
-
-  ngOnInit(): void {
-    if (this.transactionId >= 0) {
-      this.transactionService.getTransaction(this.transactionId).subscribe((transaction) => {
-
-        this.transaction= transaction;
-
-        this.transactionService.subscribeOnUpdates(this.transactionId, this.transaction.charge_point_id, this.transaction.connector_id);
-
-        // this.transactionService.getTransactions().subscribe((transactions) => {
-        //   transactions.forEach((transaction) => {
-        //     if (transaction.transaction_id === this.transaction.transaction_id) {
-        //       this.transaction = transaction;
-        //     }
-        //   });
-        // });
-      });
-    }
-  }
-
 }

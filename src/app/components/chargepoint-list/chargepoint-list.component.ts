@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AsyncPipe } from "@angular/common";
-import { ChargepointService } from "../../service/chargepoint.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { Chargepoint } from "../../models/chargepoint";
-import { LocalStorageService } from "../../service/local-storage.service";
-import { Router } from "@angular/router";
-
+import { AsyncPipe } from '@angular/common';
+import { Subject } from 'rxjs';
+import { ChargepointService } from '../../service/chargepoint.service';
+import { LocalStorageService } from '../../service/local-storage.service';
+import { Router } from '@angular/router';
 import { ChargepointComponent } from '../chargepoint/chargepoint.component';
 
 @Component({
@@ -16,6 +14,7 @@ import { ChargepointComponent } from '../chargepoint/chargepoint.component';
   imports: [ChargepointComponent, AsyncPipe]
 })
 export class ChargepointListComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   chargePoints$ = this.chargepointService.getChargePoints();
 
@@ -23,18 +22,17 @@ export class ChargepointListComponent implements OnInit, OnDestroy {
     private chargepointService: ChargepointService,
     private localStorageService: LocalStorageService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.redirectToChargePointScreen();
     this.chargepointService.subscribeOnUpdates();
   }
 
-
-
-
   ngOnDestroy(): void {
-    this.chargepointService.onStop();
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.chargepointService.unsubscribeFromUpdates();
   }
 
   redirectToChargePointScreen(): void {
@@ -45,5 +43,4 @@ export class ChargepointListComponent implements OnInit, OnDestroy {
       });
     }
   }
-
 }
