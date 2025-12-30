@@ -1,0 +1,315 @@
+<mat-expansion-panel class="filter-panel" [expanded]="false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon>filter_list</mat-icon>
+      Filters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="filter-container">
+    <mat-form-field appearance="outline" class="date-range-field">
+      <mat-label>Date Range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
+        <input matEndDate [(ngModel)]="endDate" placeholder="End" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenu" aria-label="Select predefined range">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #rangeMenu="matMenu">
+        @for (range of predefinedRanges; track range.label) {
+          <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
+        }
+      </mat-menu>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Group</mat-label>
+      <mat-select [(value)]="selectedGroup">
+        @for (group of groups; track group.id) {
+          <mat-option [value]="group.id">{{ group.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="requestData()">
+      <mat-icon>refresh</mat-icon>
+      Load Data
+    </button>
+
+    @if (inProgress) {
+      <mat-spinner diameter="30"></mat-spinner>
+    }
+  </div>
+</mat-expansion-panel>
+
+<div class="current-period">
+  <span class="period-label">Period:</span>
+  <span class="period-value">{{ startDate | date:'mediumDate' }} — {{ endDate | date:'mediumDate' }}</span>
+  @if (inProgress) {
+    <mat-spinner diameter="16"></mat-spinner>
+  }
+</div>
+
+<mat-tab-group (selectedIndexChange)="onTabChange($event)" [selectedIndex]="activeTabIndex">
+  <!-- Monthly Report Tab -->
+  <mat-tab label="Monthly Trends">
+    <div class="tab-content">
+      <div class="summary-cards">
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Total Energy</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ monthSummary.totalKWh | number:'1.1-1' }}</span>
+            <span class="metric-unit">kWh</span>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Sessions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ monthSummary.totalSessions }}</span>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Average per Session</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ monthSummary.averageKWh | number:'1.1-1' }}</span>
+            <span class="metric-unit">kWh</span>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="charts-grid">
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Average Trend</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (monthLineChartData.length && monthLineChartData[0].series.length) {
+              <div class="chart-container">
+                <ngx-charts-line-chart
+                  [results]="monthLineChartData"
+                  [scheme]="colorScheme"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="false"
+                  xAxisLabel="Month"
+                  [autoScale]="true"
+                  [legend]="true"
+                  [legendPosition]="legendPosition"
+                  [timeline]="false">
+                </ngx-charts-line-chart>
+              </div>
+            } @else {
+              <div class="no-data">No data available. Click "Load Data" to fetch.</div>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Monthly Comparison</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (monthBarChartData.length) {
+              <div class="chart-container">
+                <ngx-charts-bar-vertical
+                  [results]="monthBarChartData"
+                  [scheme]="colorScheme"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="true"
+                  xAxisLabel="Month"
+                  yAxisLabel="kWh"
+                  [gradient]="true">
+                </ngx-charts-bar-vertical>
+              </div>
+            } @else {
+              <div class="no-data">No data available</div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+
+  <!-- User Report Tab -->
+  <mat-tab label="User Statistics">
+    <div class="tab-content">
+      <div class="summary-cards">
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Total Energy</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ userSummary.totalKWh | number:'1.1-1' }}</span>
+            <span class="metric-unit">kWh</span>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Total Sessions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ userSummary.totalSessions }}</span>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Users</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ userSummary.count }}</span>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="charts-grid">
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Top 10 Users by Consumption</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (userBarChartData.length) {
+              <div class="chart-container">
+                <ngx-charts-bar-horizontal
+                  [results]="userBarChartData"
+                  [scheme]="colorScheme"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="true"
+                  xAxisLabel="kWh"
+                  yAxisLabel="User"
+                  [gradient]="true">
+                </ngx-charts-bar-horizontal>
+              </div>
+            } @else {
+              <div class="no-data">No data available</div>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Consumption Distribution</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (userPieChartData.length) {
+              <div class="chart-container">
+                <ngx-charts-pie-chart
+                  [results]="userPieChartData"
+                  [scheme]="colorScheme"
+                  [legend]="true"
+                  [legendPosition]="legendPosition"
+                  [labels]="true"
+                  [doughnut]="true">
+                </ngx-charts-pie-chart>
+              </div>
+            } @else {
+              <div class="no-data">No data available</div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+
+  <!-- Charger Report Tab -->
+  <mat-tab label="Charger Statistics">
+    <div class="tab-content">
+      <div class="summary-cards">
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Total Energy</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ chargerSummary.totalKWh | number:'1.1-1' }}</span>
+            <span class="metric-unit">kWh</span>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Total Sessions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ chargerSummary.totalSessions }}</span>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Chargers</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <span class="metric-value">{{ chargerSummary.count }}</span>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="charts-grid">
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Top 10 Chargers by Usage</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (chargerBarChartData.length) {
+              <div class="chart-container">
+                <ngx-charts-bar-horizontal
+                  [results]="chargerBarChartData"
+                  [scheme]="colorScheme"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="true"
+                  xAxisLabel="kWh"
+                  yAxisLabel="Charger"
+                  [gradient]="true">
+                </ngx-charts-bar-horizontal>
+              </div>
+            } @else {
+              <div class="no-data">No data available</div>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Usage Distribution</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (chargerPieChartData.length) {
+              <div class="chart-container">
+                <ngx-charts-pie-chart
+                  [results]="chargerPieChartData"
+                  [scheme]="colorScheme"
+                  [legend]="true"
+                  [legendPosition]="legendPosition"
+                  [labels]="true"
+                  [doughnut]="true">
+                </ngx-charts-pie-chart>
+              </div>
+            } @else {
+              <div class="no-data">No data available</div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

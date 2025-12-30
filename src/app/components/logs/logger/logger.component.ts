@@ -154,6 +154,7 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
 
   // Check if message contains error
   isErrorMessage(text: string): boolean {
-    return text?.toLowerCase().includes('error');
+    const message = text?.toLowerCase()
+    return message.includes('error') || message.includes('fault');
   }
 }

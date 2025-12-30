@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from "./helpers/auth.guard";
+import { homeRedirectGuard } from "./helpers/home-redirect.guard";
 
 export const routes: Routes = [
   {
@@ -64,7 +65,13 @@ export const routes: Routes = [
     path: 'account/register',
     loadComponent: () => import('./components/user/register/register.component').then(m => m.RegisterComponent)
   },
-  { path: '', redirectTo: '/points', pathMatch: 'full' },
+  {
+    path: '',
+    pathMatch: 'full',
+    canActivate: [homeRedirectGuard],
+    // This component won't render - guard always redirects
+    loadComponent: () => import('./components/chargepoint-list/chargepoint-list.component').then(m => m.ChargepointListComponent)
+  },
   {
     path: 'points-config',
     loadComponent: () => import('./components/chargepoint-config/chargepoint-config.component').then(m => m.ChargepointConfigComponent),
@@ -106,6 +113,10 @@ export const routes: Routes = [
   {
     path: 'statistic',
     loadComponent: () => import('./components/statistic/statistic.component').then(m => m.StatisticComponent)
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
     path: 'roaming-tariff',
