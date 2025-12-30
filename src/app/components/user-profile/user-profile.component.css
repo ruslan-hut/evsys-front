@@ -15,6 +15,16 @@ mat-card-header {
   padding: var(--spacing-xs) var(--spacing-md);
 }
 
-button {
+.profile-actions {
+  display: flex;
+  gap: var(--spacing-sm);
   margin: var(--spacing-md);
+}
+
+.profile-actions button {
+  flex: 1;
+}
+
+.profile-actions button mat-icon {
+  margin-right: var(--spacing-xs);
 }

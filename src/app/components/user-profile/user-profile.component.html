@@ -8,4 +8,10 @@
     View, add, edit and delete payment methods
   </mat-card-content>
 </mat-card>
-<button mat-raised-button  (click)="back()">Close</button>
+
+<div class="profile-actions">
+  <button mat-raised-button (click)="back()">Close</button>
+  <button mat-raised-button color="warn" (click)="logout()">
+    <mat-icon>logout</mat-icon> Logout
+  </button>
+</div>

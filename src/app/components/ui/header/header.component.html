@@ -1,91 +1,101 @@
 <mat-toolbar class="toolbar mat-elevation-z8" color="primary">
   @if (isHandset$ | async; as handset) {
-  @if (handset.matches) {
-  @if (menuEnabled && username) {
-  <div>
-    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <mat-menu #mainMenu="matMenu">
-      <button mat-menu-item (click)="navigateTo('/')">
-        <span>Home</span>
-      </button>
-      <button mat-menu-item (click)="navigateTo('/user-profile')">
-        <span>Profile</span>
-      </button>
-      @if (isAdmin) {
-      <div>
-        <button mat-menu-item (click)="navigateTo('/statistic')">
-          <span>Statistic</span>
+    @if (handset.matches) {
+      <!-- Mobile Layout: Menu | Title | Spacer | Profile -->
+      @if (menuEnabled && username) {
+        <button mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
+          <mat-icon>menu</mat-icon>
         </button>
-        <button mat-menu-item (click)="navigateTo('/log/system')">
-          <span>System log</span>
-        </button>
-        <button mat-menu-item (click)="navigateTo('/log/pay')">
-          <span>Payment log</span>
-        </button>
-        <button mat-menu-item (click)="navigateTo('/users')">
-          <span>Users list</span>
-        </button>
-      </div>
+        <mat-menu #mainMenu="matMenu">
+          <button mat-menu-item (click)="navigateTo('/')">
+            <span>Home</span>
+          </button>
+          <button mat-menu-item (click)="navigateTo('/user-profile')">
+            <span>Profile</span>
+          </button>
+          @if (isAdmin) {
+            <button mat-menu-item (click)="navigateTo('/statistic')">
+              <span>Statistic</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/log/system')">
+              <span>System log</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/log/pay')">
+              <span>Payment log</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/users')">
+              <span>Users list</span>
+            </button>
+          }
+          <button mat-menu-item (click)="navigateTo('/privacy/en')">
+            <span>Privacy policy</span>
+          </button>
+          <button mat-menu-item (click)="navigateTo('/terms/en')">
+            <span>Terms and conditions</span>
+          </button>
+        </mat-menu>
       }
-      <button mat-menu-item (click)="navigateTo('/privacy/en')">
-        <span>Privacy policy</span>
-      </button>
-      <button mat-menu-item (click)="navigateTo('/terms/en')">
-        <span>Terms and conditions</span>
-      </button>
-    </mat-menu>
-  </div>
-  }
-  } @else {
-  @if (menuEnabled && username) {
-  <div class="desktop-menu">
-    <button mat-button (click)="navigateTo('/')">Home</button>
-    @if (isAdmin) {
-    <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
-    <mat-menu #adminMenu="matMenu">
-      <button mat-menu-item (click)="navigateTo('/statistic')">Statistic</button>
-      <button mat-menu-item (click)="navigateTo('/log/system')">System log</button>
-      <button mat-menu-item (click)="navigateTo('/log/pay')">Payment log</button>
-      <button mat-menu-item (click)="navigateTo('/users')">Users list</button>
-    </mat-menu>
+      @if (!menuEnabled && isAdmin) {
+        <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      }
+
+      <span>{{title}}</span>
+      <span class="bar-spacer"></span>
+
+      @if (menuEnabled && username) {
+        <button mat-icon-button (click)="openUserProfile()" aria-label="View profile for {{username}}">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      }
+    } @else {
+      <!-- Desktop Layout: Title | Menu | Spacer | Profile | Username | Logout -->
+      @if (!menuEnabled && isAdmin) {
+        <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      }
+
+      <span class="app-title">{{title}}</span>
+
+      @if (menuEnabled && username) {
+        <div class="desktop-menu">
+          <button mat-button (click)="navigateTo('/')">Home</button>
+          @if (isAdmin) {
+            <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
+            <mat-menu #adminMenu="matMenu">
+              <button mat-menu-item (click)="navigateTo('/statistic')">Statistic</button>
+              <button mat-menu-item (click)="navigateTo('/log/system')">System log</button>
+              <button mat-menu-item (click)="navigateTo('/log/pay')">Payment log</button>
+              <button mat-menu-item (click)="navigateTo('/users')">Users list</button>
+            </mat-menu>
+          }
+          <button mat-button [matMenuTriggerFor]="legalMenu">Legal</button>
+          <mat-menu #legalMenu="matMenu">
+            <button mat-menu-item (click)="navigateTo('/privacy/en')">Privacy policy</button>
+            <button mat-menu-item (click)="navigateTo('/terms/en')">Terms and conditions</button>
+          </mat-menu>
+        </div>
+      }
+
+      <span class="bar-spacer"></span>
+
+      @if (menuEnabled && username) {
+        <button mat-icon-button (click)="openUserProfile()" aria-label="View profile for {{username}}">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      }
+      <span class="username-display">{{username}}</span>
+      @if (username) {
+        <button mat-icon-button aria-label="Log out" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      } @else {
+        <button mat-icon-button aria-label="Log in to your account" (click)="navigateTo('/account/login')">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      }
     }
-    <button mat-button [matMenuTriggerFor]="legalMenu">Legal</button>
-    <mat-menu #legalMenu="matMenu">
-      <button mat-menu-item (click)="navigateTo('/privacy/en')">Privacy policy</button>
-      <button mat-menu-item (click)="navigateTo('/terms/en')">Terms and conditions</button>
-    </mat-menu>
-  </div>
   }
-  }
-  }
-  @if (!menuEnabled && isAdmin) {
-  <button mat-icon-button (click)="navigateTo('/')" aria-label="Back button">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-  }
-
-  <span>{{title}}</span>
-  <span class="bar-spacer"></span>
-
-  @if (menuEnabled && username) {
-  <button mat-icon-button (click)="openUserProfile()" aria-label="View profile for {{username}}">
-    <mat-icon>account_circle</mat-icon>
-  </button>
-  }
-  <span class="username-display">{{username}}</span>
-
-  @if (username) {
-  <div>
-    <button mat-icon-button aria-label="Log out" (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </div>
-  } @else {
-  <button mat-icon-button aria-label="Log in to your account" (click)="navigateTo('/account/login')">
-    <mat-icon>account_circle</mat-icon>
-  </button>
-  }
-
 </mat-toolbar>

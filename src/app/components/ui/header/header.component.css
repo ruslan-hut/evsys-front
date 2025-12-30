@@ -17,10 +17,15 @@
   }
 }
 
+.app-title {
+  margin-right: var(--spacing-md);
+  font-weight: 500;
+}
+
 .desktop-menu {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 /* Ensure touch targets are accessible */
@@ -29,23 +34,11 @@
   min-width: var(--touch-target-min);
 }
 
-/* Username display - hide on very small screens */
+/* Username display - desktop only */
 .username-display {
-  display: none;
-}
-
-@media (min-width: 400px) {
-  .username-display {
-    display: inline;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-@media (min-width: 600px) {
-  .username-display {
-    max-width: 200px;
-  }
+  display: inline;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
