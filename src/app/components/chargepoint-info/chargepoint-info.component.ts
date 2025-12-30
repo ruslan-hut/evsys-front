@@ -63,7 +63,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    this.router.navigate(['/']).then(() => {});
+    this.router.navigate(['/points']).then(() => {});
   }
 
   reboot(mode: number): void {

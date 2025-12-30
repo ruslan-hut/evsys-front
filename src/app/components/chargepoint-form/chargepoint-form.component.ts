@@ -58,7 +58,7 @@ export class ChargepointFormComponent implements OnInit{
   }
 
   close(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/points']);
   }
 
 }

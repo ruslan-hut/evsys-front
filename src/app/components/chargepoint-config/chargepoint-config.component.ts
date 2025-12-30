@@ -31,6 +31,8 @@ export class ChargepointConfigComponent implements OnInit {
   dataSource: MatTableDataSource<ConfigKey>;
 
   loading: boolean = true;
+  expandedKey: string | null = null;
+
   constructor(
     private chargePointService: ChargepointService,
     private route: ActivatedRoute,
@@ -91,7 +93,7 @@ export class ChargepointConfigComponent implements OnInit {
   }
 
   close(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/points']);
   }
 
   setValueForKey(keyToUpdate: string, newValue: string): void {
@@ -114,4 +116,7 @@ export class ChargepointConfigComponent implements OnInit {
     }
   }
 
+  toggleExpand(key: string): void {
+    this.expandedKey = this.expandedKey === key ? null : key;
+  }
 }

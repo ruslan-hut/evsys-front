@@ -117,4 +117,120 @@ button {
   width: 97%;
 }
 
+/* Responsive design - show/hide views */
+.desktop-view {
+  display: block;
+}
+
+.mobile-view {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .desktop-view {
+    display: none;
+  }
+
+  .mobile-view {
+    display: block;
+  }
+
+  mat-card {
+    margin: var(--spacing-sm);
+  }
+
+  /* Mobile card layout */
+  .config-card {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+  }
+
+  .config-card.expandable {
+    cursor: pointer;
+  }
+
+  .config-card.expandable:active {
+    background: #f0f0f0;
+  }
+
+  .config-card.expanded {
+    background: #fff;
+    border-color: #3f51b5;
+  }
+
+  .config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .config-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .config-key {
+    font-weight: 600;
+    color: #333;
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .config-value {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: #666;
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .config-value span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .expand-icon {
+    color: #666;
+    flex-shrink: 0;
+    margin-left: var(--spacing-sm);
+  }
+
+  .config-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .mobile-input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--spacing-sm);
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .config-actions button {
+    flex-shrink: 0;
+  }
+
+  /* Card actions responsive */
+  mat-card-actions {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+}
+
 
