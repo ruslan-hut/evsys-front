@@ -1,3 +1,136 @@
+/* ===========================================
+   Paylog Component Styles
+   =========================================== */
+
+.log-container {
+  padding: var(--spacing-sm);
+}
+
+/* Filter Input */
+.filter-container {
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-field {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .log-container {
+    padding: var(--spacing-md);
+  }
+
+  .filter-field {
+    width: auto;
+    min-width: 300px;
+  }
+}
+
+/* ===========================================
+   Desktop Table Styles
+   =========================================== */
 table {
   width: 100%;
+}
+
+td, th {
+  white-space: nowrap;
+}
+
+td:last-child, th:last-child {
+  white-space: normal;
+}
+
+/* ===========================================
+   Mobile Card Layout
+   =========================================== */
+.log-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.log-card {
+  margin: 0;
+}
+
+.log-card-content {
+  padding: var(--spacing-sm) !important;
+}
+
+.log-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.log-time {
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.log-date {
+  font-size: 11px;
+  color: #757575;
+}
+
+.log-card-meta {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.log-level {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.log-category {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  background-color: #e8e8e8;
+  color: #424242;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.log-card-text {
+  font-size: 13px;
+  color: #424242;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: #757575;
+  font-style: italic;
+}
+
+/* Paginator adjustments for mobile */
+@media (max-width: 599px) {
+  ::ng-deep .mat-mdc-paginator-container {
+    padding: var(--spacing-xs) !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size {
+    margin-right: 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-paginator-range-label {
+    margin: 0 var(--spacing-sm) !important;
+  }
 }

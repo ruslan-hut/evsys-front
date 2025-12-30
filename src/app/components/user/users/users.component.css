@@ -1,12 +1,131 @@
+/* ===========================================
+   Users Component Styles
+   =========================================== */
+
+.users-container {
+  padding: var(--spacing-sm);
+}
+
+/* Filter Input */
+.filter-container {
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-field {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .users-container {
+    padding: var(--spacing-md);
+  }
+
+  .filter-field {
+    width: auto;
+    min-width: 300px;
+  }
+}
+
+/* ===========================================
+   Desktop Table Styles
+   =========================================== */
 table {
   width: 100%;
 }
 
-/* Ensure table cells don't break on mobile */
 td, th {
   white-space: nowrap;
 }
 
 td:last-child, th:last-child {
   white-space: normal;
+}
+
+/* ===========================================
+   Mobile Expandable Panel Layout
+   =========================================== */
+.user-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-panel {
+  margin: 0 !important;
+}
+
+.user-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.user-role-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: #7b1fa2;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.user-panel-description {
+  font-size: 11px;
+  color: #757575;
+  justify-content: flex-end;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.user-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-detail-label {
+  font-size: 12px;
+  color: #757575;
+}
+
+.user-detail-value {
+  font-size: 13px;
+  color: #212121;
+  font-weight: 500;
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: #757575;
+  font-style: italic;
+}
+
+/* Paginator adjustments for mobile */
+@media (max-width: 599px) {
+  ::ng-deep .mat-mdc-paginator-container {
+    padding: var(--spacing-xs) !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size {
+    margin-right: 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-paginator-range-label {
+    margin: 0 var(--spacing-sm) !important;
+  }
 }

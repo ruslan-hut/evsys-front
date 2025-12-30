@@ -1,78 +1,150 @@
 @if (loading) {
   <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
 }
-<div class="box-margin">
-  <mat-form-field appearance="fill">
-    <mat-label>Filter</mat-label>
-    <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
-    @if (filter) {
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-  </mat-form-field>
-</div>
 
-<div class="mat-elevation-z8 box-margin">
-  <div class="table-responsive">
-    <table mat-table matSort [dataSource]="dataSource">
-      <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
-        <td mat-cell *matCellDef="let row">{{row.username}}</td>
-      </ng-container>
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let row">{{row.name}}</td>
-      </ng-container>
-      <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
-        <td mat-cell *matCellDef="let row">{{row.role}}</td>
-      </ng-container>
-      <ng-container matColumnDef="level">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Level</th>
-        <td mat-cell *matCellDef="let row">{{row.access_level}}</td>
-      </ng-container>
-      <ng-container matColumnDef="plan">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment plan</th>
-        <td mat-cell *matCellDef="let row">{{row.payment_plan}}</td>
-      </ng-container>
-      <ng-container matColumnDef="registered">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date registered</th>
-        <td mat-cell *matCellDef="let row">{{row.date_registered}}</td>
-      </ng-container>
-      <ng-container matColumnDef="last_seen">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last seen</th>
-        <td mat-cell *matCellDef="let row">{{row.last_seen}}</td>
-      </ng-container>
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let row">
-          <button mat-icon-button [routerLink]="['/users/edit', row.username]"
-                  aria-label="Edit user {{row.username}}">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="openUserInfo(row.username)"
-                  aria-label="View details for {{row.username}}">
-            <mat-icon>remove_red_eye</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumn"></tr>
-
-      <tr *matNoDataRow>
-        @if (filter) {
-          <td class="mat-cell" colspan="8">No records with data '{{filter}}'</td>
-        }
-      </tr>
-
-    </table>
+<div class="users-container">
+  <!-- Filter input -->
+  <div class="filter-container">
+    <mat-form-field appearance="fill" class="filter-field">
+      <mat-label>Filter</mat-label>
+      <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
+      @if (filter) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
   </div>
 
-  <mat-paginator
-    #logDataPaginator [pageSizeOptions]="[10, 50, 100]" [showFirstLastButtons]="showFirstLastButtons"
-    aria-label="Select page of users">
-  </mat-paginator>
+  <!-- Mobile Card Layout -->
+  @if (isMobile$ | async) {
+    <mat-accordion class="user-accordion">
+      @for (row of paginatedData; track row.username) {
+        <mat-expansion-panel class="user-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="user-panel-title">
+              <span class="user-username">{{ row.username }}</span>
+              @if (row.role) {
+                <span class="user-role-badge">{{ row.role }}</span>
+              }
+            </mat-panel-title>
+            <mat-panel-description class="user-panel-description">
+              {{ formatLastSeen(row.last_seen) }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="user-details">
+            @if (row.name) {
+              <div class="user-detail-row">
+                <span class="user-detail-label">Name:</span>
+                <span class="user-detail-value">{{ row.name }}</span>
+              </div>
+            }
+            @if (row.email) {
+              <div class="user-detail-row">
+                <span class="user-detail-label">Email:</span>
+                <span class="user-detail-value">{{ row.email }}</span>
+              </div>
+            }
+            @if (row.date_registered) {
+              <div class="user-detail-row">
+                <span class="user-detail-label">Registered:</span>
+                <span class="user-detail-value">{{ row.date_registered }}</span>
+              </div>
+            }
+            @if (row.last_seen) {
+              <div class="user-detail-row">
+                <span class="user-detail-label">Last seen:</span>
+                <span class="user-detail-value">{{ row.last_seen }}</span>
+              </div>
+            }
+            @if (row.payment_plan) {
+              <div class="user-detail-row">
+                <span class="user-detail-label">Plan:</span>
+                <span class="user-detail-value">{{ row.payment_plan }}</span>
+              </div>
+            }
+          </div>
+        </mat-expansion-panel>
+      } @empty {
+        @if (filter) {
+          <div class="no-data">No users matching '{{ filter }}'</div>
+        } @else {
+          <div class="no-data">No users found</div>
+        }
+      }
+    </mat-accordion>
 
+    <!-- Mobile Paginator -->
+    <mat-paginator
+      #logDataPaginator
+      [pageSizeOptions]="[10, 25, 50]"
+      [showFirstLastButtons]="false"
+      aria-label="Select page of users">
+    </mat-paginator>
+  } @else {
+    <!-- Desktop Table Layout -->
+    <div class="mat-elevation-z8">
+      <div class="table-responsive">
+        <table mat-table matSort [dataSource]="dataSource">
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+            <td mat-cell *matCellDef="let row">{{ row.username }}</td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+            <td mat-cell *matCellDef="let row">{{ row.role }}</td>
+          </ng-container>
+          <ng-container matColumnDef="level">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Level</th>
+            <td mat-cell *matCellDef="let row">{{ row.access_level }}</td>
+          </ng-container>
+          <ng-container matColumnDef="plan">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment plan</th>
+            <td mat-cell *matCellDef="let row">{{ row.payment_plan }}</td>
+          </ng-container>
+          <ng-container matColumnDef="registered">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date registered</th>
+            <td mat-cell *matCellDef="let row">{{ row.date_registered }}</td>
+          </ng-container>
+          <ng-container matColumnDef="last_seen">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last seen</th>
+            <td mat-cell *matCellDef="let row">{{ row.last_seen }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button [routerLink]="['/users/edit', row.username]"
+                      aria-label="Edit user {{row.username}}">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="openUserInfo(row.username)"
+                      aria-label="View details for {{row.username}}">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumn"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumn"></tr>
+
+          <tr *matNoDataRow>
+            @if (filter) {
+              <td class="mat-cell" colspan="8">No records with data '{{ filter }}'</td>
+            }
+          </tr>
+        </table>
+      </div>
+
+      <mat-paginator
+        #logDataPaginator
+        [pageSizeOptions]="[10, 50, 100]"
+        [showFirstLastButtons]="showFirstLastButtons"
+        aria-label="Select page of users">
+      </mat-paginator>
+    </div>
+  }
 </div>

@@ -1,6 +1,7 @@
 import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
@@ -12,13 +13,41 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
+import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
   selector: 'app-logger',
   templateUrl: './logger.component.html',
   styleUrls: ['./logger.component.css'],
   standalone: true,
-  imports: [MatProgressBar, MatFormField, MatLabel, MatInput, FormsModule, MatIconButton, MatSuffix, MatIcon, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
+  imports: [
+    MatProgressBar,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    MatIconButton,
+    MatSuffix,
+    MatIcon,
+    MatTable,
+    MatSort,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatSortHeader,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatNoDataRow,
+    MatPaginator,
+    AsyncPipe,
+    MatCard,
+    MatCardContent
+  ]
 })
 export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -29,6 +58,10 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
   dataSource = new MatTableDataSource<Message>();
   isOnline = false;
 
+  // Mobile detection
+  isMobile$ = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
+    .pipe(map(result => result.matches));
+
   @ViewChild('logDataPaginator') set paginator(pager: MatPaginator) {
     if (pager) this.dataSource.paginator = pager;
   }
@@ -36,7 +69,10 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(public logger: LoggerService) {}
+  constructor(
+    public logger: LoggerService,
+    private breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -76,5 +112,48 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.logger.onStop();
+  }
+
+  // Get paginated and filtered data for mobile view
+  get paginatedData(): Message[] {
+    const filtered = this.dataSource.filteredData;
+    const paginator = this.dataSource.paginator;
+
+    if (!paginator) {
+      return filtered.slice(0, 10);
+    }
+
+    const startIndex = paginator.pageIndex * paginator.pageSize;
+    return filtered.slice(startIndex, startIndex + paginator.pageSize);
+  }
+
+  // Format time for mobile display (shorter format)
+  formatTimeShort(timeStr: string): string {
+    if (!timeStr) return '';
+    // Assuming format like "2024-01-15 14:30:45"
+    const parts = timeStr.split(' ');
+    if (parts.length >= 2) {
+      return parts[1]; // Return only time part
+    }
+    return timeStr;
+  }
+
+  // Format date for mobile display
+  formatDateShort(timeStr: string): string {
+    if (!timeStr) return '';
+    const parts = timeStr.split(' ');
+    if (parts.length >= 1) {
+      // Return date in shorter format MM-DD
+      const dateParts = parts[0].split('-');
+      if (dateParts.length === 3) {
+        return `${dateParts[1]}-${dateParts[2]}`;
+      }
+    }
+    return timeStr;
+  }
+
+  // Check if message contains error
+  isErrorMessage(text: string): boolean {
+    return text?.toLowerCase().includes('error');
   }
 }
