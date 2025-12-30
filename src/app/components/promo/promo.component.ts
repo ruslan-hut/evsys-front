@@ -129,7 +129,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  startConnector(connector: Connector): void {
+  startConnector(_: Connector): void {
     if (this.validatePromoCode()) {
       // Start transaction
     } else {
@@ -137,7 +137,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  stopConnector(connector: Connector): void {
+  stopConnector(_: Connector): void {
     if (this.validatePromoCode()) {
       // Stop transaction
     } else {
@@ -145,7 +145,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  unlockConnector(connector: Connector): void {
+  unlockConnector(_: Connector): void {
     if (this.validatePromoCode()) {
       // Unlock connector
     } else {

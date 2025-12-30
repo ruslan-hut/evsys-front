@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, combineLatest } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { Chargepoint } from '../../models/chargepoint';
 import { ChargepointService } from '../../service/chargepoint.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogData } from '../../models/dialog-data';
 import { BasicDialogComponent } from '../dialogs/basic/basic-dialog.component';
@@ -154,7 +154,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().pipe(
       takeUntil(this.destroy$)
-    ).subscribe(result => {
+    ).subscribe(_ => {
       // Dialog closed
     });
   }
