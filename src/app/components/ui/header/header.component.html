@@ -7,8 +7,8 @@
           <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #mainMenu="matMenu">
-          <button mat-menu-item (click)="navigateTo('/')">
-            <span>Home</span>
+          <button mat-menu-item (click)="navigateTo('/points')">
+            <span>Points</span>
           </button>
           <button mat-menu-item (click)="navigateTo('/user-profile')">
             <span>Profile</span>
@@ -64,7 +64,7 @@
 
       @if (menuEnabled && username) {
         <div class="desktop-menu">
-          <button mat-button (click)="navigateTo('/')">Home</button>
+          <button mat-button (click)="navigateTo('/points')">Points</button>
           @if (isAdmin) {
             <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
             <mat-menu #adminMenu="matMenu">
