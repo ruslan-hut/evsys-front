@@ -117,9 +117,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private getLastYear() {
-    const end = new Date();
-    const start = new Date();
-    start.setFullYear(start.getFullYear() - 1);
+    const now = new Date();
+    // End: last day of current month
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    // Start: first day of 11 months ago (12 full months including current)
+    const start = new Date(now.getFullYear(), now.getMonth() - 11, 1);
     return { start, end };
   }
 

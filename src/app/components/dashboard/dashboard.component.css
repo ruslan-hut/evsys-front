@@ -1,5 +1,13 @@
 :host { display: block; overflow-x: hidden; }
 
+/* Desktop/Mobile visibility */
+.desktop-only { display: flex; margin: 8px; padding: 8px; }
+.mobile-only { display: none; }
+@media (max-width: 599px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block !important; }
+}
+
 .filter-panel { margin: 8px; box-shadow: none; border: 1px solid #e0e0e0; border-radius: 8px; }
 
 .current-period { display: flex; align-items: center; gap: 8px; padding: 4px 16px; background: #f5f5f5; border-bottom: 1px solid #e0e0e0; font-size: 13px; }
@@ -30,12 +38,6 @@ ngx-charts-line-chart, ngx-charts-bar-vertical, ngx-charts-bar-horizontal, ngx-c
 ::ng-deep .ngx-charts svg { height: 100% !important; }
 ::ng-deep .mat-mdc-tab-body-wrapper { flex-grow: 1; }
 
-@media (min-width: 600px) {
-  .filter-panel { border: none; background: transparent; }
-  .filter-panel ::ng-deep .mat-expansion-panel-header { display: none; }
-  .filter-panel ::ng-deep .mat-expansion-panel-content { visibility: visible !important; height: auto !important; }
-  .filter-panel ::ng-deep .mat-expansion-panel-body { padding: 0; }
-}
 
 @media (min-width: 1200px) {
   .chart-container { height: 400px; }

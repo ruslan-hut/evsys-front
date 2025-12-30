@@ -1,4 +1,45 @@
-<mat-expansion-panel class="filter-panel" [expanded]="false">
+<!-- Desktop: always visible filter container -->
+<div class="filter-container desktop-only">
+  <mat-form-field appearance="outline" class="date-range-field">
+    <mat-label>Date Range</mat-label>
+    <mat-date-range-input [rangePicker]="pickerDesktop">
+      <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
+      <input matEndDate [(ngModel)]="endDate" placeholder="End" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="pickerDesktop"></mat-datepicker-toggle>
+    <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuDesktop" aria-label="Select predefined range">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-menu #rangeMenuDesktop="matMenu">
+      @for (range of predefinedRanges; track range.label) {
+        <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
+      }
+    </mat-menu>
+    <mat-date-range-picker #pickerDesktop></mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Group</mat-label>
+    <mat-select [(value)]="selectedGroup">
+      @for (group of groups; track group.id) {
+        <mat-option [value]="group.id">{{ group.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="requestData()">
+    <mat-icon>refresh</mat-icon>
+    Load Data
+  </button>
+
+  @if (inProgress) {
+    <mat-spinner diameter="30"></mat-spinner>
+  }
+</div>
+
+<!-- Mobile: collapsible filter panel -->
+<mat-expansion-panel class="filter-panel mobile-only" [expanded]="false">
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-icon>filter_list</mat-icon>
@@ -9,21 +50,21 @@
   <div class="filter-container">
     <mat-form-field appearance="outline" class="date-range-field">
       <mat-label>Date Range</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
+      <mat-date-range-input [rangePicker]="pickerMobile">
         <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
         <input matEndDate [(ngModel)]="endDate" placeholder="End" />
       </mat-date-range-input>
       <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenu" aria-label="Select predefined range">
+      <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
+      <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuMobile" aria-label="Select predefined range">
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
-      <mat-menu #rangeMenu="matMenu">
+      <mat-menu #rangeMenuMobile="matMenu">
         @for (range of predefinedRanges; track range.label) {
           <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
         }
       </mat-menu>
-      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-date-range-picker #pickerMobile></mat-date-range-picker>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
