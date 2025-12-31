@@ -63,11 +63,15 @@ export class WebsocketService implements OnDestroy {
       }
       this.connect();
     });
+
+    // Handle page visibility changes (mobile background/foreground)
+    this.setupVisibilityHandler();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.removeVisibilityHandler();
     this.close();
   }
 
@@ -310,5 +314,44 @@ export class WebsocketService implements OnDestroy {
   private stopPing(): void {
     this.pingSubscription?.unsubscribe();
     this.pingSubscription = null;
+  }
+
+  private visibilityHandler = () => this.onVisibilityChange();
+
+  private setupVisibilityHandler(): void {
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', this.visibilityHandler);
+    }
+  }
+
+  private removeVisibilityHandler(): void {
+    if (typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', this.visibilityHandler);
+    }
+  }
+
+  private onVisibilityChange(): void {
+    if (document.visibilityState === 'visible') {
+      if (environment.debug) {
+        console.log('WS: page became visible, checking connection');
+      }
+
+      // Force reconnect if not connected or in a stale state
+      if (this.connectionState.value !== WsConnectionState.CONNECTED) {
+        if (environment.debug) {
+          console.log('WS: reconnecting after visibility change');
+        }
+        this.reconnect();
+      } else {
+        // Connection appears active, send a ping to verify
+        // If the connection is stale, this will trigger an error and reconnect
+        this.send({ command: 'PingConnection' });
+      }
+    }
+  }
+
+  private reconnect(): void {
+    this.close();
+    this.connect();
   }
 }
