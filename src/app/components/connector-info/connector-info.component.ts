@@ -50,10 +50,10 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
 
       this.chargePointService.getChargePoints().pipe(
         takeUntil(this.destroy$)
-      ).subscribe((chargePoint) => {
+      ).subscribe((chargePoints) => {
         const chargePointId = this.connector?.charge_point_id;
         const connectorId = this.connector?.connector_id;
-        chargePoint.forEach((cp) => {
+        chargePoints.forEach((cp) => {
           if (cp.charge_point_id === chargePointId) {
             cp.connectors.forEach((c) => {
               if (c.connector_id === connectorId) {
@@ -74,6 +74,12 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
 
   isDialog(): boolean {
     return !!this.data;
+  }
+
+  canStartTransaction(connector: Connector): boolean {
+    // Allow start if connector is available, or if it's in 'occupied' state with 'Preparing' status
+    const isPreparingState = connector.state === 'occupied' && connector.status === 'Preparing';
+    return connector.state === 'available' || isPreparingState;
   }
 
   onStartConnector(connector: Connector): void {

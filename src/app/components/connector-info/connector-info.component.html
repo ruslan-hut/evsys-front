@@ -65,7 +65,7 @@
       @if (isDialog()) {
         <button mat-button (click)="dialogRef?.close('no')">Close</button>
       }
-      @if (connector.state === 'available') {
+      @if (canStartTransaction(connector)) {
         <button mat-flat-button color="primary" (click)="onStartConnector(connector)">Start</button>
       } @else {
         @if (connector.state !== 'unavailable') {
