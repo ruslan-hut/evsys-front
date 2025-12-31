@@ -12,9 +12,9 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private accountService: AccountService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (environment.debug) {
-      console.log("Request", request.url)
-    }
+    // if (environment.debug) {
+    //   console.log("Request", request.url)
+    // }
     if (request.headers.get('skip-interceptor') === 'true') {
       const newRequest = request.clone({headers: request.headers.delete('skip-interceptor')});
       return next.handle(newRequest);

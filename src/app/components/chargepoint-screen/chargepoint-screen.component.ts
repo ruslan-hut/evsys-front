@@ -102,7 +102,6 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
         // Allow start if connector is available, or if it's in 'occupied' state with 'Preparing' status
         const isPreparingState = connector.state === 'occupied' && connector.status === 'Preparing';
         this.isAvailable = connector.status !== 'Faulted' && (connector.state === 'available' || isPreparingState);
-        console.log('[DEBUG] state:', connector.state, 'status:', connector.status, 'isAvailable:', this.isAvailable);
         this.connectorName = getConnectorName(connector);
         this.transactionId = connector.current_transaction_id;
 
