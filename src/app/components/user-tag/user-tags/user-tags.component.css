@@ -1,0 +1,157 @@
+/* ===========================================
+   User Tags Component Styles
+   =========================================== */
+
+.tags-container {
+  padding: var(--spacing-sm);
+}
+
+/* Filter Input */
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.add-button {
+  white-space: nowrap;
+}
+
+@media (min-width: 600px) {
+  .tags-container {
+    padding: var(--spacing-md);
+  }
+
+  .filter-field {
+    flex: 0 0 auto;
+    min-width: 300px;
+  }
+}
+
+/* ===========================================
+   Desktop Table Styles
+   =========================================== */
+table {
+  width: 100%;
+}
+
+td, th {
+  white-space: nowrap;
+}
+
+td:last-child, th:last-child {
+  white-space: normal;
+}
+
+.status-chip.disabled {
+  background-color: #f44336;
+  color: white;
+}
+
+/* ===========================================
+   Mobile Expandable Panel Layout
+   =========================================== */
+.tag-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tag-panel {
+  margin: 0 !important;
+}
+
+.tag-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag-id {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.tag-status-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.tag-status-badge.disabled {
+  background-color: #f44336;
+  color: white;
+}
+
+.tag-panel-description {
+  font-size: 11px;
+  color: #757575;
+  justify-content: flex-end;
+}
+
+.tag-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.tag-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tag-detail-label {
+  font-size: 12px;
+  color: #757575;
+}
+
+.tag-detail-value {
+  font-size: 13px;
+  color: #212121;
+  font-weight: 500;
+}
+
+.tag-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: #757575;
+  font-style: italic;
+}
+
+/* Paginator adjustments for mobile */
+@media (max-width: 599px) {
+  ::ng-deep .mat-mdc-paginator-container {
+    padding: var(--spacing-xs) !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size {
+    margin-right: 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-paginator-range-label {
+    margin: 0 var(--spacing-sm) !important;
+  }
+}

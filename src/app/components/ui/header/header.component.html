@@ -29,6 +29,9 @@
             <button mat-menu-item (click)="navigateTo('/users')">
               <span>Users list</span>
             </button>
+            <button mat-menu-item (click)="navigateTo('/user-tags')">
+              <span>User tags</span>
+            </button>
           }
           <button mat-menu-item (click)="navigateTo('/privacy/en')">
             <span>Privacy policy</span>
@@ -73,6 +76,7 @@
               <button mat-menu-item (click)="navigateTo('/log/system')">System log</button>
               <button mat-menu-item (click)="navigateTo('/log/pay')">Payment log</button>
               <button mat-menu-item (click)="navigateTo('/users')">Users list</button>
+              <button mat-menu-item (click)="navigateTo('/user-tags')">User tags</button>
             </mat-menu>
           }
           <button mat-button [matMenuTriggerFor]="legalMenu">Legal</button>

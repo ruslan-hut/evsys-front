@@ -39,6 +39,21 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'user-tags',
+    loadComponent: () => import('./components/user-tag/user-tags/user-tags.component').then(m => m.UserTagsComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-tags/add',
+    loadComponent: () => import('./components/user-tag/user-tag-edit/user-tag-edit.component').then(m => m.UserTagEditComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'user-tags/edit/:idTag',
+    loadComponent: () => import('./components/user-tag/user-tag-edit/user-tag-edit.component').then(m => m.UserTagEditComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'points',
     loadComponent: () => import('./components/chargepoint-list/chargepoint-list.component').then(m => m.ChargepointListComponent)
   },

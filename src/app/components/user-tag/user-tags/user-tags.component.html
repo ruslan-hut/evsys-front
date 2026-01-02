@@ -1,0 +1,154 @@
+@if (loading) {
+  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+}
+
+<div class="tags-container">
+  <!-- Filter and Add button -->
+  <div class="filter-container">
+    <mat-form-field appearance="fill" class="filter-field">
+      <mat-label>Filter</mat-label>
+      <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
+      @if (filter) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+    <button mat-raised-button color="primary" routerLink="/user-tags/add" class="add-button">
+      <mat-icon>add</mat-icon>
+      Add Tag
+    </button>
+  </div>
+
+  <!-- Mobile Card Layout -->
+  @if (isMobile$ | async) {
+    <mat-accordion class="tag-accordion">
+      @for (row of paginatedData; track row.id_tag) {
+        <mat-expansion-panel class="tag-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="tag-panel-title">
+              <span class="tag-id">{{ row.id_tag }}</span>
+              @if (!row.is_enabled) {
+                <span class="tag-status-badge disabled">Disabled</span>
+              }
+            </mat-panel-title>
+            <mat-panel-description class="tag-panel-description">
+              {{ formatDate(row.last_seen) }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="tag-details">
+            @if (row.username) {
+              <div class="tag-detail-row">
+                <span class="tag-detail-label">Username:</span>
+                <span class="tag-detail-value">{{ row.username }}</span>
+              </div>
+            }
+            @if (row.source) {
+              <div class="tag-detail-row">
+                <span class="tag-detail-label">Source:</span>
+                <span class="tag-detail-value">{{ row.source }}</span>
+              </div>
+            }
+            @if (row.date_registered) {
+              <div class="tag-detail-row">
+                <span class="tag-detail-label">Registered:</span>
+                <span class="tag-detail-value">{{ formatDate(row.date_registered) }}</span>
+              </div>
+            }
+            @if (row.note) {
+              <div class="tag-detail-row">
+                <span class="tag-detail-label">Note:</span>
+                <span class="tag-detail-value">{{ row.note }}</span>
+              </div>
+            }
+            <div class="tag-actions">
+              <button mat-icon-button [routerLink]="['/user-tags/edit', row.id_tag]"
+                      aria-label="Edit tag {{row.id_tag}}">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteTag(row.id_tag)"
+                      aria-label="Delete tag {{row.id_tag}}">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      } @empty {
+        @if (filter) {
+          <div class="no-data">No tags matching '{{ filter }}'</div>
+        } @else {
+          <div class="no-data">No tags found</div>
+        }
+      }
+    </mat-accordion>
+
+    <!-- Mobile Paginator -->
+    <mat-paginator
+      #tagDataPaginator
+      [pageSizeOptions]="[10, 25, 50]"
+      [showFirstLastButtons]="false"
+      aria-label="Select page of tags">
+    </mat-paginator>
+  } @else {
+    <!-- Desktop Table Layout -->
+    <div class="mat-elevation-z8">
+      <div class="table-responsive">
+        <table mat-table matSort [dataSource]="dataSource">
+          <ng-container matColumnDef="id_tag">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Tag</th>
+            <td mat-cell *matCellDef="let row">{{ row.id_tag }}</td>
+          </ng-container>
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+            <td mat-cell *matCellDef="let row">{{ row.username }}</td>
+          </ng-container>
+          <ng-container matColumnDef="source">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+            <td mat-cell *matCellDef="let row">{{ row.source }}</td>
+          </ng-container>
+          <ng-container matColumnDef="is_enabled">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let row">
+              @if (!row.is_enabled) {
+                <mat-chip class="status-chip disabled">Disabled</mat-chip>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="last_seen">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Seen</th>
+            <td mat-cell *matCellDef="let row">{{ formatDate(row.last_seen) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button [routerLink]="['/user-tags/edit', row.id_tag]"
+                      aria-label="Edit tag {{row.id_tag}}">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteTag(row.id_tag)"
+                      aria-label="Delete tag {{row.id_tag}}">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr *matNoDataRow>
+            @if (filter) {
+              <td class="mat-cell" colspan="6">No records with data '{{ filter }}'</td>
+            }
+          </tr>
+        </table>
+      </div>
+
+      <mat-paginator
+        #tagDataPaginator
+        [pageSizeOptions]="[10, 50, 100]"
+        [showFirstLastButtons]="showFirstLastButtons"
+        aria-label="Select page of tags">
+      </mat-paginator>
+    </div>
+  }
+</div>
