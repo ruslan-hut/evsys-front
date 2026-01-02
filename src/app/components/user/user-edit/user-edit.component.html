@@ -5,9 +5,12 @@
 <div class="user-edit-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title class="title-with-action">
         @if (isEditMode) {
-          Edit User: {{ username }}
+          <span>Edit User: {{ username }}</span>
+          <button mat-icon-button (click)="copyUsername()" aria-label="Copy username" class="copy-button">
+            <mat-icon>content_copy</mat-icon>
+          </button>
         } @else {
           Create New User
         }
@@ -16,19 +19,18 @@
 
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="user-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" placeholder="Enter username">
-          @if (form.get('username')?.hasError('required')) {
-            <mat-error>Username is required</mat-error>
-          }
-          @if (form.get('username')?.hasError('minlength')) {
-            <mat-error>Username must be at least 3 characters</mat-error>
-          }
-          @if (isEditMode) {
-            <mat-hint>Username cannot be changed</mat-hint>
-          }
-        </mat-form-field>
+        @if (!isEditMode) {
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" placeholder="Enter username">
+            @if (form.get('username')?.hasError('required')) {
+              <mat-error>Username is required</mat-error>
+            }
+            @if (form.get('username')?.hasError('minlength')) {
+              <mat-error>Username must be at least 3 characters</mat-error>
+            }
+          </mat-form-field>
+        }
 
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
@@ -89,9 +91,16 @@
       </form>
     </mat-card-content>
 
-    <mat-card-actions align="end">
-      <button mat-button type="button" (click)="cancel()" [disabled]="saving">
-        Cancel
+    <mat-card-actions>
+      @if (isEditMode) {
+        <button mat-button type="button" (click)="openUserTags()">
+          User Tags
+        </button>
+      }
+      <span class="actions-spacer"></span>
+      <button mat-button type="button" (click)="navigateBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
       </button>
       <button mat-raised-button color="primary"
               (click)="onSubmit()"

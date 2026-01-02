@@ -5,9 +5,12 @@
 <div class="tag-edit-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title class="title-with-action">
         @if (isEditMode) {
-          Edit Tag: {{ idTag }}
+          <span>Edit Tag: {{ idTag }}</span>
+          <button mat-icon-button (click)="copyIdTag()" aria-label="Copy tag ID" class="copy-button">
+            <mat-icon>content_copy</mat-icon>
+          </button>
         } @else {
           Create New Tag
         }
@@ -16,16 +19,15 @@
 
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="tag-form">
-        <mat-form-field appearance="outline">
-          <mat-label>ID Tag</mat-label>
-          <input matInput formControlName="id_tag" placeholder="Enter tag identifier">
-          @if (form.get('id_tag')?.hasError('required')) {
-            <mat-error>ID Tag is required</mat-error>
-          }
-          @if (isEditMode) {
-            <mat-hint>ID Tag cannot be changed</mat-hint>
-          }
-        </mat-form-field>
+        @if (!isEditMode) {
+          <mat-form-field appearance="outline">
+            <mat-label>ID Tag</mat-label>
+            <input matInput formControlName="id_tag" placeholder="Enter tag identifier">
+            @if (form.get('id_tag')?.hasError('required')) {
+              <mat-error>ID Tag is required</mat-error>
+            }
+          </mat-form-field>
+        }
 
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
@@ -73,8 +75,9 @@
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-button type="button" (click)="cancel()" [disabled]="saving">
-        Cancel
+      <button mat-button type="button" (click)="navigateBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
       </button>
       <button mat-raised-button color="primary"
               (click)="onSubmit()"

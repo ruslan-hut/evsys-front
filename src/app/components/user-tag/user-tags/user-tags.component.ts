@@ -16,7 +16,7 @@ import {MatInput} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatIconButton, MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChip} from '@angular/material/chips';
@@ -53,11 +53,10 @@ import {MatChip} from '@angular/material/chips';
     MatPaginator,
     AsyncPipe,
     MatExpansionModule,
-    MatChip
   ]
 })
 export class UserTagsComponent implements OnInit {
-  displayedColumns: string[] = ['id_tag', 'username', 'source', 'is_enabled', 'last_seen', 'actions'];
+  displayedColumns: string[] = ['id_tag', 'username', 'source', 'note', 'last_seen', 'actions'];
   filter: string = '';
   loading = false;
   dataSource = new MatTableDataSource<UserTag>();
@@ -77,10 +76,15 @@ export class UserTagsComponent implements OnInit {
     private userTagService: UserTagService,
     public dialog: MatDialog,
     private breakpointObserver: BreakpointObserver,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    const usernameParam = this.route.snapshot.queryParamMap.get('username');
+    if (usernameParam) {
+      this.filter = usernameParam;
+    }
     this.loadTags();
   }
 
@@ -89,6 +93,9 @@ export class UserTagsComponent implements OnInit {
     this.userTagService.getAll().subscribe({
       next: (tags) => {
         this.dataSource.data = tags;
+        if (this.filter) {
+          this.applyFilter(this.filter);
+        }
         this.loading = false;
       },
       error: () => {

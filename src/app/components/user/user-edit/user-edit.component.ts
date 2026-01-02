@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {first} from 'rxjs';
 
@@ -12,8 +13,10 @@ import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardHeader, M
 import {MatError, MatFormField, MatHint, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatProgressBar} from '@angular/material/progress-bar';
+import {MatIcon} from '@angular/material/icon';
+import {Clipboard} from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-user-edit',
@@ -26,8 +29,9 @@ import {MatProgressBar} from '@angular/material/progress-bar';
     MatFormField, MatLabel, MatError, MatHint,
     MatInput,
     MatSelect, MatOption,
-    MatButton,
-    MatProgressBar
+    MatButton, MatIconButton,
+    MatProgressBar,
+    MatIcon
   ]
 })
 export class UserEditComponent implements OnInit {
@@ -48,8 +52,10 @@ export class UserEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private accountService: AccountService,
     private errorService: ErrorService,
+    private clipboard: Clipboard,
     @Optional() public dialogRef?: MatDialogRef<UserEditComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData?: { username: string }
   ) {}
@@ -149,11 +155,21 @@ export class UserEditComponent implements OnInit {
     if (this.dialogRef) {
       this.dialogRef.close(true);
     } else {
-      this.router.navigate(['/users']);
+      this.location.back();
     }
   }
 
   cancel(): void {
     this.navigateBack();
+  }
+
+  openUserTags(): void {
+    this.router.navigate(['/user-tags'], {queryParams: {username: this.username}});
+  }
+
+  copyUsername(): void {
+    if (this.username) {
+      this.clipboard.copy(this.username);
+    }
   }
 }

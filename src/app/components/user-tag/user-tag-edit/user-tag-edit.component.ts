@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {first} from 'rxjs';
 
@@ -11,9 +12,11 @@ import {UserTag} from '../../../models/user-tag';
 import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatError, MatFormField, MatHint, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatIcon} from '@angular/material/icon';
+import {Clipboard} from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-user-tag-edit',
@@ -23,11 +26,12 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
   imports: [
     ReactiveFormsModule,
     MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions, MatCardFooter,
-    MatFormField, MatLabel, MatError, MatHint,
+    MatFormField, MatLabel, MatError,
     MatInput,
-    MatButton,
+    MatButton, MatIconButton,
     MatProgressBar,
-    MatSlideToggle
+    MatSlideToggle,
+    MatIcon
   ]
 })
 export class UserTagEditComponent implements OnInit {
@@ -42,8 +46,10 @@ export class UserTagEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private userTagService: UserTagService,
     private errorService: ErrorService,
+    private clipboard: Clipboard,
     @Optional() public dialogRef?: MatDialogRef<UserTagEditComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData?: { idTag: string }
   ) {}
@@ -133,11 +139,17 @@ export class UserTagEditComponent implements OnInit {
     if (this.dialogRef) {
       this.dialogRef.close(true);
     } else {
-      this.router.navigate(['/user-tags']);
+      this.location.back();
     }
   }
 
   cancel(): void {
     this.navigateBack();
+  }
+
+  copyIdTag(): void {
+    if (this.idTag) {
+      this.clipboard.copy(this.idTag);
+    }
   }
 }

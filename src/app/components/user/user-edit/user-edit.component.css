@@ -4,6 +4,16 @@
   padding: 0 16px;
 }
 
+.title-with-action {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-button {
+  transform: scale(0.8);
+}
+
 .user-form {
   display: flex;
   flex-direction: column;
@@ -30,4 +40,10 @@
 
 mat-card-actions {
   padding: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.actions-spacer {
+  flex: 1;
 }

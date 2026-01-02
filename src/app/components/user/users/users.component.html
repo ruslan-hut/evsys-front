@@ -29,7 +29,7 @@
             <mat-panel-title class="user-panel-title">
               <span class="user-username">{{ row.username }}</span>
               @if (row.role) {
-                <span class="user-role-badge">{{ row.role }}</span>
+                <span class="user-role-badge" [class.admin]="row.role === 'admin'" [class.operator]="row.role === 'operator'">{{ row.role }}</span>
               }
             </mat-panel-title>
             <mat-panel-description class="user-panel-description">
@@ -75,6 +75,10 @@
               <button mat-icon-button (click)="openUserInfo(row.username)"
                       aria-label="View details for {{row.username}}">
                 <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
+                      aria-label="User tags for {{row.username}}">
+                <mat-icon>local_offer</mat-icon>
               </button>
               <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
                       aria-label="Delete user {{row.username}}">
@@ -142,6 +146,10 @@
               <button mat-icon-button (click)="openUserInfo(row.username)"
                       aria-label="View details for {{row.username}}">
                 <mat-icon>remove_red_eye</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
+                      aria-label="User tags for {{row.username}}">
+                <mat-icon>local_offer</mat-icon>
               </button>
               <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
                       aria-label="Delete user {{row.username}}">

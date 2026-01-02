@@ -4,6 +4,16 @@
   padding: 0 16px;
 }
 
+.title-with-action {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-button {
+  transform: scale(0.8);
+}
+
 .tag-form {
   display: flex;
   flex-direction: column;
