@@ -190,4 +190,16 @@ export class AccountService {
   deletePaymentMethod(paymentMethod: PaymentMethod) {
     return this.http.post<PaymentMethod>(`${environment.apiUrl}/payment/delete/`, paymentMethod);
   }
+
+  createUser(user: Partial<User>) {
+    return this.http.post<User>(`${environment.apiUrl}/users/create`, user);
+  }
+
+  updateUser(username: string, user: Partial<User>) {
+    return this.http.put<User>(`${environment.apiUrl}/users/update/${username}`, user);
+  }
+
+  deleteUser(username: string) {
+    return this.http.delete<{success: boolean; message: string}>(`${environment.apiUrl}/users/delete/${username}`);
+  }
 }

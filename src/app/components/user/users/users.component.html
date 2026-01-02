@@ -3,7 +3,7 @@
 }
 
 <div class="users-container">
-  <!-- Filter input -->
+  <!-- Filter and Add button -->
   <div class="filter-container">
     <mat-form-field appearance="fill" class="filter-field">
       <mat-label>Filter</mat-label>
@@ -14,6 +14,10 @@
         </button>
       }
     </mat-form-field>
+    <button mat-raised-button color="primary" routerLink="/users/add" class="add-button">
+      <mat-icon>person_add</mat-icon>
+      Add User
+    </button>
   </div>
 
   <!-- Mobile Card Layout -->
@@ -63,6 +67,20 @@
                 <span class="user-detail-value">{{ row.payment_plan }}</span>
               </div>
             }
+            <div class="user-actions">
+              <button mat-icon-button [routerLink]="['/users/edit', row.username]"
+                      aria-label="Edit user {{row.username}}">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="openUserInfo(row.username)"
+                      aria-label="View details for {{row.username}}">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
+                      aria-label="Delete user {{row.username}}">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
         </mat-expansion-panel>
       } @empty {
@@ -124,6 +142,10 @@
               <button mat-icon-button (click)="openUserInfo(row.username)"
                       aria-label="View details for {{row.username}}">
                 <mat-icon>remove_red_eye</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
+                      aria-label="Delete user {{row.username}}">
+                <mat-icon>delete</mat-icon>
               </button>
             </td>
           </ng-container>

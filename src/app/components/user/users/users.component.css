@@ -8,11 +8,20 @@
 
 /* Filter Input */
 .filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
 }
 
 .filter-field {
-  width: 100%;
+  flex: 1;
+  min-width: 200px;
+}
+
+.add-button {
+  white-space: nowrap;
 }
 
 @media (min-width: 600px) {
@@ -21,7 +30,7 @@
   }
 
   .filter-field {
-    width: auto;
+    flex: 0 0 auto;
     min-width: 300px;
   }
 }
@@ -104,6 +113,15 @@ td:last-child, th:last-child {
   font-size: 13px;
   color: #212121;
   font-weight: 500;
+}
+
+.user-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
 }
 
 .no-data {

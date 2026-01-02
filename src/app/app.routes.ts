@@ -24,6 +24,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'users/add',
+    loadComponent: () => import('./components/user/user-edit/user-edit.component').then(m => m.UserEditComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'users/info/:username',
     loadComponent: () => import('./components/user/user-info/user-info.component').then(m => m.UserInfoComponent),
     canActivate: [authGuard]
