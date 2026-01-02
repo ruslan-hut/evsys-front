@@ -1,10 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ErrorService } from './error.service';
 import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Transaction } from '../models/transaction';
+import { TransactionListItem } from '../models/transaction-list-item';
+import { TransactionFilter } from '../models/transaction-filter';
 import { WebsocketService } from './websocket.service';
 import { WsMessage } from '../models/ws-message';
 import { AccountService } from './account.service';
@@ -103,6 +105,56 @@ export class TransactionService implements OnDestroy {
       .pipe(
         catchError(this.errorHandler.bind(this))
       );
+  }
+
+  /**
+   * Get list of transactions with optional filters
+   */
+  getTransactionsList(filter: TransactionFilter): Observable<TransactionListItem[]> {
+    let params = new HttpParams();
+
+    if (filter.from) {
+      params = params.set('from', this.formatDate(filter.from));
+    }
+    if (filter.to) {
+      params = params.set('to', this.formatDateTimeEndOfDay(filter.to));
+    }
+    if (filter.username) {
+      params = params.set('username', filter.username);
+    }
+    if (filter.id_tag) {
+      params = params.set('id_tag', filter.id_tag);
+    }
+    if (filter.charge_point_id) {
+      params = params.set('charge_point_id', filter.charge_point_id);
+    }
+
+    return this.http.get<TransactionListItem[]>(
+      environment.apiUrl + environment.transactionsList,
+      { params }
+    ).pipe(
+      catchError(this.errorHandler.bind(this))
+    );
+  }
+
+  /**
+   * Get single transaction details by ID
+   */
+  getTransactionDetails(transactionId: number): Observable<TransactionListItem> {
+    return this.http.get<TransactionListItem>(
+      environment.apiUrl + environment.transactionInfo + transactionId
+    ).pipe(
+      catchError(this.errorHandler.bind(this))
+    );
+  }
+
+  private formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('en-CA').format(date);
+  }
+
+  private formatDateTimeEndOfDay(date: Date): string {
+    const formattedDate = this.formatDate(date);
+    return `${formattedDate}T23:59:59`;
   }
 
   getTransactions(): Observable<Transaction[]> {

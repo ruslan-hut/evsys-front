@@ -54,6 +54,16 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'transactions',
+    loadComponent: () => import('./components/transactions/transactions-list/transactions-list.component').then(m => m.TransactionsListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'transactions/:id',
+    loadComponent: () => import('./components/transactions/transaction-detail/transaction-detail.component').then(m => m.TransactionDetailComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'points',
     loadComponent: () => import('./components/chargepoint-list/chargepoint-list.component').then(m => m.ChargepointListComponent)
   },

@@ -80,6 +80,10 @@
                       aria-label="User tags for {{row.username}}">
                 <mat-icon>local_offer</mat-icon>
               </button>
+              <button mat-icon-button [routerLink]="['/transactions']" [queryParams]="{username: row.username}"
+                      aria-label="Transactions for {{row.username}}">
+                <mat-icon>receipt_long</mat-icon>
+              </button>
               <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
                       aria-label="Delete user {{row.username}}">
                 <mat-icon>delete</mat-icon>
@@ -150,6 +154,10 @@
               <button mat-icon-button [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
                       aria-label="User tags for {{row.username}}">
                 <mat-icon>local_offer</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="['/transactions']" [queryParams]="{username: row.username}"
+                      aria-label="Transactions for {{row.username}}">
+                <mat-icon>receipt_long</mat-icon>
               </button>
               <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
                       aria-label="Delete user {{row.username}}">

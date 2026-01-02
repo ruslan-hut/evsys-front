@@ -1,0 +1,175 @@
+@if (loading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+<div class="transaction-detail-container">
+  <div class="header-actions">
+    <button mat-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+
+  @if (transaction) {
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>
+          Transaction #{{ transaction.transaction_id }}
+          @if (transaction.is_finished) {
+            <span class="status-badge finished">Finished</span>
+          } @else {
+            <span class="status-badge active">Active</span>
+          }
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h3>Charge Point</h3>
+            <div class="detail-row">
+              <span class="detail-label">ID:</span>
+              <span class="detail-value">{{ transaction.charge_point_id }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Connector:</span>
+              <span class="detail-value">{{ transaction.connector_id }}</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>Authentication</h3>
+            <div class="detail-row">
+              <span class="detail-label">ID Tag:</span>
+              <span class="detail-value">{{ transaction.id_tag }}</span>
+            </div>
+            @if (transaction.user_tag?.username) {
+              <div class="detail-row">
+                <span class="detail-label">Username:</span>
+                <span class="detail-value">{{ transaction.user_tag?.username }}</span>
+              </div>
+            }
+            @if (transaction.reservation_id) {
+              <div class="detail-row">
+                <span class="detail-label">Reservation:</span>
+                <span class="detail-value">{{ transaction.reservation_id }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="detail-section">
+            <h3>Time</h3>
+            <div class="detail-row">
+              <span class="detail-label">Started:</span>
+              <span class="detail-value">{{ transaction.time_start | date:'medium' }}</span>
+            </div>
+            @if (transaction.time_stop) {
+              <div class="detail-row">
+                <span class="detail-label">Stopped:</span>
+                <span class="detail-value">{{ transaction.time_stop | date:'medium' }}</span>
+              </div>
+            }
+            <div class="detail-row">
+              <span class="detail-label">Duration:</span>
+              <span class="detail-value">{{ getDuration() }}</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>Energy</h3>
+            <div class="detail-row">
+              <span class="detail-label">Meter Start:</span>
+              <span class="detail-value">{{ transaction.meter_start / 1000 | number:'1.2-2' }} kWh</span>
+            </div>
+            @if (transaction.meter_stop) {
+              <div class="detail-row">
+                <span class="detail-label">Meter Stop:</span>
+                <span class="detail-value">{{ transaction.meter_stop / 1000 | number:'1.2-2' }} kWh</span>
+              </div>
+            }
+            <div class="detail-row">
+              <span class="detail-label">Consumed:</span>
+              <span class="detail-value consumed">{{ getConsumed() / 1000 | number:'1.2-2' }} kWh</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>Payment</h3>
+            <div class="detail-row">
+              <span class="detail-label">Amount:</span>
+              <span class="detail-value">{{ formatAmount(transaction.payment_amount) }} EUR</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Billed:</span>
+              <span class="detail-value">{{ formatAmount(transaction.payment_billed) }} EUR</span>
+            </div>
+            @if (transaction.payment_order) {
+              <div class="detail-row">
+                <span class="detail-label">Order:</span>
+                <span class="detail-value">{{ transaction.payment_order }}</span>
+              </div>
+            }
+            @if (transaction.payment_error) {
+              <div class="detail-row error">
+                <span class="detail-label">Error:</span>
+                <span class="detail-value">{{ transaction.payment_error }}</span>
+              </div>
+            }
+          </div>
+
+          @if (transaction.plan) {
+            <div class="detail-section">
+              <h3>Payment Plan</h3>
+              <div class="detail-row">
+                <span class="detail-label">Plan ID:</span>
+                <span class="detail-value">{{ transaction.plan.plan_id }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Price/kWh:</span>
+                <span class="detail-value">{{ transaction.plan.price_per_kwh / 100 | number:'1.2-2' }} EUR</span>
+              </div>
+              @if (transaction.plan.price_per_hour) {
+                <div class="detail-row">
+                  <span class="detail-label">Price/hour:</span>
+                  <span class="detail-value">{{ transaction.plan.price_per_hour / 100 | number:'1.2-2' }} EUR</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        @if (getMeterValues().length > 0) {
+          <mat-divider class="section-divider"></mat-divider>
+
+          <h3>Meter Values</h3>
+          <div class="table-responsive">
+            <table mat-table [dataSource]="getMeterValues()">
+              <ng-container matColumnDef="timestamp">
+                <th mat-header-cell *matHeaderCellDef>Time</th>
+                <td mat-cell *matCellDef="let row">{{ row.timestamp | date:'medium' }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let row">{{ row.value / 1000 | number:'1.2-2' }} kWh</td>
+              </ng-container>
+
+              <ng-container matColumnDef="power_rate">
+                <th mat-header-cell *matHeaderCellDef>Power</th>
+                <td mat-cell *matCellDef="let row">{{ row.power_rate / 1000 | number:'1.1-1' }} kW</td>
+              </ng-container>
+
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <td mat-cell *matCellDef="let row">{{ row.price / 100 | number:'1.2-2' }} EUR</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="meterValueColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: meterValueColumns"></tr>
+            </table>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

@@ -9,6 +9,7 @@ export const environment = {
   chargePointList: '/chp',
   chargePoint: '/point/',
   transactionInfo: '/transactions/info/',
+  transactionsList: '/transactions/list',
   wsUrl: 'wss://wattbrews.me/ws',
   sendCommand: '/csc',
   report: '/report',

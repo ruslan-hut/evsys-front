@@ -66,6 +66,10 @@
                       aria-label="Edit tag {{row.id_tag}}">
                 <mat-icon>edit</mat-icon>
               </button>
+              <button mat-icon-button [routerLink]="['/transactions']" [queryParams]="{id_tag: row.id_tag}"
+                      aria-label="Transactions for {{row.id_tag}}">
+                <mat-icon>receipt_long</mat-icon>
+              </button>
               <button mat-icon-button color="warn" (click)="deleteTag(row.id_tag)"
                       aria-label="Delete tag {{row.id_tag}}">
                 <mat-icon>delete</mat-icon>
@@ -120,6 +124,10 @@
               <button mat-icon-button [routerLink]="['/user-tags/edit', row.id_tag]"
                       aria-label="Edit tag {{row.id_tag}}">
                 <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="['/transactions']" [queryParams]="{id_tag: row.id_tag}"
+                      aria-label="Transactions for {{row.id_tag}}">
+                <mat-icon>receipt_long</mat-icon>
               </button>
               <button mat-icon-button color="warn" (click)="deleteTag(row.id_tag)"
                       aria-label="Delete tag {{row.id_tag}}">
