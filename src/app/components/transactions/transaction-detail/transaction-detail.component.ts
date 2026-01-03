@@ -193,4 +193,18 @@ export class TransactionDetailComponent implements OnInit {
   getPaymentOrders(): PaymentOrder[] {
     return this.transaction?.payment_orders || [];
   }
+
+  getAveragePower(): number | null {
+    const meterValues = this.transaction?.meter_values;
+    if (!meterValues?.length) return null;
+
+    const powerValues = meterValues
+      .map(mv => mv.power_rate)
+      .filter(p => p !== undefined && p > 0);
+
+    if (!powerValues.length) return null;
+
+    const sum = powerValues.reduce((acc, val) => acc + val, 0);
+    return sum / powerValues.length;
+  }
 }

@@ -83,6 +83,7 @@ export interface TransactionListItem {
   payment_order?: number;
   payment_error?: string;
   plan?: PaymentPlan;
+  payment_plan?: PaymentPlan;
   tariff?: Tariff;
   meter_values?: TransactionMeterValue[];
   payment_method?: PaymentMethod;

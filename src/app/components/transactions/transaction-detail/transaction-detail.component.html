@@ -120,10 +120,22 @@
               <span class="detail-label">Consumed:</span>
               <span class="detail-value consumed">{{ getConsumed() / 1000 | number:'1.2-2' }} kWh</span>
             </div>
+            @if (getAveragePower(); as avgPower) {
+              <div class="detail-row">
+                <span class="detail-label">Avg Power:</span>
+                <span class="detail-value">{{ avgPower / 1000 | number:'1.2-2' }} kW</span>
+              </div>
+            }
           </div>
 
           <div class="detail-section">
             <h3>Payment</h3>
+            @if (transaction.payment_orders?.[0]?.time_closed) {
+              <div class="detail-row">
+                <span class="detail-label">Paid:</span>
+                <span class="detail-value">{{ transaction.payment_orders![0].time_closed | date:'medium' }}</span>
+              </div>
+            }
             <div class="detail-row">
               <span class="detail-label">Billed:</span>
               <span class="detail-value">{{ formatAmount(transaction.payment_billed || 0) }} EUR</span>
@@ -142,27 +154,27 @@
             }
           </div>
 
-          @if (transaction.plan) {
+          @if (transaction.payment_plan || transaction.plan; as paymentPlan) {
             <div class="detail-section">
               <h3>Payment Plan</h3>
               <div class="detail-row">
                 <span class="detail-label">Plan ID:</span>
-                <span class="detail-value">{{ transaction.plan.plan_id }}</span>
+                <span class="detail-value">{{ paymentPlan.plan_id }}</span>
               </div>
-              @if (transaction.plan.description) {
+              @if (paymentPlan.description) {
                 <div class="detail-row">
                   <span class="detail-label">Description:</span>
-                  <span class="detail-value">{{ transaction.plan.description }}</span>
+                  <span class="detail-value">{{ paymentPlan.description }}</span>
                 </div>
               }
               <div class="detail-row">
                 <span class="detail-label">Price/kWh:</span>
-                <span class="detail-value">{{ transaction.plan.price_per_kwh / 100 | number:'1.2-2' }} EUR</span>
+                <span class="detail-value">{{ paymentPlan.price_per_kwh / 100 | number:'1.2-2' }} EUR</span>
               </div>
-              @if (transaction.plan.price_per_hour) {
+              @if (paymentPlan.price_per_hour) {
                 <div class="detail-row">
                   <span class="detail-label">Price/hour:</span>
-                  <span class="detail-value">{{ transaction.plan.price_per_hour / 100 | number:'1.2-2' }} EUR</span>
+                  <span class="detail-value">{{ paymentPlan.price_per_hour / 100 | number:'1.2-2' }} EUR</span>
                 </div>
               }
             </div>

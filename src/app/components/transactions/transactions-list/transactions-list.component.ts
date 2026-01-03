@@ -76,7 +76,7 @@ export class TransactionsListComponent implements OnInit {
   displayedColumns: string[] = [
     'transaction_id', 'id_tag', 'charge_point_id', 'connector_id',
     'time_start', 'time_stop', 'consumed',
-    'payment_amount', 'payment_billed', 'actions'
+    'payment_amount', 'actions'
   ];
 
   loading = false;
@@ -139,10 +139,13 @@ export class TransactionsListComponent implements OnInit {
       this.chargePointFilter = params.get('charge_point_id')!;
     }
 
-    // Set default date range to last 12 months
-    const last12Months = this.getLast12Months();
-    this.startDate = last12Months.start;
-    this.endDate = last12Months.end;
+    // Set default date range based on filters
+    // If username or id_tag filter is set, use last 12 months; otherwise use last 30 days
+    const defaultRange = (this.usernameFilter || this.idTagFilter)
+      ? this.getLast12Months()
+      : this.getLast30Days();
+    this.startDate = defaultRange.start;
+    this.endDate = defaultRange.end;
 
     // Load initial data
     this.loadTransactions();
@@ -211,11 +214,18 @@ export class TransactionsListComponent implements OnInit {
     return {start, end};
   }
 
+  private getLast30Days(): {start: Date; end: Date} {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - 30);
+    return {start, end};
+  }
+
   clearFilters(): void {
     this.usernameFilter = '';
     this.idTagFilter = '';
     this.chargePointFilter = '';
-    this.setRange(this.getLast12Months());
+    this.setRange(this.getLast30Days());
     this.loadTransactions();
   }
 
