@@ -2,7 +2,7 @@
   <mat-expansion-panel [expanded]="isDialog()">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <div class="online-icon" [style.background-color]="getConnectorColor(connector)">
+        <div class="online-icon" [ngClass]="getConnectorStatusClass(connector)">
         </div>
         {{connector.connector_id}}
       </mat-panel-title>

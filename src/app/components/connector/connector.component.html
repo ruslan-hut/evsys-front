@@ -1,7 +1,7 @@
 <mat-card-content class="connector-content">
   <button mat-flat-button
-          [ngStyle]="{ 'border-color': getConnectorColor(), 'border-width': '2px', 'background-color': getConnectorBackgroundColor() }"
           class="custom-button fix-width"
+          [ngClass]="getConnectorStatusClass()"
           (click)="openInfo()"
           [disabled]="isDisabled()"
           [attr.aria-label]="'Connector ' + getConnectorName() + ', ' + connector.type + ', ' + connector.power + ' kW, status: ' + connector.status">
@@ -18,7 +18,7 @@
           <img src="assets/icons/bolt.svg" alt="" class="icon"/>
           <span class="info-text">{{ this.connector.power }} kW</span>
         </div>
-        <div class="info-item status-item" [ngStyle]="{ 'color': getConnectorColor() }">
+        <div class="info-item status-item" [ngStyle]="{ 'color': getConnectorStatusColor() }">
           {{ this.connector.status | titlecase }}
         </div>
       </div>

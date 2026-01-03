@@ -30,12 +30,16 @@ tr{
   padding: 3px;
 }
 
-.equal-height-input{
+.equal-height-input {
   min-height: 30px;
   line-height: 21px;
   font-family: sans-serif;
   font-size: 14px;
   padding: 3px;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
 }
 
 .readonly-input {
@@ -220,6 +224,8 @@ button {
     border: 1px solid var(--color-border);
     border-radius: 4px;
     box-sizing: border-box;
+    color: var(--color-text-primary);
+    background-color: var(--color-surface);
   }
 
   .config-actions button {

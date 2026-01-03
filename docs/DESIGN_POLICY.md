@@ -87,6 +87,44 @@ This document defines the design principles, patterns, and standards for the Wat
 
 ---
 
+## Dark Theme
+
+The application supports three theme modes:
+- **Auto** (default): Inherits from the operating system's color scheme preference
+- **Light**: Forces light theme
+- **Dark**: Forces dark theme
+
+### Theme Implementation
+
+Theme preference is managed by `ThemeService` and persisted in `localStorage` under the key `theme-preference`.
+
+### Dark Theme Color Palette
+
+| Purpose | CSS Variable | Dark Value | Notes |
+|---------|--------------|------------|-------|
+| Primary | `--color-primary` | `#7986cb` | Lighter indigo for dark backgrounds |
+| Accent | `--color-accent` | `#64b5f6` | Lighter blue |
+| Text Primary | `--color-text-primary` | `#e0e0e0` | High contrast white-ish |
+| Text Secondary | `--color-text-secondary` | `#b0b0b0` | Medium gray |
+| Text Muted | `--color-text-muted` | `#909090` | Low emphasis |
+| Background | `--color-background` | `#121212` | Material dark surface |
+| Background Light | `--color-background-light` | `#1e1e1e` | Elevated surface |
+| Surface | `--color-surface` | `#1e1e1e` | Card/panel background |
+| Border | `--color-border` | `#424242` | Dividers |
+
+### Theme Toggle Location
+
+Users can change their theme preference in **User Profile > Appearance**.
+
+### Developer Notes
+
+1. Always use CSS custom properties - they automatically adapt to dark theme
+2. The `.dark-theme` class is applied to `<html>` element
+3. Flash of incorrect theme is prevented via inline script in `index.html`
+4. To test dark theme, use browser DevTools to toggle `prefers-color-scheme` or set theme manually
+
+---
+
 ## Typography
 
 ### Font Family

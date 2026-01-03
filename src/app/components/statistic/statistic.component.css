@@ -64,15 +64,15 @@ table {
 
 .footer-cell {
   font-weight: bold;
-  color: #333;
-  border-top: 2px solid #ccc;
+  color: var(--color-text-primary);
+  border-top: 2px solid var(--color-border);
   padding: var(--spacing-sm);
   text-align: center;
 }
 
 .header-cell {
   font-weight: bold;
-  color: #333;
+  color: var(--color-text-primary);
   padding: var(--spacing-sm);
   text-align: center;
 }

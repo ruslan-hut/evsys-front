@@ -4,14 +4,14 @@ import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import { MatCardContent } from "@angular/material/card";
 import { MatButton } from "@angular/material/button";
-import { NgStyle, TitleCasePipe } from "@angular/common";
+import { NgClass, NgStyle, TitleCasePipe } from "@angular/common";
 
 @Component({
     selector: 'app-connector',
     templateUrl: './connector.component.html',
     styleUrls: ['./connector.component.css'],
     standalone: true,
-    imports: [MatCardContent, MatButton, NgStyle, TitleCasePipe]
+    imports: [MatCardContent, MatButton, NgClass, NgStyle, TitleCasePipe]
 })
 export class ConnectorComponent {
   @Input() connector: Connector
@@ -22,27 +22,27 @@ export class ConnectorComponent {
   ) {
   }
 
-  getConnectorColor() {
+  getConnectorStatusClass(): string {
     if (this.connector.state === "available") {
-      return "limegreen";
+      return "connector-available";
     } else if (this.connector.state === "occupied") {
-      return "orange";
-    } else if (this.connector.current_transaction_id>-1){
-      return "indigo";
+      return "connector-occupied";
+    } else if (this.connector.current_transaction_id > -1) {
+      return "connector-charging";
     } else {
-      return "red";
+      return "connector-error";
     }
   }
 
-  getConnectorBackgroundColor() {
+  getConnectorStatusColor(): string {
     if (this.connector.state === "available") {
-      return "#e8f5e9"; // light green
+      return "var(--color-connector-available)";
     } else if (this.connector.state === "occupied") {
-      return "#fff3e0"; // light orange
+      return "var(--color-connector-occupied)";
     } else if (this.connector.current_transaction_id > -1) {
-      return "#e8eaf6"; // light indigo
+      return "var(--color-connector-charging)";
     } else {
-      return "#ffebee"; // light red
+      return "var(--color-connector-error)";
     }
   }
 

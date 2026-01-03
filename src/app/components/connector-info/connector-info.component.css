@@ -3,15 +3,26 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
-th,td {
-  padding: 2px 20px 2px 2px;
+
+th, td {
+  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--spacing-xs);
+  color: var(--color-text-primary);
 }
+
+td:first-child {
+  color: var(--color-text-secondary);
+}
+
 td {
   max-width: 20%;
 }
 
+.like-input {
+  color: var(--color-text-primary);
+}
+
 .online-icon {
-  margin-right: 6px;
+  margin-right: var(--spacing-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,8 +31,20 @@ td {
   border-radius: 50%;
 }
 
-.connector-buttons{
-  justify-content: flex-start;
+/* Connector status colors */
+.status-available {
+  background-color: var(--color-connector-available);
 }
 
+.status-occupied {
+  background-color: var(--color-connector-occupied);
+}
+
+.status-error {
+  background-color: var(--color-connector-error);
+}
+
+.connector-buttons {
+  justify-content: flex-start;
+}
 

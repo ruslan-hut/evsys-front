@@ -7,6 +7,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { OfflineBannerComponent } from './components/offline-banner/offline-banner.component';
 import { AccountService } from './service/account.service';
 import { PwaUpdateService } from './service/pwa-update.service';
+import { ThemeService } from './service/theme.service';
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -33,7 +34,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private accountService: AccountService,
-    private pwaUpdateService: PwaUpdateService // Inject to initialize update checks
+    private pwaUpdateService: PwaUpdateService, // Inject to initialize update checks
+    private themeService: ThemeService // Inject to initialize theme
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),

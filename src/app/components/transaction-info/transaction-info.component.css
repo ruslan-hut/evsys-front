@@ -1,26 +1,38 @@
-
 mat-card-title {
   display: flex;
   align-items: center;
 }
+
 table {
   table-layout: auto;
   border-collapse: collapse;
   width: 100%;
 }
-th,td {
-  padding: 2px 2px 2px 2px;
+
+th, td {
+  padding: var(--spacing-xs);
+  color: var(--color-text-primary);
 }
+
 td {
   max-width: 20%;
+}
+
+td:first-child {
+  color: var(--color-text-secondary);
+}
+
+td:last-child {
+  font-weight: 500;
 }
 
 .flex-spacer {
   flex: 1;
 }
 
-.status{
+.status {
   font-size: 20px;
-  padding: 0 0 5px 0;
+  font-weight: 600;
+  padding: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text-primary);
 }
-

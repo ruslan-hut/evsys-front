@@ -28,3 +28,17 @@ mat-card-header {
 .profile-actions button mat-icon {
   margin-right: var(--spacing-xs);
 }
+
+/* Appearance card */
+.appearance-card {
+  cursor: default;
+}
+
+.theme-selector {
+  width: 100%;
+}
+
+.theme-option-icon {
+  margin-right: var(--spacing-sm);
+  vertical-align: middle;
+}

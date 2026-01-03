@@ -15,7 +15,7 @@ mat-card {
   grid-template-columns: 140px 1fr;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs) 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .info-item:last-child {
@@ -24,7 +24,7 @@ mat-card {
 
 .info-item dt {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--color-text-secondary);
 }
 
 .info-item dd {

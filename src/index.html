@@ -14,6 +14,13 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="theme-color" content="#3F51B5">
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme-preference') || 'auto';
+      var d = t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (d) document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
 </head>
 
 <body class="mat-typography">

@@ -15,13 +15,14 @@ import { ChargepointService } from '../../service/chargepoint.service';
 import { Router } from '@angular/router';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from '@angular/material/expansion';
 import { MatButton } from '@angular/material/button';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-connector-info',
   templateUrl: './connector-info.component.html',
   styleUrls: ['./connector-info.component.css'],
   standalone: true,
-  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton]
+  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, NgClass]
 })
 export class ConnectorInfoComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -250,13 +251,13 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  getConnectorColor(connector: Connector): string {
+  getConnectorStatusClass(connector: Connector): string {
     if (connector.state === 'available') {
-      return 'limegreen';
+      return 'status-available';
     } else if (connector.state === 'occupied') {
-      return 'orange';
+      return 'status-occupied';
     } else {
-      return 'red';
+      return 'status-error';
     }
   }
 }

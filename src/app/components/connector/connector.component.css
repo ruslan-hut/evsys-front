@@ -26,19 +26,40 @@
 .custom-button {
   display: flex;
   align-items: center;
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 8px;
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: inherit;
   font-size: 14px;
-  color: black;
-  background-color: white;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
   width: 100%;
   max-width: 250px;
   min-height: var(--touch-target-min);
   height: fit-content;
   z-index: 0;
   box-sizing: border-box;
+}
+
+/* Connector status styles */
+.connector-available {
+  border-color: var(--color-connector-available);
+  background-color: var(--color-connector-available-bg);
+}
+
+.connector-occupied {
+  border-color: var(--color-connector-occupied);
+  background-color: var(--color-connector-occupied-bg);
+}
+
+.connector-charging {
+  border-color: var(--color-connector-charging);
+  background-color: var(--color-connector-charging-bg);
+}
+
+.connector-error {
+  border-color: var(--color-connector-error);
+  background-color: var(--color-connector-error-bg);
 }
 
 .button-content {
