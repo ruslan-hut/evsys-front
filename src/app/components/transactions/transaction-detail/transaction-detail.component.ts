@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DecimalPipe, DatePipe, Location} from '@angular/common';
+import {DecimalPipe, DatePipe, TitleCasePipe, Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatCard, MatCardHeader, MatCardTitle, MatCardContent} from '@angular/material/card';
@@ -7,11 +7,23 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatDivider} from '@angular/material/divider';
+import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material/expansion';
 import {MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow} from '@angular/material/table';
+import {NgxChartsModule, Color, ScaleType} from '@swimlane/ngx-charts';
 
 import {TransactionService} from '../../../service/transaction.service';
 import {ErrorService} from '../../../service/error.service';
-import {TransactionListItem, TransactionMeterValue, calculateConsumed} from '../../../models/transaction-list-item';
+import {TransactionListItem, TransactionMeterValue, PaymentOrder, calculateConsumed} from '../../../models/transaction-list-item';
+
+interface ChartDataPoint {
+  name: string;
+  value: number;
+}
+
+interface ChartSeries {
+  name: string;
+  series: ChartDataPoint[];
+}
 
 @Component({
   selector: 'app-transaction-detail',
@@ -21,6 +33,7 @@ import {TransactionListItem, TransactionMeterValue, calculateConsumed} from '../
   imports: [
     DecimalPipe,
     DatePipe,
+    TitleCasePipe,
     MatCard,
     MatCardHeader,
     MatCardTitle,
@@ -29,6 +42,9 @@ import {TransactionListItem, TransactionMeterValue, calculateConsumed} from '../
     MatIcon,
     MatProgressBar,
     MatDivider,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -38,14 +54,23 @@ import {TransactionListItem, TransactionMeterValue, calculateConsumed} from '../
     MatHeaderRowDef,
     MatHeaderRow,
     MatRowDef,
-    MatRow
+    MatRow,
+    NgxChartsModule
   ]
 })
 export class TransactionDetailComponent implements OnInit {
   transaction: TransactionListItem | null = null;
   loading = false;
 
-  meterValueColumns: string[] = ['timestamp', 'value', 'power_rate', 'price'];
+  paymentOrderColumns: string[] = ['order', 'amount', 'result', 'time_opened', 'time_closed'];
+
+  chartData: ChartSeries[] = [];
+  colorScheme: Color = {
+    name: 'custom',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#3f51b5', '#4caf50']
+  };
 
   constructor(
     private transactionService: TransactionService,
@@ -67,6 +92,7 @@ export class TransactionDetailComponent implements OnInit {
     this.transactionService.getTransactionDetails(transactionId).subscribe({
       next: (transaction) => {
         this.transaction = transaction;
+        this.prepareChartData();
         this.loading = false;
       },
       error: () => {
@@ -75,6 +101,50 @@ export class TransactionDetailComponent implements OnInit {
       }
     });
   }
+
+  prepareChartData(): void {
+    if (!this.transaction?.meter_values?.length) {
+      this.chartData = [];
+      return;
+    }
+
+    const energySeries: ChartDataPoint[] = this.transaction.meter_values.map((mv, index) => ({
+      name: this.formatChartTime(mv.time || mv.timestamp, index),
+      value: (mv.consumed_energy || mv.value) / 1000
+    }));
+
+    const powerSeries: ChartDataPoint[] = this.transaction.meter_values.map((mv, index) => ({
+      name: this.formatChartTime(mv.time || mv.timestamp, index),
+      value: mv.power_rate / 1000
+    }));
+
+    this.chartData = [
+      {name: 'Energy (kWh)', series: energySeries},
+      {name: 'Power (kW)', series: powerSeries}
+    ];
+  }
+
+  formatChartTime(timestamp: string | undefined, index: number): string {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    // Use index to create unique names for all points
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}#${index}`;
+  }
+
+  xAxisTickFormatting = (value: string): string => {
+    // Extract time part before the index marker
+    const timePart = value.split('#')[0];
+    if (!timePart) return '';
+
+    const [hours, minutes] = timePart.split(':').map(Number);
+    // Only show label if minutes are at 15-min intervals (0, 15, 30, 45)
+    if (minutes % 15 === 0) {
+      return timePart;
+    }
+    return '';
+  };
 
   getConsumed(): number {
     if (!this.transaction) return 0;
@@ -90,9 +160,21 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   getDuration(): string {
-    if (!this.transaction || !this.transaction.time_start) return '-';
+    if (!this.transaction) return '-';
 
-    const start = new Date(this.transaction.time_start);
+    // If duration is provided directly by API, use it (in seconds)
+    if (this.transaction.duration !== undefined) {
+      const totalMinutes = Math.floor(this.transaction.duration / 60);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+
+    // Otherwise calculate from timestamps
+    const startTime = this.transaction.time_start || this.transaction.time_started;
+    if (!startTime) return '-';
+
+    const start = new Date(startTime);
     const end = this.transaction.time_stop
       ? new Date(this.transaction.time_stop)
       : new Date();
@@ -106,5 +188,9 @@ export class TransactionDetailComponent implements OnInit {
 
   getMeterValues(): TransactionMeterValue[] {
     return this.transaction?.meter_values || [];
+  }
+
+  getPaymentOrders(): PaymentOrder[] {
+    return this.transaction?.payment_orders || [];
   }
 }

@@ -78,14 +78,56 @@ mat-card-title {
   color: var(--color-accent);
 }
 
+.detail-value.session-id {
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.detail-value.card-info {
+  text-transform: capitalize;
+}
+
 .detail-row.error .detail-value {
   color: var(--color-error);
 }
 
 .section-divider {
-  margin: var(--spacing-lg) 0;
+  margin: var(--spacing-xl) 0;
 }
 
+/* Chart container */
+h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chart-container {
+  width: 100%;
+  height: 280px;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+ngx-charts-line-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep .ngx-charts {
+  width: 100% !important;
+}
+
+::ng-deep .ngx-charts svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Payment orders table */
 .table-responsive {
   overflow-x: auto;
   margin-top: var(--spacing-md);
@@ -95,15 +137,130 @@ table {
   width: 100%;
 }
 
+.order-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.order-status.completed {
+  background-color: var(--color-status-finished-bg);
+  color: var(--color-status-finished-text);
+}
+
+.order-status.pending {
+  background-color: var(--color-status-active-bg);
+  color: var(--color-status-active-text);
+}
+
+.refund-amount {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+/* Expansion panel styling */
+mat-expansion-panel {
+  margin-top: var(--spacing-md);
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
+  .transaction-detail-container {
+    padding: var(--spacing-xs);
+  }
+
+  .header-actions {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .detail-card {
+    margin-bottom: var(--spacing-sm);
+  }
+
   .detail-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+  }
+
+  .detail-section {
+    min-width: 0;
+  }
+
+  .detail-section h3 {
+    font-size: 11px;
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+
+  .detail-row {
+    padding: 3px 0;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .detail-label {
+    min-width: unset;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+  }
+
+  .detail-value {
+    font-size: 13px;
+  }
+
+  .detail-value.session-id {
+    font-size: 10px;
+    word-break: break-all;
   }
 
   mat-card-title {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
+    font-size: 16px !important;
+  }
+
+  .section-divider {
+    margin: var(--spacing-sm) 0;
+  }
+
+  .chart-container {
+    height: 200px;
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  h3 {
+    font-size: 11px;
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+
+  mat-expansion-panel {
+    margin-top: var(--spacing-sm);
+  }
+
+  .table-responsive {
+    margin-top: var(--spacing-xs);
+  }
+
+  /* Compact table on mobile */
+  ::ng-deep .mat-mdc-cell,
+  ::ng-deep .mat-mdc-header-cell {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+
+  /* Reduce card padding on mobile */
+  ::ng-deep .mat-mdc-card-header {
+    padding: 12px 12px 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-card-content {
+    padding: 8px 12px 12px !important;
+  }
+
+  /* Hide border on last row in mobile */
+  .detail-row {
+    border-bottom: none;
   }
 }

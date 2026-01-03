@@ -1,10 +1,10 @@
 @if (loading) {
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
 }
 
 <div class="transaction-detail-container">
   <div class="header-actions">
-    <button mat-button (click)="goBack()">
+    <button mat-button (click)="goBack()" aria-label="Go back">
       <mat-icon>arrow_back</mat-icon>
       Back
     </button>
@@ -15,11 +15,6 @@
       <mat-card-header>
         <mat-card-title>
           Transaction #{{ transaction.transaction_id }}
-          @if (transaction.is_finished) {
-            <span class="status-badge finished">Finished</span>
-          } @else {
-            <span class="status-badge active">Active</span>
-          }
         </mat-card-title>
       </mat-card-header>
 
@@ -35,18 +30,48 @@
               <span class="detail-label">Connector:</span>
               <span class="detail-value">{{ transaction.connector_id }}</span>
             </div>
+            @if (transaction.evse_id) {
+              <div class="detail-row">
+                <span class="detail-label">EVSE ID:</span>
+                <span class="detail-value">{{ transaction.evse_id }}</span>
+              </div>
+            }
           </div>
+
+          @if (transaction.session_id || transaction.protocol_version) {
+            <div class="detail-section">
+              <h3>Session</h3>
+              @if (transaction.session_id) {
+                <div class="detail-row">
+                  <span class="detail-label">Session ID:</span>
+                  <span class="detail-value session-id">{{ transaction.session_id }}</span>
+                </div>
+              }
+              @if (transaction.protocol_version) {
+                <div class="detail-row">
+                  <span class="detail-label">Protocol:</span>
+                  <span class="detail-value">{{ transaction.protocol_version }}</span>
+                </div>
+              }
+            </div>
+          }
 
           <div class="detail-section">
             <h3>Authentication</h3>
             <div class="detail-row">
               <span class="detail-label">ID Tag:</span>
-              <span class="detail-value">{{ transaction.id_tag }}</span>
+              <span class="detail-value">{{ transaction.id_tag || transaction.user_tag?.id_tag || '-' }}</span>
             </div>
-            @if (transaction.user_tag?.username) {
+            @if (transaction.username || transaction.user_tag?.username) {
               <div class="detail-row">
                 <span class="detail-label">Username:</span>
-                <span class="detail-value">{{ transaction.user_tag?.username }}</span>
+                <span class="detail-value">{{ transaction.username || transaction.user_tag?.username }}</span>
+              </div>
+            }
+            @if (transaction.id_tag_note) {
+              <div class="detail-row">
+                <span class="detail-label">Note:</span>
+                <span class="detail-value">{{ transaction.id_tag_note }}</span>
               </div>
             }
             @if (transaction.reservation_id) {
@@ -59,10 +84,12 @@
 
           <div class="detail-section">
             <h3>Time</h3>
-            <div class="detail-row">
-              <span class="detail-label">Started:</span>
-              <span class="detail-value">{{ transaction.time_start | date:'medium' }}</span>
-            </div>
+            @if (transaction.time_start || transaction.time_started) {
+              <div class="detail-row">
+                <span class="detail-label">Started:</span>
+                <span class="detail-value">{{ (transaction.time_start || transaction.time_started) | date:'medium' }}</span>
+              </div>
+            }
             @if (transaction.time_stop) {
               <div class="detail-row">
                 <span class="detail-label">Stopped:</span>
@@ -73,14 +100,16 @@
               <span class="detail-label">Duration:</span>
               <span class="detail-value">{{ getDuration() }}</span>
             </div>
+            @if (transaction.reason) {
+              <div class="detail-row">
+                <span class="detail-label">Reason:</span>
+                <span class="detail-value">{{ transaction.reason }}</span>
+              </div>
+            }
           </div>
 
           <div class="detail-section">
             <h3>Energy</h3>
-            <div class="detail-row">
-              <span class="detail-label">Meter Start:</span>
-              <span class="detail-value">{{ transaction.meter_start / 1000 | number:'1.2-2' }} kWh</span>
-            </div>
             @if (transaction.meter_stop) {
               <div class="detail-row">
                 <span class="detail-label">Meter Stop:</span>
@@ -96,12 +125,8 @@
           <div class="detail-section">
             <h3>Payment</h3>
             <div class="detail-row">
-              <span class="detail-label">Amount:</span>
-              <span class="detail-value">{{ formatAmount(transaction.payment_amount) }} EUR</span>
-            </div>
-            <div class="detail-row">
               <span class="detail-label">Billed:</span>
-              <span class="detail-value">{{ formatAmount(transaction.payment_billed) }} EUR</span>
+              <span class="detail-value">{{ formatAmount(transaction.payment_billed || 0) }} EUR</span>
             </div>
             @if (transaction.payment_order) {
               <div class="detail-row">
@@ -124,6 +149,12 @@
                 <span class="detail-label">Plan ID:</span>
                 <span class="detail-value">{{ transaction.plan.plan_id }}</span>
               </div>
+              @if (transaction.plan.description) {
+                <div class="detail-row">
+                  <span class="detail-label">Description:</span>
+                  <span class="detail-value">{{ transaction.plan.description }}</span>
+                </div>
+              }
               <div class="detail-row">
                 <span class="detail-label">Price/kWh:</span>
                 <span class="detail-value">{{ transaction.plan.price_per_kwh / 100 | number:'1.2-2' }} EUR</span>
@@ -136,38 +167,116 @@
               }
             </div>
           }
+
+          @if (transaction.tariff) {
+            <div class="detail-section">
+              <h3>Tariff</h3>
+              <div class="detail-row">
+                <span class="detail-label">Tariff ID:</span>
+                <span class="detail-value">{{ transaction.tariff.tariff_id }}</span>
+              </div>
+              @if (transaction.tariff.description) {
+                <div class="detail-row">
+                  <span class="detail-label">Description:</span>
+                  <span class="detail-value">{{ transaction.tariff.description }}</span>
+                </div>
+              }
+            </div>
+          }
+
+          @if (transaction.payment_method) {
+            <div class="detail-section">
+              <h3>Payment Method</h3>
+              @if (transaction.payment_method.card_brand) {
+                <div class="detail-row">
+                  <span class="detail-label">Card:</span>
+                  <span class="detail-value card-info">
+                    {{ transaction.payment_method.card_brand | titlecase }}
+                    @if (transaction.payment_method.description) {
+                      ({{ transaction.payment_method.description }})
+                    }
+                  </span>
+                </div>
+              }
+              @if (transaction.payment_method.expiry_date) {
+                <div class="detail-row">
+                  <span class="detail-label">Expires:</span>
+                  <span class="detail-value">{{ transaction.payment_method.expiry_date }}</span>
+                </div>
+              }
+            </div>
+          }
         </div>
 
-        @if (getMeterValues().length > 0) {
+        @if (chartData.length > 0) {
           <mat-divider class="section-divider"></mat-divider>
 
-          <h3>Meter Values</h3>
-          <div class="table-responsive">
-            <table mat-table [dataSource]="getMeterValues()">
-              <ng-container matColumnDef="timestamp">
-                <th mat-header-cell *matHeaderCellDef>Time</th>
-                <td mat-cell *matCellDef="let row">{{ row.timestamp | date:'medium' }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="value">
-                <th mat-header-cell *matHeaderCellDef>Value</th>
-                <td mat-cell *matCellDef="let row">{{ row.value / 1000 | number:'1.2-2' }} kWh</td>
-              </ng-container>
-
-              <ng-container matColumnDef="power_rate">
-                <th mat-header-cell *matHeaderCellDef>Power</th>
-                <td mat-cell *matCellDef="let row">{{ row.power_rate / 1000 | number:'1.1-1' }} kW</td>
-              </ng-container>
-
-              <ng-container matColumnDef="price">
-                <th mat-header-cell *matHeaderCellDef>Price</th>
-                <td mat-cell *matCellDef="let row">{{ row.price / 100 | number:'1.2-2' }} EUR</td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="meterValueColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: meterValueColumns"></tr>
-            </table>
+          <h3>Charging Progress</h3>
+          <div class="chart-container">
+            <ngx-charts-line-chart
+              [results]="chartData"
+              [scheme]="colorScheme"
+              [animations]="false"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="false"
+              xAxisLabel="Time"
+              [xAxisTickFormatting]="xAxisTickFormatting"
+              [autoScale]="true"
+              [legend]="false">
+            </ngx-charts-line-chart>
           </div>
+        }
+
+        @if (getPaymentOrders().length > 0) {
+          <mat-divider class="section-divider"></mat-divider>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Payment Orders ({{ getPaymentOrders().length }})
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="table-responsive">
+              <table mat-table [dataSource]="getPaymentOrders()">
+                <ng-container matColumnDef="order">
+                  <th mat-header-cell *matHeaderCellDef>Order</th>
+                  <td mat-cell *matCellDef="let row">#{{ row.order }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef>Amount</th>
+                  <td mat-cell *matCellDef="let row">
+                    @if (row.refund_amount > 0) {
+                      <span class="refund-amount">-{{ formatAmount(row.refund_amount) }}</span>
+                    } @else {
+                      {{ formatAmount(row.amount) }}
+                    }
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="result">
+                  <th mat-header-cell *matHeaderCellDef>Result</th>
+                  <td mat-cell *matCellDef="let row">{{ row.result || '-' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="time_opened">
+                  <th mat-header-cell *matHeaderCellDef>Opened</th>
+                  <td mat-cell *matCellDef="let row">{{ row.time_opened | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="time_closed">
+                  <th mat-header-cell *matHeaderCellDef>Closed</th>
+                  <td mat-cell *matCellDef="let row">{{ row.time_closed | date:'short' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="paymentOrderColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: paymentOrderColumns"></tr>
+              </table>
+            </div>
+          </mat-expansion-panel>
         }
       </mat-card-content>
     </mat-card>
