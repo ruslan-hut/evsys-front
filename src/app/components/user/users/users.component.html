@@ -9,7 +9,7 @@
       <mat-label>Filter</mat-label>
       <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
       @if (filter) {
-        <button matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')">
+        <button matSuffix mat-icon-button class="filter-clear-btn" aria-label="Clear" (click)="applyFilter('')">
           <mat-icon>close</mat-icon>
         </button>
       }
@@ -68,23 +68,23 @@
               </div>
             }
             <div class="user-actions">
-              <button mat-icon-button [routerLink]="['/users/edit', row.username]"
+              <button mat-icon-button class="list-action-btn" [routerLink]="['/users/edit', row.username]"
                       aria-label="Edit user {{row.username}}">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button (click)="openUserInfo(row.username)"
+              <button mat-icon-button class="list-action-btn" (click)="openUserInfo(row.username)"
                       aria-label="View details for {{row.username}}">
                 <mat-icon>visibility</mat-icon>
               </button>
-              <button mat-icon-button [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
+              <button mat-icon-button class="list-action-btn" [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
                       aria-label="User tags for {{row.username}}">
                 <mat-icon>local_offer</mat-icon>
               </button>
-              <button mat-icon-button [routerLink]="['/transactions']" [queryParams]="{username: row.username}"
+              <button mat-icon-button class="list-action-btn" [routerLink]="['/transactions']" [queryParams]="{username: row.username}"
                       aria-label="Transactions for {{row.username}}">
                 <mat-icon>receipt_long</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
+              <button mat-icon-button class="list-action-btn warn" (click)="deleteUser(row.username)"
                       aria-label="Delete user {{row.username}}">
                 <mat-icon>delete</mat-icon>
               </button>
@@ -143,23 +143,23 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let row">
-              <button mat-icon-button [routerLink]="['/users/edit', row.username]"
+              <button mat-icon-button class="list-action-btn" [routerLink]="['/users/edit', row.username]"
                       aria-label="Edit user {{row.username}}">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button (click)="openUserInfo(row.username)"
+              <button mat-icon-button class="list-action-btn" (click)="openUserInfo(row.username)"
                       aria-label="View details for {{row.username}}">
                 <mat-icon>remove_red_eye</mat-icon>
               </button>
-              <button mat-icon-button [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
+              <button mat-icon-button class="list-action-btn" [routerLink]="['/user-tags']" [queryParams]="{username: row.username}"
                       aria-label="User tags for {{row.username}}">
                 <mat-icon>local_offer</mat-icon>
               </button>
-              <button mat-icon-button [routerLink]="['/transactions']" [queryParams]="{username: row.username}"
+              <button mat-icon-button class="list-action-btn" [routerLink]="['/transactions']" [queryParams]="{username: row.username}"
                       aria-label="Transactions for {{row.username}}">
                 <mat-icon>receipt_long</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteUser(row.username)"
+              <button mat-icon-button class="list-action-btn warn" (click)="deleteUser(row.username)"
                       aria-label="Delete user {{row.username}}">
                 <mat-icon>delete</mat-icon>
               </button>

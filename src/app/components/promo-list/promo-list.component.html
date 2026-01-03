@@ -4,5 +4,7 @@
     <button mat-fab extended color="primary" (click)="selectChargePoint(cp)" >
       {{cp.charge_point_id}}
     </button>
+  } @empty {
+    <div class="no-data">No charge points available</div>
   }
 </mat-card>

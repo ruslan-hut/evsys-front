@@ -12,7 +12,7 @@ import { MatIcon } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatCard } from '@angular/material/card';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow } from '@angular/material/table';
 
@@ -21,7 +21,7 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
     templateUrl: './statistic.component.html',
     styleUrl: './statistic.component.css',
     standalone: true,
-    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressSpinner, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe]
+    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressBar, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe]
 })
 export class StatisticComponent {
   monthStats: MonthStats[] = [];

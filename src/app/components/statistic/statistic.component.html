@@ -1,3 +1,7 @@
+@if (inProgress) {
+  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+}
+
 <div class="filter-container">
   <!-- Date Range Picker -->
   <mat-form-field appearance="outline" class="date-range-field">
@@ -53,10 +57,6 @@
 
   <!-- Request Data Button -->
   <button mat-raised-button color="primary" (click)="requestData()">Request Data</button>
-
-  @if (inProgress) {
-    <mat-spinner diameter="30" color="primary"></mat-spinner>
-  }
 </div>
 
 <!-- Data Table -->

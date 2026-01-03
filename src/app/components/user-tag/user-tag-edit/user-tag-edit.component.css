@@ -1,13 +1,13 @@
 .tag-edit-container {
   max-width: 600px;
-  margin: 20px auto;
-  padding: 0 16px;
+  margin: var(--spacing-md) auto;
+  padding: 0 var(--spacing-md);
 }
 
 .title-with-action {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-xs);
 }
 
 .copy-button {
@@ -17,8 +17,8 @@
 .tag-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 16px;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-md);
 }
 
 .tag-form mat-form-field {
@@ -28,29 +28,29 @@
 .toggle-row {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 8px 0;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) 0;
 }
 
 .toggle-hint {
   font-size: 12px;
-  color: #757575;
+  color: var(--color-text-muted);
   margin-left: 44px;
 }
 
 .readonly-info {
-  background-color: #f5f5f5;
-  padding: 12px;
+  background-color: var(--color-background);
+  padding: var(--spacing-md);
   border-radius: 4px;
-  margin-top: 8px;
+  margin-top: var(--spacing-sm);
 }
 
 .readonly-info p {
-  margin: 4px 0;
-  color: #666;
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text-secondary);
   font-size: 14px;
 }
 
 mat-card-actions {
-  padding: 16px;
+  padding: var(--spacing-md);
 }

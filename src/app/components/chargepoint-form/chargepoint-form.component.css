@@ -16,7 +16,7 @@ mat-card {
   font-family: inherit;
   font-size: 14px;
   padding: var(--spacing-sm);
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
@@ -24,15 +24,15 @@ mat-card {
 
 .equal-height-input:focus {
   outline: none;
-  border-color: #3f51b5;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
 }
 
 .readonly-input {
   cursor: default;
   user-select: none;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   box-sizing: border-box;
   padding: var(--spacing-sm);
@@ -53,7 +53,7 @@ textarea {
 /* Labels */
 label {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--color-text-secondary);
   min-width: 100px;
 }
 

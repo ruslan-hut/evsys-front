@@ -75,7 +75,7 @@ import {Chargepoint} from '../../../models/chargepoint';
 export class TransactionsListComponent implements OnInit {
   displayedColumns: string[] = [
     'transaction_id', 'id_tag', 'charge_point_id', 'connector_id',
-    'time_start', 'time_stop', 'is_finished', 'consumed',
+    'time_start', 'time_stop', 'consumed',
     'payment_amount', 'payment_billed', 'actions'
   ];
 
@@ -98,6 +98,7 @@ export class TransactionsListComponent implements OnInit {
     {label: 'Today', range: this.getToday()},
     {label: 'Current Month', range: this.getCurrentMonth()},
     {label: 'Previous Month', range: this.getPreviousMonth()},
+    {label: 'Last 12 Months', range: this.getLast12Months()},
     {label: 'Current Year', range: this.getCurrentYear()}
   ];
 
@@ -138,10 +139,10 @@ export class TransactionsListComponent implements OnInit {
       this.chargePointFilter = params.get('charge_point_id')!;
     }
 
-    // Set default date range to current month
-    const currentMonth = this.getCurrentMonth();
-    this.startDate = currentMonth.start;
-    this.endDate = currentMonth.end;
+    // Set default date range to last 12 months
+    const last12Months = this.getLast12Months();
+    this.startDate = last12Months.start;
+    this.endDate = last12Months.end;
 
     // Load initial data
     this.loadTransactions();
@@ -203,11 +204,18 @@ export class TransactionsListComponent implements OnInit {
     return {start, end};
   }
 
+  private getLast12Months(): {start: Date; end: Date} {
+    const date = new Date();
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const start = new Date(date.getFullYear(), date.getMonth() - 11, 1);
+    return {start, end};
+  }
+
   clearFilters(): void {
     this.usernameFilter = '';
     this.idTagFilter = '';
     this.chargePointFilter = '';
-    this.setRange(this.getCurrentMonth());
+    this.setRange(this.getLast12Months());
     this.loadTransactions();
   }
 
@@ -227,6 +235,18 @@ export class TransactionsListComponent implements OnInit {
 
   formatAmount(amount: number): string {
     return (amount / 100).toFixed(2);
+  }
+
+  hasActiveFilters(): boolean {
+    return !!(this.usernameFilter || this.idTagFilter || this.chargePointFilter);
+  }
+
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.usernameFilter) count++;
+    if (this.idTagFilter) count++;
+    if (this.chargePointFilter) count++;
+    return count;
   }
 
   get paginatedData(): TransactionListItem[] {

@@ -66,6 +66,7 @@ Lazy-loaded routes defined in `app.routes.ts`. Protected routes require `authGua
 - Component-level CSS files (not SCSS)
 - Responsive design using `@angular/cdk/layout` Breakpoints
 - Global styles in `src/styles.css`
+- **Design standards**: See [Design Policy](docs/DESIGN_POLICY.md) for colors, spacing, component patterns
 
 ## Environment Configuration
 
@@ -82,3 +83,8 @@ Service Worker enabled in production via `ngsw-config.json`. App shell prefetche
 ## Deployment
 
 GitHub Actions workflow (`.github/workflows/deploy.yml`) deploys to wattbrews.me on push to master.
+
+## Documentation
+
+- [Design Policy](docs/DESIGN_POLICY.md) - UI/UX standards, color palette, component patterns, accessibility guidelines
+- [Design Audit Report](docs/DESIGN_AUDIT_REPORT.md) - Compliance audit findings and action items

@@ -51,7 +51,7 @@ td:last-child, th:last-child {
 }
 
 .status-chip.disabled {
-  background-color: #f44336;
+  background-color: var(--color-error);
   color: white;
 }
 
@@ -71,13 +71,13 @@ td:last-child, th:last-child {
 .tag-panel-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
 }
 
 .tag-id {
   font-size: 14px;
   font-weight: 600;
-  color: #1976d2;
+  color: var(--color-accent);
 }
 
 .tag-status-badge {
@@ -89,21 +89,21 @@ td:last-child, th:last-child {
 }
 
 .tag-status-badge.disabled {
-  background-color: #f44336;
+  background-color: var(--color-error);
   color: white;
 }
 
 .tag-panel-description {
   font-size: 11px;
-  color: #757575;
+  color: var(--color-text-muted);
   justify-content: flex-end;
 }
 
 .tag-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 8px;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
 }
 
 .tag-detail-row {
@@ -114,28 +114,28 @@ td:last-child, th:last-child {
 
 .tag-detail-label {
   font-size: 12px;
-  color: #757575;
+  color: var(--color-text-muted);
 }
 
 .tag-detail-value {
   font-size: 13px;
-  color: #212121;
+  color: var(--color-text-primary);
   font-weight: 500;
 }
 
 .tag-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 4px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #e0e0e0;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
 }
 
 .no-data {
   text-align: center;
   padding: var(--spacing-lg);
-  color: #757575;
+  color: var(--color-text-muted);
   font-style: italic;
 }
 

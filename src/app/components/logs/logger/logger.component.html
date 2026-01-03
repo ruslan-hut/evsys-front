@@ -15,7 +15,7 @@
       <mat-label>Filter</mat-label>
       <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
       @if (filter) {
-        <button matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')">
+        <button matSuffix mat-icon-button class="filter-clear-btn" aria-label="Clear" (click)="applyFilter('')">
           <mat-icon>close</mat-icon>
         </button>
       }

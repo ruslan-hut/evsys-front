@@ -1,0 +1,6 @@
+.no-data {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--color-text-muted, #757575);
+  font-style: italic;
+}

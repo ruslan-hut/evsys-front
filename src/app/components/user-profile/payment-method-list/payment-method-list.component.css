@@ -1,7 +1,14 @@
 button{
-    margin: 4px;
+    margin: var(--spacing-xs);
 }
 
 .first-button{
-    margin-left: 10px;
+    margin-left: var(--spacing-sm);
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-lg);
+  color: var(--color-text-muted);
+  font-style: italic;
 }

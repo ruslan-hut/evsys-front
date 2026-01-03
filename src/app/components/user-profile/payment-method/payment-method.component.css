@@ -4,11 +4,11 @@
 }
 
 .title-with-icon mat-icon {
-  margin-right: 8px;
+  margin-right: var(--spacing-sm);
 }
 
 mat-card {
-  margin: 10px;
+  margin: var(--spacing-sm);
 }
 
 table {
@@ -24,11 +24,11 @@ td {
 }
 
 button {
-  margin: 4px;
+  margin: var(--spacing-xs);
 }
 
 mat-form-field {
-  margin-right: 10px;
+  margin-right: var(--spacing-sm);
 }
 
 mat-card-header {
@@ -36,6 +36,6 @@ mat-card-header {
 }
 
 .warn {
-  color: #f44336;
+  color: var(--color-error);
 }
 

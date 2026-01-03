@@ -14,7 +14,7 @@ import { MatOption } from '@angular/material/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 import { NgxChartsModule, Color, ScaleType, LegendPosition } from '@swimlane/ngx-charts';
 
@@ -59,7 +59,7 @@ interface SummaryMetrics {
     MatButton, MatIconButton,
     MatIcon,
     MatMenuTrigger, MatMenu, MatMenuItem,
-    MatProgressSpinner,
+    MatProgressBar,
     NgxChartsModule
   ]
 })

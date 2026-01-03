@@ -1,5 +1,7 @@
 @for (pm of dataSource.data; track pm) {
   <app-payment-method [paymentMethod]="pm" (click)="selectPaymentMethod(pm)"></app-payment-method>
+} @empty {
+  <div class="no-data">No payment methods configured</div>
 }
 <button mat-raised-button class="first-button" (click)="back()">Close</button>
 <button mat-raised-button color="primary" (click)="addPaymentMethod()">

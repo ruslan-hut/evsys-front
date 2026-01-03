@@ -1,5 +1,5 @@
 mat-card {
-  margin: 10px;
+  margin: var(--spacing-sm);
 }
 table {
   table-layout: auto;
@@ -14,7 +14,7 @@ td {
 }
 
 .online-status {
-  color: limegreen;
+  color: var(--color-success);
 }
 
 .two-in-one {
@@ -52,12 +52,12 @@ button {
 .info-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* spacing between items */
-  padding: 15px;
-  border: 1px solid #ddd; /* light border around the container */
-  border-radius: 8px; /* rounded corners */
-  background-color: #f9f9f9; /* light background color */
-  margin: 20px auto; /* center container horizontally */
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-background-light);
+  margin: var(--spacing-md) auto;
   max-width: 700px;
   width: 90%;
 }
@@ -65,19 +65,19 @@ button {
 /* styling for each item */
 .info-item {
   display: flex;
-  justify-content: space-between; /* space between label and value */
-  padding: 4px 0; /* vertical padding for spacing */
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
 }
 
 /* label styling */
 .info-label {
   font-weight: bold;
-  color: #333; /* dark color for label */
+  color: var(--color-text-primary);
 }
 
 /* value styling */
 .info-value {
-  color: #555; /* lighter color for value */
+  color: var(--color-text-secondary);
 }
 
 .progressbar {

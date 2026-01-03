@@ -69,12 +69,12 @@ td:last-child, th:last-child {
   font-family: monospace;
   font-size: 13px;
   font-weight: 600;
-  color: #1976d2;
+  color: var(--color-accent);
 }
 
 .log-date {
   font-size: 11px;
-  color: #757575;
+  color: var(--color-text-muted);
 }
 
 .log-card-meta {
@@ -98,15 +98,15 @@ td:last-child, th:last-child {
   font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
-  background-color: #e8e8e8;
-  color: #424242;
+  background-color: var(--color-background);
+  color: var(--color-action-hover);
   padding: 2px 6px;
   border-radius: 4px;
 }
 
 .log-card-text {
   font-size: 13px;
-  color: #424242;
+  color: var(--color-action-hover);
   line-height: 1.4;
   word-break: break-word;
 }
@@ -114,7 +114,7 @@ td:last-child, th:last-child {
 .no-data {
   text-align: center;
   padding: var(--spacing-lg);
-  color: #757575;
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
