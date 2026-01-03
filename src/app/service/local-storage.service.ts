@@ -1,6 +1,4 @@
 import {Injectable} from "@angular/core";
-import {Chargepoint} from "../models/chargepoint";
-import {BehaviorSubject} from "rxjs";
 import {RedirectUrl} from "../models/redirect-url";
 
 @Injectable({
@@ -8,6 +6,15 @@ import {RedirectUrl} from "../models/redirect-url";
 })
 
 export class LocalStorageService {
+  private readonly ALWAYS_LOAD_ALL_CHARGERS_KEY = 'alwaysLoadAllChargers';
+
+  getAlwaysLoadAllChargers(): boolean {
+    return localStorage.getItem(this.ALWAYS_LOAD_ALL_CHARGERS_KEY) === 'true';
+  }
+
+  setAlwaysLoadAllChargers(value: boolean): void {
+    localStorage.setItem(this.ALWAYS_LOAD_ALL_CHARGERS_KEY, String(value));
+  }
 
   saveRedirectUrl(charge_point_id: string, connector_id:number): void {
     const redirectUrl : RedirectUrl = {

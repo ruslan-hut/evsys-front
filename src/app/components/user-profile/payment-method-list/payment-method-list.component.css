@@ -1,14 +1,13 @@
-button{
-    margin: var(--spacing-xs);
-}
-
-.first-button{
-    margin-left: var(--spacing-sm);
-}
-
 .no-data {
   text-align: center;
   padding: var(--spacing-lg);
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md);
 }

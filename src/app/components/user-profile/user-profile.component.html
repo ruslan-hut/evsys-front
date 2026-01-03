@@ -1,4 +1,4 @@
-<mat-card class="appearance-card">
+<mat-card class="settings-card">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
       <mat-icon>palette</mat-icon> Appearance
@@ -19,6 +19,23 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title class="title-with-icon">
+      <mat-icon>ev_station</mat-icon> Chargers
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="toggle-setting">
+      <span class="toggle-label">Always load all chargers</span>
+      <mat-slide-toggle
+        [checked]="alwaysLoadAllChargers"
+        (change)="onAlwaysLoadAllChargersChange($event.checked)">
+      </mat-slide-toggle>
+    </div>
+  </mat-card-content>
+</mat-card>
+
 <mat-card (click)="openPaymentMethods()">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
@@ -31,7 +48,7 @@
 </mat-card>
 
 <div class="profile-actions">
-  <button mat-raised-button (click)="back()">Close</button>
+  <button mat-button (click)="back()">Close</button>
   <button mat-raised-button color="warn" (click)="logout()">
     <mat-icon>logout</mat-icon> Logout
   </button>

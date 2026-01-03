@@ -1,6 +1,11 @@
-<!--&lt;!&ndash;<button mat-flat-button color="primary" (click)="send()">WS Send message</button>&ndash;&gt;-->
-@for (chp of chargePoints$ | async; track chp) {
+@for (chp of displayedChargePoints$ | async; track chp) {
   <app-chargepoint [chargepoint]="chp"></app-chargepoint>
 } @empty {
   <div class="no-data">No charge points available</div>
+}
+
+@if (!showingFullList && (displayedChargePoints$ | async)?.length) {
+  <div class="show-full-list">
+    <button mat-button color="primary" (click)="loadFullList()">Show full list</button>
+  </div>
 }

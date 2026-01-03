@@ -20,18 +20,18 @@
   </mat-card-content>
   @if (!isEditing && paymentMethod.selected) {
     @if (paymentMethod.selected) {
-      <mat-card-actions align="start" class="tool-panel">
-        <button mat-flat-button class="title-with-icon" color="accent" (click)="delete()">
+      <mat-card-actions align="end" class="tool-panel">
+        <button mat-button (click)="delete()">
           <mat-icon>delete</mat-icon>
           Delete
         </button>
-        <button mat-flat-button class="title-with-icon" color="primary" (click)="editDescription()">
-          <mat-icon class="edit-icon">edit</mat-icon>
-          Edit description
+        <button mat-flat-button color="primary" (click)="editDescription()">
+          <mat-icon>edit</mat-icon>
+          Edit
         </button>
         @if (!paymentMethod.is_default) {
-          <button mat-flat-button class="title-with-icon" color="primary" (click)="setDefault()">
-            <mat-icon class="edit-icon">star</mat-icon>
+          <button mat-flat-button color="primary" (click)="setDefault()">
+            <mat-icon>star</mat-icon>
             Set default
           </button>
         }
@@ -39,12 +39,12 @@
     }
   }
   @if (isEditing) {
-    <mat-card-actions align="start" class="tool-panel">
-      <button mat-flat-button color="accent" (click)="cancelEdit()">
-        Close
+    <mat-card-actions align="end" class="tool-panel">
+      <button mat-button (click)="cancelEdit()">
+        Cancel
       </button>
-      <button mat-flat-button class="title-with-icon" color="primary" (click)="saveDescription()">
-        <mat-icon class="edit-icon">save</mat-icon>
+      <button mat-flat-button color="primary" (click)="saveDescription()">
+        <mat-icon>save</mat-icon>
         Save
       </button>
     </mat-card-actions>

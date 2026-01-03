@@ -3,8 +3,11 @@
 } @empty {
   <div class="no-data">No payment methods configured</div>
 }
-<button mat-raised-button class="first-button" (click)="back()">Close</button>
-<button mat-raised-button color="primary" (click)="addPaymentMethod()">
-  <mat-icon class="edit-icon">add</mat-icon>
-  Add payment method
-</button>
+
+<div class="actions">
+  <button mat-button (click)="back()">Close</button>
+  <button mat-raised-button color="primary" (click)="addPaymentMethod()">
+    <mat-icon>add</mat-icon>
+    Add payment method
+  </button>
+</div>

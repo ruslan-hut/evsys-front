@@ -17,20 +17,17 @@ mat-card-header {
 
 .profile-actions {
   display: flex;
+  justify-content: flex-end;
   gap: var(--spacing-sm);
   margin: var(--spacing-md);
-}
-
-.profile-actions button {
-  flex: 1;
 }
 
 .profile-actions button mat-icon {
   margin-right: var(--spacing-xs);
 }
 
-/* Appearance card */
-.appearance-card {
+/* Settings cards */
+.settings-card {
   cursor: default;
 }
 
@@ -41,4 +38,14 @@ mat-card-header {
 .theme-option-icon {
   margin-right: var(--spacing-sm);
   vertical-align: middle;
+}
+
+.toggle-setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-label {
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.87));
 }

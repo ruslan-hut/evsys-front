@@ -116,6 +116,17 @@ export class ChargepointService implements OnDestroy {
       );
   }
 
+  getRecentChargePoints(): Observable<Chargepoint[]> {
+    return this.http.get<Chargepoint[]>(environment.apiUrl + environment.recentChargePoints)
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
+  getAllChargePoints(): Observable<Chargepoint[]> {
+    return this.getAll();
+  }
+
   private onWsMessage(message: WsMessage): void {
     if (message.status === 'error') {
       if (message.info) {
