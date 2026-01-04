@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -33,6 +33,9 @@ import { StationStatus } from '../../../models/station-status';
 })
 export class StationStatusComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  private autoRefreshInterval: ReturnType<typeof setInterval> | null = null;
+  private readonly AUTO_REFRESH_MS = 30000;
+  private visibilityChangeHandler = () => this.onVisibilityChange();
 
   stations: StationStatus[] = [];
   loading = false;
@@ -44,7 +47,8 @@ export class StationStatusComponent implements OnInit, OnDestroy {
 
   constructor(
     private statsService: StatsService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private ngZone: NgZone
   ) {
     this.isMobile$ = this.breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
@@ -53,11 +57,42 @@ export class StationStatusComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData();
+    this.startAutoRefresh();
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.stopAutoRefresh();
+    document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+  }
+
+  private startAutoRefresh(): void {
+    if (this.autoRefreshInterval) return;
+    this.ngZone.runOutsideAngular(() => {
+      this.autoRefreshInterval = setInterval(() => {
+        if (!document.hidden && !this.loading) {
+          this.ngZone.run(() => this.loadData());
+        }
+      }, this.AUTO_REFRESH_MS);
+    });
+  }
+
+  private stopAutoRefresh(): void {
+    if (this.autoRefreshInterval) {
+      clearInterval(this.autoRefreshInterval);
+      this.autoRefreshInterval = null;
+    }
+  }
+
+  private onVisibilityChange(): void {
+    if (document.hidden) {
+      this.stopAutoRefresh();
+    } else {
+      this.ngZone.run(() => this.loadData());
+      this.startAutoRefresh();
+    }
   }
 
   loadData(): void {

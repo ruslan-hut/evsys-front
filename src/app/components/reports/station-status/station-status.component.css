@@ -70,6 +70,9 @@
 }
 
 .status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--spacing-sm);
 }
 
@@ -92,7 +95,19 @@
   color: var(--color-error);
 }
 
-.duration-row,
+.duration-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.duration-value.online {
+  color: var(--color-success);
+}
+
+.duration-value.offline {
+  color: var(--color-error);
+}
+
 .since-row,
 .event-row {
   display: flex;
@@ -101,13 +116,11 @@
   margin-bottom: 4px;
 }
 
-.duration-label,
 .since-label,
 .event-label {
   color: var(--color-text-muted);
 }
 
-.duration-value,
 .since-value,
 .event-value {
   color: var(--color-text-primary);
