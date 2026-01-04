@@ -17,6 +17,8 @@ export const environment = {
   monthReport: '/month',
   userReport: '/user',
   chargerReport: '/charger',
+  uptimeReport: '/uptime',
+  statusReport: '/status',
   debug: false,
   firebaseConfig: {
     apiKey: "fb-api-key",

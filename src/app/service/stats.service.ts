@@ -6,6 +6,8 @@ import {environment} from "../../environments/environment";
 import {MonthStats} from "../models/month-stats";
 import {UserStats} from "../models/user-stats";
 import {Group} from "../models/group";
+import {StationUptime} from "../models/station-uptime";
+import {StationStatus} from "../models/station-status";
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +84,47 @@ export class StatsService {
       .pipe(
         catchError(this.errorHandler.bind(this))
       );
+  }
+
+  getUptimeReport(from: Date, to: Date, chargePointId?: string): Observable<StationUptime[]> {
+    const formattedFrom = this.formatDateRFC3339(from);
+    const formattedTo = this.formatDateRFC3339EndOfDay(to);
+
+    let params = new HttpParams()
+      .set('from', formattedFrom)
+      .set('to', formattedTo);
+
+    if (chargePointId) {
+      params = params.set('charge_point_id', chargePointId);
+    }
+
+    return this.http.get<StationUptime[]>(environment.apiUrl + environment.report + environment.uptimeReport, { params })
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
+  getStatusReport(chargePointId?: string): Observable<StationStatus[]> {
+    let params = new HttpParams();
+
+    if (chargePointId) {
+      params = params.set('charge_point_id', chargePointId);
+    }
+
+    return this.http.get<StationStatus[]>(environment.apiUrl + environment.report + environment.statusReport, { params })
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
+  private formatDateRFC3339(date: Date): string {
+    return date.toISOString();
+  }
+
+  private formatDateRFC3339EndOfDay(date: Date): string {
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+    return endOfDay.toISOString();
   }
 
 }

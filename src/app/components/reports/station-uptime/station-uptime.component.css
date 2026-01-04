@@ -1,0 +1,74 @@
+:host { display: block; overflow-x: hidden; }
+.desktop-only { display: flex; margin: var(--spacing-sm); padding: var(--spacing-sm); }
+.mobile-only { display: none; }
+@media (max-width: 599px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block !important; }
+}
+.filter-panel { margin: var(--spacing-sm); box-shadow: none; border: 1px solid var(--color-border); border-radius: var(--card-border-radius); }
+.current-period { display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xs) var(--spacing-md); background: var(--color-background); border-bottom: 1px solid var(--color-border); font-size: 13px; }
+.period-label { color: var(--color-text-muted); }
+.period-value { color: var(--color-primary); font-weight: 500; }
+.filter-container { display: flex; gap: var(--spacing-md); align-items: center; flex-wrap: wrap; padding: var(--spacing-sm); }
+.date-range-field { display: flex; align-items: center; }
+.station-select-field { min-width: 180px; }
+.tab-content { padding: var(--spacing-md); }
+.summary-cards { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-lg); }
+.summary-card { min-width: 100px; text-align: center; }
+.summary-card mat-card-content { padding: var(--spacing-sm) var(--spacing-md); }
+.summary-value { font-size: 28px; font-weight: 600; line-height: 1.2; }
+.summary-label { font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase; }
+.summary-card.high .summary-value { color: var(--color-success); }
+.summary-card.medium .summary-value { color: var(--color-warning); }
+.summary-card.low .summary-value { color: var(--color-error); }
+.summary-card.total .summary-value { color: var(--color-primary); }
+.charts-grid { display: grid; grid-template-columns: 1fr; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); }
+.chart-card { margin: 0; min-width: 0; overflow: hidden; }
+.chart-card mat-card-content { display: block; overflow: hidden; padding: var(--spacing-sm); }
+.chart-card mat-card-header { margin-bottom: var(--spacing-sm); }
+.chart-container { width: 100%; height: 350px; display: block; position: relative; }
+.table-card { margin: 0; }
+.table-card mat-card-header { margin-bottom: var(--spacing-sm); }
+.table-responsive { overflow-x: auto; }
+table { width: 100%; }
+.station-id-cell { font-weight: 600; color: var(--color-accent); }
+.uptime-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.uptime-badge.high { background-color: rgba(76,175,80,.15); color: var(--color-success); }
+.uptime-badge.medium { background-color: rgba(255,152,0,.15); color: var(--color-warning); }
+.uptime-badge.low { background-color: rgba(244,67,54,.15); color: var(--color-error); }
+.state-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+.state-badge.online { background-color: rgba(76,175,80,.15); color: var(--color-success); }
+.state-badge.offline { background-color: rgba(244,67,54,.15); color: var(--color-error); }
+.mobile-list { display: flex; flex-direction: column; gap: var(--spacing-xs); }
+.panel-content { padding: var(--spacing-sm) 0; }
+.detail-row { display: flex; justify-content: space-between; padding: 4px 0; }
+.detail-label { color: var(--color-text-muted); }
+.detail-value { font-weight: 500; }
+.no-data { display: flex; align-items: center; justify-content: center; min-height: 200px; color: var(--color-text-muted); font-style: italic; }
+.no-data-cell { text-align: center; padding: var(--spacing-lg) !important; color: var(--color-text-muted); font-style: italic; }
+ngx-charts-bar-horizontal { display: block; width: 100%; height: 100%; }
+::ng-deep .ngx-charts, ::ng-deep .ngx-charts svg { width: 100% !important; }
+::ng-deep .ngx-charts svg { height: 100% !important; }
+@media (min-width: 1200px) { .chart-container { height: 400px; } }
+@media (max-width: 599px) {
+  .filter-panel { margin: var(--spacing-xs); }
+  .filter-panel ::ng-deep .mat-expansion-panel-header { padding: 0 var(--spacing-md); height: 48px; }
+  .filter-panel ::ng-deep .mat-expansion-panel-header-title { display: flex; align-items: center; gap: var(--spacing-sm); color: var(--color-primary); font-weight: 500; }
+  .filter-panel ::ng-deep .mat-expansion-panel-body { padding: 0 var(--spacing-sm) var(--spacing-sm); }
+  .current-period { padding: var(--spacing-xs) var(--spacing-sm); font-size: 12px; }
+  .filter-container { flex-direction: column; align-items: stretch; gap: var(--spacing-sm); }
+  .filter-container > *, .filter-container button[mat-raised-button] { width: 100%; }
+  .tab-content { padding: var(--spacing-sm); }
+  .summary-cards { justify-content: space-between; }
+  .summary-card { flex: 1; min-width: 80px; }
+  .summary-value { font-size: 22px; }
+  .summary-label { font-size: 10px; }
+  .charts-grid { gap: var(--spacing-md); }
+  .chart-card mat-card-content { padding: var(--spacing-xs); }
+  .chart-card mat-card-header mat-card-title { font-size: 14px; }
+  .chart-container { height: 300px; }
+  .chart-container:has(ngx-charts-bar-horizontal) { height: 350px; }
+  ::ng-deep .legend-label { font-size: 11px; margin: 2px var(--spacing-xs); }
+  ::ng-deep .tick text { font-size: 10px; }
+  ::ng-deep .axis-label { font-size: 11px; }
+}

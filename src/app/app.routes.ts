@@ -151,5 +151,10 @@ export const routes: Routes = [
   {
     path: 'roaming-tariff',
     loadComponent: () => import('./components/tariff/tariff.component').then(m => m.TariffComponent)
+  },
+  {
+    path: 'reports',
+    loadComponent: () => import('./components/reports/reports.component').then(m => m.ReportsComponent),
+    canActivate: [authGuard]
   }
 ];

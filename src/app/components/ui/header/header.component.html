@@ -10,16 +10,15 @@
           <button mat-menu-item (click)="navigateTo('/points')">
             <span>Points</span>
           </button>
-          <button mat-menu-item (click)="navigateTo('/user-profile')">
-            <span>Profile</span>
-          </button>
           @if (isAdmin) {
-            <button mat-menu-item (click)="navigateTo('/dashboard')">
-              <span>Dashboard</span>
+            <button mat-menu-item [matMenuTriggerFor]="mobileReportMenu">
+              <span>Report</span>
             </button>
-            <button mat-menu-item (click)="navigateTo('/statistic')">
-              <span>Statistic</span>
-            </button>
+            <mat-menu #mobileReportMenu="matMenu">
+              <button mat-menu-item (click)="navigateTo('/dashboard')">Consumption chart</button>
+              <button mat-menu-item (click)="navigateTo('/statistic')">Consumption</button>
+              <button mat-menu-item (click)="navigateTo('/reports')">Uptime</button>
+            </mat-menu>
             <button mat-menu-item (click)="navigateTo('/log/system')">
               <span>System log</span>
             </button>
@@ -36,12 +35,13 @@
               <span>Transactions</span>
             </button>
           }
-          <button mat-menu-item (click)="navigateTo('/privacy/en')">
-            <span>Privacy policy</span>
+          <button mat-menu-item [matMenuTriggerFor]="mobileLegalMenu">
+            <span>Legal</span>
           </button>
-          <button mat-menu-item (click)="navigateTo('/terms/en')">
-            <span>Terms and conditions</span>
-          </button>
+          <mat-menu #mobileLegalMenu="matMenu">
+            <button mat-menu-item (click)="navigateTo('/privacy/en')">Privacy policy</button>
+            <button mat-menu-item (click)="navigateTo('/terms/en')">Terms and conditions</button>
+          </mat-menu>
         </mat-menu>
       }
       @if (!menuEnabled && isAdmin) {
@@ -72,10 +72,14 @@
         <div class="desktop-menu">
           <button mat-button (click)="navigateTo('/points')">Points</button>
           @if (isAdmin) {
+            <button mat-button [matMenuTriggerFor]="reportMenu">Report</button>
+            <mat-menu #reportMenu="matMenu">
+              <button mat-menu-item (click)="navigateTo('/dashboard')">Consumption chart</button>
+              <button mat-menu-item (click)="navigateTo('/statistic')">Consumption</button>
+              <button mat-menu-item (click)="navigateTo('/reports')">Uptime</button>
+            </mat-menu>
             <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
             <mat-menu #adminMenu="matMenu">
-              <button mat-menu-item (click)="navigateTo('/dashboard')">Dashboard</button>
-              <button mat-menu-item (click)="navigateTo('/statistic')">Statistic</button>
               <button mat-menu-item (click)="navigateTo('/log/system')">System log</button>
               <button mat-menu-item (click)="navigateTo('/log/pay')">Payment log</button>
               <button mat-menu-item (click)="navigateTo('/users')">Users list</button>

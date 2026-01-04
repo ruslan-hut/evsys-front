@@ -1,0 +1,72 @@
+@if (loading) {
+  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+}
+
+<div class="status-header">
+  <div class="summary-cards">
+    <mat-card class="summary-card online">
+      <mat-card-content>
+        <div class="summary-value">{{ onlineCount }}</div>
+        <div class="summary-label">Online</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="summary-card offline">
+      <mat-card-content>
+        <div class="summary-value">{{ offlineCount }}</div>
+        <div class="summary-label">Offline</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="summary-card total">
+      <mat-card-content>
+        <div class="summary-value">{{ stations.length }}</div>
+        <div class="summary-label">Total</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  @if (!(isMobile$ | async)) {
+    <button mat-icon-button (click)="refresh()" [disabled]="loading" matTooltip="Refresh" aria-label="Refresh station status">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  }
+</div>
+
+@if (isMobile$ | async) {
+  <button mat-fab class="fab-refresh" (click)="refresh()" [disabled]="loading" aria-label="Refresh station status">
+    <mat-icon>refresh</mat-icon>
+  </button>
+}
+
+@if (!loading && stations.length === 0) {
+  <div class="no-data">No station data available</div>
+}
+
+<div class="status-grid">
+  @for (station of stations; track station.charge_point_id) {
+    <mat-card class="station-card" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
+      <mat-card-header>
+        <mat-card-title class="station-id">{{ station.charge_point_id }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="status-row">
+          <span class="status-indicator" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
+            {{ station.state }}
+          </span>
+        </div>
+        <div class="duration-row">
+          <span class="duration-label">Duration:</span>
+          <span class="duration-value">{{ formatDuration(station.duration_seconds) }}</span>
+        </div>
+        <div class="since-row">
+          <span class="since-label">Since:</span>
+          <span class="since-value">{{ formatSince(station.since) }}</span>
+        </div>
+        @if (station.last_event_text) {
+          <div class="event-row">
+            <span class="event-label">Event:</span>
+            <span class="event-value">{{ station.last_event_text }}</span>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

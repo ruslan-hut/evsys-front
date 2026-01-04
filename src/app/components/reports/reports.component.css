@@ -1,0 +1,11 @@
+.reports-container {
+  padding: var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 599px) {
+  .reports-container {
+    padding: var(--spacing-sm);
+  }
+}
