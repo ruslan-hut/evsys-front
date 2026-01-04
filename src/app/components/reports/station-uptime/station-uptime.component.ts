@@ -169,10 +169,12 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
   }
 
   private transformChartData(): void {
-    this.chartData = this.stations.map(station => ({
-      name: station.charge_point_id,
-      value: station.uptime_percent
-    }));
+    this.chartData = this.stations
+      .map(station => ({
+        name: station.charge_point_id,
+        value: station.uptime_percent
+      }))
+      .sort((a, b) => b.value - a.value);
   }
 
   private calculateSummary(): void {
