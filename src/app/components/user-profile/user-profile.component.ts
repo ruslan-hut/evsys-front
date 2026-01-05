@@ -38,8 +38,16 @@ export class UserProfileComponent {
     { value: 'dark', label: 'Dark', icon: 'dark_mode' }
   ];
 
+  startPageOptions = [
+    { value: '/points', label: 'Points', icon: 'ev_station', roles: ['user', 'operator', 'admin'] },
+    { value: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['operator', 'admin'] },
+    { value: '/reports', label: 'Reports', icon: 'assessment', roles: ['operator', 'admin'] },
+    { value: '/log/system', label: 'Syslog', icon: 'terminal', roles: ['operator', 'admin'] }
+  ];
+
   currentTheme: ThemeMode;
   alwaysLoadAllChargers: boolean;
+  currentStartPage: string;
 
   constructor(
     private router: Router,
@@ -50,6 +58,16 @@ export class UserProfileComponent {
   ) {
     this.currentTheme = this.themeService.getTheme();
     this.alwaysLoadAllChargers = this.localStorageService.getAlwaysLoadAllChargers();
+    this.currentStartPage = this.localStorageService.getStartPage() || this.getDefaultStartPage();
+  }
+
+  get availableStartPageOptions() {
+    const userRole = this.accountService.userValue?.role || 'user';
+    return this.startPageOptions.filter(option => option.roles.includes(userRole));
+  }
+
+  private getDefaultStartPage(): string {
+    return (this.accountService.isAdmin || this.accountService.isOperator) ? '/dashboard' : '/points';
   }
 
   onThemeChange(mode: ThemeMode): void {
@@ -60,6 +78,11 @@ export class UserProfileComponent {
   onAlwaysLoadAllChargersChange(value: boolean): void {
     this.alwaysLoadAllChargers = value;
     this.localStorageService.setAlwaysLoadAllChargers(value);
+  }
+
+  onStartPageChange(value: string): void {
+    this.currentStartPage = value;
+    this.localStorageService.setStartPage(value);
   }
 
   openPaymentMethods(): void {

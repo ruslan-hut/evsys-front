@@ -8,10 +8,12 @@
         </button>
         <mat-menu #mainMenu="matMenu">
           <button mat-menu-item (click)="navigateTo('/points')">
+            <mat-icon>ev_station</mat-icon>
             <span>Points</span>
           </button>
           @if (isAdmin) {
             <button mat-menu-item [matMenuTriggerFor]="mobileReportMenu">
+              <mat-icon>assessment</mat-icon>
               <span>Report</span>
             </button>
             <mat-menu #mobileReportMenu="matMenu">
@@ -20,22 +22,28 @@
               <button mat-menu-item (click)="navigateTo('/reports')">Uptime</button>
             </mat-menu>
             <button mat-menu-item (click)="navigateTo('/log/system')">
+              <mat-icon>terminal</mat-icon>
               <span>System log</span>
             </button>
             <button mat-menu-item (click)="navigateTo('/log/pay')">
+              <mat-icon>payment</mat-icon>
               <span>Payment log</span>
             </button>
             <button mat-menu-item (click)="navigateTo('/users')">
+              <mat-icon>people</mat-icon>
               <span>Users list</span>
             </button>
             <button mat-menu-item (click)="navigateTo('/user-tags')">
+              <mat-icon>sell</mat-icon>
               <span>User tags</span>
             </button>
             <button mat-menu-item (click)="navigateTo('/transactions')">
+              <mat-icon>receipt</mat-icon>
               <span>Transactions</span>
             </button>
           }
           <button mat-menu-item [matMenuTriggerFor]="mobileLegalMenu">
+            <mat-icon>gavel</mat-icon>
             <span>Legal</span>
           </button>
           <mat-menu #mobileLegalMenu="matMenu">

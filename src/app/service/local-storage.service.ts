@@ -7,6 +7,7 @@ import {RedirectUrl} from "../models/redirect-url";
 
 export class LocalStorageService {
   private readonly ALWAYS_LOAD_ALL_CHARGERS_KEY = 'alwaysLoadAllChargers';
+  private readonly START_PAGE_KEY = 'startPage';
 
   getAlwaysLoadAllChargers(): boolean {
     return localStorage.getItem(this.ALWAYS_LOAD_ALL_CHARGERS_KEY) === 'true';
@@ -14,6 +15,14 @@ export class LocalStorageService {
 
   setAlwaysLoadAllChargers(value: boolean): void {
     localStorage.setItem(this.ALWAYS_LOAD_ALL_CHARGERS_KEY, String(value));
+  }
+
+  getStartPage(): string | null {
+    return localStorage.getItem(this.START_PAGE_KEY);
+  }
+
+  setStartPage(value: string): void {
+    localStorage.setItem(this.START_PAGE_KEY, value);
   }
 
   saveRedirectUrl(charge_point_id: string, connector_id:number): void {

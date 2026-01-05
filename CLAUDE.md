@@ -88,3 +88,7 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`) deploys to wattbrews.me
 
 - [Design Policy](docs/DESIGN_POLICY.md) - UI/UX standards, color palette, component patterns, accessibility guidelines
 - [Design Audit Report](docs/DESIGN_AUDIT_REPORT.md) - Compliance audit findings and action items
+
+## Claude Code Preferences
+
+- Do not run builds (`npm run build`) - user will run builds manually

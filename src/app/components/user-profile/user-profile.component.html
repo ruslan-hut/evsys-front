@@ -22,6 +22,27 @@
 <mat-card class="settings-card">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
+      <mat-icon>home</mat-icon> Start Page
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="theme-selector">
+      <mat-label>Start Page</mat-label>
+      <mat-select [value]="currentStartPage" (selectionChange)="onStartPageChange($event.value)">
+        @for (option of availableStartPageOptions; track option.value) {
+          <mat-option [value]="option.value">
+            <mat-icon class="theme-option-icon">{{ option.icon }}</mat-icon>
+            {{ option.label }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title class="title-with-icon">
       <mat-icon>ev_station</mat-icon> Chargers
     </mat-card-title>
   </mat-card-header>
