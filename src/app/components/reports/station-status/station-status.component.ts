@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -48,7 +49,8 @@ export class StationStatusComponent implements OnInit, OnDestroy {
   constructor(
     private statsService: StatsService,
     private breakpointObserver: BreakpointObserver,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) {
     this.isMobile$ = this.breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
@@ -146,5 +148,9 @@ export class StationStatusComponent implements OnInit, OnDestroy {
 
   refresh(): void {
     this.loadData();
+  }
+
+  navigateToStation(chargePointId: string): void {
+    this.router.navigate(['/points-info', { id: chargePointId }]);
   }
 }

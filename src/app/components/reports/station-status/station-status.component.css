@@ -53,6 +53,7 @@
 
 .station-card {
   border-left: 4px solid var(--color-border);
+  cursor: pointer;
 }
 
 .station-card.online {

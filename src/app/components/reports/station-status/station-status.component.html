@@ -42,7 +42,7 @@
 
 <div class="status-grid">
   @for (station of stations; track station.charge_point_id) {
-    <mat-card class="station-card" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
+    <mat-card class="station-card" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)" (click)="navigateToStation(station.charge_point_id)">
       <mat-card-header>
         <mat-card-title class="station-id">{{ station.charge_point_id }}</mat-card-title>
       </mat-card-header>

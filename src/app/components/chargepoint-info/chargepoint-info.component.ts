@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ChargepointService } from '../../service/chargepoint.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Chargepoint } from '../../models/chargepoint';
 import { MatDialog } from '@angular/material/dialog';
 import { BasicDialogComponent } from '../dialogs/basic/basic-dialog.component';
@@ -38,7 +39,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
     private chargePointService: ChargepointService,
     public timeService: TimeService,
     private route: ActivatedRoute,
-    private router: Router,
+    private location: Location,
     public dialog: MatDialog,
     private csService: CSService,
   ) {}
@@ -63,7 +64,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    this.router.navigate(['/points']).then(() => {});
+    this.location.back();
   }
 
   reboot(mode: number): void {
