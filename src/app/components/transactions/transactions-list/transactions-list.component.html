@@ -152,6 +152,15 @@
     </div>
   }
 
+  <!-- Summary -->
+  @if (dataSource.filteredData.length > 0) {
+    <div class="transactions-summary">
+      <span class="summary-label">Total consumed:</span>
+      <span class="summary-value">{{ totalConsumedKWh | number:'1.2-2' }} kWh</span>
+      <span class="summary-count">({{ dataSource.filteredData.length }} transactions)</span>
+    </div>
+  }
+
   <!-- Mobile Card Layout -->
   @if (isMobile$ | async) {
     <mat-accordion class="transaction-accordion">

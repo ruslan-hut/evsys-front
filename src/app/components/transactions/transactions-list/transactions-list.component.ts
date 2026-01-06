@@ -270,4 +270,8 @@ export class TransactionsListComponent implements OnInit {
     const startIndex = paginator.pageIndex * paginator.pageSize;
     return filtered.slice(startIndex, startIndex + paginator.pageSize);
   }
+
+  get totalConsumedKWh(): number {
+    return this.dataSource.filteredData.reduce((sum, row) => sum + calculateConsumed(row), 0) / 1000;
+  }
 }
