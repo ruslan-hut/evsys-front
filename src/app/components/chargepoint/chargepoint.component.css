@@ -106,6 +106,25 @@ mat-card-title {
   gap: var(--spacing-xs);
 }
 
+/* Scrollbar styling */
+.connector-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.connector-container::-webkit-scrollbar-track {
+  background: var(--color-border-light);
+  border-radius: 3px;
+}
+
+.connector-container::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.connector-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
 app-connector {
   margin: var(--spacing-xs) 0 0 0;
 }

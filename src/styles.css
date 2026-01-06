@@ -163,6 +163,7 @@
   --mat-select-panel-background-color: var(--color-surface);
   --mat-menu-container-color: var(--color-surface);
   --mat-menu-item-label-text-color: var(--color-text-primary);
+  --mat-menu-item-icon-color: var(--color-text-primary);
   --mdc-dialog-container-color: var(--color-surface);
   --mat-toolbar-container-background-color: #1a1a2e;
   --mat-table-background-color: var(--color-surface);
@@ -371,6 +372,11 @@
 
 .dark-theme .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
   background-color: var(--color-background-light);
+}
+
+/* Menu item icon color for dark theme */
+.dark-theme .mat-mdc-menu-item .mat-icon {
+  color: var(--color-text-primary);
 }
 
 /* Date picker overrides for dark theme */
