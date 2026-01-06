@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -125,7 +126,8 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
 
   constructor(
     private statsService: StatsService,
-    private chargepointService: ChargepointService
+    private chargepointService: ChargepointService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -246,5 +248,9 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
 
   onStationChange(): void {
     this.loadData();
+  }
+
+  navigateToStation(chargePointId: string): void {
+    this.router.navigate(['/points-info', { id: chargePointId }]);
   }
 }

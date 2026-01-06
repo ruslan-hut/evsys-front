@@ -35,8 +35,7 @@
   background-color: var(--color-surface);
   width: 100%;
   max-width: 250px;
-  min-height: var(--touch-target-min);
-  height: fit-content;
+  height: 80px;
   z-index: 0;
   box-sizing: border-box;
 }
@@ -110,8 +109,8 @@
 }
 
 .fix-width {
-  width: 100%;
-  max-width: 160px;
+  width: 160px;
+  flex-shrink: 0;
 }
 
 .button-container {
@@ -121,62 +120,3 @@
   gap: var(--spacing-sm);
 }
 
-/* Responsive breakpoints */
-@media screen and (max-width: 599px) {
-  .custom-button {
-    max-width: 100%;
-    padding: var(--spacing-sm);
-  }
-
-  .fix-width {
-    max-width: 100%;
-  }
-
-  .button-container {
-    flex-direction: column;
-  }
-
-  .title-container {
-    vertical-align: top;
-  }
-
-  .space {
-    height: var(--spacing-xs);
-  }
-
-  /* Compact mobile layout - info in one line */
-  .connector-info {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--spacing-sm);
-    flex-wrap: wrap;
-  }
-
-  .info-item {
-    margin-bottom: 0;
-  }
-
-  /* Hide status text on mobile - background color indicates status */
-  .status-item {
-    display: none;
-  }
-
-  .connector-number {
-    font-size: 20px;
-  }
-
-  .info-text {
-    font-size: 12px;
-  }
-
-  .icon {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-@media screen and (min-width: 600px) and (max-width: 899px) {
-  .custom-button {
-    max-width: 200px;
-  }
-}

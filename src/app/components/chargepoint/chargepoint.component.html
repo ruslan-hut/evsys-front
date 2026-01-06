@@ -1,14 +1,16 @@
 
 <mat-card class="chargepoint-card">
-  <span class="status-dot"
-        [class.status-green]="getStatusColor() === 'green'"
-        [class.status-yellow]="getStatusColor() === 'yellow'"
-        [class.status-red]="getStatusColor() === 'red'"
-        [attr.aria-label]="getStatusLabel()"
-        role="img">
-  </span>
   <mat-card-header>
-    <mat-card-title>{{chargepoint.title}}</mat-card-title>
+    <mat-card-title>
+      <span class="status-dot"
+            [class.status-green]="getStatusColor() === 'green'"
+            [class.status-yellow]="getStatusColor() === 'yellow'"
+            [class.status-red]="getStatusColor() === 'red'"
+            [attr.aria-label]="getStatusLabel()"
+            role="img">
+      </span>
+      {{chargepoint.title}}
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div>

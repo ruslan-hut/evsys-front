@@ -43,29 +43,16 @@
 <div class="status-grid">
   @for (station of stations; track station.charge_point_id) {
     <mat-card class="station-card" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)" (click)="navigateToStation(station.charge_point_id)">
-      <mat-card-header>
-        <mat-card-title class="station-id">{{ station.charge_point_id }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="status-row">
-          <span class="status-indicator" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
-            {{ station.state }}
-          </span>
-          <span class="duration-value" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
-            {{ formatDuration(station.duration_seconds) }}
-          </span>
-        </div>
-        <div class="since-row">
-          <span class="since-label">Since:</span>
-          <span class="since-value">{{ formatSince(station.since) }}</span>
-        </div>
-<!--        @if (station.last_event_text) {-->
-<!--          <div class="event-row">-->
-<!--            <span class="event-label">Event:</span>-->
-<!--            <span class="event-value">{{ station.last_event_text }}</span>-->
-<!--          </div>-->
-<!--        }-->
-      </mat-card-content>
+      <div class="card-content">
+        <span class="station-id">{{ station.charge_point_id }}</span>
+        <span class="status-indicator" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
+          {{ station.state }}
+        </span>
+        <span class="duration-value" [class.online]="isOnline(station)" [class.offline]="!isOnline(station)">
+          {{ formatDuration(station.duration_seconds) }}
+        </span>
+        <span class="since-value">{{ formatSince(station.since) }}</span>
+      </div>
     </mat-card>
   }
 </div>

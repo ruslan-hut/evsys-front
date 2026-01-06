@@ -46,9 +46,9 @@
 }
 
 .status-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
 .station-card {
@@ -64,17 +64,18 @@
   border-left-color: var(--color-error);
 }
 
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
 .station-id {
   font-size: 16px;
   font-weight: 600;
   color: var(--color-accent);
-}
-
-.status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-sm);
+  min-width: 120px;
 }
 
 .status-indicator {
@@ -84,6 +85,8 @@
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+  min-width: 60px;
+  text-align: center;
 }
 
 .status-indicator.online {
@@ -97,8 +100,9 @@
 }
 
 .duration-value {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
+  min-width: 80px;
 }
 
 .duration-value.online {
@@ -109,27 +113,10 @@
   color: var(--color-error);
 }
 
-.since-row,
-.event-row {
-  display: flex;
-  justify-content: space-between;
+.since-value {
+  color: var(--color-text-secondary);
   font-size: 13px;
-  margin-bottom: 4px;
-}
-
-.since-label,
-.event-label {
-  color: var(--color-text-muted);
-}
-
-.since-value,
-.event-value {
-  color: var(--color-text-primary);
-  font-weight: 500;
-}
-
-.event-value {
-  font-style: italic;
+  margin-left: auto;
 }
 
 .no-data {
@@ -162,7 +149,21 @@
   }
 
   .status-grid {
-    grid-template-columns: 1fr;
     padding-bottom: 80px;
+  }
+
+  .card-content {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .station-id {
+    min-width: auto;
+    flex: 1;
+  }
+
+  .since-value {
+    width: 100%;
+    margin-left: 0;
   }
 }
