@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, OnDestroy, Optional } from '@angular/core';
+import { Component, Inject, Input, OnInit, OnDestroy, Optional, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { Connector } from '../../models/connector';
@@ -22,26 +22,28 @@ import { NgClass } from '@angular/common';
   templateUrl: './connector-info.component.html',
   styleUrls: ['./connector-info.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, NgClass]
 })
 export class ConnectorInfoComponent implements OnInit, OnDestroy {
+  private readonly csService = inject(CSService);
+  private readonly errorService = inject(ErrorService);
+  private readonly chargePointService = inject(ChargepointService);
+  private readonly accountService = inject(AccountService);
+  private readonly router = inject(Router);
+  readonly dialog = inject(MatDialog);
+  readonly timeService = inject(TimeService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>, { optional: true });
+  readonly data = inject<Connector>(MAT_DIALOG_DATA, { optional: true });
+
   private destroy$ = new Subject<void>();
 
   @Input() connector: Connector | undefined;
 
-  constructor(
-    private csService: CSService,
-    private errorService: ErrorService,
-    private chargePointService: ChargepointService,
-    private accountService: AccountService,
-    private router: Router,
-    public dialog: MatDialog,
-    public timeService: TimeService,
-    @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data?: Connector,
-  ) {
-    if (data) {
-      this.connector = data;
+  constructor() {
+    if (this.data) {
+      this.connector = this.data;
     }
   }
 
@@ -63,6 +65,7 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
             });
           }
         });
+        this.cdr.markForCheck();
       });
     }
   }

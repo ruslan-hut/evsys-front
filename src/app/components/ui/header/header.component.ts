@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Router } from "@angular/router";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
@@ -16,23 +16,22 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, AsyncPipe]
+  imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, AfterContentChecked {
+  private readonly router = inject(Router);
+  readonly errorService = inject(ErrorService);
+  private readonly accountService = inject(AccountService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   title = 'WattBrews';
   username = '';
   menuEnabled = false;
 
   isAdmin = false;
   isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset);
-
-  constructor(
-    private router: Router,
-    public errorService: ErrorService,
-    private accountService: AccountService,
-    private breakpointObserver: BreakpointObserver
-  ) {
-  }
 
   navigateTo(destination: string) {
     this.router.navigateByUrl(destination).then(r => {
@@ -60,6 +59,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
         this.username = '';
         this.isAdmin = false;
       }
+      this.cdr.markForCheck();
     })
   }
 

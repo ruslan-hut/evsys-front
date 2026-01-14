@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -20,21 +20,21 @@ import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
   templateUrl: './promo.component.html',
   styleUrls: ['./promo.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, MatCardActions, MatIcon, SortConnectorsPipe]
 })
 export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  readonly dialog = inject(MatDialog);
+  private readonly chargePointService = inject(ChargepointService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
   private promoCode: string;
 
   chargePointId: string;
   chargePoint: Chargepoint;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    public dialog: MatDialog,
-    private chargePointService: ChargepointService,
-  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(
@@ -49,6 +49,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     ).subscribe((chargePoint) => {
       this.chargePoint = chargePoint;
+      this.cdr.markForCheck();
     });
   }
 

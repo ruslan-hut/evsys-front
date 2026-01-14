@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import {TariffService} from "../../service/tariff.service";
 import {Tariff} from "../../models/tariff";
 import { CurrencyPipe } from '@angular/common';
@@ -10,20 +10,18 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
     templateUrl: './tariff.component.html',
     styleUrl: './tariff.component.css',
     standalone: true,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, CurrencyPipe]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, CurrencyPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TariffComponent implements OnInit {
+  private readonly tariffService = inject(TariffService);
 
-  tariffData: Tariff;
+  tariffData!: Tariff;
 
   displayedColumns: string[] = ["tariffID", "network", "country", "price"];
 
-  constructor(
-    private TariffService: TariffService,
-  ) { }
-
   ngOnInit(): void {
-    this.tariffData = this.TariffService.getTariff();
+    this.tariffData = this.tariffService.getTariff();
   }
 
   getUpdatedString(): string {

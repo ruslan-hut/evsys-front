@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ChargepointService } from '../../service/chargepoint.service';
@@ -13,18 +13,18 @@ import { MatFabButton } from '@angular/material/button';
   templateUrl: './promo-list.component.html',
   styleUrls: ['./promo-list.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatFabButton]
 })
 export class PromoListComponent implements OnInit, AfterContentInit, OnDestroy {
+  private readonly chargePointService = inject(ChargepointService);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
 
   loading = false;
   dataSource = new MatTableDataSource<Chargepoint>();
-
-  constructor(
-    private chargePointService: ChargepointService,
-    private router: Router,
-  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -34,6 +34,7 @@ export class PromoListComponent implements OnInit, AfterContentInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe((chargePoints) => {
       this.dataSource.data = chargePoints;
+      this.cdr.markForCheck();
     });
   }
 
@@ -43,6 +44,7 @@ export class PromoListComponent implements OnInit, AfterContentInit, OnDestroy {
       this.dataSource.data = data;
     }
     this.loading = false;
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {

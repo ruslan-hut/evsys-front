@@ -1,5 +1,5 @@
-import {Component, Inject} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import {Component, ChangeDetectionStrategy, inject} from '@angular/core';
+import { MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -11,6 +11,7 @@ import { MatButton } from '@angular/material/button';
     templateUrl: './promo-dialog.component.html',
     styleUrls: ['./promo-dialog.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatDialogTitle,
         CdkScrollable,
@@ -23,10 +24,9 @@ import { MatButton } from '@angular/material/button';
     ],
 })
 export class PromoDialogComponent {
+  readonly dialogRef = inject(MatDialogRef<PromoDialogComponent>);
+
   promoCode: string;
-  constructor(public dialogRef: MatDialogRef<PromoDialogComponent>,
-  ) {
-  }
 
   confirm(){
     if(this.promoCode == null || this.promoCode == '' || this.promoCode == undefined){

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core"
+import { Component, Input, ChangeDetectionStrategy, inject } from "@angular/core"
 import {Chargepoint} from "../../models/chargepoint";
 import { Router } from '@angular/router';
 import {AccountService} from "../../service/account.service";
@@ -14,16 +14,15 @@ import { SortConnectorsPipe } from "../pipes/sortConnectorsPipe";
     templateUrl: './chargepoint.component.html',
     styleUrls: ['./chargepoint.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ConnectorComponent, MatCardActions, MatIconButton, MatIcon, SortConnectorsPipe]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ConnectorComponent, MatCardActions, MatIconButton, MatIcon, SortConnectorsPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChargepointComponent{
-  @Input() chargepoint: Chargepoint
+export class ChargepointComponent {
+  private readonly router = inject(Router);
+  readonly accountService = inject(AccountService);
+  readonly timeService = inject(TimeService);
 
-  constructor(
-    private router: Router,
-    public accountService: AccountService,
-    public timeService: TimeService
-  ) { }
+  @Input() chargepoint!: Chargepoint;
 
   /**
    * Returns the status indicator color:

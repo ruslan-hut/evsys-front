@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow} from '@angular/material/table';
@@ -31,6 +31,7 @@ import {Chargepoint} from '../../../models/chargepoint';
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,
     MatFormField,
@@ -73,6 +74,14 @@ import {Chargepoint} from '../../../models/chargepoint';
   ]
 })
 export class TransactionsListComponent implements OnInit {
+  private readonly transactionService = inject(TransactionService);
+  private readonly chargepointService = inject(ChargepointService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly errorService = inject(ErrorService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   displayedColumns: string[] = [
     'transaction_id', 'id_tag', 'charge_point_id', 'connector_id',
     'time_start', 'time_stop', 'consumed',
@@ -112,19 +121,11 @@ export class TransactionsListComponent implements OnInit {
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(
-    private transactionService: TransactionService,
-    private chargepointService: ChargepointService,
-    private breakpointObserver: BreakpointObserver,
-    private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
     // Load charge points for filter dropdown
     this.chargepointService.getChargePoints().subscribe(points => {
       this.chargePoints = points;
+      this.cdr.markForCheck();
     });
 
     // Read query params for initial filtering
@@ -166,10 +167,12 @@ export class TransactionsListComponent implements OnInit {
       next: (transactions) => {
         this.dataSource.data = transactions;
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.errorService.handle('Failed to load transactions');
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }

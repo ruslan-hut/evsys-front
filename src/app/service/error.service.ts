@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ErrorService {
-  error$ = new Subject<string>()
-  handle(message: string) {
-    this.error$.next(message)
+export class ErrorService implements OnDestroy {
+  private errorSubject = new Subject<string>();
+  readonly error$ = this.errorSubject.asObservable();
+
+  handle(message: string): void {
+    this.errorSubject.next(message);
   }
-  // clear() {
-  //   this.error$.next("")
-  // }
+
+  ngOnDestroy(): void {
+    this.errorSubject.complete();
+  }
 }

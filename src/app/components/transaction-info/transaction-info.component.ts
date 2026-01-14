@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TransactionService } from '../../service/transaction.service';
@@ -17,23 +17,25 @@ import { MatButton } from '@angular/material/button';
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe]
 })
 export class TransactionInfoComponent implements OnInit, OnDestroy {
+  private readonly csService = inject(CSService);
+  readonly dialog = inject(MatDialog);
+  private readonly transactionService = inject(TransactionService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>, { optional: true });
+  readonly data = inject<number>(MAT_DIALOG_DATA, { optional: true });
+
   private destroy$ = new Subject<void>();
 
-  transaction: Transaction;
+  transaction!: Transaction;
   transactionId = -1;
 
-  constructor(
-    private csService: CSService,
-    public dialog: MatDialog,
-    private transactionService: TransactionService,
-    @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data?: number,
-  ) {
-    if (data) {
-      this.transactionId = data;
+  constructor() {
+    if (this.data) {
+      this.transactionId = this.data;
     }
   }
 
@@ -43,6 +45,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe((transaction) => {
         this.transaction = transaction;
+        this.cdr.markForCheck();
 
         this.transactionService.subscribeOnUpdates(
           this.transactionId,
@@ -57,6 +60,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
           const updated = transactions.find(t => t.transaction_id === this.transactionId);
           if (updated) {
             this.transaction = updated;
+            this.cdr.markForCheck();
           }
         });
       });

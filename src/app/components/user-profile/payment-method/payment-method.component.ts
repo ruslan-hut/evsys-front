@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { PaymentMethod } from "../../../models/payment-method";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader } from "@angular/material/card";
 import { MatIcon } from "@angular/material/icon";
@@ -17,6 +17,7 @@ import { environment } from "../../../../environments/environment";
 @Component({
   selector: 'app-payment-method',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardActions,
@@ -32,16 +33,14 @@ import { environment } from "../../../../environments/environment";
   styleUrl: './payment-method.component.css'
 })
 export class PaymentMethodComponent implements OnInit {
-  @Input() paymentMethod: PaymentMethod
+  private readonly accountService = inject(AccountService);
+  private readonly errorService = inject(ErrorService);
+  readonly dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  @Input() paymentMethod: PaymentMethod;
   isEditing: boolean = false;
   description: string = '';
-
-  constructor(
-    private accountService: AccountService,
-    private errorService: ErrorService,
-    public dialog: MatDialog,
-  ) {
-  }
 
   ngOnInit(): void {
     this.description = this.paymentMethod.description
@@ -76,6 +75,7 @@ export class PaymentMethodComponent implements OnInit {
           }
           this.errorService.handle("Failed to set default payment method")
         }
+        this.cdr.markForCheck();
       });
   }
 
@@ -108,6 +108,7 @@ export class PaymentMethodComponent implements OnInit {
               console.log(result)
               this.errorService.handle("Failed to delete payment method")
             }
+            this.cdr.markForCheck();
           });
       }
     });
@@ -124,6 +125,7 @@ export class PaymentMethodComponent implements OnInit {
           }
           this.errorService.handle("Failed to update payment method")
         }
+        this.cdr.markForCheck();
       }
     )
     this.isEditing = false;

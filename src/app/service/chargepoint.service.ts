@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
@@ -15,6 +15,11 @@ import { CsCommandResponse } from '../models/cs-command-response';
   providedIn: 'root'
 })
 export class ChargepointService implements OnDestroy {
+  private readonly http = inject(HttpClient);
+  private readonly websocketService = inject(WebsocketService);
+  private readonly errorService = inject(ErrorService);
+  private readonly accountService = inject(AccountService);
+
   private chargePoints: Chargepoint[] = [];
   private chargePoints$ = new BehaviorSubject<Chargepoint[]>([]);
 
@@ -23,12 +28,7 @@ export class ChargepointService implements OnDestroy {
   private isSubscribed = false;
   private isInitialized = false;
 
-  constructor(
-    private http: HttpClient,
-    private websocketService: WebsocketService,
-    private errorService: ErrorService,
-    private accountService: AccountService,
-  ) {
+  constructor() {
     // Initialize once when user logs in
     this.accountService.user$.pipe(
       takeUntil(this.destroy$),

@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import {catchError, Observable, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ErrorService} from "./error.service";
@@ -11,12 +11,8 @@ import {CsResponse} from "../models/cs-response";
   providedIn: 'root'
 })
 export class CSService {
-
-  constructor(
-    private http: HttpClient,
-    private errorService: ErrorService,
-  ) {
-  }
+  private readonly http = inject(HttpClient);
+  private readonly errorService = inject(ErrorService);
 
   private errorHandler(err: HttpErrorResponse) {
     this.errorService.handle(err.message)

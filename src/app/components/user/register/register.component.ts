@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {AccountService} from "../../../service/account.service";
 import {Router} from "@angular/router";
@@ -16,19 +16,19 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatInput, MatCardActions, MatButton, MatCardFooter, MatProgressBar]
 })
-export class RegisterComponent implements OnInit{
-  form: FormGroup;
+export class RegisterComponent implements OnInit {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accountService = inject(AccountService);
+  private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  form!: FormGroup;
   loading = false;
   submitted = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private accountService: AccountService,
-    private router : Router,
-    private errorService: ErrorService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -65,6 +65,7 @@ export class RegisterComponent implements OnInit{
             this.errorService.handle("Failed to register, please try again later");
           }
           this.loading = false;
+          this.cdr.markForCheck();
         }
       });
   }

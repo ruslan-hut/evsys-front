@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from '@angular/material/table';
@@ -26,6 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,
     MatFormField,
@@ -56,6 +57,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
   ]
 })
 export class UsersComponent implements OnInit {
+  readonly account = inject(AccountService);
+  readonly dialog = inject(MatDialog);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly errorService = inject(ErrorService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   displayedColumn: string[] = ['username', 'name', 'last_seen', 'actions'];
   filter: string = '';
   loading = false;
@@ -73,18 +80,12 @@ export class UsersComponent implements OnInit {
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(
-    public account: AccountService,
-    public dialog: MatDialog,
-    private breakpointObserver: BreakpointObserver,
-    private errorService: ErrorService
-  ) {}
-
   ngOnInit(): void {
     this.loading = true;
     this.account.getAll().subscribe((users) => {
       this.dataSource.data = users;
       this.loading = false;
+      this.cdr.markForCheck();
     });
   }
 
@@ -147,6 +148,7 @@ export class UsersComponent implements OnInit {
         this.account.deleteUser(username).subscribe({
           next: () => {
             this.dataSource.data = this.dataSource.data.filter(u => u.username !== username);
+            this.cdr.markForCheck();
           },
           error: () => {
             this.errorService.handle('Failed to delete user');

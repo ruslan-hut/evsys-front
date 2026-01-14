@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AccountService} from "../../../service/account.service";
 import { FormsModule } from '@angular/forms';
@@ -12,19 +12,18 @@ declare var storeIdOper: any;
     styleUrls: ['./bank-service.component.css'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule]
 })
 export class BankServiceComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly accountService = inject(AccountService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   language: string = 'ES';
   authToken: string = '';
   token: string = '';
   errorCode: string = '';
-
-  constructor(
-    private route: ActivatedRoute,
-    private accountService: AccountService
-  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -33,6 +32,7 @@ export class BankServiceComponent implements OnInit {
       if (this.authToken) {
         this.accountService.loginWithToken(this.authToken)
       }
+      this.cdr.markForCheck();
     });
     this.setupEventListener();
     this.getInSiteForm();

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow} from '@angular/material/table';
@@ -26,6 +26,7 @@ import {MatChip} from '@angular/material/chips';
   templateUrl: './user-tags.component.html',
   styleUrls: ['./user-tags.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,
     MatFormField,
@@ -56,6 +57,13 @@ import {MatChip} from '@angular/material/chips';
   ]
 })
 export class UserTagsComponent implements OnInit {
+  private readonly userTagService = inject(UserTagService);
+  readonly dialog = inject(MatDialog);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly errorService = inject(ErrorService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   displayedColumns: string[] = ['id_tag', 'username', 'source', 'note', 'last_seen', 'actions'];
   filter: string = '';
   loading = false;
@@ -71,14 +79,6 @@ export class UserTagsComponent implements OnInit {
   @ViewChild(MatSort) set sort(sorter: MatSort) {
     if (sorter) this.dataSource.sort = sorter;
   }
-
-  constructor(
-    private userTagService: UserTagService,
-    public dialog: MatDialog,
-    private breakpointObserver: BreakpointObserver,
-    private errorService: ErrorService,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     const usernameParam = this.route.snapshot.queryParamMap.get('username');
@@ -97,10 +97,12 @@ export class UserTagsComponent implements OnInit {
           this.applyFilter(this.filter);
         }
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.errorService.handle('Failed to load user tags');
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -153,6 +155,7 @@ export class UserTagsComponent implements OnInit {
         this.userTagService.delete(idTag).subscribe({
           next: () => {
             this.dataSource.data = this.dataSource.data.filter(t => t.id_tag !== idTag);
+            this.cdr.markForCheck();
           },
           error: () => {
             this.errorService.handle('Failed to delete tag');

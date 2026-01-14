@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import {environment} from "../../environments/environment";
 import {FirebaseApp,initializeApp} from "firebase/app";
@@ -10,12 +10,9 @@ import {AccountService} from "./account.service";
   providedIn: 'root'
 })
 export class FirebaseService {
+  private readonly accountService = inject(AccountService);
 
-  private app: FirebaseApp;
-
-  constructor(
-    private accountService: AccountService,
-  ) { }
+  private app!: FirebaseApp;
 
   loadConfig(): Promise<boolean> {
     const config = environment.firebaseConfig;

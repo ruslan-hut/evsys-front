@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, timer } from 'rxjs';
 import { catchError, filter, finalize, map, retry, take, takeUntil } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
@@ -13,6 +13,8 @@ import { WsChannel, channelKey, parseChannelKey } from '../models/ws-channel';
   providedIn: 'root'
 })
 export class WebsocketService implements OnDestroy {
+  private readonly accountService = inject(AccountService);
+
   // Connection state machine
   private connectionState = new BehaviorSubject<WsConnectionState>(WsConnectionState.DISCONNECTED);
   connectionState$ = this.connectionState.asObservable();
@@ -43,7 +45,7 @@ export class WebsocketService implements OnDestroy {
   // Connection tracking
   private connectionCount = 0;
 
-  constructor(private accountService: AccountService) {
+  constructor() {
     // Listen for token changes (don't trigger reconnect, just update token)
     this.accountService.user$.pipe(
       takeUntil(this.destroy$)

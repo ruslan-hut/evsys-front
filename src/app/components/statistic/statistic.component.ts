@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import {MonthStats} from "../../models/month-stats";
 import {UserStats} from "../../models/user-stats";
 import {StatsService} from "../../service/stats.service";
@@ -21,9 +21,12 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
     templateUrl: './statistic.component.html',
     styleUrl: './statistic.component.css',
     standalone: true,
-    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressBar, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe]
+    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressBar, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatisticComponent {
+  private readonly statsService = inject(StatsService);
+  private readonly cdr = inject(ChangeDetectorRef);
   monthStats: MonthStats[] = [];
   userStats: UserStats[] = [];
 
@@ -54,9 +57,7 @@ export class StatisticComponent {
   totalMonthWatts = 0;
   avgMonthWatts = 0;
 
-  constructor(
-    private statsService: StatsService
-  ) {
+  constructor() {
     this.groups = this.statsService.getGroups()
     this.selectedGroup = this.groups[0].id;
     this.updateDisplayedData();
@@ -124,6 +125,7 @@ export class StatisticComponent {
     }
     this.calculateAggregates();
     this.inProgress = false;
+    this.cdr.markForCheck();
   }
 
   // Method to request data

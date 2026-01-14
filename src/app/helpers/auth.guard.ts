@@ -1,28 +1,15 @@
-import {inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot} from '@angular/router';
-import {AccountService} from "../service/account.service";
-import {environment} from "../../environments/environment";
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
+import { AccountService } from '../service/account.service';
+import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard {
+export const authGuard: CanActivateFn = () => {
+  const accountService = inject(AccountService);
+  const user = accountService.userValue;
 
-  constructor(
-    private accountService: AccountService
-  ) {
+  if (!user) {
+    return false;
   }
 
-  canActivate(): boolean {
-    const user = this.accountService.userValue;
-    if (!user) {
-      return false;
-    }
-    return user.role === environment.admin || user.role === environment.operator;
-  }
-
-}
-
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  return inject(AuthGuard).canActivate();
-}
+  return user.role === environment.admin || user.role === environment.operator;
+};

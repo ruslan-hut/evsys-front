@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -46,6 +46,7 @@ interface ChartDataPoint {
   templateUrl: './station-uptime.component.html',
   styleUrl: './station-uptime.component.css',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,
     DecimalPipe,
@@ -93,6 +94,11 @@ interface ChartDataPoint {
   ]
 })
 export class StationUptimeComponent implements OnInit, OnDestroy {
+  private readonly statsService = inject(StatsService);
+  private readonly chargepointService = inject(ChargepointService);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
 
   stations: StationUptime[] = [];
@@ -124,12 +130,6 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
     domain: ['#4caf50', '#ff9800', '#f44336', '#3f51b5', '#9c27b0', '#00bcd4', '#795548', '#607d8b']
   };
 
-  constructor(
-    private statsService: StatsService,
-    private chargepointService: ChargepointService,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
     this.setRange(this.getLast30Days());
     this.loadChargePoints();
@@ -147,6 +147,7 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: points => {
           this.chargePoints = points.map(p => ({ id: p.charge_point_id || '', title: p.title || p.charge_point_id || '' }));
+          this.cdr.markForCheck();
         }
       });
   }
@@ -163,9 +164,11 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
           this.transformChartData();
           this.calculateSummary();
           this.loading = false;
+          this.cdr.markForCheck();
         },
         error: () => {
           this.loading = false;
+          this.cdr.markForCheck();
         }
       });
   }

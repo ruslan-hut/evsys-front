@@ -1,15 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideServiceWorker } from '@angular/service-worker';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
-        RouterTestingModule
-    ],
-    declarations: [AppComponent],
-}).compileComponents();
+      imports: [AppComponent],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideServiceWorker('ngsw-worker.js', { enabled: false })
+      ]
+    }).compileComponents();
   });
 
   it('should create the app', () => {
@@ -18,16 +22,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'evsys-front'`, () => {
+  it(`should have as title 'WattBrews'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('evsys-front');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('evsys-front app is running!');
+    expect(app.title).toEqual('WattBrews');
   });
 });

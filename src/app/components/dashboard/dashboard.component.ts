@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -61,9 +61,13 @@ interface SummaryMetrics {
     MatMenuTrigger, MatMenu, MatMenuItem,
     MatProgressBar,
     NgxChartsModule
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  private readonly statsService = inject(StatsService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
 
   monthStats: MonthStats[] = [];
@@ -106,8 +110,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   };
 
   legendPosition = LegendPosition.Below;
-
-  constructor(private statsService: StatsService) {}
 
   ngOnInit(): void {
     this.groups = this.statsService.getGroups();
@@ -215,6 +217,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loadingCount--;
     if (this.loadingCount <= 0) {
       this.inProgress = false;
+      this.cdr.markForCheck();
       // Trigger resize to recalculate chart dimensions
       setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     }

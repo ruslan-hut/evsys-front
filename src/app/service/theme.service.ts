@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
@@ -7,6 +7,8 @@ export type EffectiveTheme = 'light' | 'dark';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
+  private readonly platformId = inject(PLATFORM_ID);
+
   private readonly STORAGE_KEY = 'theme-preference';
   private readonly THEME_CLASS = 'dark-theme';
   private mediaQuery: MediaQueryList | null = null;
@@ -17,7 +19,7 @@ export class ThemeService {
   private effectiveThemeSubject = new BehaviorSubject<EffectiveTheme>('light');
   effectiveTheme$ = this.effectiveThemeSubject.asObservable();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor() {
     if (isPlatformBrowser(this.platformId)) {
       this.initialize();
     }

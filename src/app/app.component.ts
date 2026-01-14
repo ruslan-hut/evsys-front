@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map, take } from 'rxjs';
 
@@ -24,19 +24,20 @@ const PUBLIC_ROUTES = [
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, SnackBarComponent, OfflineBannerComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly accountService = inject(AccountService);
+  private readonly pwaUpdateService = inject(PwaUpdateService); // Inject to initialize update checks
+  private readonly themeService = inject(ThemeService); // Inject to initialize theme
+
   title = 'WattBrews';
   showHeader = true;
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private accountService: AccountService,
-    private pwaUpdateService: PwaUpdateService, // Inject to initialize update checks
-    private themeService: ThemeService // Inject to initialize theme
-  ) {
+  constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.activatedRoute.root),

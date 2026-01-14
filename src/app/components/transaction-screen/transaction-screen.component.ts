@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { Transaction } from '../../models/transaction';
@@ -20,26 +20,28 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './transaction-screen.component.html',
   styleUrl: './transaction-screen.component.css',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardContent, MatProgressBar, MatButton, MatCardActions, MatIcon, DecimalPipe, DatePipe]
 })
 export class TransactionScreenComponent implements OnInit, OnDestroy {
+  readonly dialog = inject(MatDialog);
+  readonly transactionService = inject(TransactionService);
+  readonly accountService = inject(AccountService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
-  private visibilityChangeEvent: () => void;
+  private visibilityChangeEvent!: () => void;
   private isSubscribedToUpdates = false;
 
-  transaction: Transaction;
+  transaction!: Transaction;
   transactionId!: number;
   canStop: boolean = false;
-  chargePoint: Chargepoint;
+  chargePoint!: Chargepoint;
   stopButtonIsDisabled: boolean = false;
 
-  constructor(
-    public dialog: MatDialog,
-    public transactionService: TransactionService,
-    public accountService: AccountService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
+  constructor() {
     this.route.queryParams.pipe(
       takeUntil(this.destroy$)
     ).subscribe((params: Params) => {
@@ -71,6 +73,7 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
 
       this.transaction = transaction;
       this.canStop = transaction.can_stop;
+      this.cdr.markForCheck();
 
       // Subscribe to updates only once
       if (!this.isSubscribedToUpdates) {
@@ -90,6 +93,7 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
         if (updated) {
           this.transaction = updated;
           this.canStop = updated.can_stop;
+          this.cdr.markForCheck();
         }
       });
     });
@@ -102,6 +106,7 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
       if (transaction) {
         this.transaction = transaction;
         this.canStop = transaction.can_stop;
+        this.cdr.markForCheck();
       }
     });
   }

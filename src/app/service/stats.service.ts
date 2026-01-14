@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import {catchError, Observable, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {ErrorService} from "./error.service";
@@ -13,12 +13,8 @@ import {StationStatus} from "../models/station-status";
   providedIn: 'root'
 })
 export class StatsService {
-
-  constructor(
-    private http: HttpClient,
-    private errorService: ErrorService,
-  ) {
-  }
+  private readonly http = inject(HttpClient);
+  private readonly errorService = inject(ErrorService);
 
   private errorHandler(err: HttpErrorResponse) {
     this.errorService.handle(err.message)

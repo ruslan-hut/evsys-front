@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject, combineLatest } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 import { Chargepoint } from '../../models/chargepoint';
@@ -25,30 +25,30 @@ import { MatProgressBar } from '@angular/material/progress-bar';
   templateUrl: './chargepoint-screen.component.html',
   styleUrl: './chargepoint-screen.component.css',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe]
 })
 export class ChargepointScreenComponent implements OnInit, OnDestroy {
+  private readonly authService = inject(AccountService);
+  private readonly chargePointService = inject(ChargepointService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  readonly dialog = inject(MatDialog);
+  private readonly localStorageService = inject(LocalStorageService);
+  readonly transactionService = inject(TransactionService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
 
-  chargePointId: string;
-  connectorId: number;
-  chargePoint: Chargepoint;
+  chargePointId!: string;
+  connectorId!: number;
+  chargePoint!: Chargepoint;
   connectorName: string = '';
   paymentMethod: PaymentMethod | undefined;
   paymentPlan: PaymentPlan | undefined;
   isStarted: boolean = false;
   isAvailable: boolean = false;
   transactionId: number = -1;
-
-  constructor(
-    private authService: AccountService,
-    private chargePointService: ChargepointService,
-    private route: ActivatedRoute,
-    private router: Router,
-    public dialog: MatDialog,
-    private localStorageService: LocalStorageService,
-    public transactionService: TransactionService,
-  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -78,6 +78,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
       }
 
       this.loadChargePointData(user.username);
+      this.cdr.markForCheck();
     });
 
     // Listen for transaction start
@@ -86,6 +87,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
       filter(id => id !== -1)
     ).subscribe((transactionId) => {
       this.transactionId = transactionId;
+      this.cdr.markForCheck();
       this.goToTransaction();
     });
   }
@@ -113,6 +115,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
           this.alertDialog('Connector is not available');
         }
       }
+      this.cdr.markForCheck();
     });
 
     // Load user payment info
@@ -121,6 +124,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
     ).subscribe((info) => {
       this.paymentMethod = info.payment_methods?.find((pm) => pm.is_default);
       this.paymentPlan = info.payment_plans?.find((pp) => pp.is_active);
+      this.cdr.markForCheck();
     });
   }
 

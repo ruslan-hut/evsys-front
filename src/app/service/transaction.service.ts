@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ErrorService } from './error.service';
 import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
@@ -15,10 +15,26 @@ import { AccountService } from './account.service';
   providedIn: 'root'
 })
 export class TransactionService implements OnDestroy {
+  private readonly http = inject(HttpClient);
+  private readonly websocketService = inject(WebsocketService);
+  private readonly errorService = inject(ErrorService);
+  private readonly accountService = inject(AccountService);
+
   private transactions: Transaction[] = [];
   private transactions$ = new BehaviorSubject<Transaction[]>([]);
-  public isWaiting = false;
-  public isStarted = false;
+
+  // UI state as observables for OnPush change detection
+  private isWaitingSubject = new BehaviorSubject<boolean>(false);
+  private isStartedSubject = new BehaviorSubject<boolean>(false);
+  readonly isWaiting$ = this.isWaitingSubject.asObservable();
+  readonly isStarted$ = this.isStartedSubject.asObservable();
+
+  // Sync accessors for backward compatibility
+  get isWaiting(): boolean { return this.isWaitingSubject.value; }
+  set isWaiting(value: boolean) { this.isWaitingSubject.next(value); }
+  get isStarted(): boolean { return this.isStartedSubject.value; }
+  set isStarted(value: boolean) { this.isStartedSubject.next(value); }
+
   public transactionId = new BehaviorSubject<number>(-1);
 
   private destroy$ = new Subject<void>();
@@ -26,12 +42,7 @@ export class TransactionService implements OnDestroy {
   private activeSubscriptions = new Map<string, Subscription>();
   private isInitialized = false;
 
-  constructor(
-    private http: HttpClient,
-    private websocketService: WebsocketService,
-    private errorService: ErrorService,
-    private accountService: AccountService,
-  ) {
+  constructor() {
     // Initialize once when user logs in
     this.accountService.user$.pipe(
       takeUntil(this.destroy$),

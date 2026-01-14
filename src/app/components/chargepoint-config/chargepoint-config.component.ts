@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {Chargepoint} from "../../models/chargepoint";
 import {ChargepointService} from "../../service/chargepoint.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
@@ -21,32 +21,32 @@ import { MatIcon } from '@angular/material/icon';
     templateUrl: './chargepoint-config.component.html',
     styleUrls: ['./chargepoint-config.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatProgressSpinner, MatInput, MatButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatProgressBar, MatCardActions, MatIcon]
 })
 export class ChargepointConfigComponent implements OnInit {
-  chargePointId: string;
-  chargePoint: Chargepoint;
-  chargePointConfig: CsConfigResponse;
+  private readonly chargePointService = inject(ChargepointService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorService);
+  readonly accountService = inject(AccountService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  chargePointId!: string;
+  chargePoint!: Chargepoint;
+  chargePointConfig!: CsConfigResponse;
   displayedColumns: string[] = ['key', 'value', 'actions'];
-  dataSource: MatTableDataSource<ConfigKey>;
+  dataSource!: MatTableDataSource<ConfigKey>;
 
   loading: boolean = true;
   expandedKey: string | null = null;
-
-  constructor(
-    private chargePointService: ChargepointService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private errorService: ErrorService,
-    public accountService: AccountService
-  ) {
-  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.chargePointId = params['id'];
       this.chargePointService.getChargePoint(this.chargePointId).subscribe((chargePoint) => {
-        this.chargePoint= chargePoint;
+        this.chargePoint = chargePoint;
+        this.cdr.markForCheck();
         this.reload();
       });
     });
@@ -77,6 +77,7 @@ export class ChargepointConfigComponent implements OnInit {
         }
 
         this.setLoadingForKey(key, false);
+        this.cdr.markForCheck();
       });
     }
   }
@@ -88,6 +89,7 @@ export class ChargepointConfigComponent implements OnInit {
         this.chargePointConfig = JSON.parse(config.info) as CsConfigResponse;
         this.dataSource = new MatTableDataSource(this.chargePointConfig.configurationKey);
         this.loading = false;
+        this.cdr.markForCheck();
       });
     }
   }

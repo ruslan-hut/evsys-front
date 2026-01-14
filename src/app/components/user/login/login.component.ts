@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
@@ -28,23 +28,23 @@ import { MatInput } from '@angular/material/input';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatCardFooter, MatProgressBar, MatExpansionPanelActionRow, MatButton, FormsModule, ReactiveFormsModule, MatFormField, MatInput]
 })
-export class LoginComponent implements OnInit, AfterViewInit{
-  formUsername: FormGroup;
-  formEmail: FormGroup;
+export class LoginComponent implements OnInit, AfterViewInit {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accountService = inject(AccountService);
+  private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorService);
+  readonly dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  formUsername!: FormGroup;
+  formEmail!: FormGroup;
   loading = false;
   submitted = false;
 
   private storedEmail = localStorage.getItem('emailForSignIn');
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private accountService: AccountService,
-    private router : Router,
-    private errorService: ErrorService,
-    public dialog: MatDialog,
-  ) {}
 
   ngAfterViewInit(): void {
     const auth = getAuth();
@@ -102,6 +102,7 @@ export class LoginComponent implements OnInit, AfterViewInit{
         error: error => {
           this.errorService.handle(error.statusText);
           this.loading = false;
+          this.cdr.markForCheck();
         }
       });
   }
@@ -138,6 +139,7 @@ export class LoginComponent implements OnInit, AfterViewInit{
         error: error => {
           this.errorService.handle(error.statusText);
           this.loading = false;
+          this.cdr.markForCheck();
         }
       });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from '@angular/material/table';
@@ -21,6 +21,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
   templateUrl: './paylog.component.html',
   styleUrls: ['./paylog.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,
     MatFormField,
@@ -50,6 +51,10 @@ import { MatCard, MatCardContent } from '@angular/material/card';
   ]
 })
 export class PaylogComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   displayedColumn: string[] = ['time', 'level', 'category', 'text'];
   filter: string = '';
   loading = false;
@@ -66,16 +71,12 @@ export class PaylogComponent implements OnInit {
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(
-    private http: HttpClient,
-    private breakpointObserver: BreakpointObserver
-  ) {}
-
   ngOnInit(): void {
     this.loading = true;
     this.http.get<LogMessage[]>(environment.apiUrl + environment.readPayLog).subscribe((messages) => {
       this.dataSource.data = messages;
       this.loading = false;
+      this.cdr.markForCheck();
     });
   }
 

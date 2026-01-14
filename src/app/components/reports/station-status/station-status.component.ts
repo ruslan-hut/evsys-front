@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIconButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -19,12 +19,11 @@ import { StationStatus } from '../../../models/station-status';
   templateUrl: './station-status.component.html',
   styleUrl: './station-status.component.css',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     MatCard,
     MatCardContent,
-    MatCardHeader,
-    MatCardTitle,
     MatProgressBar,
     MatIconButton,
     MatFabButton,
@@ -33,6 +32,12 @@ import { StationStatus } from '../../../models/station-status';
   ]
 })
 export class StationStatusComponent implements OnInit, OnDestroy {
+  private readonly statsService = inject(StatsService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly ngZone = inject(NgZone);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
   private autoRefreshInterval: ReturnType<typeof setInterval> | null = null;
   private readonly AUTO_REFRESH_MS = 30000;
@@ -44,18 +49,9 @@ export class StationStatusComponent implements OnInit, OnDestroy {
   onlineCount = 0;
   offlineCount = 0;
 
-  isMobile$: Observable<boolean>;
-
-  constructor(
-    private statsService: StatsService,
-    private breakpointObserver: BreakpointObserver,
-    private ngZone: NgZone,
-    private router: Router
-  ) {
-    this.isMobile$ = this.breakpointObserver
-      .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
-      .pipe(map(result => result.matches));
-  }
+  isMobile$: Observable<boolean> = this.breakpointObserver
+    .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
+    .pipe(map(result => result.matches));
 
   ngOnInit(): void {
     this.loadData();
@@ -106,9 +102,11 @@ export class StationStatusComponent implements OnInit, OnDestroy {
           this.stations = data.sort((a, b) => a.charge_point_id.localeCompare(b.charge_point_id));
           this.calculateSummary();
           this.loading = false;
+          this.cdr.markForCheck();
         },
         error: () => {
           this.loading = false;
+          this.cdr.markForCheck();
         }
       });
   }

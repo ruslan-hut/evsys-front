@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ErrorService} from "../../service/error.service";
 import {AccountService} from "../../service/account.service";
@@ -7,14 +7,13 @@ import {AccountService} from "../../service/account.service";
     selector: 'app-snack-bar',
     templateUrl: './snack-bar.component.html',
     styleUrls: ['./snack-bar.component.css'],
-    standalone: true
+    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SnackBarComponent implements OnInit {
-  constructor(
-    private snack: MatSnackBar,
-    private accountService: AccountService,
-    private errorService: ErrorService) {
-  }
+  private readonly snack = inject(MatSnackBar);
+  private readonly accountService = inject(AccountService);
+  private readonly errorService = inject(ErrorService);
   openSnackBar(message: string, action: string){
     this.snack.open(message, action, {duration: 5000});
   }

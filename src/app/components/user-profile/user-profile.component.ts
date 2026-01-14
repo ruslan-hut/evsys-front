@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -15,6 +15,7 @@ import { LocalStorageService } from '../../service/local-storage.service';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardHeader,
@@ -32,6 +33,12 @@ import { LocalStorageService } from '../../service/local-storage.service';
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly accountService = inject(AccountService);
+  private readonly themeService = inject(ThemeService);
+  private readonly localStorageService = inject(LocalStorageService);
+
   themeOptions = [
     { value: 'auto', label: 'Auto (System)', icon: 'brightness_auto' },
     { value: 'light', label: 'Light', icon: 'light_mode' },
@@ -45,21 +52,9 @@ export class UserProfileComponent {
     { value: '/log/system', label: 'Syslog', icon: 'terminal', roles: ['operator', 'admin'] }
   ];
 
-  currentTheme: ThemeMode;
-  alwaysLoadAllChargers: boolean;
-  currentStartPage: string;
-
-  constructor(
-    private router: Router,
-    private location: Location,
-    private accountService: AccountService,
-    private themeService: ThemeService,
-    private localStorageService: LocalStorageService
-  ) {
-    this.currentTheme = this.themeService.getTheme();
-    this.alwaysLoadAllChargers = this.localStorageService.getAlwaysLoadAllChargers();
-    this.currentStartPage = this.localStorageService.getStartPage() || this.getDefaultStartPage();
-  }
+  currentTheme: ThemeMode = this.themeService.getTheme();
+  alwaysLoadAllChargers: boolean = this.localStorageService.getAlwaysLoadAllChargers();
+  currentStartPage: string = this.localStorageService.getStartPage() || this.getDefaultStartPage();
 
   get availableStartPageOptions() {
     const userRole = this.accountService.userValue?.role || 'user';

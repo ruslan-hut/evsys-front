@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {DecimalPipe, DatePipe, TitleCasePipe, Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -30,6 +30,7 @@ interface ChartSeries {
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DecimalPipe,
     DatePipe,
@@ -59,6 +60,13 @@ interface ChartSeries {
   ]
 })
 export class TransactionDetailComponent implements OnInit {
+  private readonly transactionService = inject(TransactionService);
+  private readonly errorService = inject(ErrorService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   transaction: TransactionListItem | null = null;
   loading = false;
 
@@ -71,14 +79,6 @@ export class TransactionDetailComponent implements OnInit {
     group: ScaleType.Ordinal,
     domain: ['#3f51b5', '#4caf50']
   };
-
-  constructor(
-    private transactionService: TransactionService,
-    private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
-  ) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -94,10 +94,12 @@ export class TransactionDetailComponent implements OnInit {
         this.transaction = transaction;
         this.prepareChartData();
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.errorService.handle('Failed to load transaction details');
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }

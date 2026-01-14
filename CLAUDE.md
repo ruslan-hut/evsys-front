@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-EvSys Front (WattBrews) is an Angular 21 standalone components application for managing electric vehicle charging infrastructure. It uses Firebase + custom API backend with real-time WebSocket communication.
+EvSys Front (WattBrews) is an Angular 21.0.6 standalone components application for managing electric vehicle charging infrastructure. It uses Firebase + custom API backend with real-time WebSocket communication.
 
 ## Common Commands
 
@@ -20,10 +20,9 @@ To run a single test file, use: `ng test --include=**/component-name.spec.ts`
 ## Architecture
 
 ### Standalone Components Pattern
-All components use Angular standalone pattern (no NgModules). Components import their dependencies directly:
+All components use Angular standalone pattern (default in Angular 21, no NgModules). Components import their dependencies directly:
 ```typescript
 @Component({
-  standalone: true,
   imports: [CommonModule, MatButtonModule, ...]
 })
 ```
@@ -51,9 +50,9 @@ Dual auth system (Firebase + local API):
 ### Component Organization
 ```
 src/app/
-├── components/     # 39 feature components
-├── service/        # 13 business logic services
-├── models/         # 26 TypeScript interfaces
+├── components/     # 54 feature components
+├── service/        # 17 business logic services
+├── models/         # 30 TypeScript interfaces
 ├── helpers/        # Auth guard, token/error interceptors
 └── pipes/          # Custom data transformation pipes
 ```

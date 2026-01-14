@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NetworkService } from '../../service/network.service';
@@ -39,8 +39,9 @@ import { NetworkService } from '../../service/network.service';
       width: 20px;
       height: 20px;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OfflineBannerComponent {
-  constructor(public networkService: NetworkService) {}
+  readonly networkService = inject(NetworkService);
 }

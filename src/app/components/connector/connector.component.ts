@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core"
+import { Component, Input, ChangeDetectionStrategy, inject } from "@angular/core"
 import {Connector} from "../../models/connector";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
@@ -11,16 +11,14 @@ import { NgClass, NgStyle, TitleCasePipe } from "@angular/common";
     templateUrl: './connector.component.html',
     styleUrls: ['./connector.component.css'],
     standalone: true,
-    imports: [MatCardContent, MatButton, NgClass, NgStyle, TitleCasePipe]
+    imports: [MatCardContent, MatButton, NgClass, NgStyle, TitleCasePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConnectorComponent {
-  @Input() connector: Connector
+  readonly dialog = inject(MatDialog);
+  private readonly router = inject(Router);
 
-  constructor(
-    public dialog: MatDialog,
-    private router: Router,
-  ) {
-  }
+  @Input() connector!: Connector;
 
   getConnectorStatusClass(): string {
     if (this.connector.state === "available") {

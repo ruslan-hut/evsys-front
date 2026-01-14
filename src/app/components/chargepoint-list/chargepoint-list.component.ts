@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,19 +14,18 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './chargepoint-list.component.html',
   styleUrls: ['./chargepoint-list.component.css'],
   standalone: true,
-  imports: [ChargepointComponent, AsyncPipe, MatButtonModule]
+  imports: [ChargepointComponent, AsyncPipe, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChargepointListComponent implements OnInit, OnDestroy {
+  private readonly chargepointService = inject(ChargepointService);
+  private readonly localStorageService = inject(LocalStorageService);
+  private readonly router = inject(Router);
+
   private destroy$ = new Subject<void>();
 
   displayedChargePoints$ = new BehaviorSubject<Chargepoint[]>([]);
   showingFullList = false;
-
-  constructor(
-    private chargepointService: ChargepointService,
-    private localStorageService: LocalStorageService,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.redirectToChargePointScreen();

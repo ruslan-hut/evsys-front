@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import { MatSort, MatSortHeader } from "@angular/material/sort";
@@ -18,9 +18,13 @@ import { MatIcon } from '@angular/material/icon';
     templateUrl: './backlog.component.html',
     styleUrls: ['./backlog.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatProgressBar, MatFormField, MatLabel, MatInput, FormsModule, MatIconButton, MatSuffix, MatIcon, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
 })
 export class BacklogComponent implements OnInit{
+  private readonly http = inject(HttpClient);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   displayedColumn: string[] = ['time', 'level', 'category', 'text'];
   filter: string = "";
   loading = false;
@@ -32,14 +36,12 @@ export class BacklogComponent implements OnInit{
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(private http: HttpClient) {
-
-  }
   ngOnInit(): void {
     this.loading = true;
     this.http.get<LogMessage[]>(environment.apiUrl+environment.readBackLog).subscribe((messages) => {
       this.dataSource.data = messages;
       this.loading = false;
+      this.cdr.markForCheck();
     });
   }
 

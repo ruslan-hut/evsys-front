@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, Optional} from '@angular/core';
+import {Component, Inject, OnInit, Optional, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AccountService} from "../../../service/account.service";
 import {User} from "../../../models/user";
@@ -17,21 +17,23 @@ import { MatIcon } from '@angular/material/icon';
     templateUrl: './user-info.component.html',
     styleUrls: ['./user-info.component.css'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardContent, MatList, MatListItem, MatCardActions, MatButton, MatIcon, TitleCasePipe]
 })
 export class UserInfoComponent implements OnInit {
-  user: User;
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly account = inject(AccountService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>, { optional: true });
+  readonly data = inject<string>(MAT_DIALOG_DATA, { optional: true });
+
+  user!: User;
   userInfo: DataObject[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private account: AccountService,
-    @Optional() public dialogRef?: MatDialogRef<BasicDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data?: string,
-  ) {
-    if (data) {
-      this.loadUserData(data)
+  constructor() {
+    if (this.data) {
+      this.loadUserData(this.data)
     }
   }
 
@@ -76,6 +78,7 @@ export class UserInfoComponent implements OnInit {
       data => {
         this.user = data;
         this.makeUserInfo(data)
+        this.cdr.markForCheck();
         if (environment.debug) {
           console.log(`User info loaded`, data);
         }

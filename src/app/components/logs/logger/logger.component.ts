@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -21,6 +21,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
   templateUrl: './logger.component.html',
   styleUrls: ['./logger.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,
     MatFormField,
@@ -50,6 +51,10 @@ import { MatCard, MatCardContent } from '@angular/material/card';
   ]
 })
 export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
+  readonly logger = inject(LoggerService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
 
   displayedColumn: string[] = ['time', 'feature', 'id', 'text'];
@@ -69,11 +74,6 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     if (sorter) this.dataSource.sort = sorter;
   }
 
-  constructor(
-    public logger: LoggerService,
-    private breakpointObserver: BreakpointObserver
-  ) {}
-
   ngOnInit(): void {
     this.loading = true;
     this.logger.subscribeOnUpdates();
@@ -83,12 +83,14 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     ).subscribe((messages) => {
       this.dataSource.data = messages;
       this.loading = false;
+      this.cdr.markForCheck();
     });
 
     this.logger.isOnline$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(status => {
       this.isOnline = status;
+      this.cdr.markForCheck();
     });
   }
 
@@ -98,6 +100,7 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
       this.dataSource.data = data;
       this.loading = false;
     }
+    this.cdr.markForCheck();
   }
 
   applyFilter(event: any): void {

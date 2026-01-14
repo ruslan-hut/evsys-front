@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {PaymentMethodComponent} from "../payment-method/payment-method.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {PaymentMethod} from "../../../models/payment-method";
@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-payment-method-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     PaymentMethodComponent,
     MatButton,
@@ -21,14 +22,12 @@ import { Location } from '@angular/common';
   styleUrl: './payment-method-list.component.css'
 })
 export class PaymentMethodListComponent implements OnInit {
+  private readonly accountService = inject(AccountService);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   dataSource = new MatTableDataSource<PaymentMethod>();
-
-  constructor(
-    private accountService: AccountService,
-    private router: Router,
-    private location: Location
-  ) { }
 
   ngOnInit(): void {
     this.accountService.user$.subscribe(user => {
@@ -38,10 +37,12 @@ export class PaymentMethodListComponent implements OnInit {
             this.dataSource.data = info.payment_methods;
             scroll(0, 0);
           }
+          this.cdr.markForCheck();
         });
       }else{
         this.dataSource.data = []
       }
+      this.cdr.markForCheck();
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
@@ -23,26 +23,26 @@ import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
   templateUrl: './chargepoint-info.component.html',
   styleUrls: ['./chargepoint-info.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe]
 })
 export class ChargepointInfoComponent implements OnInit, OnDestroy {
+  private readonly chargePointService = inject(ChargepointService);
+  readonly timeService = inject(TimeService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
+  readonly dialog = inject(MatDialog);
+  private readonly csService = inject(CSService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   private destroy$ = new Subject<void>();
 
-  chargePointId: string;
-  chargePoint: Chargepoint;
+  chargePointId!: string;
+  chargePoint!: Chargepoint;
 
   form = new FormGroup({
     title: new FormControl<string>('')
   });
-
-  constructor(
-    private chargePointService: ChargepointService,
-    public timeService: TimeService,
-    private route: ActivatedRoute,
-    private location: Location,
-    public dialog: MatDialog,
-    private csService: CSService,
-  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(
@@ -53,6 +53,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
       })
     ).subscribe((chargePoint) => {
       this.chargePoint = chargePoint;
+      this.cdr.markForCheck();
     });
 
     window.scrollTo(0, 0);

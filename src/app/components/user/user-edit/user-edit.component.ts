@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, Optional} from '@angular/core';
+import {Component, Inject, OnInit, Optional, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
@@ -23,6 +23,7 @@ import {Clipboard} from '@angular/cdk/clipboard';
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions, MatCardFooter,
@@ -35,6 +36,17 @@ import {Clipboard} from '@angular/cdk/clipboard';
   ]
 })
 export class UserEditComponent implements OnInit {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly accountService = inject(AccountService);
+  private readonly errorService = inject(ErrorService);
+  private readonly clipboard = inject(Clipboard);
+  private readonly cdr = inject(ChangeDetectorRef);
+  readonly dialogRef = inject(MatDialogRef<UserEditComponent>, { optional: true });
+  readonly dialogData = inject<{ username: string }>(MAT_DIALOG_DATA, { optional: true });
+
   form!: FormGroup;
   loading = false;
   saving = false;
@@ -47,18 +59,6 @@ export class UserEditComponent implements OnInit {
     {value: 'operator', label: 'Operator'},
     {value: 'admin', label: 'Administrator'}
   ];
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private accountService: AccountService,
-    private errorService: ErrorService,
-    private clipboard: Clipboard,
-    @Optional() public dialogRef?: MatDialogRef<UserEditComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public dialogData?: { username: string }
-  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -92,10 +92,12 @@ export class UserEditComponent implements OnInit {
         this.user = user;
         this.patchForm(user);
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.errorService.handle('Failed to load user data');
         this.loading = false;
+        this.cdr.markForCheck();
         this.navigateBack();
       }
     });
@@ -139,10 +141,12 @@ export class UserEditComponent implements OnInit {
     request$.pipe(first()).subscribe({
       next: () => {
         this.saving = false;
+        this.cdr.markForCheck();
         this.navigateBack();
       },
       error: (error) => {
         this.saving = false;
+        this.cdr.markForCheck();
         const message = error.status === 400
           ? 'Username already exists or invalid data'
           : 'Failed to save user';
