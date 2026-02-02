@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map, take } from 'rxjs';
 
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   private readonly themeService = inject(ThemeService); // Inject to initialize theme
 
   title = 'WattBrews';
-  showHeader = true;
+  showHeader = signal(true);
 
   constructor() {
     this.router.events.pipe(
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
       map(snapshot => snapshot.queryParamMap)
     ).subscribe(queryParamMap => {
       if (queryParamMap.has('header')) {
-        this.showHeader = queryParamMap.get('header') !== 'false';
+        this.showHeader.set(queryParamMap.get('header') !== 'false');
       }
     });
   }
