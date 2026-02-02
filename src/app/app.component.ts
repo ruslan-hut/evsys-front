@@ -67,7 +67,8 @@ export class AppComponent implements OnInit {
   }
 
   private isPublicRoute(): boolean {
-    const currentUrl = this.router.url.split('?')[0]; // Remove query params
+    // Use window.location.pathname as router.url may not be ready during initial load
+    const currentUrl = window.location.pathname;
     return PUBLIC_ROUTES.some(route => currentUrl.startsWith(route));
   }
 
