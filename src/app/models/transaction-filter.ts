@@ -4,4 +4,5 @@ export interface TransactionFilter {
   username?: string;
   id_tag?: string;
   charge_point_id?: string;
+  with_error?: boolean;
 }

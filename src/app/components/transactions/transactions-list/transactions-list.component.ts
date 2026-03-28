@@ -163,14 +163,13 @@ export class TransactionsListComponent implements OnInit {
       to: this.endDate,
       username: this.usernameFilter || undefined,
       id_tag: this.idTagFilter || undefined,
-      charge_point_id: this.chargePointFilter || undefined
+      charge_point_id: this.chargePointFilter || undefined,
+      with_error: this.withErrorFilter || undefined
     };
 
     this.transactionService.getTransactionsList(filter).subscribe({
       next: (transactions) => {
-        this.dataSource.data = this.withErrorFilter
-          ? transactions.filter(t => !!t.payment_error)
-          : transactions;
+        this.dataSource.data = transactions;
         this.loading = false;
         this.cdr.markForCheck();
       },

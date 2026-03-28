@@ -139,6 +139,9 @@ export class TransactionService implements OnDestroy {
     if (filter.charge_point_id) {
       params = params.set('charge_point_id', filter.charge_point_id);
     }
+    if (filter.with_error) {
+      params = params.set('with_error', 'true');
+    }
 
     return this.http.get<TransactionListItem[]>(
       environment.apiUrl + environment.transactionsList,
