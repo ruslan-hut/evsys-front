@@ -18,6 +18,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AsyncPipe, DecimalPipe, DatePipe} from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTooltip} from '@angular/material/tooltip';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 import {TransactionService} from '../../../service/transaction.service';
 import {ChargepointService} from '../../../service/chargepoint.service';
@@ -70,7 +71,8 @@ import {Chargepoint} from '../../../models/chargepoint';
     DecimalPipe,
     DatePipe,
     MatExpansionModule,
-    MatTooltip
+    MatTooltip,
+    MatCheckbox
   ]
 })
 export class TransactionsListComponent implements OnInit {
@@ -98,6 +100,7 @@ export class TransactionsListComponent implements OnInit {
   usernameFilter: string = '';
   idTagFilter: string = '';
   chargePointFilter: string = '';
+  withErrorFilter: boolean = false;
 
   // Charge points for dropdown
   chargePoints: Chargepoint[] = [];
@@ -165,7 +168,9 @@ export class TransactionsListComponent implements OnInit {
 
     this.transactionService.getTransactionsList(filter).subscribe({
       next: (transactions) => {
-        this.dataSource.data = transactions;
+        this.dataSource.data = this.withErrorFilter
+          ? transactions.filter(t => !!t.payment_error)
+          : transactions;
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -228,6 +233,7 @@ export class TransactionsListComponent implements OnInit {
     this.usernameFilter = '';
     this.idTagFilter = '';
     this.chargePointFilter = '';
+    this.withErrorFilter = false;
     this.setRange(this.getLast30Days());
     this.loadTransactions();
   }
@@ -251,7 +257,7 @@ export class TransactionsListComponent implements OnInit {
   }
 
   hasActiveFilters(): boolean {
-    return !!(this.usernameFilter || this.idTagFilter || this.chargePointFilter);
+    return !!(this.usernameFilter || this.idTagFilter || this.chargePointFilter || this.withErrorFilter);
   }
 
   getActiveFiltersCount(): number {
@@ -259,6 +265,7 @@ export class TransactionsListComponent implements OnInit {
     if (this.usernameFilter) count++;
     if (this.idTagFilter) count++;
     if (this.chargePointFilter) count++;
+    if (this.withErrorFilter) count++;
     return count;
   }
 

@@ -75,6 +75,10 @@ Environment files in `src/environments/`:
 
 Both use `https://wattbrews.me/api/v1` API and `wss://wattbrews.me/ws` WebSocket.
 
+## Related Repositories
+
+- **Backend**: `~/projects/evsys-back` - API and WebSocket server powering this frontend
+
 ## PWA Support
 
 Service Worker enabled in production via `ngsw-config.json`. App shell prefetched, assets lazy-loaded.

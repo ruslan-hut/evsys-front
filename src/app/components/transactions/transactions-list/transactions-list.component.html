@@ -71,6 +71,8 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-checkbox [(ngModel)]="withErrorFilter" class="error-filter-checkbox">With error</mat-checkbox>
+
         <div class="filter-actions">
           <button mat-raised-button color="primary" (click)="loadTransactions()">
             <mat-icon>search</mat-icon>
@@ -138,6 +140,8 @@
           }
         </mat-select>
       </mat-form-field>
+
+      <mat-checkbox [(ngModel)]="withErrorFilter" class="error-filter-checkbox">With error</mat-checkbox>
 
       <div class="filter-actions">
         <button mat-raised-button color="primary" (click)="loadTransactions()">
