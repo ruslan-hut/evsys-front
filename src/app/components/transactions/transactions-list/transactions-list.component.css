@@ -18,6 +18,10 @@
   min-width: 180px;
 }
 
+.error-filter-checkbox {
+  color: var(--color-text-primary);
+}
+
 .filter-actions {
   display: flex;
   gap: var(--spacing-md);
