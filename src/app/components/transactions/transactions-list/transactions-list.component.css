@@ -19,9 +19,9 @@
 }
 
 .error-filter-checkbox {
-  --mdc-checkbox-unselected-icon-color: var(--color-text-secondary);
-  --mdc-checkbox-unselected-hover-icon-color: var(--color-text-primary);
-  --mdc-form-field-label-text-color: var(--color-text-primary);
+  --mat-checkbox-label-text-color: var(--color-text-primary);
+  --mat-checkbox-unselected-icon-color: var(--color-text-secondary);
+  --mat-checkbox-unselected-hover-icon-color: var(--color-text-primary);
 }
 
 .filter-actions {
