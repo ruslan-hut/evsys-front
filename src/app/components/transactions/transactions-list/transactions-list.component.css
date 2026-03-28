@@ -18,13 +18,9 @@
   min-width: 180px;
 }
 
-.error-filter-checkbox {
-  align-self: center;
-}
-
 .filter-actions {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   align-items: center;
   padding-top: var(--spacing-xs);
 }
