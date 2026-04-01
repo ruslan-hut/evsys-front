@@ -8,6 +8,7 @@ import {UserStats} from "../models/user-stats";
 import {Group} from "../models/group";
 import {StationUptime} from "../models/station-uptime";
 import {StationStatus} from "../models/station-status";
+import {ExportData} from "../models/export-data";
 
 @Injectable({
   providedIn: 'root'
@@ -108,6 +109,21 @@ export class StatsService {
     }
 
     return this.http.get<StationStatus[]>(environment.apiUrl + environment.report + environment.statusReport, { params })
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
+  getExportReport(from: Date, to: Date, group: string): Observable<ExportData[]> {
+    const formattedFrom = this.formatDate(from);
+    const formattedTo = this.formatDateTimeEndOfDay(to);
+
+    const params = new HttpParams()
+      .set('from', formattedFrom)
+      .set('to', formattedTo)
+      .set('group', group);
+
+    return this.http.get<ExportData[]>(environment.apiUrl + environment.report + environment.exportReport, { params })
       .pipe(
         catchError(this.errorHandler.bind(this))
       );

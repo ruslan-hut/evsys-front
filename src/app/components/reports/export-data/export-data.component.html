@@ -1,0 +1,47 @@
+@if (inProgress) {
+  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+}
+
+<div class="filter-container">
+  <!-- Date Range Picker -->
+  <mat-form-field appearance="outline" class="date-range-field">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate [(ngModel)]="startDate" placeholder="Start date" />
+      <input matEndDate [(ngModel)]="endDate" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+    <button mat-icon-button matSuffix [matMenuTriggerFor]="menu" aria-label="Select predefined date range">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      @for (range of predefinedRanges; track range) {
+        <button mat-menu-item (click)="setRange(range.range)">
+          {{ range.label }}
+        </button>
+      }
+    </mat-menu>
+
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <!-- Group Selector -->
+  <mat-form-field appearance="outline">
+    <mat-label>Select Group</mat-label>
+    <mat-select [(value)]="selectedGroup">
+      @for (group of groups; track group) {
+        <mat-option [value]="group.id">{{ group.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Export Button -->
+  <button mat-raised-button color="primary" (click)="exportData()" [disabled]="inProgress">
+    <mat-icon>download</mat-icon>
+    Export CSV
+  </button>
+</div>

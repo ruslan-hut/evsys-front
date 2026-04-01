@@ -160,5 +160,10 @@ export const routes: Routes = [
     path: 'reports',
     loadComponent: () => import('./components/reports/reports.component').then(m => m.ReportsComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'export',
+    loadComponent: () => import('./components/reports/export-data/export-data.component').then(m => m.ExportDataComponent),
+    canActivate: [authGuard]
   }
 ];
