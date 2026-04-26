@@ -20,6 +20,7 @@ export const environment = {
   uptimeReport: '/uptime',
   statusReport: '/status',
   exportReport: '/export',
+  mailSubscriptions: '/mail/subscriptions',
   debug: false,
   firebaseConfig: {
     apiKey: "fb-api-key",

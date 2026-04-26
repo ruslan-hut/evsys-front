@@ -162,6 +162,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'mail-subscriptions',
+    loadComponent: () => import('./components/mail-subscriptions/mail-subscriptions.component').then(m => m.MailSubscriptionsComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'export',
     loadComponent: () => import('./components/reports/export-data/export-data.component').then(m => m.ExportDataComponent),
     canActivate: [authGuard]

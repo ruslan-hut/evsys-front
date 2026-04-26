@@ -1,0 +1,43 @@
+.mail-subs-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.mail-subs-form-card {
+  width: 100%;
+}
+
+.mail-subs-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.mail-subs-field {
+  min-width: 200px;
+  flex: 1 1 200px;
+}
+
+.mail-subs-toggle {
+  margin: 0 8px;
+}
+
+.mail-subs-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.mail-subs-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
