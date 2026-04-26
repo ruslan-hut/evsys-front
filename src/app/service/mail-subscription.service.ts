@@ -33,4 +33,11 @@ export class MailSubscriptionService {
   sendNow(id: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(`${this.baseUrl}/${id}/send-now`, {});
   }
+
+  sendTest(email: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${environment.apiUrl}/mail/test`,
+      {email}
+    );
+  }
 }

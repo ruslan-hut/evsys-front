@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow} from '@angular/material/table';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
@@ -26,6 +26,7 @@ import {Group} from '../../models/group';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
+    FormsModule,
     MatProgressBar,
     MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
     MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow,
@@ -50,6 +51,9 @@ export class MailSubscriptionsComponent implements OnInit {
   saving = false;
   subscriptions: MailSubscription[] = [];
   editingId: string | null = null;
+
+  testEmail = '';
+  testing = false;
 
   form: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -148,6 +152,24 @@ export class MailSubscriptionsComponent implements OnInit {
         next: () => this.load(),
         error: () => this.errorService.handle('Failed to delete subscription'),
       });
+    });
+  }
+
+  sendTest(): void {
+    const email = this.testEmail.trim();
+    if (!email) return;
+    this.testing = true;
+    this.mailService.sendTest(email).subscribe({
+      next: () => {
+        this.testing = false;
+        this.errorService.handle(`Test mail sent to ${email}`);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.testing = false;
+        this.errorService.handle('Failed to send test mail');
+        this.cdr.markForCheck();
+      },
     });
   }
 
