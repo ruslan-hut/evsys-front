@@ -10,13 +10,14 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, AsyncPipe],
+  imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDivider, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, AfterContentChecked {

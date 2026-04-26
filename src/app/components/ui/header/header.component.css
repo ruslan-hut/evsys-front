@@ -1,6 +1,8 @@
-.bar-spacer {
-  flex: 1 1 auto;
-}
+/* =====================================================
+   Header — Operations Console bar
+   Slim, dense, technical. Branded console surface that
+   stays consistent across light/dark modes.
+   ===================================================== */
 
 .toolbar {
   position: fixed;
@@ -9,36 +11,264 @@
   right: 0;
   z-index: 1000;
   height: var(--header-height-mobile);
+  padding: 0 var(--spacing-md);
+  background-color: var(--color-header-surface) !important;
+  color: var(--color-header-text) !important;
+  border-bottom: 1px solid var(--color-header-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  overflow: visible;
+}
+
+/* Hairline accent rule along bottom edge */
+.toolbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 72%;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-header-accent), transparent);
+  pointer-events: none;
 }
 
 @media (min-width: 600px) {
   .toolbar {
     height: var(--header-height-desktop);
+    padding: 0 var(--spacing-lg);
   }
 }
 
-.app-title {
-  margin-right: var(--spacing-md);
-  font-weight: 500;
+.bar-spacer {
+  flex: 1 1 auto;
 }
 
+/* ---------- Brand ---------- */
+.hdr-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  margin-right: var(--spacing-lg);
+  text-decoration: none;
+  color: var(--color-header-text);
+  letter-spacing: -0.01em;
+}
+
+.hdr-brand-mark {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  background: linear-gradient(135deg, var(--color-header-accent) 0%, #6366f1 100%);
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 0 14px rgba(56, 189, 248, 0.35);
+}
+.hdr-brand-mark::after {
+  /* Lightning bolt glyph */
+  content: "";
+  width: 9px;
+  height: 13px;
+  background: var(--color-header-surface);
+  clip-path: polygon(55% 0, 0 60%, 40% 60%, 30% 100%, 100% 40%, 60% 40%);
+}
+
+.hdr-brand-text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+}
+
+.hdr-brand-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  padding: 2px 6px;
+  color: var(--color-header-accent);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 3px;
+  margin-left: 2px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@media (max-width: 599px) {
+  .hdr-brand-tag { display: none; }
+  .hdr-brand-text { font-size: 14px; }
+  .hdr-brand { margin-right: var(--spacing-sm); }
+}
+
+/* ---------- Desktop nav ---------- */
 .desktop-menu {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: 2px;
 }
 
-/* Ensure touch targets are accessible */
-.toolbar button {
-  min-height: var(--touch-target-min);
-  min-width: var(--touch-target-min);
+.hdr-nav-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  font-family: var(--font-sans);
+  font-size: 13px !important;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  color: var(--color-header-text-muted) !important;
+  border-radius: 6px !important;
+  transition: background-color 120ms ease, color 120ms ease;
 }
 
-/* Username display - desktop only */
-.username-display {
-  display: inline;
-  max-width: 200px;
+.hdr-nav-btn:hover {
+  background-color: rgba(148, 163, 184, 0.08) !important;
+  color: var(--color-header-text) !important;
+}
+
+.hdr-nav-btn.cdk-program-focused,
+.hdr-nav-btn[aria-expanded="true"] {
+  background-color: rgba(56, 189, 248, 0.12) !important;
+  color: var(--color-header-accent) !important;
+}
+
+.hdr-nav-icon {
+  font-size: 17px !important;
+  width: 17px !important;
+  height: 17px !important;
+  line-height: 17px !important;
+  opacity: 0.85;
+}
+
+.hdr-caret {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 16px !important;
+  margin-left: 2px;
+  opacity: 0.6;
+}
+
+.hdr-nav-btn--subtle {
+  padding: 0 8px !important;
+}
+
+/* ---------- Icon buttons ---------- */
+.hdr-icon-btn {
+  color: var(--color-header-text) !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  border-radius: 6px !important;
+}
+.hdr-icon-btn:hover {
+  background-color: rgba(148, 163, 184, 0.1) !important;
+}
+.hdr-icon-btn .mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+}
+
+/* ---------- User chip ---------- */
+.hdr-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 10px 0 4px;
+  margin-right: 4px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--color-header-border);
+  border-radius: 999px;
+  color: var(--color-header-text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+  max-width: 220px;
+}
+.hdr-user-chip:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.hdr-user-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-header-accent), #6366f1);
+  color: #06090f;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  font-family: var(--font-display);
+}
+
+.hdr-user-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 160px;
+  letter-spacing: 0.005em;
+}
+
+/* ---------- Menu panel polish ---------- */
+::ng-deep .hdr-menu-panel.mat-mdc-menu-panel {
+  border-radius: 8px !important;
+  border: 1px solid var(--color-border);
+  box-shadow:
+    0 4px 6px rgba(15, 23, 42, 0.05),
+    0 12px 28px rgba(15, 23, 42, 0.18) !important;
+  min-width: 232px;
+  padding: 4px 0;
+}
+
+::ng-deep .hdr-menu-panel .mat-mdc-menu-item {
+  min-height: 36px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.005em;
+}
+
+::ng-deep .hdr-menu-panel .mat-mdc-menu-item .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  color: var(--color-text-muted);
+  margin-right: 10px;
+}
+
+::ng-deep .hdr-menu-panel .hdr-menu-section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 8px 14px 4px;
+}
+
+::ng-deep .hdr-menu-panel .mat-divider {
+  margin: 4px 0;
+  border-top-color: var(--color-border-light);
+}
+
+/* ---------- Dark theme tuning (header is already dark; keep menus consistent) ---------- */
+.dark-theme .hdr-icon-btn:hover {
+  background-color: rgba(226, 232, 240, 0.08) !important;
 }

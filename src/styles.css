@@ -2,146 +2,169 @@
    CSS Custom Properties (Design Tokens)
    =========================================== */
 :root {
-  /* Spacing */
+  /* Spacing — tighter scale for information-dense technician UI */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
+  --spacing-md: 12px;
+  --spacing-lg: 20px;
+  --spacing-xl: 28px;
 
-  /* Card styling */
-  --card-margin: 16px;
-  --card-border-radius: 8px;
+  /* Card styling — sharper corners, tighter margins */
+  --card-margin: 10px;
+  --card-border-radius: 6px;
 
-  /* Header heights */
-  --header-height-mobile: 56px;
-  --header-height-desktop: 64px;
+  /* Header heights — slimmer profile */
+  --header-height-mobile: 52px;
+  --header-height-desktop: 56px;
 
-  /* Breakpoints (for reference, used in media queries) */
+  /* Breakpoints */
   --breakpoint-xs: 400px;
   --breakpoint-sm: 600px;
   --breakpoint-md: 900px;
   --breakpoint-lg: 1200px;
 
-  /* Primary & Accent Colors */
-  --color-primary: #3f51b5;
-  --color-primary-dark: #303f9f;
-  --color-accent: #1976d2;
+  /* Typography */
+  --font-sans: "IBM Plex Sans", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-display: "IBM Plex Sans", -apple-system, sans-serif;
 
-  /* Text Colors */
-  --color-text-primary: #212121;
-  --color-text-secondary: #616161;
-  --color-text-muted: #757575;
+  /* Primary & Accent — slate/steel professional palette */
+  --color-primary: #1e3a8a;
+  --color-primary-dark: #1e293b;
+  --color-accent: #0284c7;
 
-  /* Border Colors */
-  --color-border: #e0e0e0;
-  --color-border-light: #f0f0f0;
+  /* Text */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
 
-  /* Background Colors */
-  --color-background: #f5f5f5;
-  --color-background-light: #fafafa;
+  /* Borders — crisper definition */
+  --color-border: #d4dae3;
+  --color-border-light: #e8ecf2;
+
+  /* Backgrounds — subtle cool gray foundation */
+  --color-background: #f1f4f8;
+  --color-background-light: #f7f9fc;
   --color-surface: #ffffff;
 
-  /* Status Colors */
-  --color-success: #4caf50;
-  --color-warning: #ff9800;
-  --color-error: #f44336;
-  --color-online: #4caf50;
-  --color-offline: #9e9e9e;
+  /* Status — calibrated signal colors for technical readability */
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-online: #059669;
+  --color-offline: #94a3b8;
 
-  /* Status Badge Colors */
-  --color-status-active-bg: #e3f2fd;
-  --color-status-active-text: #1565c0;
-  --color-status-finished-bg: #e8f5e9;
-  --color-status-finished-text: #2e7d32;
+  /* Status Badges */
+  --color-status-active-bg: #dbeafe;
+  --color-status-active-text: #1e40af;
+  --color-status-finished-bg: #d1fae5;
+  --color-status-finished-text: #065f46;
 
-  /* Role Badge Colors */
-  --color-role-admin: #d32f2f;
-  --color-role-operator: #1976d2;
-  --color-role-default: #757575;
+  /* Role Badges */
+  --color-role-admin: #b91c1c;
+  --color-role-operator: #1e40af;
+  --color-role-default: #64748b;
 
-  /* Action Button Colors */
-  --color-action: #616161;
-  --color-action-hover: #424242;
-  --color-action-warn: #c62828;
-  --color-action-warn-hover: #b71c1c;
+  /* Action Buttons */
+  --color-action: #475569;
+  --color-action-hover: #1e293b;
+  --color-action-warn: #b91c1c;
+  --color-action-warn-hover: #991b1b;
 
-  /* Connector Status Colors */
-  --color-connector-available: #4caf50;
-  --color-connector-available-bg: #e8f5e9;
-  --color-connector-occupied: #ff9800;
-  --color-connector-occupied-bg: #fff3e0;
-  --color-connector-charging: #3f51b5;
-  --color-connector-charging-bg: #e8eaf6;
-  --color-connector-error: #f44336;
-  --color-connector-error-bg: #ffebee;
+  /* Connector Status */
+  --color-connector-available: #059669;
+  --color-connector-available-bg: #d1fae5;
+  --color-connector-occupied: #d97706;
+  --color-connector-occupied-bg: #fef3c7;
+  --color-connector-charging: #1e40af;
+  --color-connector-charging-bg: #dbeafe;
+  --color-connector-error: #dc2626;
+  --color-connector-error-bg: #fee2e2;
 
-  /* Focus Ring */
-  --color-focus-ring: rgba(63, 81, 181, 0.2);
+  /* Focus */
+  --color-focus-ring: rgba(2, 132, 199, 0.35);
+
+  /* Surface elevation tokens */
+  --elevation-1: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --elevation-2: 0 2px 4px rgba(15, 23, 42, 0.05), 0 4px 12px rgba(15, 23, 42, 0.06);
+
+  /* Header brand surface — distinctive console feel */
+  --color-header-surface: #0f172a;
+  --color-header-text: #e2e8f0;
+  --color-header-text-muted: #94a3b8;
+  --color-header-border: #1e293b;
+  --color-header-accent: #38bdf8;
 
   /* Touch target minimum size (WCAG) */
-  --touch-target-min: 44px;
+  --touch-target-min: 40px;
 }
 
 /* ===========================================
    Dark Theme Color Overrides
    =========================================== */
 .dark-theme {
-  /* Primary & Accent (lighter for dark backgrounds) */
-  --color-primary: #7986cb;
-  --color-primary-dark: #5c6bc0;
-  --color-accent: #64b5f6;
+  /* Primary & Accent — luminous against deep slate */
+  --color-primary: #60a5fa;
+  --color-primary-dark: #3b82f6;
+  --color-accent: #38bdf8;
 
-  /* Text Colors */
-  --color-text-primary: #e0e0e0;
-  --color-text-secondary: #b0b0b0;
-  --color-text-muted: #909090;
+  /* Text */
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
 
-  /* Border Colors */
-  --color-border: #424242;
-  --color-border-light: #333333;
+  /* Borders */
+  --color-border: #1e293b;
+  --color-border-light: #172033;
 
-  /* Background Colors */
-  --color-background: #121212;
-  --color-background-light: #1e1e1e;
-  --color-surface: #1e1e1e;
+  /* Backgrounds — true console dark */
+  --color-background: #0a0f1a;
+  --color-background-light: #0f172a;
+  --color-surface: #131c2e;
 
-  /* Status Colors */
-  --color-success: #66bb6a;
-  --color-warning: #ffa726;
-  --color-error: #ef5350;
-  --color-online: #66bb6a;
-  --color-offline: #757575;
+  /* Status */
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+  --color-online: #34d399;
+  --color-offline: #64748b;
 
-  /* Status Badge Colors */
-  --color-status-active-bg: #1a237e;
-  --color-status-active-text: #90caf9;
-  --color-status-finished-bg: #1b5e20;
-  --color-status-finished-text: #a5d6a7;
+  /* Status Badges */
+  --color-status-active-bg: #172554;
+  --color-status-active-text: #93c5fd;
+  --color-status-finished-bg: #064e3b;
+  --color-status-finished-text: #6ee7b7;
 
-  /* Role Badge Colors */
-  --color-role-admin: #ef5350;
-  --color-role-operator: #64b5f6;
-  --color-role-default: #9e9e9e;
+  /* Role Badges */
+  --color-role-admin: #f87171;
+  --color-role-operator: #60a5fa;
+  --color-role-default: #94a3b8;
 
-  /* Action Button Colors */
-  --color-action: #b0b0b0;
-  --color-action-hover: #e0e0e0;
-  --color-action-warn: #ef5350;
-  --color-action-warn-hover: #f44336;
+  /* Action Buttons */
+  --color-action: #94a3b8;
+  --color-action-hover: #e2e8f0;
+  --color-action-warn: #f87171;
+  --color-action-warn-hover: #fca5a5;
 
-  /* Connector Status Colors (dark backgrounds) */
-  --color-connector-available: #66bb6a;
-  --color-connector-available-bg: #1b3d1f;
-  --color-connector-occupied: #ffa726;
-  --color-connector-occupied-bg: #3d2e14;
-  --color-connector-charging: #7986cb;
-  --color-connector-charging-bg: #1a1a3d;
-  --color-connector-error: #ef5350;
-  --color-connector-error-bg: #3d1a1a;
+  /* Connector Status */
+  --color-connector-available: #34d399;
+  --color-connector-available-bg: #052e1f;
+  --color-connector-occupied: #fbbf24;
+  --color-connector-occupied-bg: #2e1f04;
+  --color-connector-charging: #60a5fa;
+  --color-connector-charging-bg: #0c1e3d;
+  --color-connector-error: #f87171;
+  --color-connector-error-bg: #2e0a0a;
 
-  /* Focus Ring */
-  --color-focus-ring: rgba(121, 134, 203, 0.3);
+  /* Focus */
+  --color-focus-ring: rgba(56, 189, 248, 0.4);
+
+  /* Header surface (dark mirrors light intent) */
+  --color-header-surface: #06090f;
+  --color-header-text: #e2e8f0;
+  --color-header-text-muted: #94a3b8;
+  --color-header-border: #1e293b;
+  --color-header-accent: #38bdf8;
 
   /* Angular Material Overrides */
   --mdc-elevated-card-container-color: var(--color-surface);
@@ -559,14 +582,51 @@ html, body {
 body {
   margin: 0;
   padding-top: var(--header-height-mobile);
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-text-primary);
   background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11", "tnum";
 }
 
 @media (min-width: 600px) {
   body {
     padding-top: var(--header-height-desktop);
   }
+}
+
+/* Tabular numerals for IDs, counters, timestamps, kWh, currency */
+.mono, code, kbd, samp, pre,
+.cell-id, .timestamp, .meter-value, .currency,
+td.numeric, .numeric {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum", "zero";
+}
+
+/* Display/heading rhythm */
+h1, h2, h3, h4, h5, h6,
+.mat-mdc-card-title,
+mat-card-title {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+/* Subtle global card refinement */
+.mat-mdc-card,
+mat-card {
+  border-radius: var(--card-border-radius) !important;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--elevation-1) !important;
+}
+
+.dark-theme .mat-mdc-card,
+.dark-theme mat-card {
+  border-color: var(--color-border);
 }
 
 /* ===========================================

@@ -1,125 +1,178 @@
-<mat-toolbar class="toolbar mat-elevation-z8" color="primary">
+<mat-toolbar class="toolbar" color="primary">
   @if (isHandset$ | async; as handset) {
     @if (handset.matches) {
-      <!-- Mobile Layout: Menu | Title | Spacer | Profile -->
+      <!-- Mobile: Menu | Brand | Spacer | Profile -->
       @if (menuEnabled && username) {
-        <button mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="Main system menu button">
+        <button mat-icon-button class="hdr-icon-btn" [matMenuTriggerFor]="mainMenu" aria-label="Open navigation">
           <mat-icon>menu</mat-icon>
         </button>
-        <mat-menu #mainMenu="matMenu">
+        <mat-menu #mainMenu="matMenu" class="hdr-menu-panel" xPosition="after">
+          <div class="hdr-menu-section-label">Operations</div>
           <button mat-menu-item (click)="navigateTo('/points')">
-            <mat-icon>ev_station</mat-icon>
-            <span>Points</span>
+            <mat-icon>ev_station</mat-icon><span>Charge points</span>
           </button>
           @if (isAdmin) {
-            <button mat-menu-item [matMenuTriggerFor]="mobileReportMenu">
-              <mat-icon>assessment</mat-icon>
-              <span>Report</span>
-            </button>
-            <mat-menu #mobileReportMenu="matMenu">
-              <button mat-menu-item (click)="navigateTo('/dashboard')">Consumption chart</button>
-              <button mat-menu-item (click)="navigateTo('/statistic')">Consumption</button>
-              <button mat-menu-item (click)="navigateTo('/reports')">Uptime</button>
-              <button mat-menu-item (click)="navigateTo('/export')">Export data</button>
-            </mat-menu>
-            <button mat-menu-item (click)="navigateTo('/log/system')">
-              <mat-icon>terminal</mat-icon>
-              <span>System log</span>
-            </button>
-            <button mat-menu-item (click)="navigateTo('/log/pay')">
-              <mat-icon>payment</mat-icon>
-              <span>Payment log</span>
-            </button>
-            <button mat-menu-item (click)="navigateTo('/users')">
-              <mat-icon>people</mat-icon>
-              <span>Users list</span>
-            </button>
-            <button mat-menu-item (click)="navigateTo('/user-tags')">
-              <mat-icon>sell</mat-icon>
-              <span>User tags</span>
-            </button>
             <button mat-menu-item (click)="navigateTo('/transactions')">
-              <mat-icon>receipt</mat-icon>
-              <span>Transactions</span>
+              <mat-icon>receipt_long</mat-icon><span>Transactions</span>
             </button>
           }
-          <button mat-menu-item [matMenuTriggerFor]="mobileLegalMenu">
-            <mat-icon>gavel</mat-icon>
-            <span>Legal</span>
+
+          @if (isAdmin) {
+            <mat-divider></mat-divider>
+            <div class="hdr-menu-section-label">Monitoring</div>
+            <button mat-menu-item (click)="navigateTo('/dashboard')">
+              <mat-icon>insights</mat-icon><span>Consumption chart</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/statistic')">
+              <mat-icon>bar_chart</mat-icon><span>Consumption</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/reports')">
+              <mat-icon>monitor_heart</mat-icon><span>Uptime</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/export')">
+              <mat-icon>file_download</mat-icon><span>Export data</span>
+            </button>
+
+            <mat-divider></mat-divider>
+            <div class="hdr-menu-section-label">Management</div>
+            <button mat-menu-item (click)="navigateTo('/users')">
+              <mat-icon>group</mat-icon><span>Users</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/user-tags')">
+              <mat-icon>nfc</mat-icon><span>RFID tags</span>
+            </button>
+
+            <mat-divider></mat-divider>
+            <div class="hdr-menu-section-label">Diagnostics</div>
+            <button mat-menu-item (click)="navigateTo('/log/system')">
+              <mat-icon>terminal</mat-icon><span>System log</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/log/pay')">
+              <mat-icon>account_balance_wallet</mat-icon><span>Payment log</span>
+            </button>
+          }
+
+          <mat-divider></mat-divider>
+          <div class="hdr-menu-section-label">Legal</div>
+          <button mat-menu-item (click)="navigateTo('/privacy/en')">
+            <mat-icon>policy</mat-icon><span>Privacy policy</span>
           </button>
-          <mat-menu #mobileLegalMenu="matMenu">
-            <button mat-menu-item (click)="navigateTo('/privacy/en')">Privacy policy</button>
-            <button mat-menu-item (click)="navigateTo('/terms/en')">Terms and conditions</button>
-          </mat-menu>
+          <button mat-menu-item (click)="navigateTo('/terms/en')">
+            <mat-icon>gavel</mat-icon><span>Terms &amp; conditions</span>
+          </button>
         </mat-menu>
       }
       @if (!menuEnabled && isAdmin) {
-        <button mat-icon-button (click)="navigateTo('/points')" aria-label="Back button">
+        <button mat-icon-button class="hdr-icon-btn" (click)="navigateTo('/points')" aria-label="Back">
           <mat-icon>arrow_back</mat-icon>
         </button>
       }
 
-      <span>{{title}}</span>
+      <a class="hdr-brand" (click)="navigateTo('/points')">
+        <span class="hdr-brand-mark"></span>
+        <span class="hdr-brand-text">{{title}}</span>
+      </a>
       <span class="bar-spacer"></span>
 
       @if (menuEnabled && username) {
-        <button mat-icon-button (click)="openUserProfile()" aria-label="View profile for {{username}}">
+        <button mat-icon-button class="hdr-icon-btn" (click)="openUserProfile()" [attr.aria-label]="'Profile: ' + username">
           <mat-icon>account_circle</mat-icon>
         </button>
       }
     } @else {
-      <!-- Desktop Layout: Title | Menu | Spacer | Profile | Username | Logout -->
+      <!-- Desktop: Brand | Nav groups | Spacer | Status | Profile | Logout -->
       @if (!menuEnabled && isAdmin) {
-        <button mat-icon-button (click)="navigateTo('/points')" aria-label="Back button">
+        <button mat-icon-button class="hdr-icon-btn" (click)="navigateTo('/points')" aria-label="Back">
           <mat-icon>arrow_back</mat-icon>
         </button>
       }
 
-      <span class="app-title">{{title}}</span>
+      <a class="hdr-brand" (click)="navigateTo('/points')">
+        <span class="hdr-brand-mark"></span>
+        <span class="hdr-brand-text">{{title}}</span>
+        <span class="hdr-brand-tag">CONSOLE</span>
+      </a>
 
       @if (menuEnabled && username) {
-        <div class="desktop-menu">
-          <button mat-button (click)="navigateTo('/points')">Points</button>
+        <nav class="desktop-menu" aria-label="Primary">
+          <button mat-button class="hdr-nav-btn" (click)="navigateTo('/points')">
+            <mat-icon class="hdr-nav-icon">ev_station</mat-icon>Points
+          </button>
           @if (isAdmin) {
-            <button mat-button [matMenuTriggerFor]="reportMenu">Report</button>
-            <mat-menu #reportMenu="matMenu">
-              <button mat-menu-item (click)="navigateTo('/dashboard')">Consumption chart</button>
-              <button mat-menu-item (click)="navigateTo('/statistic')">Consumption</button>
-              <button mat-menu-item (click)="navigateTo('/reports')">Uptime</button>
-              <button mat-menu-item (click)="navigateTo('/export')">Export data</button>
+            <button mat-button class="hdr-nav-btn" (click)="navigateTo('/transactions')">
+              <mat-icon class="hdr-nav-icon">receipt_long</mat-icon>Transactions
+            </button>
+            <button mat-button class="hdr-nav-btn" [matMenuTriggerFor]="reportMenu">
+              <mat-icon class="hdr-nav-icon">insights</mat-icon>Monitoring
+              <mat-icon class="hdr-caret">expand_more</mat-icon>
+            </button>
+            <mat-menu #reportMenu="matMenu" class="hdr-menu-panel">
+              <button mat-menu-item (click)="navigateTo('/dashboard')">
+                <mat-icon>insights</mat-icon><span>Consumption chart</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/statistic')">
+                <mat-icon>bar_chart</mat-icon><span>Consumption</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/reports')">
+                <mat-icon>monitor_heart</mat-icon><span>Uptime</span>
+              </button>
+              <mat-divider></mat-divider>
+              <button mat-menu-item (click)="navigateTo('/export')">
+                <mat-icon>file_download</mat-icon><span>Export data</span>
+              </button>
             </mat-menu>
-            <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
-            <mat-menu #adminMenu="matMenu">
-              <button mat-menu-item (click)="navigateTo('/log/system')">System log</button>
-              <button mat-menu-item (click)="navigateTo('/log/pay')">Payment log</button>
-              <button mat-menu-item (click)="navigateTo('/users')">Users list</button>
-              <button mat-menu-item (click)="navigateTo('/user-tags')">User tags</button>
-              <button mat-menu-item (click)="navigateTo('/transactions')">Transactions</button>
+
+            <button mat-button class="hdr-nav-btn" [matMenuTriggerFor]="adminMenu">
+              <mat-icon class="hdr-nav-icon">admin_panel_settings</mat-icon>Manage
+              <mat-icon class="hdr-caret">expand_more</mat-icon>
+            </button>
+            <mat-menu #adminMenu="matMenu" class="hdr-menu-panel">
+              <div class="hdr-menu-section-label">Identity</div>
+              <button mat-menu-item (click)="navigateTo('/users')">
+                <mat-icon>group</mat-icon><span>Users</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/user-tags')">
+                <mat-icon>nfc</mat-icon><span>RFID tags</span>
+              </button>
+              <mat-divider></mat-divider>
+              <div class="hdr-menu-section-label">Diagnostics</div>
+              <button mat-menu-item (click)="navigateTo('/log/system')">
+                <mat-icon>terminal</mat-icon><span>System log</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/log/pay')">
+                <mat-icon>account_balance_wallet</mat-icon><span>Payment log</span>
+              </button>
             </mat-menu>
           }
-          <button mat-button [matMenuTriggerFor]="legalMenu">Legal</button>
-          <mat-menu #legalMenu="matMenu">
-            <button mat-menu-item (click)="navigateTo('/privacy/en')">Privacy policy</button>
-            <button mat-menu-item (click)="navigateTo('/terms/en')">Terms and conditions</button>
+          <button mat-button class="hdr-nav-btn hdr-nav-btn--subtle" [matMenuTriggerFor]="legalMenu" aria-label="Legal">
+            <mat-icon class="hdr-nav-icon">help_outline</mat-icon>
+          </button>
+          <mat-menu #legalMenu="matMenu" class="hdr-menu-panel">
+            <button mat-menu-item (click)="navigateTo('/privacy/en')">
+              <mat-icon>policy</mat-icon><span>Privacy policy</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/terms/en')">
+              <mat-icon>gavel</mat-icon><span>Terms &amp; conditions</span>
+            </button>
           </mat-menu>
-        </div>
+        </nav>
       }
 
       <span class="bar-spacer"></span>
 
       @if (menuEnabled && username) {
-        <button mat-icon-button (click)="openUserProfile()" aria-label="View profile for {{username}}">
-          <mat-icon>account_circle</mat-icon>
+        <button class="hdr-user-chip" (click)="openUserProfile()" [attr.aria-label]="'Profile: ' + username">
+          <span class="hdr-user-avatar">{{username.charAt(0).toUpperCase()}}</span>
+          <span class="hdr-user-name">{{username}}</span>
         </button>
       }
-      <span class="username-display">{{username}}</span>
       @if (username) {
-        <button mat-icon-button aria-label="Log out" (click)="logout()">
+        <button mat-icon-button class="hdr-icon-btn" aria-label="Sign out" (click)="logout()">
           <mat-icon>logout</mat-icon>
         </button>
       } @else {
-        <button mat-icon-button aria-label="Log in to your account" (click)="navigateTo('/account/login')">
-          <mat-icon>account_circle</mat-icon>
+        <button mat-icon-button class="hdr-icon-btn" aria-label="Sign in" (click)="navigateTo('/account/login')">
+          <mat-icon>login</mat-icon>
         </button>
       }
     }
