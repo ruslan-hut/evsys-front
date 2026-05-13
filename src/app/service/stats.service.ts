@@ -33,8 +33,8 @@ export class StatsService {
 
   getGroups(): Group[] {
     return [
-      {id: 'default', name: 'Client'},
-      {id: 'office', name: 'Office'}
+      {id: 'default', name: 'groups.client'},
+      {id: 'office', name: 'groups.office'}
     ]
   }
 

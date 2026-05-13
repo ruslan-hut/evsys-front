@@ -9,7 +9,7 @@
       <form name="datos" class="user-form">
         <input type="hidden" id="token" [(ngModel)]="token" [ngModelOptions]="{standalone: true}">
         <input type="hidden" id="errorCode" [(ngModel)]="errorCode" [ngModelOptions]="{standalone: true}">
-        <a href="javascript:void(0)" (click)="showValues()">Show values</a>
+        <a href="javascript:void(0)" (click)="showValues()">{{ 'bankService.showValues' | translate }}</a>
       </form>
 <!--    </mat-card-content>-->
 <!--  </mat-card>-->

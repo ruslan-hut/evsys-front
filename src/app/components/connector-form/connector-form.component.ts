@@ -3,6 +3,7 @@ import {Connector} from "../../models/connector";
 
 import { MatCardContent, MatCardTitle } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-connector-form',
@@ -10,7 +11,7 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./connector-form.component.css'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCardContent, MatCardTitle, FormsModule]
+    imports: [MatCardContent, MatCardTitle, FormsModule, TranslatePipe]
 })
 export class ConnectorFormComponent {
   @Input() connectors: Connector[];

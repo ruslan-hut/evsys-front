@@ -23,6 +23,7 @@
     "filter": "Filtrar",
     "filters": "Filtros",
     "noData": "No hay datos disponibles",
+    "areYouSure": "¿Estás seguro?",
     "ranges": {
       "today": "Hoy",
       "currentMonth": "Mes actual",
@@ -609,6 +610,24 @@
   },
   "offlineBanner": {
     "offline": "Estás sin conexión"
+  },
+  "promoDialog": {
+    "title": "Introduce el código promocional",
+    "placeholder": "Código promocional",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  },
+  "connectorForm": {
+    "id": "ID:",
+    "type": "Tipo:",
+    "kw": "kW:"
+  },
+  "bankService": {
+    "showValues": "Mostrar valores"
+  },
+  "groups": {
+    "client": "Cliente",
+    "office": "Oficina"
   },
   "errors": {
     "notAuthorized": "No autorizado",

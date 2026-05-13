@@ -12,6 +12,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../../../service/language.service';
 
 @Component({
   selector: 'app-header',
@@ -28,6 +29,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
+  private readonly languageService = inject(LanguageService);
 
   title = 'WattBrews';
   username = '';
@@ -35,6 +37,14 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
 
   isAdmin = false;
   isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset);
+
+  get privacyLink(): string {
+    return `/privacy/${this.languageService.current}`;
+  }
+
+  get termsLink(): string {
+    return `/terms/${this.languageService.current}`;
+  }
 
   navigateTo(destination: string) {
     this.router.navigateByUrl(destination).then(r => {

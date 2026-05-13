@@ -6,6 +6,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatButton } from '@angular/material/button';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-basic-dialog',
@@ -26,6 +27,7 @@ export class BasicDialogComponent {
   readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly translate = inject(TranslateService);
 
   checked: boolean[];
   isConfirm: boolean;
@@ -40,7 +42,7 @@ export class BasicDialogComponent {
     if (this.data.content !== "") {
       return this.sanitizer.bypassSecurityTrustHtml(this.data.content);
     }
-    return "Are you sure?";
+    return this.translate.instant('common.areYouSure');
   }
 
   onChecked(i: number){

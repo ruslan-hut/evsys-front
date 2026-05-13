@@ -34,7 +34,7 @@
     <mat-label>{{ 'reports.exportData.selectGroup' | translate }}</mat-label>
     <mat-select [(value)]="selectedGroup">
       @for (group of groups; track group) {
-        <mat-option [value]="group.id">{{ group.name }}</mat-option>
+        <mat-option [value]="group.id">{{ group.name | translate }}</mat-option>
       }
     </mat-select>
   </mat-form-field>

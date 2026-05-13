@@ -57,10 +57,10 @@
 
           <mat-divider></mat-divider>
           <div class="hdr-menu-section-label">{{ 'header.legal' | translate }}</div>
-          <button mat-menu-item (click)="navigateTo('/privacy/en')">
+          <button mat-menu-item (click)="navigateTo(privacyLink)">
             <mat-icon>policy</mat-icon><span>{{ 'header.privacyPolicy' | translate }}</span>
           </button>
-          <button mat-menu-item (click)="navigateTo('/terms/en')">
+          <button mat-menu-item (click)="navigateTo(termsLink)">
             <mat-icon>gavel</mat-icon><span>{{ 'header.terms' | translate }}</span>
           </button>
         </mat-menu>
@@ -154,10 +154,10 @@
             <mat-icon class="hdr-nav-icon">help_outline</mat-icon>
           </button>
           <mat-menu #legalMenu="matMenu" class="hdr-menu-panel">
-            <button mat-menu-item (click)="navigateTo('/privacy/en')">
+            <button mat-menu-item (click)="navigateTo(privacyLink)">
               <mat-icon>policy</mat-icon><span>{{ 'header.privacyPolicy' | translate }}</span>
             </button>
-            <button mat-menu-item (click)="navigateTo('/terms/en')">
+            <button mat-menu-item (click)="navigateTo(termsLink)">
               <mat-icon>gavel</mat-icon><span>{{ 'header.terms' | translate }}</span>
             </button>
           </mat-menu>

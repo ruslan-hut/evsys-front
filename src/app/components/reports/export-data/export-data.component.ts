@@ -11,7 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DateRange, getStatRanges } from '../../../helpers/date-ranges';
 
 @Component({
@@ -31,6 +31,7 @@ import { DateRange, getStatRanges } from '../../../helpers/date-ranges';
 export class ExportDataComponent {
   private readonly statsService = inject(StatsService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   groups: Group[] = [];
   startDate: Date = new Date();
@@ -73,7 +74,8 @@ export class ExportDataComponent {
     const rows = data.map(row => `${row.date},${row.hour},${row.consumed}`);
     const csv = [header, ...rows].join('\n');
 
-    const groupName = this.groups.find(g => g.id === this.selectedGroup)?.name ?? this.selectedGroup;
+    const groupKey = this.groups.find(g => g.id === this.selectedGroup)?.name ?? this.selectedGroup;
+    const groupName = this.translate.instant(groupKey);
     const from = this.formatDateForFilename(this.startDate);
     const to = this.formatDateForFilename(this.endDate);
     const filename = `export_${groupName}_${from}_${to}.csv`;

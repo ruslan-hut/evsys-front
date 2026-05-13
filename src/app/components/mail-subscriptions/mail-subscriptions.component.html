@@ -80,7 +80,7 @@
       </ng-container>
       <ng-container matColumnDef="group">
         <th mat-header-cell *matHeaderCellDef>{{ 'mailSubscriptions.headers.client' | translate }}</th>
-        <td mat-cell *matCellDef="let row">{{ groupName(row.user_group) }}</td>
+        <td mat-cell *matCellDef="let row">{{ groupName(row.user_group) | translate }}</td>
       </ng-container>
       <ng-container matColumnDef="enabled">
         <th mat-header-cell *matHeaderCellDef>{{ 'mailSubscriptions.headers.enabled' | translate }}</th>

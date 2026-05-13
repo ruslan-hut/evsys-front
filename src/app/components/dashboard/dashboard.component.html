@@ -27,7 +27,7 @@
     <mat-label>{{ 'dashboard.group' | translate }}</mat-label>
     <mat-select [(value)]="selectedGroup">
       @for (group of groups; track group.id) {
-        <mat-option [value]="group.id">{{ group.name }}</mat-option>
+        <mat-option [value]="group.id">{{ group.name | translate }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
@@ -71,7 +71,7 @@
       <mat-label>{{ 'dashboard.group' | translate }}</mat-label>
       <mat-select [(value)]="selectedGroup">
         @for (group of groups; track group.id) {
-          <mat-option [value]="group.id">{{ group.name }}</mat-option>
+          <mat-option [value]="group.id">{{ group.name | translate }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

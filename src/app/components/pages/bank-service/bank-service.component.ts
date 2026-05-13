@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ChangeDet
 import {ActivatedRoute} from "@angular/router";
 import {AccountService} from "../../../service/account.service";
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 declare var getInSiteFormJSON: any;
 declare var storeIdOper: any;
@@ -13,7 +14,7 @@ declare var storeIdOper: any;
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [FormsModule]
+    imports: [FormsModule, TranslatePipe]
 })
 export class BankServiceComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

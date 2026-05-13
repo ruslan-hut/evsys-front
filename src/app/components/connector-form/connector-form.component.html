@@ -12,19 +12,19 @@
         </tr>
         <tr>
           <td></td>
-          <td>ID: </td>
+          <td>{{ 'connectorForm.id' | translate }}</td>
           <div class="space"></div>
           <td><input [(ngModel)]="connector.connector_id_name" /></td>
         </tr>
         <tr>
           <td></td>
-          <td>Type: </td>
+          <td>{{ 'connectorForm.type' | translate }}</td>
           <div class="space"></div>
           <td><input [(ngModel)]="connector.type" /></td>
         </tr>
         <tr>
           <td></td>
-          <td>kW: </td>
+          <td>{{ 'connectorForm.kw' | translate }}</td>
           <div class="space"></div>
           <td><input [(ngModel)]="connector.power" type="number" /></td>
         </tr>
@@ -32,6 +32,3 @@
     </div>
   }
 </div>
-
-
-

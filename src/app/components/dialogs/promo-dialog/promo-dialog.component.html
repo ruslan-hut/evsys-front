@@ -1,11 +1,11 @@
-<h1 mat-dialog-title>Enter promo code</h1>
+<h1 mat-dialog-title>{{ 'promoDialog.title' | translate }}</h1>
 <div mat-dialog-content >
   <mat-form-field>
-    <input matInput [(ngModel)]="promoCode" placeholder="Promo code">
+    <input matInput [(ngModel)]="promoCode" [placeholder]="'promoDialog.placeholder' | translate">
   </mat-form-field>
 
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button (click)="dialogRef.close('no')">Cancel</button>
-  <button mat-button color="primary" (click)="this.confirm()">Confirm</button>
+  <button mat-button (click)="dialogRef.close('no')">{{ 'promoDialog.cancel' | translate }}</button>
+  <button mat-button color="primary" (click)="this.confirm()">{{ 'promoDialog.confirm' | translate }}</button>
 </div>

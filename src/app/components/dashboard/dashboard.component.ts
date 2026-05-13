@@ -19,6 +19,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { NgxChartsModule, Color, ScaleType, LegendPosition } from '@swimlane/ngx-charts';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DateRange, getDashboardRanges, getLastYear } from '../../helpers/date-ranges';
+import { LanguageService } from '../../service/language.service';
 
 import { StatsService } from '../../service/stats.service';
 import { MonthStats } from '../../models/month-stats';
@@ -70,6 +71,7 @@ interface SummaryMetrics {
 export class DashboardComponent implements OnInit, OnDestroy {
   private readonly statsService = inject(StatsService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly languageService = inject(LanguageService);
 
   private destroy$ = new Subject<void>();
 
@@ -261,9 +263,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private getMonthName(month: number): string {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return months[month - 1] || '';
+    if (month < 1 || month > 12) {
+      return '';
+    }
+    const locale = this.languageService.current === 'es' ? 'es-ES' : 'en-GB';
+    const date = new Date(2000, month - 1, 1);
+    return new Intl.DateTimeFormat(locale, { month: 'short' }).format(date);
   }
 
   onTabChange(index: number): void {

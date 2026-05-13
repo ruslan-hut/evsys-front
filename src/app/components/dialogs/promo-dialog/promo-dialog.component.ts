@@ -5,6 +5,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-promo-dialog',
@@ -21,6 +22,7 @@ import { MatButton } from '@angular/material/button';
         FormsModule,
         MatDialogActions,
         MatButton,
+        TranslatePipe,
     ],
 })
 export class PromoDialogComponent {
