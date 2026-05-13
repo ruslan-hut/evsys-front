@@ -52,4 +52,16 @@ export class BacklogComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
+
+  formatTime(timeStr: string): string {
+    if (!timeStr) return '';
+    const parts = timeStr.split(' ');
+    if (parts.length >= 2) {
+      const dateParts = parts[0].split('-');
+      if (dateParts.length === 3) {
+        return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${parts[1]}`;
+      }
+    }
+    return timeStr;
+  }
 }

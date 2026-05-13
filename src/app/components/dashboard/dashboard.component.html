@@ -10,7 +10,7 @@
       <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
       <input matEndDate [(ngModel)]="endDate" placeholder="End" />
     </mat-date-range-input>
-    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+    <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="pickerDesktop"></mat-datepicker-toggle>
     <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuDesktop" aria-label="Select predefined range">
       <mat-icon>keyboard_arrow_down</mat-icon>
@@ -54,7 +54,7 @@
         <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
         <input matEndDate [(ngModel)]="endDate" placeholder="End" />
       </mat-date-range-input>
-      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+      <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
       <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
       <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuMobile" aria-label="Select predefined range">
         <mat-icon>keyboard_arrow_down</mat-icon>
@@ -85,7 +85,7 @@
 
 <div class="current-period">
   <span class="period-label">Period:</span>
-  <span class="period-value">{{ startDate | date:'mediumDate' }} — {{ endDate | date:'mediumDate' }}</span>
+  <span class="period-value">{{ startDate | date:'dd-MM-yyyy' }} — {{ endDate | date:'dd-MM-yyyy' }}</span>
 </div>
 
 <mat-tab-group (selectedIndexChange)="onTabChange($event)" [selectedIndex]="activeTabIndex">

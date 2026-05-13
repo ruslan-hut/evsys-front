@@ -265,14 +265,14 @@
           <!-- Time Start Column -->
           <ng-container matColumnDef="time_start">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Started</th>
-            <td mat-cell *matCellDef="let row">{{ row.time_start | date:'short' }}</td>
+            <td mat-cell *matCellDef="let row">{{ row.time_start | date:'dd-MM-yyyy HH:mm:ss' }}</td>
           </ng-container>
 
           <!-- Time Stop Column -->
           <ng-container matColumnDef="time_stop">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Stopped</th>
             <td mat-cell *matCellDef="let row">
-              {{ row.time_stop ? (row.time_stop | date:'short') : '-' }}
+              {{ row.time_stop ? (row.time_stop | date:'dd-MM-yyyy HH:mm:ss') : '-' }}
             </td>
           </ng-container>
 

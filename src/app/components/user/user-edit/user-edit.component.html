@@ -81,10 +81,10 @@
         @if (isEditMode && user) {
           <div class="readonly-info">
             @if (user.date_registered) {
-              <p><strong>Registered:</strong> {{ user.date_registered }}</p>
+              <p><strong>Registered:</strong> {{ formatDate(user.date_registered) }}</p>
             }
             @if (user.last_seen) {
-              <p><strong>Last Seen:</strong> {{ user.last_seen }}</p>
+              <p><strong>Last Seen:</strong> {{ formatDate(user.last_seen) }}</p>
             }
           </div>
         }

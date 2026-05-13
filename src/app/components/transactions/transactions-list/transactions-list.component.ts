@@ -248,7 +248,13 @@ export class TransactionsListComponent implements OnInit {
   formatDateTime(dateStr: string | undefined): string {
     if (!dateStr) return '-';
     const date = new Date(dateStr);
-    return date.toLocaleString();
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    const hh = String(date.getHours()).padStart(2, '0');
+    const mi = String(date.getMinutes()).padStart(2, '0');
+    const ss = String(date.getSeconds()).padStart(2, '0');
+    return `${dd}-${mm}-${yyyy} ${hh}:${mi}:${ss}`;
   }
 
   formatAmount(amount: number): string {

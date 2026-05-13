@@ -64,10 +64,10 @@
         @if (isEditMode && tag) {
           <div class="readonly-info">
             @if (tag.date_registered) {
-              <p><strong>Registered:</strong> {{ tag.date_registered }}</p>
+              <p><strong>Registered:</strong> {{ formatDate(tag.date_registered) }}</p>
             }
             @if (tag.last_seen) {
-              <p><strong>Last Seen:</strong> {{ tag.last_seen }}</p>
+              <p><strong>Last Seen:</strong> {{ formatDate(tag.last_seen) }}</p>
             }
           </div>
         }

@@ -112,15 +112,28 @@ export class PaylogComponent implements OnInit {
     return timeStr;
   }
 
+  // Format full datetime in European format: DD-MM-YYYY HH:mm:ss
+  formatTime(timeStr: string): string {
+    if (!timeStr) return '';
+    const parts = timeStr.split(' ');
+    if (parts.length >= 2) {
+      const dateParts = parts[0].split('-');
+      if (dateParts.length === 3) {
+        return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${parts[1]}`;
+      }
+    }
+    return timeStr;
+  }
+
   // Format date for mobile display
   formatDateShort(timeStr: string): string {
     if (!timeStr) return '';
     const parts = timeStr.split(' ');
     if (parts.length >= 1) {
-      // Return date in shorter format MM-DD
+      // Return date in shorter format DD-MM
       const dateParts = parts[0].split('-');
       if (dateParts.length === 3) {
-        return `${dateParts[1]}-${dateParts[2]}`;
+        return `${dateParts[2]}-${dateParts[1]}`;
       }
     }
     return timeStr;

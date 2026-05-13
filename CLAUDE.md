@@ -19,16 +19,8 @@ To run a single test file, use: `ng test --include=**/component-name.spec.ts`
 
 ## Architecture
 
-### Standalone Components Pattern
-All components use Angular standalone pattern (default in Angular 21, no NgModules). Components import their dependencies directly:
-```typescript
-@Component({
-  imports: [CommonModule, MatButtonModule, ...]
-})
-```
-
 ### State Management
-RxJS-based with BehaviorSubjects in services - no NgRx/Akita:
+RxJS-based with BehaviorSubjects in services — **legacy pattern, not signals**. No NgRx/Akita. New code in this repo can stay with this pattern unless the user asks for a migration.
 - `AccountService` - User state via `BehaviorSubject<User>` exposed as `user$`
 - `ChargepointService` - Charge points list with real-time WebSocket updates
 - `WebsocketService` - Real-time bidirectional communication with auto-reconnect

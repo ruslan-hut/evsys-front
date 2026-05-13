@@ -124,7 +124,17 @@ export class UsersComponent implements OnInit {
     // Return shorter format
     const parts = dateStr.split(' ');
     if (parts.length >= 2) {
-      return parts[0]; // Return only date part
+      return this.formatDate(parts[0]);
+    }
+    return this.formatDate(dateStr);
+  }
+
+  formatDate(dateStr: string | undefined): string {
+    if (!dateStr) return 'Never';
+    const datePart = dateStr.split('T')[0];
+    const ymd = datePart.split('-');
+    if (ymd.length === 3) {
+      return `${ymd[2]}-${ymd[1]}-${ymd[0]}`;
     }
     return dateStr;
   }

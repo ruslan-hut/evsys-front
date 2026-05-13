@@ -58,7 +58,7 @@
         <table mat-table matSort [dataSource]="dataSource">
           <ng-container matColumnDef="time">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-            <td mat-cell *matCellDef="let row">{{ row.time }}</td>
+            <td mat-cell *matCellDef="let row">{{ formatTime(row.time) }}</td>
           </ng-container>
           <ng-container matColumnDef="level">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Level</th>

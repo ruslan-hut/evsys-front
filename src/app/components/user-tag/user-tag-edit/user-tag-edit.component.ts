@@ -156,4 +156,16 @@ export class UserTagEditComponent implements OnInit {
       this.clipboard.copy(this.idTag);
     }
   }
+
+  formatDate(dateStr: string | undefined): string {
+    if (!dateStr) return '';
+    const parts = dateStr.split(' ');
+    const datePart = (parts.length >= 2 ? parts[0] : dateStr.split('T')[0]);
+    const ymd = datePart.split('-');
+    if (ymd.length === 3) {
+      const time = parts.length >= 2 ? ` ${parts[1]}` : '';
+      return `${ymd[2]}-${ymd[1]}-${ymd[0]}${time}`;
+    }
+    return dateStr;
+  }
 }

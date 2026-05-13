@@ -130,8 +130,10 @@ export class UserTagsComponent implements OnInit {
   formatDate(dateStr: string | undefined): string {
     if (!dateStr) return 'Never';
     const parts = dateStr.split('T');
-    if (parts.length >= 1) {
-      return parts[0];
+    const datePart = parts[0];
+    const ymd = datePart.split('-');
+    if (ymd.length === 3) {
+      return `${ymd[2]}-${ymd[1]}-${ymd[0]}`;
     }
     return dateStr;
   }
