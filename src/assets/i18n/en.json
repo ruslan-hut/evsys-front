@@ -4,8 +4,35 @@
     "cancel": "Cancel",
     "loading": "Loading…",
     "back": "Back",
+    "close": "Close",
     "ok": "Ok",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "refresh": "Refresh",
+    "search": "Search",
+    "clear": "Clear",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "update": "Update",
+    "add": "Add",
+    "submit": "Submit",
+    "reload": "Reload",
+    "yes": "Yes",
+    "no": "No",
+    "filter": "Filter",
+    "filters": "Filters",
+    "noData": "No data available",
+    "ranges": {
+      "today": "Today",
+      "currentMonth": "Current Month",
+      "previousMonth": "Previous Month",
+      "currentYear": "Current Year",
+      "lastYear": "Last Year",
+      "last7Days": "Last 7 Days",
+      "last30Days": "Last 30 Days",
+      "last12Months": "Last 12 Months"
+    }
   },
   "header": {
     "operations": "Operations",
@@ -87,13 +114,6 @@
     "period": "Period:",
     "noData": "No data available",
     "noDataClickLoad": "No data available. Click \"Load Data\" to fetch.",
-    "ranges": {
-      "today": "Today",
-      "currentMonth": "Current Month",
-      "previousMonth": "Previous Month",
-      "currentYear": "Current Year",
-      "lastYear": "Last Year"
-    },
     "tabs": {
       "monthly": "Monthly Trends",
       "user": "User Statistics",
@@ -118,6 +138,13 @@
       "kwh": "kWh",
       "user": "User",
       "charger": "Charger"
+    },
+    "ranges": {
+      "today": "Today",
+      "currentMonth": "Current Month",
+      "previousMonth": "Previous Month",
+      "currentYear": "Current Year",
+      "lastYear": "Last Year"
     }
   },
   "userInfo": {
@@ -126,10 +153,440 @@
     "languageEn": "English",
     "languageEs": "Español"
   },
+  "userProfile": {
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "startPage": "Start Page",
+    "chargers": "Chargers",
+    "alwaysLoadAll": "Always load all chargers",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsDescription": "View, add, edit and delete payment methods",
+    "close": "Close",
+    "logout": "Logout",
+    "themes": {
+      "auto": "Auto (System)",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "startPages": {
+      "points": "Points",
+      "dashboard": "Dashboard",
+      "reports": "Reports",
+      "syslog": "Syslog"
+    }
+  },
+  "chargepointList": {
+    "noChargePoints": "No charge points available",
+    "showFullList": "Show full list"
+  },
+  "chargepointInfo": {
+    "title": "Title",
+    "description": "Description",
+    "address": "Address",
+    "location": "Location",
+    "accessType": "Access type",
+    "model": "Model",
+    "serialNumber": "Serial Number",
+    "vendor": "Vendor",
+    "firmwareVersion": "Firmware Version",
+    "errorCode": "Error Code",
+    "info": "Info",
+    "status": "Status",
+    "eventTime": "Event time",
+    "statusTime": "Status time",
+    "accessLevel": "Access level",
+    "softReset": "Soft Reset",
+    "hardReset": "Hard Reset"
+  },
+  "connectorInfo": {
+    "type": "Type:",
+    "status": "Status:",
+    "statusTime": "Status time:",
+    "info": "info:",
+    "kwatt": "kWatt:",
+    "transaction": "Transaction:",
+    "start": "Start",
+    "stop": "Stop",
+    "unlock": "Unlock"
+  },
+  "transactionInfo": {
+    "id": "ID:",
+    "connector": "Connector:",
+    "startTime": "Start time:",
+    "duration": "Duration:",
+    "powerCurrent": "Power (current):",
+    "kw": "kW",
+    "consumed": "Consumed:",
+    "kwh": "kWh",
+    "price": "Price:",
+    "currency": "€",
+    "stop": "Stop",
+    "close": "Close",
+    "stopConfirm": {
+      "title": "Stop",
+      "yes": "Stop",
+      "no": "Close"
+    },
+    "transactionStopped": "Transaction stopped"
+  },
+  "transactionScreen": {
+    "status": "Status:",
+    "startTime": "Start time:",
+    "duration": "Duration:",
+    "power": "Power:",
+    "consumed": "Consumed:",
+    "kwh": "kWh",
+    "price": "Price:",
+    "currency": "€",
+    "battery": "Battery:",
+    "stop": "Stop",
+    "close": "Close",
+    "online": "Charger is online",
+    "offline": "Charger is offline",
+    "stopDialog": {
+      "title": "Stop transaction",
+      "areYouSure": "Are you sure?"
+    }
+  },
+  "connectorActions": {
+    "start": "Start",
+    "stop": "Stop",
+    "unlock": "Unlock",
+    "close": "Close",
+    "startTitle": "Start",
+    "stopTitle": "Stop",
+    "unlockTitle": "Unlock",
+    "addPaymentTitle": "Add Payment Method",
+    "addPaymentContent": "You need to add a payment method to start a transaction",
+    "addPaymentButton": "Add Payment Method",
+    "transactionStarted": "Transaction started",
+    "transactionStopped": "Transaction stopped",
+    "connectorUnlocked": "Connector unlocked"
+  },
+  "chargepointInfoActions": {
+    "resetTitle": "Reset",
+    "resetButton": "Reset",
+    "softResetProgress": "Performing soft reset",
+    "hardResetProgress": "Performing hard reset",
+    "onlineSr": "Charger is online",
+    "offlineSr": "Charger is offline"
+  },
+  "transactionsList": {
+    "filters": "Filters",
+    "dateRange": "Date Range",
+    "start": "Start",
+    "end": "End",
+    "username": "Username",
+    "idTag": "ID Tag",
+    "chargePoint": "Charge Point",
+    "withError": "With error",
+    "search": "Search",
+    "clear": "Clear",
+    "totalConsumed": "Total consumed",
+    "transactionsCount": "transactions",
+    "noTransactions": "No transactions found",
+    "selectRange": "Select predefined range",
+    "headers": {
+      "id": "ID",
+      "username": "Username",
+      "idTag": "ID Tag",
+      "chargePoint": "Charge Point",
+      "connector": "Connector",
+      "started": "Started",
+      "stopped": "Stopped",
+      "consumed": "Consumed",
+      "amount": "Amount",
+      "actions": "Actions"
+    },
+    "viewDetails": "View details",
+    "selectPage": "Select page of transactions",
+    "all": "All"
+  },
+  "statistic": {
+    "dateRangeLabel": "Enter a date range",
+    "dateHint": "DD/MM/YYYY – DD/MM/YYYY",
+    "selectGroup": "Select Group",
+    "selectReportType": "Select Report Type",
+    "requestData": "Request Data",
+    "selectRange": "Select predefined range",
+    "types": {
+      "month": "Month",
+      "user": "User",
+      "charger": "Charger"
+    },
+    "headers": {
+      "name": "Name",
+      "total": "Total",
+      "count": "Count",
+      "kwatts": "kWatts",
+      "avgKwatts": "Avg kWatts",
+      "year": "Year",
+      "month": "Month"
+    }
+  },
+  "reports": {
+    "tabs": {
+      "stationStatus": "Station Status",
+      "uptime": "Uptime Report"
+    },
+    "stationStatus": {
+      "online": "Online",
+      "offline": "Offline",
+      "total": "Total",
+      "refresh": "Refresh",
+      "noData": "No station data available"
+    },
+    "uptime": {
+      "dateRange": "Date Range",
+      "start": "Start",
+      "end": "End",
+      "dateHint": "DD/MM/YYYY - DD/MM/YYYY",
+      "selectRange": "Select predefined range",
+      "loadData": "Load Data",
+      "filters": "Filters",
+      "station": "Station",
+      "allStations": "All Stations",
+      "period": "Period:",
+      "averageUptime": "Average Uptime",
+      "stations": "Stations",
+      "uptimeByStation": "Uptime by Station",
+      "uptimePercent": "Uptime %",
+      "noUptime": "No uptime data available for the selected period",
+      "stationDetails": "Station Details",
+      "headers": {
+        "stationId": "Station ID",
+        "online": "Online",
+        "offline": "Offline",
+        "uptime": "Uptime",
+        "finalState": "Final State"
+      },
+      "viewDetails": "View station details"
+    },
+    "exportData": {
+      "dateRangeLabel": "Enter a date range",
+      "selectGroup": "Select Group",
+      "exportCsv": "Export CSV",
+      "selectRange": "Select predefined range"
+    }
+  },
+  "userTags": {
+    "filter": "Filter",
+    "search": "search…",
+    "clear": "Clear",
+    "addTag": "Add Tag",
+    "disabled": "Disabled",
+    "username": "Username:",
+    "source": "Source:",
+    "registered": "Registered:",
+    "note": "Note:",
+    "headers": {
+      "idTag": "ID Tag",
+      "username": "Username",
+      "source": "Source",
+      "note": "Note",
+      "lastSeen": "Last Seen",
+      "actions": "Actions"
+    },
+    "noTags": "No tags found",
+    "noTagsMatching": "No tags matching",
+    "editTag": "Edit tag",
+    "transactionsFor": "Transactions for {{tag}}",
+    "deleteTag": "Delete tag",
+    "deleteConfirm": {
+      "title": "Delete tag",
+      "content": "Are you sure you want to delete this tag?"
+    }
+  },
+  "userTagEdit": {
+    "newTag": "Create New Tag",
+    "editTag": "Edit Tag: {{tag}}",
+    "copyId": "Copy tag ID",
+    "idTag": "ID Tag",
+    "idTagPlaceholder": "Enter tag identifier",
+    "idTagRequired": "ID Tag is required",
+    "username": "Username",
+    "usernamePlaceholder": "Associated username",
+    "usernameRequired": "Username is required",
+    "source": "Source",
+    "sourcePlaceholder": "Tag source (e.g., manual, import)",
+    "enabled": "Enabled",
+    "enabledHint": "Allow this tag for authentication",
+    "local": "Local",
+    "localHint": "This is a locally managed tag",
+    "note": "Note",
+    "notePlaceholder": "Optional notes",
+    "registered": "Registered:",
+    "lastSeen": "Last Seen:",
+    "back": "Back",
+    "saving": "Saving…",
+    "updateTag": "Update Tag",
+    "createTag": "Create Tag",
+    "tagExists": "Tag ID already exists or invalid data"
+  },
+  "mailSubscriptions": {
+    "testTitle": "Test mail provider",
+    "sendTestLabel": "Send a test message to",
+    "emailPlaceholder": "recipient@example.com",
+    "sendTest": "Send test mail",
+    "editTitle": "Edit subscription",
+    "newTitle": "New subscription",
+    "email": "Email",
+    "period": "Period",
+    "client": "Client (group)",
+    "enabled": "Enabled",
+    "update": "Update",
+    "create": "Create",
+    "cancel": "Cancel",
+    "headers": {
+      "email": "Email",
+      "period": "Period",
+      "client": "Client",
+      "enabled": "Enabled",
+      "actions": "Actions"
+    },
+    "edit": "Edit",
+    "sendNow": "Send now",
+    "delete": "Delete",
+    "noSubscriptions": "No mail subscriptions configured.",
+    "deleteTitle": "Delete subscription",
+    "deleteContent": "Delete report subscription for \"{{email}}\"?",
+    "deleteYes": "Delete",
+    "deleteNo": "Cancel",
+    "testSent": "Test mail sent to {{email}}",
+    "reportSent": "Report sent"
+  },
+  "users": {
+    "title": "Users",
+    "filter": "Filter",
+    "search": "Search by username or name…",
+    "addUser": "Add user",
+    "headers": {
+      "username": "Username",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "lastSeen": "Last seen",
+      "actions": "Actions"
+    },
+    "deleteUser": "Delete user",
+    "deleteConfirm": {
+      "title": "Delete user",
+      "content": "Are you sure you want to delete user \"{{username}}\"?"
+    },
+    "noUsers": "No users found",
+    "userActions": "User actions",
+    "viewTags": "User tags",
+    "viewTransactions": "Transactions",
+    "viewInfo": "View user info",
+    "editUser": "Edit user"
+  },
+  "userEdit": {
+    "newUser": "Create New User",
+    "editUser": "Edit User",
+    "username": "Username",
+    "password": "Password",
+    "name": "Full Name",
+    "email": "Email",
+    "role": "Role",
+    "accessLevel": "Access Level",
+    "paymentPlan": "Payment Plan",
+    "registered": "Registered",
+    "lastSeen": "Last Seen",
+    "saving": "Saving…",
+    "update": "Update User",
+    "create": "Create User",
+    "back": "Back",
+    "usernameRequired": "Username is required",
+    "usernameMinLength": "Username must be at least 3 characters",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "emailInvalid": "Please enter a valid email"
+  },
+  "register": {
+    "title": "Sign Up",
+    "intro": "Create an account to access the system.",
+    "username": "Username",
+    "password": "Password",
+    "passwordConfirm": "Confirm password",
+    "inviteCode": "Invite code",
+    "signUp": "Sign Up",
+    "alreadyHave": "Already have an account?",
+    "signIn": "Sign In",
+    "errors": {
+      "usernameExists": "Username already exists",
+      "registerFailed": "Failed to register, please try again later",
+      "registerFailedUnknown": "Failed to register, unknown error ({{status}})"
+    }
+  },
+  "chargepointForm": {
+    "title": "Title",
+    "accessType": "Access type",
+    "accessLevel": "Access level",
+    "address": "Address",
+    "location": "Location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "description": "Description",
+    "close": "Close",
+    "save": "Save"
+  },
+  "chargepointConfig": {
+    "key": "Key",
+    "value": "Value",
+    "actions": "Actions",
+    "enterValue": "Enter value",
+    "submit": "Submit",
+    "enterNewValue": "Enter new value",
+    "close": "Close",
+    "reload": "Reload"
+  },
+  "chargepointScreen": {
+    "connector": "Connector:",
+    "paymentMethod": "Payment method:",
+    "addPaymentMethod": "Add payment method",
+    "cost": "Cost:",
+    "perKwh": "€/kWh",
+    "start": "Start",
+    "close": "Close"
+  },
+  "tariff": {
+    "title": "Roaming Tariffs",
+    "updatedBy": "Updated by H2PLT on",
+    "intro": "Find below the current roaming tariffs…",
+    "headers": {
+      "tariffId": "Tariff ID",
+      "network": "Network",
+      "country": "Country",
+      "pricePerKwh": "Price (kW/h)"
+    },
+    "footer": "Excluding tax per kWh…"
+  },
+  "promo": {
+    "noChargePoints": "No charge points available"
+  },
+  "offlineBanner": {
+    "offline": "You are offline"
+  },
   "errors": {
     "notAuthorized": "Not authorized",
     "requestFailed": "Request failed",
     "navigationFailed": "Failed to navigate: {{target}}",
-    "navigationUserProfile": "Failed to navigate: user profile"
+    "navigationUserProfile": "Failed to navigate: user profile",
+    "loadUserTags": "Failed to load user tags",
+    "deleteTag": "Failed to delete tag",
+    "loadTagData": "Failed to load tag data",
+    "correctFormErrors": "Please correct the form errors",
+    "saveTagFailed": "Failed to save tag",
+    "deletePaymentMethod": "Failed to delete payment method",
+    "loadUserData": "Failed to load user data",
+    "passwordRequired": "Password is required for new users",
+    "deleteUser": "Failed to delete user",
+    "saveUser": "Failed to save user",
+    "exportFailed": "Failed to export data",
+    "loadFailed": "Failed to load data",
+    "loadMailSubs": "Failed to load mail subscriptions",
+    "saveMailSub": "Failed to save mail subscription",
+    "deleteSub": "Failed to delete subscription",
+    "sendTestMail": "Failed to send test mail",
+    "sendReport": "Failed to send report"
   }
 }

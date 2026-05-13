@@ -8,13 +8,14 @@ import { Router } from '@angular/router';
 import { ChargepointComponent } from '../chargepoint/chargepoint.component';
 import { Chargepoint } from '../../models/chargepoint';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chargepoint-list',
   templateUrl: './chargepoint-list.component.html',
   styleUrls: ['./chargepoint-list.component.css'],
   standalone: true,
-  imports: [ChargepointComponent, AsyncPipe, MatButtonModule],
+  imports: [ChargepointComponent, AsyncPipe, MatButtonModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChargepointListComponent implements OnInit, OnDestroy {

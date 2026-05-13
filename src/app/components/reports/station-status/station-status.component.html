@@ -7,37 +7,37 @@
     <mat-card class="summary-card online">
       <mat-card-content>
         <div class="summary-value">{{ onlineCount }}</div>
-        <div class="summary-label">Online</div>
+        <div class="summary-label">{{ 'reports.stationStatus.online' | translate }}</div>
       </mat-card-content>
     </mat-card>
     <mat-card class="summary-card offline">
       <mat-card-content>
         <div class="summary-value">{{ offlineCount }}</div>
-        <div class="summary-label">Offline</div>
+        <div class="summary-label">{{ 'reports.stationStatus.offline' | translate }}</div>
       </mat-card-content>
     </mat-card>
     <mat-card class="summary-card total">
       <mat-card-content>
         <div class="summary-value">{{ stations.length }}</div>
-        <div class="summary-label">Total</div>
+        <div class="summary-label">{{ 'reports.stationStatus.total' | translate }}</div>
       </mat-card-content>
     </mat-card>
   </div>
   @if (!(isMobile$ | async)) {
-    <button mat-icon-button (click)="refresh()" [disabled]="loading" matTooltip="Refresh" aria-label="Refresh station status">
+    <button mat-icon-button (click)="refresh()" [disabled]="loading" [matTooltip]="'reports.stationStatus.refresh' | translate" [attr.aria-label]="'reports.stationStatus.refresh' | translate">
       <mat-icon>refresh</mat-icon>
     </button>
   }
 </div>
 
 @if (isMobile$ | async) {
-  <button mat-fab class="fab-refresh" (click)="refresh()" [disabled]="loading" aria-label="Refresh station status">
+  <button mat-fab class="fab-refresh" (click)="refresh()" [disabled]="loading" [attr.aria-label]="'reports.stationStatus.refresh' | translate">
     <mat-icon>refresh</mat-icon>
   </button>
 }
 
 @if (!loading && stations.length === 0) {
-  <div class="no-data">No station data available</div>
+  <div class="no-data">{{ 'reports.stationStatus.noData' | translate }}</div>
 }
 
 <div class="status-grid">

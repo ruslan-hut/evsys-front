@@ -11,6 +11,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'transaction-info',
@@ -18,13 +19,14 @@ import { MatButton } from '@angular/material/button';
   styleUrls: ['./transaction-info.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe, TranslatePipe]
 })
 export class TransactionInfoComponent implements OnInit, OnDestroy {
   private readonly csService = inject(CSService);
   readonly dialog = inject(MatDialog);
   private readonly transactionService = inject(TransactionService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
   readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>, { optional: true });
   readonly data = inject<number>(MAT_DIALOG_DATA, { optional: true });
 
@@ -105,10 +107,10 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
 
   stopTransaction(): void {
     const dialogData: DialogData = {
-      title: 'Stop',
+      title: this.translate.instant('transactionInfo.stopConfirm.title'),
       content: '',
-      buttonYes: 'Stop',
-      buttonNo: 'Close',
+      buttonYes: this.translate.instant('transactionInfo.stopConfirm.yes'),
+      buttonNo: this.translate.instant('transactionInfo.stopConfirm.no'),
       checkboxes: []
     };
 
@@ -129,7 +131,7 @@ export class TransactionInfoComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$)
         ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, 'Transaction stopped');
+            this.csService.processCentralSystemResponse(result, this.translate.instant('transactionInfo.transactionStopped'));
           }
         });
       }

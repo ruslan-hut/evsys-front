@@ -11,6 +11,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { AccountService } from '../../service/account.service';
 import { ThemeService, ThemeMode } from '../../service/theme.service';
 import { LocalStorageService } from '../../service/local-storage.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -27,7 +28,8 @@ import { LocalStorageService } from '../../service/local-storage.service';
     MatLabel,
     MatSelect,
     MatOption,
-    MatSlideToggle
+    MatSlideToggle,
+    TranslatePipe
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -40,16 +42,16 @@ export class UserProfileComponent {
   private readonly localStorageService = inject(LocalStorageService);
 
   themeOptions = [
-    { value: 'auto', label: 'Auto (System)', icon: 'brightness_auto' },
-    { value: 'light', label: 'Light', icon: 'light_mode' },
-    { value: 'dark', label: 'Dark', icon: 'dark_mode' }
+    { value: 'auto', label: 'userProfile.themes.auto', icon: 'brightness_auto' },
+    { value: 'light', label: 'userProfile.themes.light', icon: 'light_mode' },
+    { value: 'dark', label: 'userProfile.themes.dark', icon: 'dark_mode' }
   ];
 
   startPageOptions = [
-    { value: '/points', label: 'Points', icon: 'ev_station', roles: ['user', 'operator', 'admin'] },
-    { value: '/dashboard', label: 'Dashboard', icon: 'dashboard', roles: ['operator', 'admin'] },
-    { value: '/reports', label: 'Reports', icon: 'assessment', roles: ['operator', 'admin'] },
-    { value: '/log/system', label: 'Syslog', icon: 'terminal', roles: ['operator', 'admin'] }
+    { value: '/points', label: 'userProfile.startPages.points', icon: 'ev_station', roles: ['user', 'operator', 'admin'] },
+    { value: '/dashboard', label: 'userProfile.startPages.dashboard', icon: 'dashboard', roles: ['operator', 'admin'] },
+    { value: '/reports', label: 'userProfile.startPages.reports', icon: 'assessment', roles: ['operator', 'admin'] },
+    { value: '/log/system', label: 'userProfile.startPages.syslog', icon: 'terminal', roles: ['operator', 'admin'] }
   ];
 
   currentTheme: ThemeMode = this.themeService.getTheme();

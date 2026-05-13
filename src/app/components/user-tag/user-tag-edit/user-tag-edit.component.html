@@ -7,12 +7,12 @@
     <mat-card-header>
       <mat-card-title class="title-with-action">
         @if (isEditMode) {
-          <span>Edit Tag: {{ idTag }}</span>
-          <button mat-icon-button (click)="copyIdTag()" aria-label="Copy tag ID" class="copy-button">
+          <span>{{ 'userTagEdit.editTag' | translate:{ tag: idTag } }}</span>
+          <button mat-icon-button (click)="copyIdTag()" [attr.aria-label]="'userTagEdit.copyId' | translate" class="copy-button">
             <mat-icon>content_copy</mat-icon>
           </button>
         } @else {
-          Create New Tag
+          {{ 'userTagEdit.newTag' | translate }}
         }
       </mat-card-title>
     </mat-card-header>
@@ -21,53 +21,53 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="tag-form">
         @if (!isEditMode) {
           <mat-form-field appearance="outline">
-            <mat-label>ID Tag</mat-label>
-            <input matInput formControlName="id_tag" placeholder="Enter tag identifier">
+            <mat-label>{{ 'userTagEdit.idTag' | translate }}</mat-label>
+            <input matInput formControlName="id_tag" [placeholder]="'userTagEdit.idTagPlaceholder' | translate">
             @if (form.get('id_tag')?.hasError('required')) {
-              <mat-error>ID Tag is required</mat-error>
+              <mat-error>{{ 'userTagEdit.idTagRequired' | translate }}</mat-error>
             }
           </mat-form-field>
         }
 
         <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" placeholder="Associated username">
+          <mat-label>{{ 'userTagEdit.username' | translate }}</mat-label>
+          <input matInput formControlName="username" [placeholder]="'userTagEdit.usernamePlaceholder' | translate">
           @if (form.get('username')?.hasError('required')) {
-            <mat-error>Username is required</mat-error>
+            <mat-error>{{ 'userTagEdit.usernameRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Source</mat-label>
-          <input matInput formControlName="source" placeholder="Tag source (e.g., manual, import)">
+          <mat-label>{{ 'userTagEdit.source' | translate }}</mat-label>
+          <input matInput formControlName="source" [placeholder]="'userTagEdit.sourcePlaceholder' | translate">
         </mat-form-field>
 
         <div class="toggle-row">
           <mat-slide-toggle formControlName="is_enabled" color="primary">
-            Enabled
+            {{ 'userTagEdit.enabled' | translate }}
           </mat-slide-toggle>
-          <span class="toggle-hint">Allow this tag for authentication</span>
+          <span class="toggle-hint">{{ 'userTagEdit.enabledHint' | translate }}</span>
         </div>
 
         <div class="toggle-row">
           <mat-slide-toggle formControlName="local" color="primary">
-            Local
+            {{ 'userTagEdit.local' | translate }}
           </mat-slide-toggle>
-          <span class="toggle-hint">This is a locally managed tag</span>
+          <span class="toggle-hint">{{ 'userTagEdit.localHint' | translate }}</span>
         </div>
 
         <mat-form-field appearance="outline">
-          <mat-label>Note</mat-label>
-          <textarea matInput formControlName="note" placeholder="Optional notes" rows="3"></textarea>
+          <mat-label>{{ 'userTagEdit.note' | translate }}</mat-label>
+          <textarea matInput formControlName="note" [placeholder]="'userTagEdit.notePlaceholder' | translate" rows="3"></textarea>
         </mat-form-field>
 
         @if (isEditMode && tag) {
           <div class="readonly-info">
             @if (tag.date_registered) {
-              <p><strong>Registered:</strong> {{ formatDate(tag.date_registered) }}</p>
+              <p><strong>{{ 'userTagEdit.registered' | translate }}</strong> {{ formatDate(tag.date_registered) }}</p>
             }
             @if (tag.last_seen) {
-              <p><strong>Last Seen:</strong> {{ formatDate(tag.last_seen) }}</p>
+              <p><strong>{{ 'userTagEdit.lastSeen' | translate }}</strong> {{ formatDate(tag.last_seen) }}</p>
             }
           </div>
         }
@@ -77,17 +77,17 @@
     <mat-card-actions align="end">
       <button mat-button type="button" (click)="navigateBack()">
         <mat-icon>arrow_back</mat-icon>
-        Back
+        {{ 'userTagEdit.back' | translate }}
       </button>
       <button mat-raised-button color="primary"
               (click)="onSubmit()"
               [disabled]="saving || form.invalid">
         @if (saving) {
-          Saving...
+          {{ 'userTagEdit.saving' | translate }}
         } @else if (isEditMode) {
-          Update Tag
+          {{ 'userTagEdit.updateTag' | translate }}
         } @else {
-          Create Tag
+          {{ 'userTagEdit.createTag' | translate }}
         }
       </button>
     </mat-card-actions>

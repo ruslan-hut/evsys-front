@@ -17,6 +17,7 @@ import { ConnectorInfoComponent } from '../connector-info/connector-info.compone
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chargepoint-info',
@@ -24,7 +25,7 @@ import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
   styleUrls: ['./chargepoint-info.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe, TranslatePipe]
 })
 export class ChargepointInfoComponent implements OnInit, OnDestroy {
   private readonly chargePointService = inject(ChargepointService);
@@ -34,6 +35,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
   private readonly csService = inject(CSService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   private destroy$ = new Subject<void>();
 
@@ -70,10 +72,10 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
 
   reboot(mode: number): void {
     const dialogData: DialogData = {
-      title: 'Reset',
+      title: this.translate.instant('chargepointInfoActions.resetTitle'),
       content: '',
-      buttonYes: 'Reset',
-      buttonNo: 'Close',
+      buttonYes: this.translate.instant('chargepointInfoActions.resetButton'),
+      buttonNo: this.translate.instant('common.close'),
       checkboxes: []
     };
 
@@ -100,7 +102,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
     this.csService.softRebootChargePoint(this.chargePointId).pipe(
       take(1)
     ).subscribe((response) => {
-      this.csService.processCentralSystemResponse(response, 'Performing soft reset');
+      this.csService.processCentralSystemResponse(response, this.translate.instant('chargepointInfoActions.softResetProgress'));
     });
   }
 
@@ -108,7 +110,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
     this.csService.hardRebootChargePoint(this.chargePointId).pipe(
       take(1)
     ).subscribe((response) => {
-      this.csService.processCentralSystemResponse(response, 'Performing hard reset');
+      this.csService.processCentralSystemResponse(response, this.translate.instant('chargepointInfoActions.hardResetProgress'));
     });
   }
 }

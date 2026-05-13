@@ -13,7 +13,7 @@
       <tr>
       </tr>
       <tr>
-        <td>Type:</td>
+        <td>{{ 'connectorInfo.type' | translate }}</td>
         <td>
           <div class="like-input">
             {{connector.type}}
@@ -21,7 +21,7 @@
         </td>
       </tr>
       <tr>
-        <td>Status:</td>
+        <td>{{ 'connectorInfo.status' | translate }}</td>
         <td>
           <div class="like-input">
             {{connector.status}}
@@ -29,7 +29,7 @@
         </td>
       </tr>
       <tr>
-        <td>Status time:</td>
+        <td>{{ 'connectorInfo.statusTime' | translate }}</td>
         <td>
           <div class="like-input">
             {{timeService.getTimeDifference(connector.status_time)}}
@@ -37,7 +37,7 @@
         </td>
       </tr>
       <tr>
-        <td>info:</td>
+        <td>{{ 'connectorInfo.info' | translate }}</td>
         <td>
           <div class="like-input">
             {{connector.info}}
@@ -45,7 +45,7 @@
         </td>
       </tr>
       <tr>
-        <td>kWatt:</td>
+        <td>{{ 'connectorInfo.kwatt' | translate }}</td>
         <td>
           <div class="like-input">
             {{connector.power}}
@@ -53,7 +53,7 @@
         </td>
       </tr>
       <tr>
-        <td>Transaction:</td>
+        <td>{{ 'connectorInfo.transaction' | translate }}</td>
         <td>
           <div class="like-input">
             {{connector.current_transaction_id}}
@@ -63,17 +63,17 @@
     </table>
     <mat-action-row class="connector-buttons">
       @if (isDialog()) {
-        <button mat-button (click)="dialogRef?.close('no')">Close</button>
+        <button mat-button (click)="dialogRef?.close('no')">{{ 'common.close' | translate }}</button>
       }
       @if (canStartTransaction(connector)) {
-        <button mat-flat-button color="primary" (click)="onStartConnector(connector)">Start</button>
+        <button mat-flat-button color="primary" (click)="onStartConnector(connector)">{{ 'connectorInfo.start' | translate }}</button>
       } @else {
         @if (connector.state !== 'unavailable') {
           @if (connector.current_transaction_id > 0) {
-            <button mat-flat-button color="accent" (click)="stopConnector(connector)">Stop</button>
+            <button mat-flat-button color="accent" (click)="stopConnector(connector)">{{ 'connectorInfo.stop' | translate }}</button>
           }
           @if (connector.current_transaction_id < 0) {
-            <button mat-flat-button color="accent" (click)="unlockConnector(connector)">Unlock</button>
+            <button mat-flat-button color="accent" (click)="unlockConnector(connector)">{{ 'connectorInfo.unlock' | translate }}</button>
           }
         }
       }

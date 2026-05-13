@@ -15,13 +15,15 @@ import { MatOption } from '@angular/material/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatCard } from '@angular/material/card';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow } from '@angular/material/table';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DateRange, getStatRanges } from '../../helpers/date-ranges';
 
 @Component({
     selector: 'app-statistic',
     templateUrl: './statistic.component.html',
     styleUrl: './statistic.component.css',
     standalone: true,
-    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressBar, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe],
+    imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressBar, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatisticComponent {
@@ -30,12 +32,7 @@ export class StatisticComponent {
   monthStats: MonthStats[] = [];
   userStats: UserStats[] = [];
 
-  predefinedRanges = [
-    { label: 'Today', range: this.getToday() },
-    { label: 'Current Month', range: this.getCurrentMonth() },
-    { label: 'Previous Month', range: this.getPreviousMonth() },
-    { label: 'Current Year', range: this.getCurrentYear() }
-  ];
+  predefinedRanges = getStatRanges();
 
   displayedData: any[] = [];
   displayedColumns: string[] = [];
@@ -76,39 +73,9 @@ export class StatisticComponent {
   }
 
   // Method to set the date range
-  setRange(range: { start: Date; end: Date }) {
+  setRange(range: DateRange) {
     this.startDate = range.start;
     this.endDate = range.end;
-  }
-
-  // Helper methods to get date ranges
-  private getPreviousMonth() {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
-  }
-
-  private getCurrentMonth() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
-  }
-
-  private getCurrentYear() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), 0, 1);
-    const end = new Date(date.getFullYear() + 1, 0, 0);
-    return { start, end };
-  }
-
-  private getToday() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    const end = start;
-    return { start, end };
   }
 
   // Method to update displayed data based on selected data type

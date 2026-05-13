@@ -11,6 +11,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DateRange, getStatRanges } from '../../../helpers/date-ranges';
 
 @Component({
   selector: 'app-export-data',
@@ -21,7 +23,8 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule,
     MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton,
     MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker,
-    MatSelect, MatOption, MatButton, MatProgressBar
+    MatSelect, MatOption, MatButton, MatProgressBar,
+    TranslatePipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -35,19 +38,14 @@ export class ExportDataComponent {
   selectedGroup: string = '';
   inProgress = false;
 
-  predefinedRanges = [
-    { label: 'Today', range: this.getToday() },
-    { label: 'Current Month', range: this.getCurrentMonth() },
-    { label: 'Previous Month', range: this.getPreviousMonth() },
-    { label: 'Current Year', range: this.getCurrentYear() }
-  ];
+  predefinedRanges = getStatRanges();
 
   constructor() {
     this.groups = this.statsService.getGroups();
     this.selectedGroup = this.groups[0].id;
   }
 
-  setRange(range: { start: Date; end: Date }) {
+  setRange(range: DateRange) {
     this.startDate = range.start;
     this.endDate = range.end;
   }
@@ -93,32 +91,4 @@ export class ExportDataComponent {
     return new Intl.DateTimeFormat('en-CA').format(date);
   }
 
-  private getPreviousMonth() {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
-  }
-
-  private getCurrentMonth() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
-  }
-
-  private getCurrentYear() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), 0, 1);
-    const end = new Date(date.getFullYear() + 1, 0, 0);
-    return { start, end };
-  }
-
-  private getToday() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    const end = start;
-    return { start, end };
-  }
 }

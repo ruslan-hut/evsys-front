@@ -20,12 +20,15 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatCheckbox} from '@angular/material/checkbox';
 
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+
 import {TransactionService} from '../../../service/transaction.service';
 import {ChargepointService} from '../../../service/chargepoint.service';
 import {ErrorService} from '../../../service/error.service';
 import {TransactionListItem, calculateConsumed} from '../../../models/transaction-list-item';
 import {TransactionFilter} from '../../../models/transaction-filter';
 import {Chargepoint} from '../../../models/chargepoint';
+import {DateRange, getLast12Months, getLast30Days, getTransactionRanges} from '../../../helpers/date-ranges';
 
 @Component({
   selector: 'app-transactions-list',
@@ -72,7 +75,8 @@ import {Chargepoint} from '../../../models/chargepoint';
     DatePipe,
     MatExpansionModule,
     MatTooltip,
-    MatCheckbox
+    MatCheckbox,
+    TranslatePipe
   ]
 })
 export class TransactionsListComponent implements OnInit {
@@ -83,6 +87,7 @@ export class TransactionsListComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   displayedColumns: string[] = [
     'transaction_id', 'id_tag', 'charge_point_id', 'connector_id',
@@ -106,13 +111,7 @@ export class TransactionsListComponent implements OnInit {
   chargePoints: Chargepoint[] = [];
 
   // Predefined date ranges
-  predefinedRanges = [
-    {label: 'Today', range: this.getToday()},
-    {label: 'Current Month', range: this.getCurrentMonth()},
-    {label: 'Previous Month', range: this.getPreviousMonth()},
-    {label: 'Last 12 Months', range: this.getLast12Months()},
-    {label: 'Current Year', range: this.getCurrentYear()}
-  ];
+  predefinedRanges = getTransactionRanges();
 
   isMobile$ = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
     .pipe(map(result => result.matches));
@@ -146,8 +145,8 @@ export class TransactionsListComponent implements OnInit {
     // Set default date range based on filters
     // If username or id_tag filter is set, use last 12 months; otherwise use last 30 days
     const defaultRange = (this.usernameFilter || this.idTagFilter)
-      ? this.getLast12Months()
-      : this.getLast30Days();
+      ? getLast12Months()
+      : getLast30Days();
     this.startDate = defaultRange.start;
     this.endDate = defaultRange.end;
 
@@ -174,58 +173,16 @@ export class TransactionsListComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.errorService.handle('Failed to load transactions');
+        this.errorService.handle(this.translate.instant('errors.loadFailed'));
         this.loading = false;
         this.cdr.markForCheck();
       }
     });
   }
 
-  setRange(range: {start: Date; end: Date}): void {
+  setRange(range: DateRange): void {
     this.startDate = range.start;
     this.endDate = range.end;
-  }
-
-  private getToday(): {start: Date; end: Date} {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    return {start, end: start};
-  }
-
-  private getCurrentMonth(): {start: Date; end: Date} {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return {start, end};
-  }
-
-  private getPreviousMonth(): {start: Date; end: Date} {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return {start, end};
-  }
-
-  private getCurrentYear(): {start: Date; end: Date} {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), 0, 1);
-    const end = new Date(date.getFullYear() + 1, 0, 0);
-    return {start, end};
-  }
-
-  private getLast12Months(): {start: Date; end: Date} {
-    const date = new Date();
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    const start = new Date(date.getFullYear(), date.getMonth() - 11, 1);
-    return {start, end};
-  }
-
-  private getLast30Days(): {start: Date; end: Date} {
-    const end = new Date();
-    const start = new Date();
-    start.setDate(start.getDate() - 30);
-    return {start, end};
   }
 
   clearFilters(): void {
@@ -233,7 +190,7 @@ export class TransactionsListComponent implements OnInit {
     this.idTagFilter = '';
     this.chargePointFilter = '';
     this.withErrorFilter = false;
-    this.setRange(this.getLast30Days());
+    this.setRange(getLast30Days());
     this.loadTransactions();
   }
 

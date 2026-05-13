@@ -10,6 +10,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIconButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { StatsService } from '../../../service/stats.service';
 import { StationStatus } from '../../../models/station-status';
@@ -28,7 +29,8 @@ import { StationStatus } from '../../../models/station-status';
     MatIconButton,
     MatFabButton,
     MatIcon,
-    MatTooltip
+    MatTooltip,
+    TranslatePipe
   ]
 })
 export class StationStatusComponent implements OnInit, OnDestroy {

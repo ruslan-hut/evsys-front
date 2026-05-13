@@ -1,17 +1,17 @@
 <mat-card class="settings-card">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
-      <mat-icon>palette</mat-icon> Appearance
+      <mat-icon>palette</mat-icon> {{ 'userProfile.appearance' | translate }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field appearance="outline" class="theme-selector">
-      <mat-label>Theme</mat-label>
+      <mat-label>{{ 'userProfile.theme' | translate }}</mat-label>
       <mat-select [value]="currentTheme" (selectionChange)="onThemeChange($event.value)">
         @for (option of themeOptions; track option.value) {
           <mat-option [value]="option.value">
             <mat-icon class="theme-option-icon">{{ option.icon }}</mat-icon>
-            {{ option.label }}
+            {{ option.label | translate }}
           </mat-option>
         }
       </mat-select>
@@ -22,17 +22,17 @@
 <mat-card class="settings-card">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
-      <mat-icon>home</mat-icon> Start Page
+      <mat-icon>home</mat-icon> {{ 'userProfile.startPage' | translate }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field appearance="outline" class="theme-selector">
-      <mat-label>Start Page</mat-label>
+      <mat-label>{{ 'userProfile.startPage' | translate }}</mat-label>
       <mat-select [value]="currentStartPage" (selectionChange)="onStartPageChange($event.value)">
         @for (option of availableStartPageOptions; track option.value) {
           <mat-option [value]="option.value">
             <mat-icon class="theme-option-icon">{{ option.icon }}</mat-icon>
-            {{ option.label }}
+            {{ option.label | translate }}
           </mat-option>
         }
       </mat-select>
@@ -43,12 +43,12 @@
 <mat-card class="settings-card">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
-      <mat-icon>ev_station</mat-icon> Chargers
+      <mat-icon>ev_station</mat-icon> {{ 'userProfile.chargers' | translate }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="toggle-setting">
-      <span class="toggle-label">Always load all chargers</span>
+      <span class="toggle-label">{{ 'userProfile.alwaysLoadAll' | translate }}</span>
       <mat-slide-toggle
         [checked]="alwaysLoadAllChargers"
         (change)="onAlwaysLoadAllChargersChange($event.checked)">
@@ -60,17 +60,17 @@
 <mat-card (click)="openPaymentMethods()">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
-      <mat-icon>payment</mat-icon> Payment Methods
+      <mat-icon>payment</mat-icon> {{ 'userProfile.paymentMethods' | translate }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    View, add, edit and delete payment methods
+    {{ 'userProfile.paymentMethodsDescription' | translate }}
   </mat-card-content>
 </mat-card>
 
 <div class="profile-actions">
-  <button mat-button (click)="back()">Close</button>
+  <button mat-button (click)="back()">{{ 'userProfile.close' | translate }}</button>
   <button mat-raised-button color="warn" (click)="logout()">
-    <mat-icon>logout</mat-icon> Logout
+    <mat-icon>logout</mat-icon> {{ 'userProfile.logout' | translate }}
   </button>
 </div>

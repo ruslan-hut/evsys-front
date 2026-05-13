@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatTabGroup, MatTab, MatTabContent } from '@angular/material/tabs';
+import { TranslatePipe } from '@ngx-translate/core';
 import { StationStatusComponent } from './station-status/station-status.component';
 import { StationUptimeComponent } from './station-uptime/station-uptime.component';
 
@@ -14,7 +15,8 @@ import { StationUptimeComponent } from './station-uptime/station-uptime.componen
     MatTab,
     MatTabContent,
     StationStatusComponent,
-    StationUptimeComponent
+    StationUptimeComponent,
+    TranslatePipe
   ]
 })
 export class ReportsComponent {

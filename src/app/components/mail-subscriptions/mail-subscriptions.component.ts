@@ -17,6 +17,7 @@ import {MailSubscriptionService} from '../../service/mail-subscription.service';
 import {StatsService} from '../../service/stats.service';
 import {ErrorService} from '../../service/error.service';
 import {Group} from '../../models/group';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mail-subscriptions',
@@ -33,6 +34,7 @@ import {Group} from '../../models/group';
     MatFormField, MatLabel, MatInput, MatSelect, MatOption,
     MatSlideToggle, MatButton, MatIconButton, MatIcon,
     MatCard, MatCardContent, MatCardHeader, MatCardTitle,
+    TranslatePipe,
   ],
 })
 export class MailSubscriptionsComponent implements OnInit {
@@ -42,6 +44,7 @@ export class MailSubscriptionsComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly dialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   readonly periods: MailSubscriptionPeriod[] = ['daily', 'weekly', 'monthly'];
   readonly groups: Group[] = this.statsService.getGroups();
@@ -75,7 +78,7 @@ export class MailSubscriptionsComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.errorService.handle('Failed to load mail subscriptions');
+        this.errorService.handle(this.translate.instant('errors.loadMailSubs'));
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -129,7 +132,7 @@ export class MailSubscriptionsComponent implements OnInit {
         this.load();
       },
       error: () => {
-        this.errorService.handle('Failed to save mail subscription');
+        this.errorService.handle(this.translate.instant('errors.saveMailSub'));
         this.saving = false;
         this.cdr.markForCheck();
       },
@@ -139,10 +142,10 @@ export class MailSubscriptionsComponent implements OnInit {
   delete(sub: MailSubscription): void {
     if (!sub.id) return;
     const data: DialogData = {
-      title: 'Delete subscription',
-      content: `Delete report subscription for "${sub.email}"?`,
-      buttonYes: 'Delete',
-      buttonNo: 'Cancel',
+      title: this.translate.instant('mailSubscriptions.deleteTitle'),
+      content: this.translate.instant('mailSubscriptions.deleteContent', {email: sub.email}),
+      buttonYes: this.translate.instant('mailSubscriptions.deleteYes'),
+      buttonNo: this.translate.instant('mailSubscriptions.deleteNo'),
       checkboxes: [],
     };
     const ref = this.dialog.open(BasicDialogComponent, {width: '320px', data});
@@ -150,7 +153,7 @@ export class MailSubscriptionsComponent implements OnInit {
       if (result !== 'yes') return;
       this.mailService.delete(sub.id!).subscribe({
         next: () => this.load(),
-        error: () => this.errorService.handle('Failed to delete subscription'),
+        error: () => this.errorService.handle(this.translate.instant('errors.deleteSub')),
       });
     });
   }
@@ -162,12 +165,12 @@ export class MailSubscriptionsComponent implements OnInit {
     this.mailService.sendTest(email).subscribe({
       next: () => {
         this.testing = false;
-        this.errorService.handle(`Test mail sent to ${email}`);
+        this.errorService.handle(this.translate.instant('mailSubscriptions.testSent', {email}));
         this.cdr.markForCheck();
       },
       error: () => {
         this.testing = false;
-        this.errorService.handle('Failed to send test mail');
+        this.errorService.handle(this.translate.instant('errors.sendTestMail'));
         this.cdr.markForCheck();
       },
     });
@@ -176,8 +179,8 @@ export class MailSubscriptionsComponent implements OnInit {
   sendNow(sub: MailSubscription): void {
     if (!sub.id) return;
     this.mailService.sendNow(sub.id).subscribe({
-      next: () => this.errorService.handle('Report sent'),
-      error: () => this.errorService.handle('Failed to send report'),
+      next: () => this.errorService.handle(this.translate.instant('mailSubscriptions.reportSent')),
+      error: () => this.errorService.handle(this.translate.instant('errors.sendReport')),
     });
   }
 

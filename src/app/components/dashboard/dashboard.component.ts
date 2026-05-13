@@ -18,6 +18,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 
 import { NgxChartsModule, Color, ScaleType, LegendPosition } from '@swimlane/ngx-charts';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DateRange, getDashboardRanges, getLastYear } from '../../helpers/date-ranges';
 
 import { StatsService } from '../../service/stats.service';
 import { MonthStats } from '../../models/month-stats';
@@ -85,13 +86,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadingCount = 0;
 
-  predefinedRanges = [
-    { label: 'dashboard.ranges.today', range: this.getToday() },
-    { label: 'dashboard.ranges.currentMonth', range: this.getCurrentMonth() },
-    { label: 'dashboard.ranges.previousMonth', range: this.getPreviousMonth() },
-    { label: 'dashboard.ranges.currentYear', range: this.getCurrentYear() },
-    { label: 'dashboard.ranges.lastYear', range: this.getLastYear() }
-  ];
+  predefinedRanges = getDashboardRanges();
 
   monthLineChartData: ChartSeries[] = [];
   monthBarChartData: ChartDataPoint[] = [];
@@ -116,17 +111,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.groups = this.statsService.getGroups();
     this.selectedGroup = 'default'; // Client group
-    this.setRange(this.getLastYear());
+    this.setRange(getLastYear());
     this.requestData();
-  }
-
-  private getLastYear() {
-    const now = new Date();
-    // End: last day of current month
-    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-    // Start: first day of 11 months ago (12 full months including current)
-    const start = new Date(now.getFullYear(), now.getMonth() - 11, 1);
-    return { start, end };
   }
 
   ngOnDestroy(): void {
@@ -134,38 +120,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  setRange(range: { start: Date; end: Date }): void {
+  setRange(range: DateRange): void {
     this.startDate = range.start;
     this.endDate = range.end;
-  }
-
-  private getPreviousMonth() {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
-  }
-
-  private getCurrentMonth() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
-  }
-
-  private getCurrentYear() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), 0, 1);
-    const end = new Date(date.getFullYear() + 1, 0, 0);
-    return { start, end };
-  }
-
-  private getToday() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    const end = start;
-    return { start, end };
   }
 
   requestData(): void {

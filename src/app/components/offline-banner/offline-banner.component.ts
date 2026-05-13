@@ -1,17 +1,18 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NetworkService } from '../../service/network.service';
 
 @Component({
   selector: 'app-offline-banner',
   standalone: true,
-  imports: [AsyncPipe, MatIcon],
+  imports: [AsyncPipe, MatIcon, TranslatePipe],
   template: `
     @if (!(networkService.isOnline$ | async)) {
       <div class="offline-banner">
         <mat-icon>wifi_off</mat-icon>
-        <span>You are offline</span>
+        <span>{{ 'offlineBanner.offline' | translate }}</span>
       </div>
     }
   `,

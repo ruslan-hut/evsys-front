@@ -17,6 +17,7 @@ import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatIcon} from '@angular/material/icon';
 import {Clipboard} from '@angular/cdk/clipboard';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-tag-edit',
@@ -32,7 +33,8 @@ import {Clipboard} from '@angular/cdk/clipboard';
     MatButton, MatIconButton,
     MatProgressBar,
     MatSlideToggle,
-    MatIcon
+    MatIcon,
+    TranslatePipe
   ]
 })
 export class UserTagEditComponent implements OnInit {
@@ -44,6 +46,7 @@ export class UserTagEditComponent implements OnInit {
   private readonly errorService = inject(ErrorService);
   private readonly clipboard = inject(Clipboard);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
   readonly dialogRef = inject(MatDialogRef<UserTagEditComponent>, { optional: true });
   readonly dialogData = inject<{ idTag: string }>(MAT_DIALOG_DATA, { optional: true });
 
@@ -88,7 +91,7 @@ export class UserTagEditComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.errorService.handle('Failed to load tag data');
+        this.errorService.handle(this.translate.instant('errors.loadTagData'));
         this.loading = false;
         this.cdr.markForCheck();
         this.navigateBack();
@@ -111,7 +114,7 @@ export class UserTagEditComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.invalid) {
-      this.errorService.handle('Please correct the form errors');
+      this.errorService.handle(this.translate.instant('errors.correctFormErrors'));
       return;
     }
 
@@ -131,10 +134,8 @@ export class UserTagEditComponent implements OnInit {
       error: (error) => {
         this.saving = false;
         this.cdr.markForCheck();
-        const message = error.status === 400
-          ? 'Tag ID already exists or invalid data'
-          : 'Failed to save tag';
-        this.errorService.handle(message);
+        const key = error.status === 400 ? 'userTagEdit.tagExists' : 'errors.saveTagFailed';
+        this.errorService.handle(this.translate.instant(key));
       }
     });
   }

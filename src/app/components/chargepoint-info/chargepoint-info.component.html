@@ -1,16 +1,3 @@
-<!--<form [formGroup]="form" (ngSubmit)="submit()">-->
-
-<!--  <input-->
-<!--    type="text"-->
-<!--    class="border w-full py-2 px-4 mb-2"-->
-<!--    placeholder="Point name"-->
-<!--    formControlName="title"-->
-<!--  >-->
-
-<!--  <button class="py-2 px-4 bg-blue-600 text-white" type="submit">Save</button>-->
-
-<!--</form>-->
-
 @if (chargePoint) {
   <mat-card>
     <mat-card-header>
@@ -21,19 +8,19 @@
     <mat-card-content>
       <dl class="info-list">
         <div class="info-item">
-          <dt>Title</dt>
+          <dt>{{ 'chargepointInfo.title' | translate }}</dt>
           <dd>{{chargePoint.title}}</dd>
         </div>
         <div class="info-item">
-          <dt>Description</dt>
+          <dt>{{ 'chargepointInfo.description' | translate }}</dt>
           <dd>{{chargePoint.description}}</dd>
         </div>
         <div class="info-item">
-          <dt>Address</dt>
+          <dt>{{ 'chargepointInfo.address' | translate }}</dt>
           <dd>{{chargePoint.address}}</dd>
         </div>
         <div class="info-item">
-          <dt>Location</dt>
+          <dt>{{ 'chargepointInfo.location' | translate }}</dt>
           <dd>
             <a href="https://www.google.com/maps?q={{chargePoint.location.latitude}},{{chargePoint.location.longitude}}"
                target="_blank"
@@ -44,47 +31,47 @@
           </dd>
         </div>
         <div class="info-item">
-          <dt>Access type</dt>
+          <dt>{{ 'chargepointInfo.accessType' | translate }}</dt>
           <dd>{{chargePoint.access_type}}</dd>
         </div>
         <div class="info-item">
-          <dt>Model</dt>
+          <dt>{{ 'chargepointInfo.model' | translate }}</dt>
           <dd>{{chargePoint.model}}</dd>
         </div>
         <div class="info-item">
-          <dt>Serial Number</dt>
+          <dt>{{ 'chargepointInfo.serialNumber' | translate }}</dt>
           <dd>{{chargePoint.serial_number}}</dd>
         </div>
         <div class="info-item">
-          <dt>Vendor</dt>
+          <dt>{{ 'chargepointInfo.vendor' | translate }}</dt>
           <dd>{{chargePoint.vendor}}</dd>
         </div>
         <div class="info-item">
-          <dt>Firmware Version</dt>
+          <dt>{{ 'chargepointInfo.firmwareVersion' | translate }}</dt>
           <dd>{{chargePoint.firmware_version}}</dd>
         </div>
         <div class="info-item">
-          <dt>Error Code</dt>
+          <dt>{{ 'chargepointInfo.errorCode' | translate }}</dt>
           <dd>{{chargePoint.error_code}}</dd>
         </div>
         <div class="info-item">
-          <dt>Info</dt>
+          <dt>{{ 'chargepointInfo.info' | translate }}</dt>
           <dd>{{chargePoint.info}}</dd>
         </div>
         <div class="info-item">
-          <dt>Status</dt>
+          <dt>{{ 'chargepointInfo.status' | translate }}</dt>
           <dd>{{chargePoint.status}}</dd>
         </div>
         <div class="info-item">
-          <dt>Event time</dt>
+          <dt>{{ 'chargepointInfo.eventTime' | translate }}</dt>
           <dd>{{timeService.getTimeDifference(chargePoint.event_time)}}</dd>
         </div>
         <div class="info-item">
-          <dt>Status time</dt>
+          <dt>{{ 'chargepointInfo.statusTime' | translate }}</dt>
           <dd>{{timeService.getTimeDifference(chargePoint.status_time)}}</dd>
         </div>
         <div class="info-item">
-          <dt>Access level</dt>
+          <dt>{{ 'chargepointInfo.accessLevel' | translate }}</dt>
           <dd>{{chargePoint.access_level}}</dd>
         </div>
       </dl>
@@ -99,20 +86,17 @@
     </mat-card-content>
 
     <mat-card-actions class="flex-container">
-      <button mat-stroked-button (click)="close()">Close</button>
-      <button mat-flat-button color="primary" (click)="reboot(1)">Soft Reset</button>
-      <button mat-flat-button color="primary" (click)="reboot(0)">Hard Reset</button>
+      <button mat-stroked-button (click)="close()">{{ 'common.close' | translate }}</button>
+      <button mat-flat-button color="primary" (click)="reboot(1)">{{ 'chargepointInfo.softReset' | translate }}</button>
+      <button mat-flat-button color="primary" (click)="reboot(0)">{{ 'chargepointInfo.hardReset' | translate }}</button>
       <div class="flex-spacer"></div>
       @if (chargePoint.is_online) {
         <mat-icon class="status-online" aria-hidden="true">cloud_queue</mat-icon>
-        <span class="sr-only">Charger is online</span>
+        <span class="sr-only">{{ 'chargepointInfoActions.onlineSr' | translate }}</span>
       } @else {
         <mat-icon color="warn" aria-hidden="true">cloud_off</mat-icon>
-        <span class="sr-only">Charger is offline</span>
+        <span class="sr-only">{{ 'chargepointInfoActions.offlineSr' | translate }}</span>
       }
     </mat-card-actions>
   </mat-card>
 }
-
-
-

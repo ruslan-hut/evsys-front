@@ -5,23 +5,23 @@
 <div class="filter-container">
   <!-- Date Range Picker -->
   <mat-form-field appearance="outline" class="date-range-field">
-    <mat-label>Enter a date range</mat-label>
+    <mat-label>{{ 'reports.exportData.dateRangeLabel' | translate }}</mat-label>
     <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate [(ngModel)]="startDate" placeholder="Start date" />
-      <input matEndDate [(ngModel)]="endDate" placeholder="End date" />
+      <input matStartDate [(ngModel)]="startDate" [placeholder]="'dashboard.start' | translate" />
+      <input matEndDate [(ngModel)]="endDate" [placeholder]="'dashboard.end' | translate" />
     </mat-date-range-input>
-    <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+    <mat-hint>{{ 'statistic.dateHint' | translate }}</mat-hint>
 
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 
-    <button mat-icon-button matSuffix [matMenuTriggerFor]="menu" aria-label="Select predefined date range">
+    <button mat-icon-button matSuffix [matMenuTriggerFor]="menu" [attr.aria-label]="'reports.exportData.selectRange' | translate">
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
 
     <mat-menu #menu="matMenu">
       @for (range of predefinedRanges; track range) {
         <button mat-menu-item (click)="setRange(range.range)">
-          {{ range.label }}
+          {{ range.label | translate }}
         </button>
       }
     </mat-menu>
@@ -31,7 +31,7 @@
 
   <!-- Group Selector -->
   <mat-form-field appearance="outline">
-    <mat-label>Select Group</mat-label>
+    <mat-label>{{ 'reports.exportData.selectGroup' | translate }}</mat-label>
     <mat-select [(value)]="selectedGroup">
       @for (group of groups; track group) {
         <mat-option [value]="group.id">{{ group.name }}</mat-option>
@@ -42,6 +42,6 @@
   <!-- Export Button -->
   <button mat-raised-button color="primary" (click)="exportData()" [disabled]="inProgress">
     <mat-icon>download</mat-icon>
-    Export CSV
+    {{ 'reports.exportData.exportCsv' | translate }}
   </button>
 </div>

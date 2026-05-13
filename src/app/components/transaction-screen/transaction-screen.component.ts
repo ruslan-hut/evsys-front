@@ -14,6 +14,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-transaction-screen',
@@ -21,7 +22,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './transaction-screen.component.css',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardContent, MatProgressBar, MatButton, MatCardActions, MatIcon, DecimalPipe, DatePipe]
+  imports: [MatCard, MatCardContent, MatProgressBar, MatButton, MatCardActions, MatIcon, DecimalPipe, DatePipe, TranslatePipe]
 })
 export class TransactionScreenComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
@@ -30,6 +31,7 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   private destroy$ = new Subject<void>();
   private visibilityChangeEvent!: () => void;
@@ -148,15 +150,15 @@ export class TransactionScreenComponent implements OnInit, OnDestroy {
   }
 
   stop(): void {
-    this.stopDialog('Are you sure?');
+    this.stopDialog(this.translate.instant('transactionScreen.stopDialog.areYouSure'));
   }
 
   stopDialog(text: string): void {
     const dialogData: DialogData = {
-      title: 'Stop transaction',
+      title: this.translate.instant('transactionScreen.stopDialog.title'),
       content: text,
-      buttonYes: 'Yes',
-      buttonNo: 'No',
+      buttonYes: this.translate.instant('common.yes'),
+      buttonNo: this.translate.instant('common.no'),
       checkboxes: []
     };
 

@@ -13,7 +13,7 @@
         </div>
       }
       <div class="info-item">
-        <span class="info-label">Status:</span>
+        <span class="info-label">{{ 'transactionScreen.status' | translate }}</span>
         <span class="info-value">{{ transaction.status }}</span>
       </div>
       @if (isCharging()) {
@@ -22,30 +22,30 @@
         <mat-progress-bar mode="determinate" [value]="0"></mat-progress-bar>
       }
       <div class="info-item">
-        <span class="info-label">Start time:</span>
+        <span class="info-label">{{ 'transactionScreen.startTime' | translate }}</span>
         <span class="info-value">{{ transaction.time_started | date:"dd-MM-yyyy HH:mm:ss"}}</span>
       </div>
       <div class="info-item">
-        <span class="info-label">Duration:</span>
+        <span class="info-label">{{ 'transactionScreen.duration' | translate }}</span>
         <span class="info-value">{{ getDuration()}}</span>
       </div>
       <div class="info-item">
-        <span class="info-label">Power:</span>
+        <span class="info-label">{{ 'transactionScreen.power' | translate }}</span>
         <span class="info-value">{{ transaction.power_rate /1000 | number: '1.1-1'}} kW</span>
       </div>
       <div class="info-item">
-        <span class="info-label">Consumed:</span>
-        <span class="info-value">{{ transaction.consumed /1000 | number: '1.2-2'}} kWh</span>
+        <span class="info-label">{{ 'transactionScreen.consumed' | translate }}</span>
+        <span class="info-value">{{ transaction.consumed /1000 | number: '1.2-2'}} {{ 'transactionScreen.kwh' | translate }}</span>
       </div>
       @if ((canStop|| accountService.isAdmin || accountService.isOperator)) {
         <div class="info-item">
-          <span class="info-label">Price:</span>
-          <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} €</span>
+          <span class="info-label">{{ 'transactionScreen.price' | translate }}</span>
+          <span class="info-value">{{ transaction.price/100 | number: '1.2-2'}} {{ 'transactionScreen.currency' | translate }}</span>
         </div>
       }
       @if (transaction.battery) {
         <div class="info-item">
-          <span class="info-label">Battery:</span>
+          <span class="info-label">{{ 'transactionScreen.battery' | translate }}</span>
           <span class="info-value">{{ transaction.battery | number}} %</span>
         </div>
       }
@@ -53,7 +53,7 @@
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       }
       @if (!transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)) {
-        <button mat-flat-button  color="accent" (click)="stop()" [disabled]="stopButtonIsDisabled">Stop</button>
+        <button mat-flat-button  color="accent" (click)="stop()" [disabled]="stopButtonIsDisabled">{{ 'transactionScreen.stop' | translate }}</button>
       }
     }
     @if (!transaction) {
@@ -62,13 +62,13 @@
   </mat-card-content>
 
   <mat-card-actions class="flex-container">
-    <button mat-stroked-button (click)="close()">Close</button>
+    <button mat-stroked-button (click)="close()">{{ 'transactionScreen.close' | translate }}</button>
     <div class="flex-spacer"></div>
     @if (chargePoint) {
       @if (chargePoint.is_online) {
-        <mat-icon class="online-status">cloud_queue</mat-icon>
+        <mat-icon class="online-status" [attr.aria-label]="'transactionScreen.online' | translate">cloud_queue</mat-icon>
       } @else {
-        <mat-icon color="warn">cloud_off</mat-icon>
+        <mat-icon color="warn" [attr.aria-label]="'transactionScreen.offline' | translate">cloud_off</mat-icon>
       }
     }
 

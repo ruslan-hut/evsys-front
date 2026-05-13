@@ -1,11 +1,11 @@
 <div class="reports-container">
   <mat-tab-group [(selectedIndex)]="activeTabIndex" (selectedIndexChange)="onTabChange($event)">
-    <mat-tab label="Station Status">
+    <mat-tab [label]="'reports.tabs.stationStatus' | translate">
       <ng-template matTabContent>
         <app-station-status></app-station-status>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Uptime Report">
+    <mat-tab [label]="'reports.tabs.uptime' | translate">
       <ng-template matTabContent>
         <app-station-uptime></app-station-uptime>
       </ng-template>

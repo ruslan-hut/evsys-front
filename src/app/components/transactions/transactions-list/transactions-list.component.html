@@ -9,7 +9,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon>filter_list</mat-icon>
-          Filters
+          {{ 'transactionsList.filters' | translate }}
         </mat-panel-title>
         <mat-panel-description>
           @if (hasActiveFilters()) {
@@ -19,20 +19,20 @@
       </mat-expansion-panel-header>
       <div class="filter-container mobile">
         <mat-form-field appearance="outline" class="date-range-field">
-          <mat-label>Date Range</mat-label>
+          <mat-label>{{ 'transactionsList.dateRange' | translate }}</mat-label>
           <mat-date-range-input [rangePicker]="pickerMobile">
-            <input matStartDate [(ngModel)]="startDate" placeholder="Start date">
-            <input matEndDate [(ngModel)]="endDate" placeholder="End date">
+            <input matStartDate [(ngModel)]="startDate" [placeholder]="'transactionsList.start' | translate">
+            <input matEndDate [(ngModel)]="endDate" [placeholder]="'transactionsList.end' | translate">
           </mat-date-range-input>
           <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
           <button mat-icon-button matSuffix [matMenuTriggerFor]="dateMenuMobile"
-                  aria-label="Select predefined date range">
+                  [attr.aria-label]="'transactionsList.selectRange' | translate">
             <mat-icon>keyboard_arrow_down</mat-icon>
           </button>
           <mat-menu #dateMenuMobile="matMenu">
             @for (range of predefinedRanges; track range.label) {
               <button mat-menu-item (click)="setRange(range.range)">
-                {{ range.label }}
+                {{ range.label | translate }}
               </button>
             }
           </mat-menu>
@@ -40,29 +40,29 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="usernameFilter" placeholder="Filter by username">
+          <mat-label>{{ 'transactionsList.username' | translate }}</mat-label>
+          <input matInput [(ngModel)]="usernameFilter" [placeholder]="'transactionsList.username' | translate">
           @if (usernameFilter) {
-            <button matSuffix mat-icon-button class="filter-clear-btn" (click)="usernameFilter = ''" aria-label="Clear username filter">
+            <button matSuffix mat-icon-button class="filter-clear-btn" (click)="usernameFilter = ''" [attr.aria-label]="'common.clear' | translate">
               <mat-icon>close</mat-icon>
             </button>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>ID Tag</mat-label>
-          <input matInput [(ngModel)]="idTagFilter" placeholder="Filter by ID tag">
+          <mat-label>{{ 'transactionsList.idTag' | translate }}</mat-label>
+          <input matInput [(ngModel)]="idTagFilter" [placeholder]="'transactionsList.idTag' | translate">
           @if (idTagFilter) {
-            <button matSuffix mat-icon-button class="filter-clear-btn" (click)="idTagFilter = ''" aria-label="Clear ID tag filter">
+            <button matSuffix mat-icon-button class="filter-clear-btn" (click)="idTagFilter = ''" [attr.aria-label]="'common.clear' | translate">
               <mat-icon>close</mat-icon>
             </button>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Charge Point</mat-label>
+          <mat-label>{{ 'transactionsList.chargePoint' | translate }}</mat-label>
           <mat-select [(value)]="chargePointFilter">
-            <mat-option value="">All</mat-option>
+            <mat-option value="">{{ 'transactionsList.all' | translate }}</mat-option>
             @for (cp of chargePoints; track cp.charge_point_id) {
               <mat-option [value]="cp.charge_point_id">
                 {{ cp.title || cp.charge_point_id }}
@@ -72,14 +72,14 @@
         </mat-form-field>
 
         <div class="filter-actions">
-          <mat-checkbox [(ngModel)]="withErrorFilter" class="error-filter-checkbox">With error</mat-checkbox>
+          <mat-checkbox [(ngModel)]="withErrorFilter" class="error-filter-checkbox">{{ 'transactionsList.withError' | translate }}</mat-checkbox>
           <button mat-raised-button color="primary" (click)="loadTransactions()">
             <mat-icon>search</mat-icon>
-            Search
+            {{ 'transactionsList.search' | translate }}
           </button>
           <button mat-button (click)="clearFilters()">
             <mat-icon>clear</mat-icon>
-            Clear
+            {{ 'transactionsList.clear' | translate }}
           </button>
         </div>
       </div>
@@ -88,20 +88,20 @@
     <!-- Filter Section - Desktop -->
     <div class="filter-container">
       <mat-form-field appearance="outline" class="date-range-field">
-        <mat-label>Date Range</mat-label>
+        <mat-label>{{ 'transactionsList.dateRange' | translate }}</mat-label>
         <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate [(ngModel)]="startDate" placeholder="Start date">
-          <input matEndDate [(ngModel)]="endDate" placeholder="End date">
+          <input matStartDate [(ngModel)]="startDate" [placeholder]="'transactionsList.start' | translate">
+          <input matEndDate [(ngModel)]="endDate" [placeholder]="'transactionsList.end' | translate">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <button mat-icon-button matSuffix [matMenuTriggerFor]="dateMenu"
-                aria-label="Select predefined date range">
+                [attr.aria-label]="'transactionsList.selectRange' | translate">
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #dateMenu="matMenu">
           @for (range of predefinedRanges; track range.label) {
             <button mat-menu-item (click)="setRange(range.range)">
-              {{ range.label }}
+              {{ range.label | translate }}
             </button>
           }
         </mat-menu>
@@ -109,29 +109,29 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="usernameFilter" placeholder="Filter by username">
+        <mat-label>{{ 'transactionsList.username' | translate }}</mat-label>
+        <input matInput [(ngModel)]="usernameFilter" [placeholder]="'transactionsList.username' | translate">
         @if (usernameFilter) {
-          <button matSuffix mat-icon-button class="filter-clear-btn" (click)="usernameFilter = ''" aria-label="Clear username filter">
+          <button matSuffix mat-icon-button class="filter-clear-btn" (click)="usernameFilter = ''" [attr.aria-label]="'common.clear' | translate">
             <mat-icon>close</mat-icon>
           </button>
         }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>ID Tag</mat-label>
-        <input matInput [(ngModel)]="idTagFilter" placeholder="Filter by ID tag">
+        <mat-label>{{ 'transactionsList.idTag' | translate }}</mat-label>
+        <input matInput [(ngModel)]="idTagFilter" [placeholder]="'transactionsList.idTag' | translate">
         @if (idTagFilter) {
-          <button matSuffix mat-icon-button (click)="idTagFilter = ''" aria-label="Clear ID tag filter">
+          <button matSuffix mat-icon-button (click)="idTagFilter = ''" [attr.aria-label]="'common.clear' | translate">
             <mat-icon>close</mat-icon>
           </button>
         }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>Charge Point</mat-label>
+        <mat-label>{{ 'transactionsList.chargePoint' | translate }}</mat-label>
         <mat-select [(value)]="chargePointFilter">
-          <mat-option value="">All</mat-option>
+          <mat-option value="">{{ 'transactionsList.all' | translate }}</mat-option>
           @for (cp of chargePoints; track cp.charge_point_id) {
             <mat-option [value]="cp.charge_point_id">
               {{ cp.title || cp.charge_point_id }}
@@ -141,14 +141,14 @@
       </mat-form-field>
 
       <div class="filter-actions">
-        <mat-checkbox [(ngModel)]="withErrorFilter" class="error-filter-checkbox">With error</mat-checkbox>
+        <mat-checkbox [(ngModel)]="withErrorFilter" class="error-filter-checkbox">{{ 'transactionsList.withError' | translate }}</mat-checkbox>
         <button mat-raised-button color="primary" (click)="loadTransactions()">
           <mat-icon>search</mat-icon>
-          Search
+          {{ 'transactionsList.search' | translate }}
         </button>
         <button mat-button (click)="clearFilters()">
           <mat-icon>clear</mat-icon>
-          Clear
+          {{ 'transactionsList.clear' | translate }}
         </button>
       </div>
     </div>
@@ -157,9 +157,9 @@
   <!-- Summary -->
   @if (dataSource.filteredData.length > 0) {
     <div class="transactions-summary">
-      <span class="summary-label">Total consumed:</span>
+      <span class="summary-label">{{ 'transactionsList.totalConsumed' | translate }}:</span>
       <span class="summary-value">{{ totalConsumedKWh | number:'1.2-2' }} kWh</span>
-      <span class="summary-count">({{ dataSource.filteredData.length }} transactions)</span>
+      <span class="summary-count">({{ dataSource.filteredData.length }} {{ 'transactionsList.transactionsCount' | translate }})</span>
     </div>
   }
 
@@ -179,33 +179,33 @@
           </mat-expansion-panel-header>
           <div class="transaction-details">
             <div class="detail-row">
-              <span class="detail-label">ID Tag:</span>
+              <span class="detail-label">{{ 'transactionsList.headers.idTag' | translate }}:</span>
               <span class="detail-value">{{ row.id_tag }}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">Charge Point:</span>
+              <span class="detail-label">{{ 'transactionsList.headers.chargePoint' | translate }}:</span>
               <span class="detail-value">{{ row.charge_point_id }}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">Connector:</span>
+              <span class="detail-label">{{ 'transactionsList.headers.connector' | translate }}:</span>
               <span class="detail-value">{{ row.connector_id }}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">Started:</span>
+              <span class="detail-label">{{ 'transactionsList.headers.started' | translate }}:</span>
               <span class="detail-value">{{ formatDateTime(row.time_start) }}</span>
             </div>
             @if (row.time_stop) {
               <div class="detail-row">
-                <span class="detail-label">Stopped:</span>
+                <span class="detail-label">{{ 'transactionsList.headers.stopped' | translate }}:</span>
                 <span class="detail-value">{{ formatDateTime(row.time_stop) }}</span>
               </div>
             }
             <div class="detail-row">
-              <span class="detail-label">Consumed:</span>
+              <span class="detail-label">{{ 'transactionsList.headers.consumed' | translate }}:</span>
               <span class="detail-value">{{ getConsumed(row) / 1000 | number:'1.2-2' }} kWh</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">Amount:</span>
+              <span class="detail-label">{{ 'transactionsList.headers.amount' | translate }}:</span>
               <span class="detail-value">
                 @if (row.payment_amount) {
                   {{ formatAmount(row.payment_amount) }} EUR
@@ -216,14 +216,14 @@
             </div>
             <div class="transaction-actions">
               <button mat-icon-button class="list-action-btn" (click)="viewDetails(row.transaction_id)"
-                      matTooltip="View details">
+                      [matTooltip]="'transactionsList.viewDetails' | translate">
                 <mat-icon>visibility</mat-icon>
               </button>
             </div>
           </div>
         </mat-expansion-panel>
       } @empty {
-        <div class="no-data">No transactions found</div>
+        <div class="no-data">{{ 'transactionsList.noTransactions' | translate }}</div>
       }
     </mat-accordion>
 
@@ -231,7 +231,7 @@
       #transactionPaginator
       [pageSizeOptions]="[10, 25, 50]"
       [showFirstLastButtons]="false"
-      aria-label="Select page of transactions">
+      [attr.aria-label]="'transactionsList.selectPage' | translate">
     </mat-paginator>
   } @else {
     <!-- Desktop Table Layout -->
@@ -240,37 +240,37 @@
         <table mat-table matSort [dataSource]="dataSource">
           <!-- Transaction ID Column -->
           <ng-container matColumnDef="transaction_id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.id' | translate }}</th>
             <td mat-cell *matCellDef="let row">{{ row.transaction_id }}</td>
           </ng-container>
 
           <!-- ID Tag Column -->
           <ng-container matColumnDef="id_tag">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Tag</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.idTag' | translate }}</th>
             <td mat-cell *matCellDef="let row">{{ row.id_tag }}</td>
           </ng-container>
 
           <!-- Charge Point Column -->
           <ng-container matColumnDef="charge_point_id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Charge Point</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.chargePoint' | translate }}</th>
             <td mat-cell *matCellDef="let row">{{ row.charge_point_id }}</td>
           </ng-container>
 
           <!-- Connector Column -->
           <ng-container matColumnDef="connector_id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Connector</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.connector' | translate }}</th>
             <td mat-cell *matCellDef="let row">{{ row.connector_id }}</td>
           </ng-container>
 
           <!-- Time Start Column -->
           <ng-container matColumnDef="time_start">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Started</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.started' | translate }}</th>
             <td mat-cell *matCellDef="let row">{{ row.time_start | date:'dd-MM-yyyy HH:mm:ss' }}</td>
           </ng-container>
 
           <!-- Time Stop Column -->
           <ng-container matColumnDef="time_stop">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stopped</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.stopped' | translate }}</th>
             <td mat-cell *matCellDef="let row">
               {{ row.time_stop ? (row.time_stop | date:'dd-MM-yyyy HH:mm:ss') : '-' }}
             </td>
@@ -278,7 +278,7 @@
 
           <!-- Consumed Column -->
           <ng-container matColumnDef="consumed">
-            <th mat-header-cell *matHeaderCellDef>Consumed</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'transactionsList.headers.consumed' | translate }}</th>
             <td mat-cell *matCellDef="let row">
               {{ getConsumed(row) / 1000 | number:'1.2-2' }} kWh
             </td>
@@ -286,7 +286,7 @@
 
           <!-- Payment Amount Column -->
           <ng-container matColumnDef="payment_amount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'transactionsList.headers.amount' | translate }}</th>
             <td mat-cell *matCellDef="let row">
               @if (row.payment_amount) {
                 {{ formatAmount(row.payment_amount) }}
@@ -298,10 +298,10 @@
 
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'transactionsList.headers.actions' | translate }}</th>
             <td mat-cell *matCellDef="let row">
               <button mat-icon-button class="list-action-btn" (click)="viewDetails(row.transaction_id)"
-                      matTooltip="View details">
+                      [matTooltip]="'transactionsList.viewDetails' | translate">
                 <mat-icon>visibility</mat-icon>
               </button>
             </td>
@@ -311,7 +311,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
           <tr *matNoDataRow>
-            <td class="mat-cell" colspan="10">No transactions found</td>
+            <td class="mat-cell" colspan="10">{{ 'transactionsList.noTransactions' | translate }}</td>
           </tr>
         </table>
       </div>
@@ -320,7 +320,7 @@
         #transactionPaginator
         [pageSizeOptions]="[10, 50, 100]"
         [showFirstLastButtons]="showFirstLastButtons"
-        aria-label="Select page of transactions">
+        [attr.aria-label]="'transactionsList.selectPage' | translate">
       </mat-paginator>
     </div>
   }

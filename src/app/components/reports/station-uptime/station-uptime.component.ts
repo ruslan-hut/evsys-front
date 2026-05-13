@@ -31,10 +31,12 @@ import {
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { StatsService } from '../../../service/stats.service';
 import { ChargepointService } from '../../../service/chargepoint.service';
 import { StationUptime } from '../../../models/station-uptime';
+import { DateRange, getLast30Days, getUptimeRanges } from '../../../helpers/date-ranges';
 
 interface ChartDataPoint {
   name: string;
@@ -90,7 +92,8 @@ interface ChartDataPoint {
     MatNoDataRow,
     MatSort,
     MatSortHeader,
-    NgxChartsModule
+    NgxChartsModule,
+    TranslatePipe
   ]
 })
 export class StationUptimeComponent implements OnInit, OnDestroy {
@@ -116,12 +119,7 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
   averageUptime = 0;
   stationsAnalyzed = 0;
 
-  predefinedRanges = [
-    { label: 'Today', range: this.getToday() },
-    { label: 'Last 7 Days', range: this.getLast7Days() },
-    { label: 'Last 30 Days', range: this.getLast30Days() },
-    { label: 'Current Month', range: this.getCurrentMonth() }
-  ];
+  predefinedRanges = getUptimeRanges();
 
   colorScheme: Color = {
     name: 'uptime',
@@ -131,7 +129,7 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    this.setRange(this.getLast30Days());
+    this.setRange(getLast30Days());
     this.loadChargePoints();
     this.loadData();
   }
@@ -192,37 +190,9 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
     }
   }
 
-  setRange(range: { start: Date; end: Date }): void {
+  setRange(range: DateRange): void {
     this.startDate = range.start;
     this.endDate = range.end;
-  }
-
-  private getToday() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    const end = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    return { start, end };
-  }
-
-  private getLast7Days() {
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - 6);
-    return { start, end };
-  }
-
-  private getLast30Days() {
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - 29);
-    return { start, end };
-  }
-
-  private getCurrentMonth() {
-    const date = new Date();
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return { start, end };
   }
 
   formatDuration(minutes: number): string {

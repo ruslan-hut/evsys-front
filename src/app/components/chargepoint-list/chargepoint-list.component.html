@@ -1,11 +1,11 @@
 @for (chp of displayedChargePoints$ | async; track chp) {
   <app-chargepoint [chargepoint]="chp"></app-chargepoint>
 } @empty {
-  <div class="no-data">No charge points available</div>
+  <div class="no-data">{{ 'chargepointList.noChargePoints' | translate }}</div>
 }
 
 @if (!showingFullList && (displayedChargePoints$ | async)?.length) {
   <div class="show-full-list">
-    <button mat-button color="primary" (click)="loadFullList()">Show full list</button>
+    <button mat-button color="primary" (click)="loadFullList()">{{ 'chargepointList.showFullList' | translate }}</button>
   </div>
 }

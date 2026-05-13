@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from '@angular/material/expansion';
 import { MatButton } from '@angular/material/button';
 import { NgClass } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-connector-info',
@@ -23,7 +24,7 @@ import { NgClass } from '@angular/common';
   styleUrls: ['./connector-info.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, NgClass]
+  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, NgClass, TranslatePipe]
 })
 export class ConnectorInfoComponent implements OnInit, OnDestroy {
   private readonly csService = inject(CSService);
@@ -34,6 +35,7 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
   readonly timeService = inject(TimeService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
   readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>, { optional: true });
   readonly data = inject<Connector>(MAT_DIALOG_DATA, { optional: true });
 
@@ -134,10 +136,10 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
 
   addPaymentMethod(): void {
     const dialogData: DialogData = {
-      title: 'Add Payment Method',
-      content: 'You need to add a payment method to start a transaction',
-      buttonYes: 'Add Payment Method',
-      buttonNo: 'Close',
+      title: this.translate.instant('connectorActions.addPaymentTitle'),
+      content: this.translate.instant('connectorActions.addPaymentContent'),
+      buttonYes: this.translate.instant('connectorActions.addPaymentButton'),
+      buttonNo: this.translate.instant('connectorActions.close'),
       checkboxes: []
     };
 
@@ -157,7 +159,7 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
             if (environment.debug) {
               console.log(result);
             }
-            this.errorService.handle('Failed to delete payment method');
+            this.errorService.handle(this.translate.instant('errors.deletePaymentMethod'));
           }
         });
       }
@@ -166,10 +168,10 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
 
   startConnector(connector: Connector): void {
     const dialogData: DialogData = {
-      title: 'Start',
+      title: this.translate.instant('connectorActions.startTitle'),
       content: '',
-      buttonYes: 'Start',
-      buttonNo: 'Close',
+      buttonYes: this.translate.instant('connectorActions.start'),
+      buttonNo: this.translate.instant('connectorActions.close'),
       checkboxes: []
     };
 
@@ -187,7 +189,7 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
           take(1)
         ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, 'Transaction started');
+            this.csService.processCentralSystemResponse(result, this.translate.instant('connectorActions.transactionStarted'));
           }
         });
       }
@@ -196,10 +198,10 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
 
   stopConnector(connector: Connector): void {
     const dialogData: DialogData = {
-      title: 'Stop',
+      title: this.translate.instant('connectorActions.stopTitle'),
       content: '',
-      buttonYes: 'Stop',
-      buttonNo: 'Close',
+      buttonYes: this.translate.instant('connectorActions.stop'),
+      buttonNo: this.translate.instant('connectorActions.close'),
       checkboxes: []
     };
 
@@ -217,7 +219,7 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
           take(1)
         ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, 'Transaction stopped');
+            this.csService.processCentralSystemResponse(result, this.translate.instant('connectorActions.transactionStopped'));
           }
         });
       }
@@ -226,10 +228,10 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
 
   unlockConnector(connector: Connector): void {
     const dialogData: DialogData = {
-      title: 'Unlock',
+      title: this.translate.instant('connectorActions.unlockTitle'),
       content: '',
-      buttonYes: 'Unlock',
-      buttonNo: 'Close',
+      buttonYes: this.translate.instant('connectorActions.unlock'),
+      buttonNo: this.translate.instant('connectorActions.close'),
       checkboxes: []
     };
 
@@ -247,7 +249,7 @@ export class ConnectorInfoComponent implements OnInit, OnDestroy {
           take(1)
         ).subscribe({
           next: (result) => {
-            this.csService.processCentralSystemResponse(result, 'Connector unlocked');
+            this.csService.processCentralSystemResponse(result, this.translate.instant('connectorActions.connectorUnlocked'));
           }
         });
       }

@@ -20,6 +20,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChip} from '@angular/material/chips';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-tags',
@@ -54,6 +55,7 @@ import {MatChip} from '@angular/material/chips';
     MatPaginator,
     AsyncPipe,
     MatExpansionModule,
+    TranslatePipe,
   ]
 })
 export class UserTagsComponent implements OnInit {
@@ -63,6 +65,7 @@ export class UserTagsComponent implements OnInit {
   private readonly errorService = inject(ErrorService);
   private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   displayedColumns: string[] = ['id_tag', 'username', 'source', 'note', 'last_seen', 'actions'];
   filter: string = '';
@@ -100,7 +103,7 @@ export class UserTagsComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.errorService.handle('Failed to load user tags');
+        this.errorService.handle(this.translate.instant('errors.loadUserTags'));
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -140,10 +143,10 @@ export class UserTagsComponent implements OnInit {
 
   deleteTag(idTag: string): void {
     const dialogData: DialogData = {
-      title: 'Delete Tag',
-      content: `Are you sure you want to delete tag "${idTag}"?`,
-      buttonYes: 'Delete',
-      buttonNo: 'Cancel',
+      title: this.translate.instant('userTags.deleteConfirm.title'),
+      content: this.translate.instant('userTags.deleteConfirm.content'),
+      buttonYes: this.translate.instant('common.delete'),
+      buttonNo: this.translate.instant('common.cancel'),
       checkboxes: []
     };
 
@@ -160,7 +163,7 @@ export class UserTagsComponent implements OnInit {
             this.cdr.markForCheck();
           },
           error: () => {
-            this.errorService.handle('Failed to delete tag');
+            this.errorService.handle(this.translate.instant('errors.deleteTag'));
           }
         });
       }
