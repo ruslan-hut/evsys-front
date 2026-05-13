@@ -22,6 +22,26 @@
 <mat-card class="settings-card">
   <mat-card-header>
     <mat-card-title class="title-with-icon">
+      <mat-icon>language</mat-icon> {{ 'userProfile.language' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="theme-selector">
+      <mat-label>{{ 'userProfile.language' | translate }}</mat-label>
+      <mat-select [value]="currentLanguage$ | async" (selectionChange)="onLanguageChange($event.value)">
+        @for (lang of supportedLanguages; track lang) {
+          <mat-option [value]="lang">
+            {{ 'userProfile.languageOptions.' + lang | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="settings-card">
+  <mat-card-header>
+    <mat-card-title class="title-with-icon">
       <mat-icon>home</mat-icon> {{ 'userProfile.startPage' | translate }}
     </mat-card-title>
   </mat-card-header>

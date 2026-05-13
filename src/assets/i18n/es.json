@@ -164,6 +164,11 @@
     "paymentMethodsDescription": "Consultar, añadir, editar y eliminar métodos de pago",
     "close": "Cerrar",
     "logout": "Cerrar sesión",
+    "language": "Idioma",
+    "languageOptions": {
+      "en": "English",
+      "es": "Español"
+    },
     "themes": {
       "auto": "Automático (sistema)",
       "light": "Claro",

@@ -164,6 +164,11 @@
     "paymentMethodsDescription": "View, add, edit and delete payment methods",
     "close": "Close",
     "logout": "Logout",
+    "language": "Language",
+    "languageOptions": {
+      "en": "English",
+      "es": "Español"
+    },
     "themes": {
       "auto": "Auto (System)",
       "light": "Light",

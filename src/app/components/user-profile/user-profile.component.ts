@@ -12,6 +12,8 @@ import { AccountService } from '../../service/account.service';
 import { ThemeService, ThemeMode } from '../../service/theme.service';
 import { LocalStorageService } from '../../service/local-storage.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AsyncPipe } from '@angular/common';
+import { AppLanguage, LanguageService } from '../../service/language.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -29,7 +31,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelect,
     MatOption,
     MatSlideToggle,
-    TranslatePipe
+    TranslatePipe,
+    AsyncPipe
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -40,6 +43,10 @@ export class UserProfileComponent {
   private readonly accountService = inject(AccountService);
   private readonly themeService = inject(ThemeService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly languageService = inject(LanguageService);
+
+  readonly currentLanguage$ = this.languageService.current$;
+  readonly supportedLanguages = this.languageService.supported;
 
   themeOptions = [
     { value: 'auto', label: 'userProfile.themes.auto', icon: 'brightness_auto' },
@@ -80,6 +87,10 @@ export class UserProfileComponent {
   onStartPageChange(value: string): void {
     this.currentStartPage = value;
     this.localStorageService.setStartPage(value);
+  }
+
+  onLanguageChange(lang: AppLanguage): void {
+    this.languageService.setLanguage(lang);
   }
 
   openPaymentMethods(): void {

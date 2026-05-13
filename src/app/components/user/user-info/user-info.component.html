@@ -16,21 +16,6 @@
         </mat-list-item>
       }
     </mat-list>
-
-    <div class="language-selector">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'userInfo.language' | translate }}</mat-label>
-        <mat-select
-          [value]="currentLanguage$ | async"
-          (valueChange)="onLanguageChange($event)">
-          @for (lang of supportedLanguages; track lang) {
-            <mat-option [value]="lang">
-              {{ (lang === 'es' ? 'userInfo.languageEs' : 'userInfo.languageEn') | translate }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="goBack()">
