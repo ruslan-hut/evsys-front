@@ -11,7 +11,7 @@ import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   private readonly accountService = inject(AccountService);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   title = 'WattBrews';
   username = '';
@@ -38,7 +39,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   navigateTo(destination: string) {
     this.router.navigateByUrl(destination).then(r => {
       if (!r) {
-        this.errorService.handle("Failed to navigate: " + destination)
+        this.errorService.handle(this.translate.instant('errors.navigationFailed', {target: destination}));
       }
     }
     );
@@ -72,7 +73,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   openUserProfile(): void {
     this.router.navigate(['/user-profile']).then(r => {
       if (!r) {
-        this.errorService.handle("Failed to navigate: user profile")
+        this.errorService.handle(this.translate.instant('errors.navigationUserProfile'));
       }
     }
     );

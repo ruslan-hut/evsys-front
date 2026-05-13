@@ -14,6 +14,7 @@ import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionP
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-promo',
@@ -21,7 +22,7 @@ import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
   styleUrls: ['./promo.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, MatCardActions, MatIcon, SortConnectorsPipe]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, MatCardActions, MatIcon, SortConnectorsPipe, TranslatePipe]
 })
 export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
@@ -29,6 +30,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly dialog = inject(MatDialog);
   private readonly chargePointService = inject(ChargepointService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   private destroy$ = new Subject<void>();
   private promoCode: string;
@@ -72,16 +74,16 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showAlertPromoDialog(): void {
-    let content = 'Please enter a new promo code.';
+    let content = this.translate.instant('promo.enterNewCode');
     if (this.promoCode != null && this.promoCode !== '' && this.promoCode !== undefined) {
-      content = 'Your promo code: ' + this.promoCode + ' is not valid. Please enter a new one, or pay as usual.';
+      content = this.translate.instant('promo.invalidCode', {code: this.promoCode});
     }
     const dialogData: DialogData = {
-      title: 'Promo code',
+      title: this.translate.instant('promo.dialogTitle'),
       content: content,
-      buttonYes: 'New code',
-      buttonNo: 'Cancel',
-      buttonAction: 'Pay',
+      buttonYes: this.translate.instant('promo.newCode'),
+      buttonNo: this.translate.instant('promo.cancel'),
+      buttonAction: this.translate.instant('promo.pay'),
       checkboxes: []
     };
 

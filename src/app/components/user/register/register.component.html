@@ -1,33 +1,33 @@
 <div >
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Register new user</mat-card-title>
+      <mat-card-title>{{ 'register.title' | translate }}</mat-card-title>
     </mat-card-header>
     <br>
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="user-form">
           <p>
             <mat-form-field>
-              <input matInput placeholder="First, Last Name" type="text" formControlName="name">
+              <input matInput [placeholder]="'register.name' | translate" type="text" formControlName="name">
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
-              <input matInput placeholder="Username" type="text" formControlName="username">
+              <input matInput [placeholder]="'register.username' | translate" type="text" formControlName="username">
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
-              <input matInput placeholder="Password" type="password" formControlName="password">
+              <input matInput [placeholder]="'register.password' | translate" type="password" formControlName="password">
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
-              <input matInput placeholder="Invite code" type="text" formControlName="token">
+              <input matInput [placeholder]="'register.inviteCode' | translate" type="text" formControlName="token">
             </mat-form-field>
           </p>
           <mat-card-actions align="end">
-            <button [disabled]="loading" mat-raised-button color="primary" type="submit">Sign Up</button>
+            <button [disabled]="loading" mat-raised-button color="primary" type="submit">{{ 'register.signUp' | translate }}</button>
           </mat-card-actions>
         </form>
       </mat-card-content>
@@ -39,4 +39,3 @@
     </mat-card>
 
   </div>
-

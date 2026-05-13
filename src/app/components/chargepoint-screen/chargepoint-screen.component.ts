@@ -19,6 +19,7 @@ import { PaymentMethodComponent } from '../user-profile/payment-method/payment-m
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chargepoint-screen',
@@ -26,7 +27,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
   styleUrl: './chargepoint-screen.component.css',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe]
+  imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe, TranslatePipe]
 })
 export class ChargepointScreenComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AccountService);
@@ -37,6 +38,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
   private readonly localStorageService = inject(LocalStorageService);
   readonly transactionService = inject(TransactionService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   private destroy$ = new Subject<void>();
 
@@ -112,7 +114,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
         }
 
         if (!this.isAvailable && connector.current_transaction_id === -1) {
-          this.alertDialog('Connector is not available');
+          this.alertDialog(this.translate.instant('chargepointScreen.connectorUnavailable'));
         }
       }
       this.cdr.markForCheck();
@@ -146,9 +148,9 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
 
   alertDialog(text: string): void {
     const dialogData: DialogData = {
-      title: 'Alert',
+      title: this.translate.instant('chargepointScreen.alertTitle'),
       content: text,
-      buttonYes: 'Ok',
+      buttonYes: this.translate.instant('common.ok'),
       buttonNo: '',
       checkboxes: []
     };

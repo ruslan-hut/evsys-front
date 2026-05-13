@@ -458,40 +458,70 @@
   "users": {
     "title": "Usuarios",
     "filter": "Filtrar",
-    "search": "Buscar por usuario o nombre…",
+    "search": "buscar…",
     "addUser": "Añadir usuario",
     "headers": {
       "username": "Usuario",
       "name": "Nombre",
       "email": "Correo",
       "role": "Rol",
+      "level": "Nivel",
+      "paymentPlan": "Plan de pago",
+      "dateRegistered": "Fecha de registro",
       "lastSeen": "Última actividad",
       "actions": "Acciones"
+    },
+    "labels": {
+      "name": "Nombre:",
+      "email": "Correo:",
+      "registered": "Registrado:",
+      "lastSeen": "Última actividad:",
+      "plan": "Plan:"
     },
     "deleteUser": "Eliminar usuario",
     "deleteConfirm": {
       "title": "Eliminar usuario",
-      "content": "¿Seguro que quieres eliminar al usuario \"{{username}}\"?"
+      "content": "¿Seguro que quieres eliminar al usuario \"{{username}}\"?",
+      "yes": "Eliminar",
+      "no": "Cancelar"
     },
     "noUsers": "No se encontraron usuarios",
+    "noUsersMatching": "No hay usuarios que coincidan con",
     "userActions": "Acciones de usuario",
-    "viewTags": "Tarjetas del usuario",
-    "viewTransactions": "Transacciones",
-    "viewInfo": "Ver información",
-    "editUser": "Editar usuario"
+    "viewTags": "Tarjetas de {{username}}",
+    "viewTransactions": "Transacciones de {{username}}",
+    "viewInfo": "Ver detalles de {{username}}",
+    "editUser": "Editar usuario {{username}}",
+    "selectPage": "Seleccionar página de usuarios",
+    "never": "Nunca"
   },
   "userEdit": {
     "newUser": "Crear nuevo usuario",
-    "editUser": "Editar usuario",
+    "editUser": "Editar usuario: {{username}}",
+    "copyUsername": "Copiar nombre de usuario",
     "username": "Usuario",
+    "usernamePlaceholder": "Introduce el usuario",
     "password": "Contraseña",
+    "passwordPlaceholder": "Introduce la contraseña",
+    "passwordKeepHint": "Déjalo vacío para mantener la contraseña actual",
+    "passwordNewHint": "Obligatorio para nuevos usuarios",
     "name": "Nombre completo",
+    "namePlaceholder": "Nombre Apellido",
     "email": "Correo",
+    "emailPlaceholder": "usuario@ejemplo.com",
     "role": "Rol",
+    "roles": {
+      "user": "Usuario",
+      "operator": "Operador",
+      "admin": "Administrador"
+    },
     "accessLevel": "Nivel de acceso",
+    "accessLevelHint": "0-10",
     "paymentPlan": "Plan de pago",
-    "registered": "Registrado",
-    "lastSeen": "Última actividad",
+    "paymentPlanPlaceholder": "ID del plan",
+    "userTags": "Tarjetas del usuario",
+    "registered": "Registrado:",
+    "lastSeen": "Última actividad:",
     "saving": "Guardando…",
     "update": "Actualizar usuario",
     "create": "Crear usuario",
@@ -499,19 +529,18 @@
     "usernameRequired": "El usuario es obligatorio",
     "usernameMinLength": "El usuario debe tener al menos 3 caracteres",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
-    "emailInvalid": "Introduce un correo válido"
+    "emailInvalid": "Introduce un correo válido",
+    "usernameExists": "El usuario ya existe o los datos no son válidos"
   },
   "register": {
-    "title": "Registrarse",
-    "intro": "Crea una cuenta para acceder al sistema.",
+    "title": "Registrar nuevo usuario",
+    "name": "Nombre y apellidos",
     "username": "Usuario",
     "password": "Contraseña",
-    "passwordConfirm": "Confirmar contraseña",
     "inviteCode": "Código de invitación",
     "signUp": "Registrarse",
-    "alreadyHave": "¿Ya tienes cuenta?",
-    "signIn": "Iniciar sesión",
     "errors": {
+      "invalidInput": "Entrada no válida",
       "usernameExists": "El usuario ya existe",
       "registerFailed": "No se pudo registrar, inténtalo de nuevo más tarde",
       "registerFailedUnknown": "No se pudo registrar, error desconocido ({{status}})"
@@ -527,7 +556,10 @@
     "longitude": "Longitud",
     "description": "Descripción",
     "close": "Cerrar",
-    "save": "Guardar"
+    "save": "Guardar",
+    "saved": "Cambios guardados",
+    "onlineSr": "Cargador en línea",
+    "offlineSr": "Cargador fuera de línea"
   },
   "chargepointConfig": {
     "key": "Clave",
@@ -546,7 +578,9 @@
     "cost": "Coste:",
     "perKwh": "€/kWh",
     "start": "Iniciar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "alertTitle": "Aviso",
+    "connectorUnavailable": "El conector no está disponible"
   },
   "tariff": {
     "title": "Tarifas de roaming",
@@ -561,7 +595,17 @@
     "footer": "Impuestos excluidos por kWh…"
   },
   "promo": {
-    "noChargePoints": "No hay puntos de carga disponibles"
+    "noChargePoints": "No hay puntos de carga disponibles",
+    "start": "Iniciar",
+    "stop": "Detener",
+    "unlock": "Desbloquear",
+    "close": "Cerrar",
+    "dialogTitle": "Código promocional",
+    "newCode": "Nuevo código",
+    "cancel": "Cancelar",
+    "pay": "Pagar",
+    "enterNewCode": "Introduce un nuevo código promocional.",
+    "invalidCode": "Tu código promocional: {{code}} no es válido. Introduce uno nuevo o paga como de costumbre."
   },
   "offlineBanner": {
     "offline": "Estás sin conexión"

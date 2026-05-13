@@ -17,6 +17,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatIcon} from '@angular/material/icon';
 import {Clipboard} from '@angular/cdk/clipboard';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-edit',
@@ -32,7 +33,8 @@ import {Clipboard} from '@angular/cdk/clipboard';
     MatSelect, MatOption,
     MatButton, MatIconButton,
     MatProgressBar,
-    MatIcon
+    MatIcon,
+    TranslatePipe
   ]
 })
 export class UserEditComponent implements OnInit {
@@ -44,6 +46,7 @@ export class UserEditComponent implements OnInit {
   private readonly errorService = inject(ErrorService);
   private readonly clipboard = inject(Clipboard);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
   readonly dialogRef = inject(MatDialogRef<UserEditComponent>, { optional: true });
   readonly dialogData = inject<{ username: string }>(MAT_DIALOG_DATA, { optional: true });
 
@@ -55,9 +58,9 @@ export class UserEditComponent implements OnInit {
   user: User | null = null;
 
   roles = [
-    {value: '', label: 'User'},
-    {value: 'operator', label: 'Operator'},
-    {value: 'admin', label: 'Administrator'}
+    {value: '', label: 'userEdit.roles.user'},
+    {value: 'operator', label: 'userEdit.roles.operator'},
+    {value: 'admin', label: 'userEdit.roles.admin'}
   ];
 
   ngOnInit(): void {
@@ -95,7 +98,7 @@ export class UserEditComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.errorService.handle('Failed to load user data');
+        this.errorService.handle(this.translate.instant('errors.loadUserData'));
         this.loading = false;
         this.cdr.markForCheck();
         this.navigateBack();
@@ -118,12 +121,12 @@ export class UserEditComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.invalid) {
-      this.errorService.handle('Please correct the form errors');
+      this.errorService.handle(this.translate.instant('errors.correctFormErrors'));
       return;
     }
 
     if (!this.isEditMode && !this.form.get('password')?.value) {
-      this.errorService.handle('Password is required for new users');
+      this.errorService.handle(this.translate.instant('errors.passwordRequired'));
       return;
     }
 
@@ -147,10 +150,8 @@ export class UserEditComponent implements OnInit {
       error: (error) => {
         this.saving = false;
         this.cdr.markForCheck();
-        const message = error.status === 400
-          ? 'Username already exists or invalid data'
-          : 'Failed to save user';
-        this.errorService.handle(message);
+        const key = error.status === 400 ? 'userEdit.usernameExists' : 'errors.saveUser';
+        this.errorService.handle(this.translate.instant(key));
       }
     });
   }

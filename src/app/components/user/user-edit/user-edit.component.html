@@ -7,12 +7,12 @@
     <mat-card-header>
       <mat-card-title class="title-with-action">
         @if (isEditMode) {
-          <span>Edit User: {{ username }}</span>
-          <button mat-icon-button (click)="copyUsername()" aria-label="Copy username" class="copy-button">
+          <span>{{ 'userEdit.editUser' | translate:{ username: username } }}</span>
+          <button mat-icon-button (click)="copyUsername()" [attr.aria-label]="'userEdit.copyUsername' | translate" class="copy-button">
             <mat-icon>content_copy</mat-icon>
           </button>
         } @else {
-          Create New User
+          {{ 'userEdit.newUser' | translate }}
         }
       </mat-card-title>
     </mat-card-header>
@@ -21,70 +21,70 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="user-form">
         @if (!isEditMode) {
           <mat-form-field appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" placeholder="Enter username">
+            <mat-label>{{ 'userEdit.username' | translate }}</mat-label>
+            <input matInput formControlName="username" [placeholder]="'userEdit.usernamePlaceholder' | translate">
             @if (form.get('username')?.hasError('required')) {
-              <mat-error>Username is required</mat-error>
+              <mat-error>{{ 'userEdit.usernameRequired' | translate }}</mat-error>
             }
             @if (form.get('username')?.hasError('minlength')) {
-              <mat-error>Username must be at least 3 characters</mat-error>
+              <mat-error>{{ 'userEdit.usernameMinLength' | translate }}</mat-error>
             }
           </mat-form-field>
         }
 
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" placeholder="Enter password">
+          <mat-label>{{ 'userEdit.password' | translate }}</mat-label>
+          <input matInput type="password" formControlName="password" [placeholder]="'userEdit.passwordPlaceholder' | translate">
           @if (form.get('password')?.hasError('minlength')) {
-            <mat-error>Password must be at least 6 characters</mat-error>
+            <mat-error>{{ 'userEdit.passwordMinLength' | translate }}</mat-error>
           }
           @if (isEditMode) {
-            <mat-hint>Leave empty to keep current password</mat-hint>
+            <mat-hint>{{ 'userEdit.passwordKeepHint' | translate }}</mat-hint>
           } @else {
-            <mat-hint>Required for new users</mat-hint>
+            <mat-hint>{{ 'userEdit.passwordNewHint' | translate }}</mat-hint>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Full Name</mat-label>
-          <input matInput formControlName="name" placeholder="First Last">
+          <mat-label>{{ 'userEdit.name' | translate }}</mat-label>
+          <input matInput formControlName="name" [placeholder]="'userEdit.namePlaceholder' | translate">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" placeholder="user@example.com">
+          <mat-label>{{ 'userEdit.email' | translate }}</mat-label>
+          <input matInput type="email" formControlName="email" [placeholder]="'userEdit.emailPlaceholder' | translate">
           @if (form.get('email')?.hasError('email')) {
-            <mat-error>Please enter a valid email</mat-error>
+            <mat-error>{{ 'userEdit.emailInvalid' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Role</mat-label>
+          <mat-label>{{ 'userEdit.role' | translate }}</mat-label>
           <mat-select formControlName="role">
             @for (role of roles; track role.value) {
-              <mat-option [value]="role.value">{{ role.label }}</mat-option>
+              <mat-option [value]="role.value">{{ role.label | translate }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Access Level</mat-label>
+          <mat-label>{{ 'userEdit.accessLevel' | translate }}</mat-label>
           <input matInput type="number" formControlName="access_level" min="0" max="10">
-          <mat-hint>0-10</mat-hint>
+          <mat-hint>{{ 'userEdit.accessLevelHint' | translate }}</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Payment Plan</mat-label>
-          <input matInput formControlName="payment_plan" placeholder="Plan ID">
+          <mat-label>{{ 'userEdit.paymentPlan' | translate }}</mat-label>
+          <input matInput formControlName="payment_plan" [placeholder]="'userEdit.paymentPlanPlaceholder' | translate">
         </mat-form-field>
 
         @if (isEditMode && user) {
           <div class="readonly-info">
             @if (user.date_registered) {
-              <p><strong>Registered:</strong> {{ formatDate(user.date_registered) }}</p>
+              <p><strong>{{ 'userEdit.registered' | translate }}</strong> {{ formatDate(user.date_registered) }}</p>
             }
             @if (user.last_seen) {
-              <p><strong>Last Seen:</strong> {{ formatDate(user.last_seen) }}</p>
+              <p><strong>{{ 'userEdit.lastSeen' | translate }}</strong> {{ formatDate(user.last_seen) }}</p>
             }
           </div>
         }
@@ -94,23 +94,23 @@
     <mat-card-actions>
       @if (isEditMode) {
         <button mat-button type="button" (click)="openUserTags()">
-          User Tags
+          {{ 'userEdit.userTags' | translate }}
         </button>
       }
       <span class="actions-spacer"></span>
       <button mat-button type="button" (click)="navigateBack()">
         <mat-icon>arrow_back</mat-icon>
-        Back
+        {{ 'userEdit.back' | translate }}
       </button>
       <button mat-raised-button color="primary"
               (click)="onSubmit()"
               [disabled]="saving || form.invalid">
         @if (saving) {
-          Saving...
+          {{ 'userEdit.saving' | translate }}
         } @else if (isEditMode) {
-          Update User
+          {{ 'userEdit.update' | translate }}
         } @else {
-          Create User
+          {{ 'userEdit.create' | translate }}
         }
       </button>
     </mat-card-actions>

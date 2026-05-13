@@ -1,16 +1,3 @@
-<!--<form [formGroup]="form" (ngSubmit)="submit()">-->
-
-<!--  <input-->
-<!--    type="text"-->
-<!--    class="border w-full py-2 px-4 mb-2"-->
-<!--    placeholder="Point name"-->
-<!--    formControlName="title"-->
-<!--  >-->
-
-<!--  <button class="py-2 px-4 bg-blue-600 text-white" type="submit">Save</button>-->
-
-<!--</form>-->
-
 @if (chargePoint) {
   <mat-card>
     <mat-card-header>
@@ -25,12 +12,12 @@
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <!-- Key Column -->
             <ng-container matColumnDef="key">
-              <th mat-header-cell *matHeaderCellDef> Key </th>
+              <th mat-header-cell *matHeaderCellDef>{{ 'chargepointConfig.key' | translate }}</th>
               <td mat-cell *matCellDef="let element"> {{ element.key }} </td>
             </ng-container>
             <!-- Value Column -->
             <ng-container matColumnDef="value">
-              <th mat-header-cell *matHeaderCellDef> Value </th>
+              <th mat-header-cell *matHeaderCellDef>{{ 'chargepointConfig.value' | translate }}</th>
               <td mat-cell *matCellDef="let element">
                 <table>
                   <tr><td class="value-cell">{{ element.value }}</td>
@@ -42,13 +29,13 @@
             </ng-container>
             <!-- Actions Column -->
             <ng-container matColumnDef="actions" >
-              <th mat-header-cell *matHeaderCellDef> Actions </th>
+              <th mat-header-cell *matHeaderCellDef>{{ 'chargepointConfig.actions' | translate }}</th>
               <td mat-cell *matCellDef="let element">
                 @if (accountService.isAdmin) {
                   @if (!element.readonly) {
                     <div class="table-cell-container">
-                      <input matInput class="equal-height-input" #inputValue placeholder="Enter value"/>
-                      <button mat-button color="primary" (click)="submit(element.key, inputValue.value)">Submit</button>
+                      <input matInput class="equal-height-input" #inputValue [placeholder]="'chargepointConfig.enterValue' | translate"/>
+                      <button mat-button color="primary" (click)="submit(element.key, inputValue.value)">{{ 'chargepointConfig.submit' | translate }}</button>
                     </div>
                   }
                 }
@@ -83,8 +70,8 @@
               </div>
               @if (expandedKey === element.key && accountService.isAdmin && !element.readonly) {
                 <div class="config-actions" (click)="$event.stopPropagation()">
-                  <input matInput class="mobile-input" #mobileInputValue placeholder="Enter new value"/>
-                  <button mat-flat-button color="primary" (click)="submit(element.key, mobileInputValue.value)">Submit</button>
+                  <input matInput class="mobile-input" #mobileInputValue [placeholder]="'chargepointConfig.enterNewValue' | translate"/>
+                  <button mat-flat-button color="primary" (click)="submit(element.key, mobileInputValue.value)">{{ 'chargepointConfig.submit' | translate }}</button>
                 </div>
               }
             </div>
@@ -96,8 +83,8 @@
       <mat-progress-bar mode="indeterminate" color="primary" class="progressbar"></mat-progress-bar>
     }
     <mat-card-actions>
-      <button mat-stroked-button (click)="close()">Close</button>
-      <button mat-flat-button color="primary" (click)="reload()">Reload</button>
+      <button mat-stroked-button (click)="close()">{{ 'chargepointConfig.close' | translate }}</button>
+      <button mat-flat-button color="primary" (click)="reload()">{{ 'chargepointConfig.reload' | translate }}</button>
       <div class="flex-spacer"></div>
       @if (chargePoint.is_online) {
         <mat-icon class="online-status">cloud_queue</mat-icon>
@@ -107,4 +94,3 @@
     </mat-card-actions>
   </mat-card>
 }
-

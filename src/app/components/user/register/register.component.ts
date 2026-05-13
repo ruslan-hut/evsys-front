@@ -10,6 +10,7 @@ import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-register',
@@ -17,7 +18,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     styleUrls: ['./register.component.css'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatInput, MatCardActions, MatButton, MatCardFooter, MatProgressBar]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatInput, MatCardActions, MatButton, MatCardFooter, MatProgressBar, TranslatePipe]
 })
 export class RegisterComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
@@ -25,6 +26,7 @@ export class RegisterComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   form!: FormGroup;
   loading = false;
@@ -42,7 +44,7 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (this.form.invalid) {
-      this.errorService.handle("Invalid input");
+      this.errorService.handle(this.translate.instant('register.errors.invalidInput'));
       return;
     }
     this.loading = true;
@@ -57,12 +59,12 @@ export class RegisterComponent implements OnInit {
           const status = error.status;
           if (status) {
             if (status === 400) {
-              this.errorService.handle("Username already exists");
+              this.errorService.handle(this.translate.instant('register.errors.usernameExists'));
             } else {
-              this.errorService.handle("Failed to register, unknown error (" + status + ")");
+              this.errorService.handle(this.translate.instant('register.errors.registerFailedUnknown', {status}));
             }
           } else {
-            this.errorService.handle("Failed to register, please try again later");
+            this.errorService.handle(this.translate.instant('register.errors.registerFailed'));
           }
           this.loading = false;
           this.cdr.markForCheck();
@@ -73,7 +75,7 @@ export class RegisterComponent implements OnInit {
   navigateTo(destination: string) {
     this.router.navigateByUrl(destination).then(r => {
         if (!r) {
-          this.errorService.handle("Failed to navigate: "+destination)
+          this.errorService.handle(this.translate.instant('errors.navigationFailed', {target: destination}));
         }
       }
     );

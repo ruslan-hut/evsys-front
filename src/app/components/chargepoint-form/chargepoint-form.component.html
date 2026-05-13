@@ -1,44 +1,31 @@
-<!--<form [formGroup]="form" (ngSubmit)="submit()">-->
-
-<!--  <input-->
-<!--    type="text"-->
-<!--    class="border w-full py-2 px-4 mb-2"-->
-<!--    placeholder="Point name"-->
-<!--    formControlName="title"-->
-<!--  >-->
-
-<!--  <button class="py-2 px-4 bg-blue-600 text-white" type="submit">Save</button>-->
-
-<!--</form>-->
-
 @if (chargePoint) {
   <mat-card>
     <mat-card-header>
       <mat-card-title class="center-content">
         {{chargePointId}}
         @if (isSaved) {
-          <mat-icon color="primary" aria-label="Changes saved">check_circle</mat-icon>
+          <mat-icon color="primary" [attr.aria-label]="'chargepointForm.saved' | translate">check_circle</mat-icon>
         }
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="form-grid">
         <div class="form-row form-row--inline">
-          <label for="cp-title">Title</label>
+          <label for="cp-title">{{ 'chargepointForm.title' | translate }}</label>
           <input id="cp-title" class="equal-height-input" [(ngModel)]="chargePoint.title" />
         </div>
         <div class="form-row form-row--inline">
-          <label for="cp-access-type">Access type</label>
+          <label for="cp-access-type">{{ 'chargepointForm.accessType' | translate }}</label>
           <input id="cp-access-type" class="equal-height-input" [(ngModel)]="chargePoint.access_type" />
         </div>
         <div class="form-row form-row--inline">
-          <label for="cp-access-level">Access level</label>
+          <label for="cp-access-level">{{ 'chargepointForm.accessLevel' | translate }}</label>
           <input id="cp-access-level" class="equal-height-input"
                  [(ngModel)]="chargePoint.access_level" type="number"
                  step="1" pattern="[0-9]*" inputmode="numeric"/>
         </div>
         <div class="form-row form-row--inline">
-          <label for="cp-address">Address</label>
+          <label for="cp-address">{{ 'chargepointForm.address' | translate }}</label>
           <textarea id="cp-address" class="equal-height-input"
                     matInput
                     cdkTextareaAutosize
@@ -47,22 +34,22 @@
                     [(ngModel)]="chargePoint.address"></textarea>
         </div>
         <div class="form-row form-row--inline">
-          <label>Location</label>
+          <label>{{ 'chargepointForm.location' | translate }}</label>
           <div class="form-row-two-col location-inputs">
             <input [(ngModel)]="chargePoint.location.latitude"
                    class="equal-height-input"
                    type="number"
-                   placeholder="Latitude"
-                   aria-label="Latitude"/>
+                   [placeholder]="'chargepointForm.latitude' | translate"
+                   [attr.aria-label]="'chargepointForm.latitude' | translate"/>
             <input [(ngModel)]="chargePoint.location.longitude"
                    class="equal-height-input"
                    type="number"
-                   placeholder="Longitude"
-                   aria-label="Longitude"/>
+                   [placeholder]="'chargepointForm.longitude' | translate"
+                   [attr.aria-label]="'chargepointForm.longitude' | translate"/>
           </div>
         </div>
         <div class="form-row form-row--inline">
-          <label for="cp-description">Description</label>
+          <label for="cp-description">{{ 'chargepointForm.description' | translate }}</label>
           <textarea id="cp-description" class="equal-height-input"
                     matInput
                     cdkTextareaAutosize
@@ -76,15 +63,15 @@
       <app-connector-form [connectors]="chargePoint.connectors | sortConnectors"></app-connector-form>
     </mat-card>
     <mat-card-actions>
-      <button mat-stroked-button (click)="close()">Close</button>
-      <button mat-flat-button color="primary" (click)="save()">Save</button>
+      <button mat-stroked-button (click)="close()">{{ 'chargepointForm.close' | translate }}</button>
+      <button mat-flat-button color="primary" (click)="save()">{{ 'chargepointForm.save' | translate }}</button>
       <div class="flex-spacer"></div>
       @if (chargePoint.is_online) {
         <mat-icon class="status-online" aria-hidden="true">cloud_queue</mat-icon>
-        <span class="sr-only">Charger is online</span>
+        <span class="sr-only">{{ 'chargepointForm.onlineSr' | translate }}</span>
       } @else {
         <mat-icon color="warn" aria-hidden="true">cloud_off</mat-icon>
-        <span class="sr-only">Charger is offline</span>
+        <span class="sr-only">{{ 'chargepointForm.offlineSr' | translate }}</span>
       }
     </mat-card-actions>
   </mat-card>

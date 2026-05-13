@@ -7,6 +7,7 @@ import { Chargepoint } from '../../models/chargepoint';
 import { Router } from '@angular/router';
 import { MatCard } from '@angular/material/card';
 import { MatFabButton } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-promo-list',
@@ -14,7 +15,7 @@ import { MatFabButton } from '@angular/material/button';
   styleUrls: ['./promo-list.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatFabButton]
+  imports: [MatCard, MatFabButton, TranslatePipe]
 })
 export class PromoListComponent implements OnInit, AfterContentInit, OnDestroy {
   private readonly chargePointService = inject(ChargepointService);

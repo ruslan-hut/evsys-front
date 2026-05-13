@@ -11,6 +11,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { ConnectorFormComponent } from '../connector-form/connector-form.component';
 import { MatButton } from '@angular/material/button';
 import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-chargepoint-form',
@@ -18,7 +19,7 @@ import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
     styleUrls: ['./chargepoint-form.component.css'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, FormsModule, MatInput, CdkTextareaAutosize, ConnectorFormComponent, MatCardActions, MatButton, SortConnectorsPipe]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, FormsModule, MatInput, CdkTextareaAutosize, ConnectorFormComponent, MatCardActions, MatButton, SortConnectorsPipe, TranslatePipe]
 })
 export class ChargepointFormComponent implements OnInit {
   private readonly chargePointService = inject(ChargepointService);

@@ -21,14 +21,14 @@
               </mat-expansion-panel-header>
               <mat-action-row class="connector-buttons">
                 @if (connector.state === 'available') {
-                  <button mat-button color="primary" (click)="startConnector(connector)">Start</button>
+                  <button mat-button color="primary" (click)="startConnector(connector)">{{ 'promo.start' | translate }}</button>
                 } @else {
                   @if (connector.state !== 'unavailable') {
                     @if (connector.current_transaction_id > 0) {
-                      <button mat-button color="warn" (click)="stopConnector(connector)">Stop</button>
+                      <button mat-button color="warn" (click)="stopConnector(connector)">{{ 'promo.stop' | translate }}</button>
                     }
                     @if (connector.current_transaction_id < 0) {
-                      <button mat-button color="warn" (click)="unlockConnector(connector)">Unlock</button>
+                      <button mat-button color="warn" (click)="unlockConnector(connector)">{{ 'promo.unlock' | translate }}</button>
                     }
                   }
                 }
@@ -40,7 +40,7 @@
     </mat-card-content>
     <br>
       <mat-card-actions class="flex-container">
-        <button mat-raised-button color="warn" (click)="close()">Close</button>
+        <button mat-raised-button color="warn" (click)="close()">{{ 'promo.close' | translate }}</button>
         <div class="flex-spacer"></div>
         @if (chargePoint.is_online) {
           <mat-icon class="online-status">cloud_queue</mat-icon>

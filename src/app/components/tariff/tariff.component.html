@@ -1,34 +1,34 @@
 @if (tariffData.data != undefined) {
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Roaming Tariffs</mat-card-title>
-    <mat-card-title>Updated by H2PLT on {{ getUpdatedString() }}</mat-card-title>
+    <mat-card-title>{{ 'tariff.title' | translate }}</mat-card-title>
+    <mat-card-title>{{ 'tariff.updatedBy' | translate }} {{ getUpdatedString() }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p>Find below the current roaming tariffs for eMSPs related to the offers published by H2PLT on GIREVE.</p>
+    <p>{{ 'tariff.intro' | translate }}</p>
   </mat-card-content>
   <mat-card-content>
     <table mat-table [dataSource]="tariffData.data">
       <ng-container matColumnDef="tariffID">
-        <th mat-header-cell *matHeaderCellDef> Tariff ID </th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'tariff.headers.tariffId' | translate }}</th>
         <td mat-cell *matCellDef="let item">
           {{ item.id }}
         </td>
       </ng-container>
       <ng-container matColumnDef="network">
-        <th mat-header-cell *matHeaderCellDef> Network </th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'tariff.headers.network' | translate }}</th>
         <td mat-cell *matCellDef="let item">
           ES*H2P
         </td>
       </ng-container>
       <ng-container matColumnDef="country">
-        <th mat-header-cell *matHeaderCellDef> Country </th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'tariff.headers.country' | translate }}</th>
         <td mat-cell *matCellDef="let item">
           Spain
         </td>
       </ng-container>
       <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef> Price (kW/h)</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'tariff.headers.pricePerKwh' | translate }}</th>
         <td mat-cell *matCellDef="let item">
           {{ item.elements[0]?.price_components[0]?.price | currency:item.currency }}
         </td>
@@ -39,7 +39,7 @@
     </table>
   </mat-card-content>
   <mat-card-content>
-    <h5>Excluding tax per kWh, billed in steps of 1 Wh (rounding to the upper unit)</h5>
+    <h5>{{ 'tariff.footer' | translate }}</h5>
   </mat-card-content>
 </mat-card>
 }

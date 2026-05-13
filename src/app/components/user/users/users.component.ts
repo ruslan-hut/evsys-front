@@ -20,6 +20,7 @@ import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-users',
@@ -53,7 +54,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatNoDataRow,
     MatPaginator,
     AsyncPipe,
-    MatExpansionModule
+    MatExpansionModule,
+    TranslatePipe
   ]
 })
 export class UsersComponent implements OnInit {
@@ -62,6 +64,7 @@ export class UsersComponent implements OnInit {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly errorService = inject(ErrorService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   displayedColumn: string[] = ['username', 'name', 'last_seen', 'actions'];
   filter: string = '';
@@ -120,7 +123,7 @@ export class UsersComponent implements OnInit {
 
   // Format last seen for mobile display
   formatLastSeen(dateStr: string | undefined): string {
-    if (!dateStr) return 'Never';
+    if (!dateStr) return this.translate.instant('users.never');
     // Return shorter format
     const parts = dateStr.split(' ');
     if (parts.length >= 2) {
@@ -130,7 +133,7 @@ export class UsersComponent implements OnInit {
   }
 
   formatDate(dateStr: string | undefined): string {
-    if (!dateStr) return 'Never';
+    if (!dateStr) return this.translate.instant('users.never');
     const datePart = dateStr.split('T')[0];
     const ymd = datePart.split('-');
     if (ymd.length === 3) {
@@ -141,10 +144,10 @@ export class UsersComponent implements OnInit {
 
   deleteUser(username: string): void {
     const dialogData: DialogData = {
-      title: 'Delete User',
-      content: `Are you sure you want to delete user "${username}"?`,
-      buttonYes: 'Delete',
-      buttonNo: 'Cancel',
+      title: this.translate.instant('users.deleteConfirm.title'),
+      content: this.translate.instant('users.deleteConfirm.content', {username}),
+      buttonYes: this.translate.instant('users.deleteConfirm.yes'),
+      buttonNo: this.translate.instant('users.deleteConfirm.no'),
       checkboxes: []
     };
 
@@ -161,7 +164,7 @@ export class UsersComponent implements OnInit {
             this.cdr.markForCheck();
           },
           error: () => {
-            this.errorService.handle('Failed to delete user');
+            this.errorService.handle(this.translate.instant('errors.deleteUser'));
           }
         });
       }

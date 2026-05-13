@@ -458,40 +458,70 @@
   "users": {
     "title": "Users",
     "filter": "Filter",
-    "search": "Search by username or name…",
-    "addUser": "Add user",
+    "search": "search…",
+    "addUser": "Add User",
     "headers": {
       "username": "Username",
       "name": "Name",
       "email": "Email",
       "role": "Role",
+      "level": "Level",
+      "paymentPlan": "Payment plan",
+      "dateRegistered": "Date registered",
       "lastSeen": "Last seen",
       "actions": "Actions"
     },
+    "labels": {
+      "name": "Name:",
+      "email": "Email:",
+      "registered": "Registered:",
+      "lastSeen": "Last seen:",
+      "plan": "Plan:"
+    },
     "deleteUser": "Delete user",
     "deleteConfirm": {
-      "title": "Delete user",
-      "content": "Are you sure you want to delete user \"{{username}}\"?"
+      "title": "Delete User",
+      "content": "Are you sure you want to delete user \"{{username}}\"?",
+      "yes": "Delete",
+      "no": "Cancel"
     },
     "noUsers": "No users found",
+    "noUsersMatching": "No users matching",
     "userActions": "User actions",
-    "viewTags": "User tags",
-    "viewTransactions": "Transactions",
-    "viewInfo": "View user info",
-    "editUser": "Edit user"
+    "viewTags": "User tags for {{username}}",
+    "viewTransactions": "Transactions for {{username}}",
+    "viewInfo": "View details for {{username}}",
+    "editUser": "Edit user {{username}}",
+    "selectPage": "Select page of users",
+    "never": "Never"
   },
   "userEdit": {
     "newUser": "Create New User",
-    "editUser": "Edit User",
+    "editUser": "Edit User: {{username}}",
+    "copyUsername": "Copy username",
     "username": "Username",
+    "usernamePlaceholder": "Enter username",
     "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "passwordKeepHint": "Leave empty to keep current password",
+    "passwordNewHint": "Required for new users",
     "name": "Full Name",
+    "namePlaceholder": "First Last",
     "email": "Email",
+    "emailPlaceholder": "user@example.com",
     "role": "Role",
+    "roles": {
+      "user": "User",
+      "operator": "Operator",
+      "admin": "Administrator"
+    },
     "accessLevel": "Access Level",
+    "accessLevelHint": "0-10",
     "paymentPlan": "Payment Plan",
-    "registered": "Registered",
-    "lastSeen": "Last Seen",
+    "paymentPlanPlaceholder": "Plan ID",
+    "userTags": "User Tags",
+    "registered": "Registered:",
+    "lastSeen": "Last Seen:",
     "saving": "Saving…",
     "update": "Update User",
     "create": "Create User",
@@ -499,19 +529,18 @@
     "usernameRequired": "Username is required",
     "usernameMinLength": "Username must be at least 3 characters",
     "passwordMinLength": "Password must be at least 6 characters",
-    "emailInvalid": "Please enter a valid email"
+    "emailInvalid": "Please enter a valid email",
+    "usernameExists": "Username already exists or invalid data"
   },
   "register": {
-    "title": "Sign Up",
-    "intro": "Create an account to access the system.",
+    "title": "Register new user",
+    "name": "First, Last Name",
     "username": "Username",
     "password": "Password",
-    "passwordConfirm": "Confirm password",
     "inviteCode": "Invite code",
     "signUp": "Sign Up",
-    "alreadyHave": "Already have an account?",
-    "signIn": "Sign In",
     "errors": {
+      "invalidInput": "Invalid input",
       "usernameExists": "Username already exists",
       "registerFailed": "Failed to register, please try again later",
       "registerFailedUnknown": "Failed to register, unknown error ({{status}})"
@@ -527,7 +556,10 @@
     "longitude": "Longitude",
     "description": "Description",
     "close": "Close",
-    "save": "Save"
+    "save": "Save",
+    "saved": "Changes saved",
+    "onlineSr": "Charger is online",
+    "offlineSr": "Charger is offline"
   },
   "chargepointConfig": {
     "key": "Key",
@@ -546,7 +578,9 @@
     "cost": "Cost:",
     "perKwh": "€/kWh",
     "start": "Start",
-    "close": "Close"
+    "close": "Close",
+    "alertTitle": "Alert",
+    "connectorUnavailable": "Connector is not available"
   },
   "tariff": {
     "title": "Roaming Tariffs",
@@ -561,7 +595,17 @@
     "footer": "Excluding tax per kWh…"
   },
   "promo": {
-    "noChargePoints": "No charge points available"
+    "noChargePoints": "No charge points available",
+    "start": "Start",
+    "stop": "Stop",
+    "unlock": "Unlock",
+    "close": "Close",
+    "dialogTitle": "Promo code",
+    "newCode": "New code",
+    "cancel": "Cancel",
+    "pay": "Pay",
+    "enterNewCode": "Please enter a new promo code.",
+    "invalidCode": "Your promo code: {{code}} is not valid. Please enter a new one, or pay as usual."
   },
   "offlineBanner": {
     "offline": "You are offline"
