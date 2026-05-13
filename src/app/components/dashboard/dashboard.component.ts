@@ -17,6 +17,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 import { NgxChartsModule, Color, ScaleType, LegendPosition } from '@swimlane/ngx-charts';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { StatsService } from '../../service/stats.service';
 import { MonthStats } from '../../models/month-stats';
@@ -60,7 +61,8 @@ interface SummaryMetrics {
     MatIcon,
     MatMenuTrigger, MatMenu, MatMenuItem,
     MatProgressBar,
-    NgxChartsModule
+    NgxChartsModule,
+    TranslatePipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -84,11 +86,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private loadingCount = 0;
 
   predefinedRanges = [
-    { label: 'Today', range: this.getToday() },
-    { label: 'Current Month', range: this.getCurrentMonth() },
-    { label: 'Previous Month', range: this.getPreviousMonth() },
-    { label: 'Current Year', range: this.getCurrentYear() },
-    { label: 'Last Year', range: this.getLastYear() }
+    { label: 'dashboard.ranges.today', range: this.getToday() },
+    { label: 'dashboard.ranges.currentMonth', range: this.getCurrentMonth() },
+    { label: 'dashboard.ranges.previousMonth', range: this.getPreviousMonth() },
+    { label: 'dashboard.ranges.currentYear', range: this.getCurrentYear() },
+    { label: 'dashboard.ranges.lastYear', range: this.getLastYear() }
   ];
 
   monthLineChartData: ChartSeries[] = [];

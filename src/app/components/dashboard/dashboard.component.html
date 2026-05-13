@@ -5,26 +5,26 @@
 <!-- Desktop: always visible filter container -->
 <div class="filter-container desktop-only">
   <mat-form-field appearance="outline" class="date-range-field">
-    <mat-label>Date Range</mat-label>
+    <mat-label>{{ 'dashboard.dateRange' | translate }}</mat-label>
     <mat-date-range-input [rangePicker]="pickerDesktop">
-      <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
-      <input matEndDate [(ngModel)]="endDate" placeholder="End" />
+      <input matStartDate [(ngModel)]="startDate" [placeholder]="'dashboard.start' | translate" />
+      <input matEndDate [(ngModel)]="endDate" [placeholder]="'dashboard.end' | translate" />
     </mat-date-range-input>
-    <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+    <mat-hint>{{ 'dashboard.dateHint' | translate }}</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="pickerDesktop"></mat-datepicker-toggle>
-    <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuDesktop" aria-label="Select predefined range">
+    <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuDesktop" [attr.aria-label]="'dashboard.selectRange' | translate">
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
     <mat-menu #rangeMenuDesktop="matMenu">
       @for (range of predefinedRanges; track range.label) {
-        <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
+        <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
       }
     </mat-menu>
     <mat-date-range-picker #pickerDesktop></mat-date-range-picker>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Group</mat-label>
+    <mat-label>{{ 'dashboard.group' | translate }}</mat-label>
     <mat-select [(value)]="selectedGroup">
       @for (group of groups; track group.id) {
         <mat-option [value]="group.id">{{ group.name }}</mat-option>
@@ -34,7 +34,7 @@
 
   <button mat-raised-button color="primary" (click)="requestData()">
     <mat-icon>refresh</mat-icon>
-    Load Data
+    {{ 'dashboard.loadData' | translate }}
   </button>
 </div>
 
@@ -43,32 +43,32 @@
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-icon>filter_list</mat-icon>
-      Filters
+      {{ 'dashboard.filters' | translate }}
     </mat-panel-title>
   </mat-expansion-panel-header>
 
   <div class="filter-container">
     <mat-form-field appearance="outline" class="date-range-field">
-      <mat-label>Date Range</mat-label>
+      <mat-label>{{ 'dashboard.dateRange' | translate }}</mat-label>
       <mat-date-range-input [rangePicker]="pickerMobile">
-        <input matStartDate [(ngModel)]="startDate" placeholder="Start" />
-        <input matEndDate [(ngModel)]="endDate" placeholder="End" />
+        <input matStartDate [(ngModel)]="startDate" [placeholder]="'dashboard.start' | translate" />
+        <input matEndDate [(ngModel)]="endDate" [placeholder]="'dashboard.end' | translate" />
       </mat-date-range-input>
-      <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+      <mat-hint>{{ 'dashboard.dateHint' | translate }}</mat-hint>
       <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
-      <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuMobile" aria-label="Select predefined range">
+      <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuMobile" [attr.aria-label]="'dashboard.selectRange' | translate">
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
       <mat-menu #rangeMenuMobile="matMenu">
         @for (range of predefinedRanges; track range.label) {
-          <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
+          <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
         }
       </mat-menu>
       <mat-date-range-picker #pickerMobile></mat-date-range-picker>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Group</mat-label>
+      <mat-label>{{ 'dashboard.group' | translate }}</mat-label>
       <mat-select [(value)]="selectedGroup">
         @for (group of groups; track group.id) {
           <mat-option [value]="group.id">{{ group.name }}</mat-option>
@@ -78,24 +78,24 @@
 
     <button mat-raised-button color="primary" (click)="requestData()">
       <mat-icon>refresh</mat-icon>
-      Load Data
+      {{ 'dashboard.loadData' | translate }}
     </button>
   </div>
 </mat-expansion-panel>
 
 <div class="current-period">
-  <span class="period-label">Period:</span>
+  <span class="period-label">{{ 'dashboard.period' | translate }}</span>
   <span class="period-value">{{ startDate | date:'dd-MM-yyyy' }} — {{ endDate | date:'dd-MM-yyyy' }}</span>
 </div>
 
 <mat-tab-group (selectedIndexChange)="onTabChange($event)" [selectedIndex]="activeTabIndex">
   <!-- Monthly Report Tab -->
-  <mat-tab label="Monthly Trends">
+  <mat-tab [label]="'dashboard.tabs.monthly' | translate">
     <div class="tab-content">
       <div class="summary-cards">
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Total Energy</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.totalEnergy' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ monthSummary.totalKWh | number:'1.1-1' }}</span>
@@ -105,7 +105,7 @@
 
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Sessions</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.sessions' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ monthSummary.totalSessions }}</span>
@@ -114,7 +114,7 @@
 
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Average per Session</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.averagePerSession' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ monthSummary.averageKWh | number:'1.1-1' }}</span>
@@ -126,7 +126,7 @@
       <div class="charts-grid">
         <mat-card class="chart-card">
           <mat-card-header>
-            <mat-card-title>Average Trend</mat-card-title>
+            <mat-card-title>{{ 'dashboard.charts.averageTrend' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             @if (monthLineChartData.length && monthLineChartData[0].series.length) {
@@ -138,7 +138,7 @@
                   [yAxis]="true"
                   [showXAxisLabel]="true"
                   [showYAxisLabel]="false"
-                  xAxisLabel="Month"
+                  [xAxisLabel]="'dashboard.charts.month' | translate"
                   [autoScale]="true"
                   [legend]="true"
                   [legendPosition]="legendPosition"
@@ -146,14 +146,14 @@
                 </ngx-charts-line-chart>
               </div>
             } @else {
-              <div class="no-data">No data available. Click "Load Data" to fetch.</div>
+              <div class="no-data">{{ 'dashboard.noDataClickLoad' | translate }}</div>
             }
           </mat-card-content>
         </mat-card>
 
         <mat-card class="chart-card">
           <mat-card-header>
-            <mat-card-title>Monthly Comparison</mat-card-title>
+            <mat-card-title>{{ 'dashboard.charts.monthlyComparison' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             @if (monthBarChartData.length) {
@@ -165,13 +165,13 @@
                   [yAxis]="true"
                   [showXAxisLabel]="true"
                   [showYAxisLabel]="true"
-                  xAxisLabel="Month"
-                  yAxisLabel="kWh"
+                  [xAxisLabel]="'dashboard.charts.month' | translate"
+                  [yAxisLabel]="'dashboard.charts.kwh' | translate"
                   [gradient]="true">
                 </ngx-charts-bar-vertical>
               </div>
             } @else {
-              <div class="no-data">No data available</div>
+              <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
             }
           </mat-card-content>
         </mat-card>
@@ -180,12 +180,12 @@
   </mat-tab>
 
   <!-- User Report Tab -->
-  <mat-tab label="User Statistics">
+  <mat-tab [label]="'dashboard.tabs.user' | translate">
     <div class="tab-content">
       <div class="summary-cards">
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Total Energy</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.totalEnergy' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ userSummary.totalKWh | number:'1.1-1' }}</span>
@@ -195,7 +195,7 @@
 
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Total Sessions</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.totalSessions' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ userSummary.totalSessions }}</span>
@@ -204,7 +204,7 @@
 
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Users</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.users' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ userSummary.count }}</span>
@@ -215,7 +215,7 @@
       <div class="charts-grid">
         <mat-card class="chart-card">
           <mat-card-header>
-            <mat-card-title>Top 10 Users by Consumption</mat-card-title>
+            <mat-card-title>{{ 'dashboard.charts.topUsers' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             @if (userBarChartData.length) {
@@ -227,20 +227,20 @@
                   [yAxis]="true"
                   [showXAxisLabel]="true"
                   [showYAxisLabel]="true"
-                  xAxisLabel="kWh"
-                  yAxisLabel="User"
+                  [xAxisLabel]="'dashboard.charts.kwh' | translate"
+                  [yAxisLabel]="'dashboard.charts.user' | translate"
                   [gradient]="true">
                 </ngx-charts-bar-horizontal>
               </div>
             } @else {
-              <div class="no-data">No data available</div>
+              <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
             }
           </mat-card-content>
         </mat-card>
 
         <mat-card class="chart-card">
           <mat-card-header>
-            <mat-card-title>Consumption Distribution</mat-card-title>
+            <mat-card-title>{{ 'dashboard.charts.consumptionDistribution' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             @if (userPieChartData.length) {
@@ -255,7 +255,7 @@
                 </ngx-charts-pie-chart>
               </div>
             } @else {
-              <div class="no-data">No data available</div>
+              <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
             }
           </mat-card-content>
         </mat-card>
@@ -264,12 +264,12 @@
   </mat-tab>
 
   <!-- Charger Report Tab -->
-  <mat-tab label="Charger Statistics">
+  <mat-tab [label]="'dashboard.tabs.charger' | translate">
     <div class="tab-content">
       <div class="summary-cards">
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Total Energy</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.totalEnergy' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ chargerSummary.totalKWh | number:'1.1-1' }}</span>
@@ -279,7 +279,7 @@
 
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Total Sessions</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.totalSessions' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ chargerSummary.totalSessions }}</span>
@@ -288,7 +288,7 @@
 
         <mat-card class="summary-card">
           <mat-card-header>
-            <mat-card-title>Chargers</mat-card-title>
+            <mat-card-title>{{ 'dashboard.metrics.chargers' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <span class="metric-value">{{ chargerSummary.count }}</span>
@@ -299,7 +299,7 @@
       <div class="charts-grid">
         <mat-card class="chart-card">
           <mat-card-header>
-            <mat-card-title>Top 10 Chargers by Usage</mat-card-title>
+            <mat-card-title>{{ 'dashboard.charts.topChargers' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             @if (chargerBarChartData.length) {
@@ -311,20 +311,20 @@
                   [yAxis]="true"
                   [showXAxisLabel]="true"
                   [showYAxisLabel]="true"
-                  xAxisLabel="kWh"
-                  yAxisLabel="Charger"
+                  [xAxisLabel]="'dashboard.charts.kwh' | translate"
+                  [yAxisLabel]="'dashboard.charts.charger' | translate"
                   [gradient]="true">
                 </ngx-charts-bar-horizontal>
               </div>
             } @else {
-              <div class="no-data">No data available</div>
+              <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
             }
           </mat-card-content>
         </mat-card>
 
         <mat-card class="chart-card">
           <mat-card-header>
-            <mat-card-title>Usage Distribution</mat-card-title>
+            <mat-card-title>{{ 'dashboard.charts.usageDistribution' | translate }}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             @if (chargerPieChartData.length) {
@@ -339,7 +339,7 @@
                 </ngx-charts-pie-chart>
               </div>
             } @else {
-              <div class="no-data">No data available</div>
+              <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
             }
           </mat-card-content>
         </mat-card>

@@ -22,6 +22,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-login',
@@ -29,7 +30,7 @@ import { MatInput } from '@angular/material/input';
     styleUrls: ['./login.component.css'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatCardFooter, MatProgressBar, MatExpansionPanelActionRow, MatButton, FormsModule, ReactiveFormsModule, MatFormField, MatInput]
+    imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatCardFooter, MatProgressBar, MatExpansionPanelActionRow, MatButton, FormsModule, ReactiveFormsModule, MatFormField, MatInput, TranslatePipe]
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   private readonly formBuilder = inject(FormBuilder);
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   private readonly errorService = inject(ErrorService);
   readonly dialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   formUsername!: FormGroup;
   formEmail!: FormGroup;
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     const auth = getAuth();
     if(isSignInWithEmailLink(auth, window.location.href)) {
       if (this.storedEmail == null) {
-        this.errorService.handle("Failed to get email");
+        this.errorService.handle(this.translate.instant('login.errors.failedEmail'));
         return;
       }
       signInWithEmailLink(auth, this.storedEmail, window.location.href).then((result) => {
@@ -88,7 +90,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   onSubmitUsername() {
     this.submitted = true;
     if (this.formUsername.invalid) {
-      this.errorService.handle("Invalid input");
+      this.errorService.handle(this.translate.instant('login.errors.invalidInput'));
       return;
     }
     this.loading = true;
@@ -117,7 +119,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         if (token == null) {
-          this.errorService.handle("Failed to get Google Access Token");
+          this.errorService.handle(this.translate.instant('login.errors.failedGoogleToken'));
           return;
         }
         result.user.getIdToken().then((token) => {
@@ -147,7 +149,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   onSubmitEmail() {
     this.submitted = true;
     if (this.formEmail.invalid) {
-      this.errorService.handle("Invalid input");
+      this.errorService.handle(this.translate.instant('login.errors.invalidInput'));
       return;
     }
     this.loading = true;
@@ -184,9 +186,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   showEmailSentDialog() {
     let dialogData: DialogData = {
-      title: "Check inbox",
-      content: "We've sent you an email with a link to sign in. Go to your inbox and click on the link to sign in.",
-      buttonYes: "Ok",
+      title: this.translate.instant('login.emailSentDialog.title'),
+      content: this.translate.instant('login.emailSentDialog.content'),
+      buttonYes: this.translate.instant('common.ok'),
       buttonNo: "",
       checkboxes: []
     };
@@ -204,12 +206,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   showCookiesDialog() {
     let dialogData: DialogData = {
-      title: "Cookies",
-      content: "This website uses cookies to improve your experience. By using this website, you agree with our " +
-        "<a href=\"https://wattbrews.me/privacy\">Privacy Policy</a>.\n",
-      buttonYes: "Ok",
+      title: this.translate.instant('login.cookiesDialog.title'),
+      content: this.translate.instant('login.cookiesDialog.content'),
+      buttonYes: this.translate.instant('common.ok'),
       buttonNo: "",
-      checkboxes: ["Accept Privacy Policy"]
+      checkboxes: [this.translate.instant('login.cookiesDialog.accept')]
     };
 
     const dialogRef = this.dialog.open(BasicDialogComponent, {
@@ -231,7 +232,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   navigateTo(destination: string) {
     this.router.navigateByUrl(destination).then(r => {
         if (!r) {
-          this.errorService.handle("Looks like you're already there!");
+          this.errorService.handle(this.translate.instant('login.errors.alreadyThere'));
         }
       }
     );

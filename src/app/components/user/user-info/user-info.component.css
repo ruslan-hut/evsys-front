@@ -11,3 +11,14 @@
 .detail-value {
   /* styling for the value */
 }
+
+.language-selector {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.language-selector mat-form-field {
+  width: 100%;
+  max-width: 240px;
+}

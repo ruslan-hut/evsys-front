@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, Optional, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AccountService} from "../../../service/account.service";
 import {User} from "../../../models/user";
@@ -8,9 +8,14 @@ import {DataObject, SimpleDataObject} from "../../../models/data-object";
 import {environment} from "../../../../environments/environment";
 import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
-import { TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AppLanguage, LanguageService } from '../../../service/language.service';
 
 @Component({
     selector: 'app-user-info',
@@ -18,23 +23,31 @@ import { MatIcon } from '@angular/material/icon';
     styleUrls: ['./user-info.component.css'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardContent, MatList, MatListItem, MatCardActions, MatButton, MatIcon, TitleCasePipe]
+    imports: [MatCard, MatCardContent, MatList, MatListItem, MatCardActions, MatButton, MatIcon, TitleCasePipe, MatFormField, MatLabel, MatSelect, MatOption, TranslatePipe, AsyncPipe]
 })
 export class UserInfoComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly account = inject(AccountService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly languageService = inject(LanguageService);
   readonly dialogRef = inject(MatDialogRef<BasicDialogComponent>, { optional: true });
   readonly data = inject<string>(MAT_DIALOG_DATA, { optional: true });
 
   user!: User;
   userInfo: DataObject[] = [];
 
+  readonly currentLanguage$ = this.languageService.current$;
+  readonly supportedLanguages = this.languageService.supported;
+
   constructor() {
     if (this.data) {
       this.loadUserData(this.data)
     }
+  }
+
+  onLanguageChange(lang: AppLanguage): void {
+    this.languageService.setLanguage(lang);
   }
 
   makeUserInfo(user: User) {

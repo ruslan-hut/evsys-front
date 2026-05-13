@@ -1,0 +1,135 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading…",
+    "back": "Back",
+    "ok": "Ok",
+    "dismiss": "Dismiss"
+  },
+  "header": {
+    "operations": "Operations",
+    "chargePoints": "Charge points",
+    "transactions": "Transactions",
+    "monitoring": "Monitoring",
+    "manage": "Manage",
+    "consumptionChart": "Consumption chart",
+    "consumption": "Consumption",
+    "uptime": "Uptime",
+    "exportData": "Export data",
+    "management": "Management",
+    "users": "Users",
+    "rfidTags": "RFID tags",
+    "mailReports": "Mail reports",
+    "diagnostics": "Diagnostics",
+    "systemLog": "System log",
+    "paymentLog": "Payment log",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms & conditions",
+    "points": "Points",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "openNavigation": "Open navigation",
+    "back": "Back",
+    "profile": "Profile: {{name}}"
+  },
+  "login": {
+    "title": "Sign In",
+    "intro": "Join us and explore a world of possibilities! Sign in with your email or conveniently use your Google account to get started.",
+    "google": {
+      "title": "Google account",
+      "description": "Sign in or register with Google account",
+      "body": "Easily access all our features by signing in with your Google account. No need for remembering another password – just one click and you're in! You will be redirected to Google to sign in or register. We will not have access to your password.",
+      "button": "Sign In"
+    },
+    "email": {
+      "title": "E-mail",
+      "description": "Use your e-mail address to sign in or register",
+      "body": "If you don't have or don't want to use your Google account, you can sign in or register with your e-mail address. Enter your email address below and we'll send you a secure sign-in link. Just click on the link in your email to access your account – no password necessary!",
+      "placeholder": "e-mail address",
+      "button": "Sign In"
+    },
+    "username": {
+      "title": "Login",
+      "description": "Sign in with username and password",
+      "body": "If you have login and password, sign in here. To create new account using invite code, press Sign Up.",
+      "usernamePlaceholder": "Username",
+      "passwordPlaceholder": "Password",
+      "signIn": "Sign In",
+      "signUp": "Sign Up"
+    },
+    "errors": {
+      "invalidInput": "Invalid input",
+      "failedGoogleToken": "Failed to get Google Access Token",
+      "failedEmail": "Failed to get email",
+      "alreadyThere": "Looks like you're already there!"
+    },
+    "emailSentDialog": {
+      "title": "Check inbox",
+      "content": "We've sent you an email with a link to sign in. Go to your inbox and click on the link to sign in."
+    },
+    "cookiesDialog": {
+      "title": "Cookies",
+      "content": "This website uses cookies to improve your experience. By using this website, you agree with our <a href=\"https://wattbrews.me/privacy\">Privacy Policy</a>.\n",
+      "accept": "Accept Privacy Policy"
+    }
+  },
+  "dashboard": {
+    "dateRange": "Date Range",
+    "start": "Start",
+    "end": "End",
+    "dateHint": "DD/MM/YYYY - DD/MM/YYYY",
+    "group": "Group",
+    "loadData": "Load Data",
+    "filters": "Filters",
+    "selectRange": "Select predefined range",
+    "period": "Period:",
+    "noData": "No data available",
+    "noDataClickLoad": "No data available. Click \"Load Data\" to fetch.",
+    "ranges": {
+      "today": "Today",
+      "currentMonth": "Current Month",
+      "previousMonth": "Previous Month",
+      "currentYear": "Current Year",
+      "lastYear": "Last Year"
+    },
+    "tabs": {
+      "monthly": "Monthly Trends",
+      "user": "User Statistics",
+      "charger": "Charger Statistics"
+    },
+    "metrics": {
+      "totalEnergy": "Total Energy",
+      "sessions": "Sessions",
+      "totalSessions": "Total Sessions",
+      "averagePerSession": "Average per Session",
+      "users": "Users",
+      "chargers": "Chargers"
+    },
+    "charts": {
+      "averageTrend": "Average Trend",
+      "monthlyComparison": "Monthly Comparison",
+      "topUsers": "Top 10 Users by Consumption",
+      "consumptionDistribution": "Consumption Distribution",
+      "topChargers": "Top 10 Chargers by Usage",
+      "usageDistribution": "Usage Distribution",
+      "month": "Month",
+      "kwh": "kWh",
+      "user": "User",
+      "charger": "Charger"
+    }
+  },
+  "userInfo": {
+    "back": "Back",
+    "language": "Language",
+    "languageEn": "English",
+    "languageEs": "Español"
+  },
+  "errors": {
+    "notAuthorized": "Not authorized",
+    "requestFailed": "Request failed",
+    "navigationFailed": "Failed to navigate: {{target}}",
+    "navigationUserProfile": "Failed to navigate: user profile"
+  }
+}

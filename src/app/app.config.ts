@@ -10,8 +10,12 @@ import { errorInterceptor } from './helpers/error.interceptor';
 import { provideServiceWorker } from '@angular/service-worker';
 import { registerLocaleData } from '@angular/common';
 import localeEnGB from '@angular/common/locales/en-GB';
+import localeEs from '@angular/common/locales/es';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 registerLocaleData(localeEnGB);
+registerLocaleData(localeEs);
 
 export function initializeAppFactory(firebaseService: FirebaseService) {
     return () => firebaseService.loadConfig();
@@ -26,6 +30,14 @@ export const appConfig: ApplicationConfig = {
         provideNativeDateAdapter(),
         { provide: LOCALE_ID, useValue: 'en-GB' },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+        provideTranslateService({
+            fallbackLang: 'en',
+            lang: 'en',
+            loader: provideTranslateHttpLoader({
+                prefix: './assets/i18n/',
+                suffix: '.json'
+            })
+        }),
         {
             provide: APP_INITIALIZER,
             useFactory: initializeAppFactory,

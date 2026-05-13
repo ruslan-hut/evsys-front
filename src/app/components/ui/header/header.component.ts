@@ -11,13 +11,14 @@ import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDivider, AsyncPipe],
+  imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDivider, AsyncPipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, AfterContentChecked {

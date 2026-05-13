@@ -8,6 +8,7 @@ import { OfflineBannerComponent } from './components/offline-banner/offline-bann
 import { AccountService } from './service/account.service';
 import { PwaUpdateService } from './service/pwa-update.service';
 import { ThemeService } from './service/theme.service';
+import { LanguageService } from './service/language.service';
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -33,11 +34,13 @@ export class AppComponent implements OnInit {
   private readonly accountService = inject(AccountService);
   private readonly pwaUpdateService = inject(PwaUpdateService); // Inject to initialize update checks
   private readonly themeService = inject(ThemeService); // Inject to initialize theme
+  private readonly languageService = inject(LanguageService);
 
   title = 'WattBrews';
   showHeader = signal(true);
 
   constructor() {
+    this.languageService.init();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.activatedRoute.root),

@@ -1,0 +1,135 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando…",
+    "back": "Volver",
+    "ok": "Aceptar",
+    "dismiss": "Cerrar"
+  },
+  "header": {
+    "operations": "Operaciones",
+    "chargePoints": "Puntos de carga",
+    "transactions": "Transacciones",
+    "monitoring": "Supervisión",
+    "manage": "Gestión",
+    "consumptionChart": "Gráfico de consumo",
+    "consumption": "Consumo",
+    "uptime": "Disponibilidad",
+    "exportData": "Exportar datos",
+    "management": "Administración",
+    "users": "Usuarios",
+    "rfidTags": "Tarjetas RFID",
+    "mailReports": "Informes por correo",
+    "diagnostics": "Diagnóstico",
+    "systemLog": "Registro del sistema",
+    "paymentLog": "Registro de pagos",
+    "legal": "Legal",
+    "privacyPolicy": "Política de privacidad",
+    "terms": "Términos y condiciones",
+    "points": "Puntos",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "openNavigation": "Abrir navegación",
+    "back": "Volver",
+    "profile": "Perfil: {{name}}"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "intro": "¡Únete a nosotros y explora un mundo de posibilidades! Inicia sesión con tu correo electrónico o utiliza cómodamente tu cuenta de Google para empezar.",
+    "google": {
+      "title": "Cuenta de Google",
+      "description": "Inicia sesión o regístrate con tu cuenta de Google",
+      "body": "Accede fácilmente a todas nuestras funciones iniciando sesión con tu cuenta de Google. No necesitas recordar otra contraseña: con un solo clic ya estás dentro. Serás redirigido a Google para iniciar sesión o registrarte. No tendremos acceso a tu contraseña.",
+      "button": "Iniciar sesión"
+    },
+    "email": {
+      "title": "Correo electrónico",
+      "description": "Usa tu correo electrónico para iniciar sesión o registrarte",
+      "body": "Si no tienes o no quieres usar tu cuenta de Google, puedes iniciar sesión o registrarte con tu correo electrónico. Introduce tu correo abajo y te enviaremos un enlace seguro para iniciar sesión. Haz clic en el enlace del correo para acceder a tu cuenta, sin necesidad de contraseña.",
+      "placeholder": "correo electrónico",
+      "button": "Iniciar sesión"
+    },
+    "username": {
+      "title": "Usuario",
+      "description": "Inicia sesión con usuario y contraseña",
+      "body": "Si tienes usuario y contraseña, inicia sesión aquí. Para crear una cuenta con código de invitación, pulsa Registrarse.",
+      "usernamePlaceholder": "Usuario",
+      "passwordPlaceholder": "Contraseña",
+      "signIn": "Iniciar sesión",
+      "signUp": "Registrarse"
+    },
+    "errors": {
+      "invalidInput": "Entrada no válida",
+      "failedGoogleToken": "No se pudo obtener el token de acceso de Google",
+      "failedEmail": "No se pudo obtener el correo electrónico",
+      "alreadyThere": "¡Parece que ya estás ahí!"
+    },
+    "emailSentDialog": {
+      "title": "Revisa tu bandeja",
+      "content": "Te hemos enviado un correo con un enlace para iniciar sesión. Abre tu bandeja de entrada y haz clic en el enlace."
+    },
+    "cookiesDialog": {
+      "title": "Cookies",
+      "content": "Este sitio web utiliza cookies para mejorar tu experiencia. Al usar este sitio aceptas nuestra <a href=\"https://wattbrews.me/privacy\">Política de privacidad</a>.\n",
+      "accept": "Aceptar la política de privacidad"
+    }
+  },
+  "dashboard": {
+    "dateRange": "Intervalo de fechas",
+    "start": "Inicio",
+    "end": "Fin",
+    "dateHint": "DD/MM/AAAA - DD/MM/AAAA",
+    "group": "Grupo",
+    "loadData": "Cargar datos",
+    "filters": "Filtros",
+    "selectRange": "Seleccionar intervalo predefinido",
+    "period": "Periodo:",
+    "noData": "No hay datos disponibles",
+    "noDataClickLoad": "No hay datos disponibles. Pulsa \"Cargar datos\" para obtenerlos.",
+    "ranges": {
+      "today": "Hoy",
+      "currentMonth": "Mes actual",
+      "previousMonth": "Mes anterior",
+      "currentYear": "Año actual",
+      "lastYear": "Año pasado"
+    },
+    "tabs": {
+      "monthly": "Tendencias mensuales",
+      "user": "Estadísticas de usuarios",
+      "charger": "Estadísticas de cargadores"
+    },
+    "metrics": {
+      "totalEnergy": "Energía total",
+      "sessions": "Sesiones",
+      "totalSessions": "Sesiones totales",
+      "averagePerSession": "Promedio por sesión",
+      "users": "Usuarios",
+      "chargers": "Cargadores"
+    },
+    "charts": {
+      "averageTrend": "Tendencia media",
+      "monthlyComparison": "Comparativa mensual",
+      "topUsers": "Top 10 usuarios por consumo",
+      "consumptionDistribution": "Distribución del consumo",
+      "topChargers": "Top 10 cargadores por uso",
+      "usageDistribution": "Distribución de uso",
+      "month": "Mes",
+      "kwh": "kWh",
+      "user": "Usuario",
+      "charger": "Cargador"
+    }
+  },
+  "userInfo": {
+    "back": "Volver",
+    "language": "Idioma",
+    "languageEn": "English",
+    "languageEs": "Español"
+  },
+  "errors": {
+    "notAuthorized": "No autorizado",
+    "requestFailed": "Error en la solicitud",
+    "navigationFailed": "No se pudo navegar a: {{target}}",
+    "navigationUserProfile": "No se pudo navegar al perfil de usuario"
+  }
+}
