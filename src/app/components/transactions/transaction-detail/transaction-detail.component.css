@@ -269,7 +269,17 @@ mat-expansion-panel {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #f9a825;
+  color: var(--color-warning);
+}
+
+.detail-row.retry-row {
+  border-bottom: none;
+}
+
+.retry-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-xs);
 }
 
 .retry-icon {

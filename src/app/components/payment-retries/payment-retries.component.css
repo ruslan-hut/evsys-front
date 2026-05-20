@@ -1,8 +1,8 @@
 .retries-container {
-  padding: 16px;
+  padding: var(--spacing-md);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-md);
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -21,7 +21,7 @@ table {
 }
 
 .retries-error {
-  color: var(--mat-sys-error, #b3261e);
+  color: var(--color-error);
   font-family: monospace;
   font-size: 0.85rem;
 }

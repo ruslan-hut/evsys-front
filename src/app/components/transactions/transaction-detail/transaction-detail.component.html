@@ -161,8 +161,10 @@
                 <span class="detail-value">
                   attempt {{ activeRetry.attempt }} of {{ activeRetry.max_attempts }},
                   next {{ activeRetry.next_retry_time | date:'dd-MM-yyyy HH:mm' }}
-                  <button mat-button (click)="viewRetryQueue()">View retry queue</button>
                 </span>
+              </div>
+              <div class="retry-action">
+                <button mat-button (click)="viewRetryQueue()">View retry queue</button>
               </div>
             }
           </div>

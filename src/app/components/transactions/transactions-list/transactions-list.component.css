@@ -193,5 +193,5 @@ table {
 }
 
 .retry-indicator {
-  color: #f9a825;
+  color: var(--color-warning);
 }
