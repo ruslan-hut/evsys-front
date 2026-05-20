@@ -167,6 +167,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'payment-retries',
+    loadComponent: () => import('./components/payment-retries/payment-retries.component').then(m => m.PaymentRetriesComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'export',
     loadComponent: () => import('./components/reports/export-data/export-data.component').then(m => m.ExportDataComponent),
     canActivate: [authGuard]

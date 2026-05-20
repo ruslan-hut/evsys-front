@@ -191,3 +191,7 @@ table {
     justify-content: flex-end;
   }
 }
+
+.retry-indicator {
+  color: #f9a825;
+}

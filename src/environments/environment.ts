@@ -21,6 +21,7 @@ export const environment = {
   statusReport: '/status',
   exportReport: '/export',
   mailSubscriptions: '/mail/subscriptions',
+  paymentRetries: '/payment/retries',
   debug: false,
   firebaseConfig: {
     apiKey: "fb-api-key",

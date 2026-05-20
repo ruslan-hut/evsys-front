@@ -25,6 +25,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {TransactionService} from '../../../service/transaction.service';
 import {ChargepointService} from '../../../service/chargepoint.service';
 import {ErrorService} from '../../../service/error.service';
+import {PaymentRetryService} from '../../../service/payment-retry.service';
 import {TransactionListItem, calculateConsumed} from '../../../models/transaction-list-item';
 import {TransactionFilter} from '../../../models/transaction-filter';
 import {Chargepoint} from '../../../models/chargepoint';
@@ -82,6 +83,7 @@ import {DateRange, getLast12Months, getLast30Days, getTransactionRanges} from '.
 export class TransactionsListComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
   private readonly chargepointService = inject(ChargepointService);
+  private readonly retryService = inject(PaymentRetryService);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly errorService = inject(ErrorService);
   private readonly route = inject(ActivatedRoute);
@@ -110,6 +112,9 @@ export class TransactionsListComponent implements OnInit {
   // Charge points for dropdown
   chargePoints: Chargepoint[] = [];
 
+  // Transaction ids with an active payment retry
+  private retryTxIds = new Set<number>();
+
   // Predefined date ranges
   predefinedRanges = getTransactionRanges();
 
@@ -128,6 +133,15 @@ export class TransactionsListComponent implements OnInit {
     this.chargepointService.getChargePoints().subscribe(points => {
       this.chargePoints = points;
       this.cdr.markForCheck();
+    });
+
+    // Load the payment retry queue to flag transactions with an active retry
+    this.retryService.list().subscribe({
+      next: (items) => {
+        this.retryTxIds = new Set((items ?? []).map(i => i.transaction_id));
+        this.cdr.markForCheck();
+      },
+      error: () => { /* non-fatal: indicator simply absent */ }
     });
 
     // Read query params for initial filtering
@@ -196,6 +210,14 @@ export class TransactionsListComponent implements OnInit {
 
   viewDetails(transactionId: number): void {
     this.router.navigate(['/transactions', transactionId]);
+  }
+
+  hasActiveRetry(transactionId: number): boolean {
+    return this.retryTxIds.has(transactionId);
+  }
+
+  viewRetryQueue(): void {
+    this.router.navigate(['/payment-retries']);
   }
 
   getConsumed(transaction: TransactionListItem): number {

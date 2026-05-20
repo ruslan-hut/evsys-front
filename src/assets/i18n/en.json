@@ -52,6 +52,7 @@
     "diagnostics": "Diagnostics",
     "systemLog": "System log",
     "paymentLog": "Payment log",
+    "paymentRetries": "Payment retries",
     "legal": "Legal",
     "privacyPolicy": "Privacy policy",
     "terms": "Terms & conditions",
@@ -305,8 +306,26 @@
       "actions": "Actions"
     },
     "viewDetails": "View details",
+    "hasRetry": "Active payment retry",
     "selectPage": "Select page of transactions",
     "all": "All"
+  },
+  "paymentRetries": {
+    "title": "Payment retry queue",
+    "subtitle": "Payments awaiting an automatic retry",
+    "noRetries": "No active payment retries",
+    "attemptOf": "{{current}} of {{max}}",
+    "headers": {
+      "transaction": "Transaction",
+      "attempt": "Attempt",
+      "nextRetry": "Next retry",
+      "chargePoint": "Charge point",
+      "username": "User",
+      "amount": "Amount",
+      "lastError": "Last error",
+      "actions": "Actions"
+    },
+    "viewTransaction": "View transaction"
   },
   "statistic": {
     "dateRangeLabel": "Enter a date range",
@@ -659,6 +678,7 @@
     "saveMailSub": "Failed to save mail subscription",
     "deleteSub": "Failed to delete subscription",
     "sendTestMail": "Failed to send test mail",
-    "sendReport": "Failed to send report"
+    "sendReport": "Failed to send report",
+    "loadRetryQueue": "Failed to load payment retry queue"
   }
 }

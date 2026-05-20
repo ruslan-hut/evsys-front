@@ -152,6 +152,19 @@
                 <span class="detail-value">{{ transaction.payment_error }}</span>
               </div>
             }
+            @if (activeRetry) {
+              <div class="detail-row retry-row">
+                <span class="detail-label">
+                  <mat-icon class="retry-icon">autorenew</mat-icon>
+                  Payment retry:
+                </span>
+                <span class="detail-value">
+                  attempt {{ activeRetry.attempt }} of {{ activeRetry.max_attempts }},
+                  next {{ activeRetry.next_retry_time | date:'dd-MM-yyyy HH:mm' }}
+                  <button mat-button (click)="viewRetryQueue()">View retry queue</button>
+                </span>
+              </div>
+            }
           </div>
 
           @if (transaction.payment_plan || transaction.plan; as paymentPlan) {

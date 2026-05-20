@@ -13,7 +13,9 @@ import {NgxChartsModule, Color, ScaleType} from '@swimlane/ngx-charts';
 
 import {TransactionService} from '../../../service/transaction.service';
 import {ErrorService} from '../../../service/error.service';
+import {PaymentRetryService} from '../../../service/payment-retry.service';
 import {TransactionListItem, TransactionMeterValue, PaymentOrder, calculateConsumed} from '../../../models/transaction-list-item';
+import {PaymentRetryItem} from '../../../models/payment-retry';
 
 interface ChartDataPoint {
   name: string;
@@ -61,6 +63,7 @@ interface ChartSeries {
 })
 export class TransactionDetailComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
+  private readonly retryService = inject(PaymentRetryService);
   private readonly errorService = inject(ErrorService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -68,6 +71,7 @@ export class TransactionDetailComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   transaction: TransactionListItem | null = null;
+  activeRetry: PaymentRetryItem | null = null;
   loading = false;
 
   paymentOrderColumns: string[] = ['order', 'amount', 'result', 'time_opened', 'time_closed'];
@@ -95,6 +99,7 @@ export class TransactionDetailComponent implements OnInit {
         this.prepareChartData();
         this.loading = false;
         this.cdr.markForCheck();
+        this.loadActiveRetry(transactionId);
       },
       error: () => {
         this.errorService.handle('Failed to load transaction details');
@@ -102,6 +107,20 @@ export class TransactionDetailComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  loadActiveRetry(transactionId: number): void {
+    this.retryService.list().subscribe({
+      next: (items) => {
+        this.activeRetry = (items ?? []).find(i => i.transaction_id === transactionId) ?? null;
+        this.cdr.markForCheck();
+      },
+      error: () => { /* non-fatal: retry block simply absent */ }
+    });
+  }
+
+  viewRetryQueue(): void {
+    this.router.navigate(['/payment-retries']);
   }
 
   prepareChartData(): void {

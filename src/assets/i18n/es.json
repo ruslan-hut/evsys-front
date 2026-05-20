@@ -52,6 +52,7 @@
     "diagnostics": "Diagnóstico",
     "systemLog": "Registro del sistema",
     "paymentLog": "Registro de pagos",
+    "paymentRetries": "Reintentos de pago",
     "legal": "Legal",
     "privacyPolicy": "Política de privacidad",
     "terms": "Términos y condiciones",
@@ -305,8 +306,26 @@
       "actions": "Acciones"
     },
     "viewDetails": "Ver detalles",
+    "hasRetry": "Reintento de pago activo",
     "selectPage": "Seleccionar página de transacciones",
     "all": "Todas"
+  },
+  "paymentRetries": {
+    "title": "Cola de reintentos de pago",
+    "subtitle": "Pagos pendientes de un reintento automático",
+    "noRetries": "No hay reintentos de pago activos",
+    "attemptOf": "{{current}} de {{max}}",
+    "headers": {
+      "transaction": "Transacción",
+      "attempt": "Intento",
+      "nextRetry": "Próximo reintento",
+      "chargePoint": "Punto de carga",
+      "username": "Usuario",
+      "amount": "Importe",
+      "lastError": "Último error",
+      "actions": "Acciones"
+    },
+    "viewTransaction": "Ver transacción"
   },
   "statistic": {
     "dateRangeLabel": "Selecciona un intervalo de fechas",
@@ -659,6 +678,7 @@
     "saveMailSub": "No se pudo guardar la suscripción",
     "deleteSub": "No se pudo eliminar la suscripción",
     "sendTestMail": "No se pudo enviar el correo de prueba",
-    "sendReport": "No se pudo enviar el informe"
+    "sendReport": "No se pudo enviar el informe",
+    "loadRetryQueue": "No se pudo cargar la cola de reintentos de pago"
   }
 }

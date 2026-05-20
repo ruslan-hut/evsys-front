@@ -1,0 +1,27 @@
+.retries-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.retries-header-card {
+  width: 100%;
+}
+
+.retries-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.retries-error {
+  color: var(--mat-sys-error, #b3261e);
+  font-family: monospace;
+  font-size: 0.85rem;
+}

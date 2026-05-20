@@ -215,6 +215,12 @@
               </span>
             </div>
             <div class="transaction-actions">
+              @if (hasActiveRetry(row.transaction_id)) {
+                <button mat-icon-button class="list-action-btn" (click)="viewRetryQueue()"
+                        [matTooltip]="'transactionsList.hasRetry' | translate">
+                  <mat-icon class="retry-indicator">autorenew</mat-icon>
+                </button>
+              }
               <button mat-icon-button class="list-action-btn" (click)="viewDetails(row.transaction_id)"
                       [matTooltip]="'transactionsList.viewDetails' | translate">
                 <mat-icon>visibility</mat-icon>
@@ -300,6 +306,12 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>{{ 'transactionsList.headers.actions' | translate }}</th>
             <td mat-cell *matCellDef="let row">
+              @if (hasActiveRetry(row.transaction_id)) {
+                <button mat-icon-button class="list-action-btn" (click)="viewRetryQueue()"
+                        [matTooltip]="'transactionsList.hasRetry' | translate">
+                  <mat-icon class="retry-indicator">autorenew</mat-icon>
+                </button>
+              }
               <button mat-icon-button class="list-action-btn" (click)="viewDetails(row.transaction_id)"
                       [matTooltip]="'transactionsList.viewDetails' | translate">
                 <mat-icon>visibility</mat-icon>

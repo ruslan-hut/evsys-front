@@ -264,3 +264,16 @@ mat-expansion-panel {
     border-bottom: none;
   }
 }
+
+.retry-row .detail-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #f9a825;
+}
+
+.retry-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

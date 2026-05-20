@@ -53,6 +53,9 @@
             <button mat-menu-item (click)="navigateTo('/log/pay')">
               <mat-icon>account_balance_wallet</mat-icon><span>{{ 'header.paymentLog' | translate }}</span>
             </button>
+            <button mat-menu-item (click)="navigateTo('/payment-retries')">
+              <mat-icon>autorenew</mat-icon><span>{{ 'header.paymentRetries' | translate }}</span>
+            </button>
           }
 
           <mat-divider></mat-divider>
@@ -147,6 +150,9 @@
               </button>
               <button mat-menu-item (click)="navigateTo('/log/pay')">
                 <mat-icon>account_balance_wallet</mat-icon><span>{{ 'header.paymentLog' | translate }}</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/payment-retries')">
+                <mat-icon>autorenew</mat-icon><span>{{ 'header.paymentRetries' | translate }}</span>
               </button>
             </mat-menu>
           }
