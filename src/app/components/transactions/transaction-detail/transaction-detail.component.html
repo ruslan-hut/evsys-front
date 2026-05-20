@@ -153,18 +153,17 @@
               </div>
             }
             @if (activeRetry) {
-              <div class="detail-row retry-row">
-                <span class="detail-label">
-                  <mat-icon class="retry-icon">autorenew</mat-icon>
-                  Payment retry:
-                </span>
-                <span class="detail-value">
-                  attempt {{ activeRetry.attempt }} of {{ activeRetry.max_attempts }},
+              <div class="retry-banner" role="button" tabindex="0"
+                   (click)="viewRetryQueue()"
+                   (keydown.enter)="viewRetryQueue()"
+                   (keydown.space)="viewRetryQueue()"
+                   aria-label="View retry queue">
+                <mat-icon class="retry-icon">autorenew</mat-icon>
+                <span class="retry-text">
+                  Retry {{ activeRetry.attempt }} of {{ activeRetry.max_attempts }},
                   next {{ activeRetry.next_retry_time | date:'dd-MM-yyyy HH:mm' }}
                 </span>
-              </div>
-              <div class="retry-action">
-                <button mat-button (click)="viewRetryQueue()">View retry queue</button>
+                <mat-icon class="retry-chevron">chevron_right</mat-icon>
               </div>
             }
           </div>

@@ -265,25 +265,42 @@ mat-expansion-panel {
   }
 }
 
-.retry-row .detail-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--color-warning);
-}
-
-.detail-row.retry-row {
-  border-bottom: none;
-}
-
-.retry-action {
+.retry-banner {
   display: flex;
-  justify-content: flex-end;
-  padding-top: var(--spacing-xs);
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  padding: 8px 10px;
+  border-radius: var(--card-border-radius);
+  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  color: var(--color-warning);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.retry-banner:hover,
+.retry-banner:focus-visible {
+  background: color-mix(in srgb, var(--color-warning) 20%, transparent);
+  outline: none;
+}
+
+.retry-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .retry-icon {
+  flex: 0 0 auto;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.retry-chevron {
+  flex: 0 0 auto;
   font-size: 18px;
   width: 18px;
   height: 18px;
+  opacity: 0.7;
 }
