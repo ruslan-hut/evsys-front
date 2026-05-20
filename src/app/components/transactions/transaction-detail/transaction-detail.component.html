@@ -4,9 +4,9 @@
 
 <div class="transaction-detail-container">
   <div class="header-actions">
-    <button mat-button (click)="goBack()" aria-label="Go back">
+    <button mat-button (click)="goBack()" [attr.aria-label]="'transactionDetail.goBack' | translate">
       <mat-icon>arrow_back</mat-icon>
-      Back
+      {{ 'transactionDetail.back' | translate }}
     </button>
   </div>
 
@@ -14,25 +14,25 @@
     <mat-card class="detail-card">
       <mat-card-header>
         <mat-card-title>
-          Transaction #{{ transaction.transaction_id }}
+          {{ 'transactionDetail.title' | translate:{ id: transaction.transaction_id } }}
         </mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
         <div class="detail-grid">
           <div class="detail-section">
-            <h3>Charge Point</h3>
+            <h3>{{ 'transactionDetail.sections.chargePoint' | translate }}</h3>
             <div class="detail-row">
-              <span class="detail-label">ID:</span>
+              <span class="detail-label">{{ 'transactionDetail.labels.id' | translate }}</span>
               <span class="detail-value">{{ transaction.charge_point_id }}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">Connector:</span>
+              <span class="detail-label">{{ 'transactionDetail.labels.connector' | translate }}</span>
               <span class="detail-value">{{ transaction.connector_id }}</span>
             </div>
             @if (transaction.evse_id) {
               <div class="detail-row">
-                <span class="detail-label">EVSE ID:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.evseId' | translate }}</span>
                 <span class="detail-value">{{ transaction.evse_id }}</span>
               </div>
             }
@@ -40,16 +40,16 @@
 
           @if (transaction.session_id || transaction.protocol_version) {
             <div class="detail-section">
-              <h3>Session</h3>
+              <h3>{{ 'transactionDetail.sections.session' | translate }}</h3>
               @if (transaction.session_id) {
                 <div class="detail-row">
-                  <span class="detail-label">Session ID:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.sessionId' | translate }}</span>
                   <span class="detail-value session-id">{{ transaction.session_id }}</span>
                 </div>
               }
               @if (transaction.protocol_version) {
                 <div class="detail-row">
-                  <span class="detail-label">Protocol:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.protocol' | translate }}</span>
                   <span class="detail-value">{{ transaction.protocol_version }}</span>
                 </div>
               }
@@ -57,98 +57,100 @@
           }
 
           <div class="detail-section">
-            <h3>Authentication</h3>
+            <h3>{{ 'transactionDetail.sections.authentication' | translate }}</h3>
             <div class="detail-row">
-              <span class="detail-label">ID Tag:</span>
+              <span class="detail-label">{{ 'transactionDetail.labels.idTag' | translate }}</span>
               <span class="detail-value">{{ transaction.id_tag || transaction.user_tag?.id_tag || '-' }}</span>
             </div>
             @if (transaction.username || transaction.user_tag?.username) {
               <div class="detail-row">
-                <span class="detail-label">Username:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.username' | translate }}</span>
                 <span class="detail-value">{{ transaction.username || transaction.user_tag?.username }}</span>
               </div>
             }
             @if (transaction.id_tag_note) {
               <div class="detail-row">
-                <span class="detail-label">Note:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.note' | translate }}</span>
                 <span class="detail-value">{{ transaction.id_tag_note }}</span>
               </div>
             }
             @if (transaction.reservation_id) {
               <div class="detail-row">
-                <span class="detail-label">Reservation:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.reservation' | translate }}</span>
                 <span class="detail-value">{{ transaction.reservation_id }}</span>
               </div>
             }
           </div>
 
           <div class="detail-section">
-            <h3>Time</h3>
+            <h3>{{ 'transactionDetail.sections.time' | translate }}</h3>
             @if (transaction.time_start || transaction.time_started) {
               <div class="detail-row">
-                <span class="detail-label">Started:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.started' | translate }}</span>
                 <span class="detail-value">{{ (transaction.time_start || transaction.time_started) | date:'dd-MM-yyyy HH:mm:ss' }}</span>
               </div>
             }
             @if (transaction.time_stop) {
               <div class="detail-row">
-                <span class="detail-label">Stopped:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.stopped' | translate }}</span>
                 <span class="detail-value">{{ transaction.time_stop | date:'dd-MM-yyyy HH:mm:ss' }}</span>
               </div>
             }
             <div class="detail-row">
-              <span class="detail-label">Duration:</span>
+              <span class="detail-label">{{ 'transactionDetail.labels.duration' | translate }}</span>
               <span class="detail-value">{{ getDuration() }}</span>
             </div>
             @if (transaction.reason) {
               <div class="detail-row">
-                <span class="detail-label">Reason:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.reason' | translate }}</span>
                 <span class="detail-value">{{ transaction.reason }}</span>
               </div>
             }
           </div>
 
           <div class="detail-section">
-            <h3>Energy</h3>
+            <h3>{{ 'transactionDetail.sections.energy' | translate }}</h3>
             @if (transaction.meter_stop) {
               <div class="detail-row">
-                <span class="detail-label">Meter Stop:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.meterStop' | translate }}</span>
                 <span class="detail-value">{{ transaction.meter_stop / 1000 | number:'1.2-2' }} kWh</span>
               </div>
             }
             <div class="detail-row">
-              <span class="detail-label">Consumed:</span>
+              <span class="detail-label">{{ 'transactionDetail.labels.consumed' | translate }}</span>
               <span class="detail-value consumed">{{ getConsumed() / 1000 | number:'1.2-2' }} kWh</span>
             </div>
             @if (getAveragePower(); as avgPower) {
               <div class="detail-row">
-                <span class="detail-label">Avg Power:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.avgPower' | translate }}</span>
                 <span class="detail-value">{{ avgPower / 1000 | number:'1.2-2' }} kW</span>
               </div>
             }
           </div>
 
           <div class="detail-section">
-            <h3>Payment</h3>
-            @if (transaction.payment_orders?.[0]?.time_closed) {
+            <h3>{{ 'transactionDetail.sections.payment' | translate }}</h3>
+            @if (!activeRetry) {
+              @if (transaction.payment_orders?.[0]?.time_closed) {
+                <div class="detail-row">
+                  <span class="detail-label">{{ 'transactionDetail.labels.paid' | translate }}</span>
+                  <span class="detail-value">{{ transaction.payment_orders![0].time_closed | date:'dd-MM-yyyy HH:mm:ss' }}</span>
+                </div>
+              }
               <div class="detail-row">
-                <span class="detail-label">Paid:</span>
-                <span class="detail-value">{{ transaction.payment_orders![0].time_closed | date:'dd-MM-yyyy HH:mm:ss' }}</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.billed' | translate }}</span>
+                <span class="detail-value">{{ formatAmount(transaction.payment_billed || 0) }} EUR</span>
               </div>
             }
-            <div class="detail-row">
-              <span class="detail-label">Billed:</span>
-              <span class="detail-value">{{ formatAmount(transaction.payment_billed || 0) }} EUR</span>
-            </div>
             @if (transaction.payment_order) {
               <div class="detail-row">
-                <span class="detail-label">Order:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.order' | translate }}</span>
                 <span class="detail-value">{{ transaction.payment_order }}</span>
               </div>
             }
             @if (transaction.payment_error) {
               <div class="detail-row error">
-                <span class="detail-label">Error:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.error' | translate }}</span>
                 <span class="detail-value">{{ transaction.payment_error }}</span>
               </div>
             }
@@ -157,11 +159,10 @@
                    (click)="viewRetryQueue()"
                    (keydown.enter)="viewRetryQueue()"
                    (keydown.space)="viewRetryQueue()"
-                   aria-label="View retry queue">
+                   [attr.aria-label]="'transactionDetail.viewRetryQueue' | translate">
                 <mat-icon class="retry-icon">autorenew</mat-icon>
                 <span class="retry-text">
-                  Retry {{ activeRetry.attempt }} of {{ activeRetry.max_attempts }},
-                  next {{ activeRetry.next_retry_time | date:'dd-MM-yyyy HH:mm' }}
+                  {{ 'transactionDetail.retry' | translate:{ attempt: activeRetry.attempt, max: activeRetry.max_attempts, amount: formatAmount(activeRetry.payment_amount || 0), time: (activeRetry.next_retry_time | date:'dd-MM-yyyy HH:mm') } }}
                 </span>
                 <mat-icon class="retry-chevron">chevron_right</mat-icon>
               </div>
@@ -170,24 +171,24 @@
 
           @if (transaction.payment_plan || transaction.plan; as paymentPlan) {
             <div class="detail-section">
-              <h3>Payment Plan</h3>
+              <h3>{{ 'transactionDetail.sections.paymentPlan' | translate }}</h3>
               <div class="detail-row">
-                <span class="detail-label">Plan ID:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.planId' | translate }}</span>
                 <span class="detail-value">{{ paymentPlan.plan_id }}</span>
               </div>
               @if (paymentPlan.description) {
                 <div class="detail-row">
-                  <span class="detail-label">Description:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.description' | translate }}</span>
                   <span class="detail-value">{{ paymentPlan.description }}</span>
                 </div>
               }
               <div class="detail-row">
-                <span class="detail-label">Price/kWh:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.pricePerKwh' | translate }}</span>
                 <span class="detail-value">{{ paymentPlan.price_per_kwh / 100 | number:'1.2-2' }} EUR</span>
               </div>
               @if (paymentPlan.price_per_hour) {
                 <div class="detail-row">
-                  <span class="detail-label">Price/hour:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.pricePerHour' | translate }}</span>
                   <span class="detail-value">{{ paymentPlan.price_per_hour / 100 | number:'1.2-2' }} EUR</span>
                 </div>
               }
@@ -196,14 +197,14 @@
 
           @if (transaction.tariff) {
             <div class="detail-section">
-              <h3>Tariff</h3>
+              <h3>{{ 'transactionDetail.sections.tariff' | translate }}</h3>
               <div class="detail-row">
-                <span class="detail-label">Tariff ID:</span>
+                <span class="detail-label">{{ 'transactionDetail.labels.tariffId' | translate }}</span>
                 <span class="detail-value">{{ transaction.tariff.tariff_id }}</span>
               </div>
               @if (transaction.tariff.description) {
                 <div class="detail-row">
-                  <span class="detail-label">Description:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.description' | translate }}</span>
                   <span class="detail-value">{{ transaction.tariff.description }}</span>
                 </div>
               }
@@ -212,10 +213,10 @@
 
           @if (transaction.payment_method) {
             <div class="detail-section">
-              <h3>Payment Method</h3>
+              <h3>{{ 'transactionDetail.sections.paymentMethod' | translate }}</h3>
               @if (transaction.payment_method.card_brand) {
                 <div class="detail-row">
-                  <span class="detail-label">Card:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.card' | translate }}</span>
                   <span class="detail-value card-info">
                     {{ transaction.payment_method.card_brand | titlecase }}
                     @if (transaction.payment_method.description) {
@@ -226,7 +227,7 @@
               }
               @if (transaction.payment_method.expiry_date) {
                 <div class="detail-row">
-                  <span class="detail-label">Expires:</span>
+                  <span class="detail-label">{{ 'transactionDetail.labels.expires' | translate }}</span>
                   <span class="detail-value">{{ transaction.payment_method.expiry_date }}</span>
                 </div>
               }
@@ -237,7 +238,7 @@
         @if (chartData.length > 0) {
           <mat-divider class="section-divider"></mat-divider>
 
-          <h3>Charging Progress</h3>
+          <h3>{{ 'transactionDetail.chargingProgress' | translate }}</h3>
           <div class="chart-container">
             <ngx-charts-line-chart
               [results]="chartData"
@@ -247,7 +248,7 @@
               [yAxis]="true"
               [showXAxisLabel]="true"
               [showYAxisLabel]="false"
-              xAxisLabel="Time"
+              [xAxisLabel]="'transactionDetail.chartTime' | translate"
               [xAxisTickFormatting]="xAxisTickFormatting"
               [autoScale]="true"
               [legend]="false">
@@ -261,19 +262,19 @@
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Payment Orders ({{ getPaymentOrders().length }})
+                {{ 'transactionDetail.paymentOrders' | translate:{ count: getPaymentOrders().length } }}
               </mat-panel-title>
             </mat-expansion-panel-header>
 
             <div class="table-responsive">
               <table mat-table [dataSource]="getPaymentOrders()">
                 <ng-container matColumnDef="order">
-                  <th mat-header-cell *matHeaderCellDef>Order</th>
+                  <th mat-header-cell *matHeaderCellDef>{{ 'transactionDetail.orderHeaders.order' | translate }}</th>
                   <td mat-cell *matCellDef="let row">#{{ row.order }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="amount">
-                  <th mat-header-cell *matHeaderCellDef>Amount</th>
+                  <th mat-header-cell *matHeaderCellDef>{{ 'transactionDetail.orderHeaders.amount' | translate }}</th>
                   <td mat-cell *matCellDef="let row">
                     @if (row.refund_amount > 0) {
                       <span class="refund-amount">-{{ formatAmount(row.refund_amount) }}</span>
@@ -284,17 +285,17 @@
                 </ng-container>
 
                 <ng-container matColumnDef="result">
-                  <th mat-header-cell *matHeaderCellDef>Result</th>
+                  <th mat-header-cell *matHeaderCellDef>{{ 'transactionDetail.orderHeaders.result' | translate }}</th>
                   <td mat-cell *matCellDef="let row">{{ row.result || '-' }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="time_opened">
-                  <th mat-header-cell *matHeaderCellDef>Opened</th>
+                  <th mat-header-cell *matHeaderCellDef>{{ 'transactionDetail.orderHeaders.opened' | translate }}</th>
                   <td mat-cell *matCellDef="let row">{{ row.time_opened | date:'dd-MM-yyyy HH:mm:ss' }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="time_closed">
-                  <th mat-header-cell *matHeaderCellDef>Closed</th>
+                  <th mat-header-cell *matHeaderCellDef>{{ 'transactionDetail.orderHeaders.closed' | translate }}</th>
                   <td mat-cell *matCellDef="let row">{{ row.time_closed | date:'dd-MM-yyyy HH:mm:ss' }}</td>
                 </ng-container>
 

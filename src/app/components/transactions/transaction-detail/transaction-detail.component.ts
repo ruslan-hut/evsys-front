@@ -10,6 +10,7 @@ import {MatDivider} from '@angular/material/divider';
 import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material/expansion';
 import {MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow} from '@angular/material/table';
 import {NgxChartsModule, Color, ScaleType} from '@swimlane/ngx-charts';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 import {TransactionService} from '../../../service/transaction.service';
 import {ErrorService} from '../../../service/error.service';
@@ -58,13 +59,15 @@ interface ChartSeries {
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    NgxChartsModule
+    NgxChartsModule,
+    TranslatePipe
   ]
 })
 export class TransactionDetailComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
   private readonly retryService = inject(PaymentRetryService);
   private readonly errorService = inject(ErrorService);
+  private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
@@ -102,7 +105,7 @@ export class TransactionDetailComponent implements OnInit {
         this.loadActiveRetry(transactionId);
       },
       error: () => {
-        this.errorService.handle('Failed to load transaction details');
+        this.errorService.handle(this.translate.instant('errors.loadTransaction'));
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -140,8 +143,8 @@ export class TransactionDetailComponent implements OnInit {
     }));
 
     this.chartData = [
-      {name: 'Energy (kWh)', series: energySeries},
-      {name: 'Power (kW)', series: powerSeries}
+      {name: this.translate.instant('transactionDetail.energySeries'), series: energySeries},
+      {name: this.translate.instant('transactionDetail.powerSeries'), series: powerSeries}
     ];
   }
 

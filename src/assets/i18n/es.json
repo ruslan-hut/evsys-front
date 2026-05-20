@@ -327,6 +327,65 @@
     },
     "viewTransaction": "Ver transacción"
   },
+  "transactionDetail": {
+    "back": "Atrás",
+    "goBack": "Volver atrás",
+    "title": "Transacción n.º {{id}}",
+    "sections": {
+      "chargePoint": "Punto de carga",
+      "session": "Sesión",
+      "authentication": "Autenticación",
+      "time": "Tiempo",
+      "energy": "Energía",
+      "payment": "Pago",
+      "paymentPlan": "Plan de pago",
+      "tariff": "Tarifa",
+      "paymentMethod": "Método de pago"
+    },
+    "labels": {
+      "id": "ID:",
+      "connector": "Conector:",
+      "evseId": "EVSE ID:",
+      "sessionId": "ID de sesión:",
+      "protocol": "Protocolo:",
+      "idTag": "Tarjeta ID:",
+      "username": "Usuario:",
+      "note": "Nota:",
+      "reservation": "Reserva:",
+      "started": "Iniciada:",
+      "stopped": "Finalizada:",
+      "duration": "Duración:",
+      "reason": "Motivo:",
+      "meterStop": "Contador final:",
+      "consumed": "Consumido:",
+      "avgPower": "Potencia media:",
+      "paid": "Pagado:",
+      "billed": "Facturado:",
+      "order": "Pedido:",
+      "error": "Error:",
+      "planId": "ID de plan:",
+      "description": "Descripción:",
+      "pricePerKwh": "Precio/kWh:",
+      "pricePerHour": "Precio/hora:",
+      "tariffId": "ID de tarifa:",
+      "card": "Tarjeta:",
+      "expires": "Caduca:"
+    },
+    "retry": "Reintento {{attempt}} de {{max}} por {{amount}} EUR, siguiente {{time}}",
+    "viewRetryQueue": "Ver cola de reintentos",
+    "chargingProgress": "Progreso de carga",
+    "chartTime": "Tiempo",
+    "energySeries": "Energía (kWh)",
+    "powerSeries": "Potencia (kW)",
+    "paymentOrders": "Órdenes de pago ({{count}})",
+    "orderHeaders": {
+      "order": "Pedido",
+      "amount": "Importe",
+      "result": "Resultado",
+      "opened": "Abierta",
+      "closed": "Cerrada"
+    }
+  },
   "statistic": {
     "dateRangeLabel": "Selecciona un intervalo de fechas",
     "dateHint": "DD/MM/AAAA – DD/MM/AAAA",
@@ -679,6 +738,7 @@
     "deleteSub": "No se pudo eliminar la suscripción",
     "sendTestMail": "No se pudo enviar el correo de prueba",
     "sendReport": "No se pudo enviar el informe",
-    "loadRetryQueue": "No se pudo cargar la cola de reintentos de pago"
+    "loadRetryQueue": "No se pudo cargar la cola de reintentos de pago",
+    "loadTransaction": "No se pudieron cargar los detalles de la transacción"
   }
 }

@@ -327,6 +327,65 @@
     },
     "viewTransaction": "View transaction"
   },
+  "transactionDetail": {
+    "back": "Back",
+    "goBack": "Go back",
+    "title": "Transaction #{{id}}",
+    "sections": {
+      "chargePoint": "Charge Point",
+      "session": "Session",
+      "authentication": "Authentication",
+      "time": "Time",
+      "energy": "Energy",
+      "payment": "Payment",
+      "paymentPlan": "Payment Plan",
+      "tariff": "Tariff",
+      "paymentMethod": "Payment Method"
+    },
+    "labels": {
+      "id": "ID:",
+      "connector": "Connector:",
+      "evseId": "EVSE ID:",
+      "sessionId": "Session ID:",
+      "protocol": "Protocol:",
+      "idTag": "ID Tag:",
+      "username": "Username:",
+      "note": "Note:",
+      "reservation": "Reservation:",
+      "started": "Started:",
+      "stopped": "Stopped:",
+      "duration": "Duration:",
+      "reason": "Reason:",
+      "meterStop": "Meter Stop:",
+      "consumed": "Consumed:",
+      "avgPower": "Avg Power:",
+      "paid": "Paid:",
+      "billed": "Billed:",
+      "order": "Order:",
+      "error": "Error:",
+      "planId": "Plan ID:",
+      "description": "Description:",
+      "pricePerKwh": "Price/kWh:",
+      "pricePerHour": "Price/hour:",
+      "tariffId": "Tariff ID:",
+      "card": "Card:",
+      "expires": "Expires:"
+    },
+    "retry": "Retry {{attempt}} of {{max}} for {{amount}} EUR, next {{time}}",
+    "viewRetryQueue": "View retry queue",
+    "chargingProgress": "Charging Progress",
+    "chartTime": "Time",
+    "energySeries": "Energy (kWh)",
+    "powerSeries": "Power (kW)",
+    "paymentOrders": "Payment Orders ({{count}})",
+    "orderHeaders": {
+      "order": "Order",
+      "amount": "Amount",
+      "result": "Result",
+      "opened": "Opened",
+      "closed": "Closed"
+    }
+  },
   "statistic": {
     "dateRangeLabel": "Enter a date range",
     "dateHint": "DD/MM/YYYY – DD/MM/YYYY",
@@ -679,6 +738,7 @@
     "deleteSub": "Failed to delete subscription",
     "sendTestMail": "Failed to send test mail",
     "sendReport": "Failed to send report",
-    "loadRetryQueue": "Failed to load payment retry queue"
+    "loadRetryQueue": "Failed to load payment retry queue",
+    "loadTransaction": "Failed to load transaction details"
   }
 }
