@@ -25,6 +25,19 @@
   width: 100%;
 }
 
+.toggle-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) 0;
+}
+
+.toggle-hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-left: 44px;
+}
+
 .readonly-info {
   background-color: var(--color-background);
   padding: var(--spacing-md);

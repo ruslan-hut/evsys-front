@@ -78,6 +78,24 @@
           <input matInput formControlName="payment_plan" [placeholder]="'userEdit.paymentPlanPlaceholder' | translate">
         </mat-form-field>
 
+        <div class="toggle-row">
+          <mat-slide-toggle formControlName="warning_emails_enabled" color="primary">
+            {{ 'userEdit.warningEmailsEnabled' | translate }}
+          </mat-slide-toggle>
+          <span class="toggle-hint">{{ 'userEdit.warningEmailsEnabledHint' | translate }}</span>
+        </div>
+
+        @if (form.get('warning_emails_enabled')?.value) {
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'userEdit.warningEmail' | translate }}</mat-label>
+            <input matInput type="email" formControlName="warning_email" [placeholder]="'userEdit.emailPlaceholder' | translate">
+            <mat-hint>{{ 'userEdit.warningEmailHint' | translate }}</mat-hint>
+            @if (form.get('warning_email')?.hasError('email')) {
+              <mat-error>{{ 'userEdit.emailInvalid' | translate }}</mat-error>
+            }
+          </mat-form-field>
+        }
+
         @if (isEditMode && user) {
           <div class="readonly-info">
             @if (user.date_registered) {

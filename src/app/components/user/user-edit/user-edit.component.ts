@@ -16,6 +16,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatIcon} from '@angular/material/icon';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
@@ -34,6 +35,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
     MatButton, MatIconButton,
     MatProgressBar,
     MatIcon,
+    MatSlideToggle,
     TranslatePipe
   ]
 })
@@ -82,7 +84,9 @@ export class UserEditComponent implements OnInit {
       email: ['', [Validators.email]],
       role: [''],
       access_level: [0, [Validators.min(0), Validators.max(10)]],
-      payment_plan: ['']
+      payment_plan: [''],
+      warning_emails_enabled: [false],
+      warning_email: ['', [Validators.email]]
     });
   }
 
@@ -113,7 +117,9 @@ export class UserEditComponent implements OnInit {
       email: user.email || '',
       role: user.role || '',
       access_level: user.access_level || 0,
-      payment_plan: user.payment_plan || ''
+      payment_plan: user.payment_plan || '',
+      warning_emails_enabled: user.warning_emails_enabled || false,
+      warning_email: user.warning_email || ''
     });
 
     this.form.get('username')?.disable();

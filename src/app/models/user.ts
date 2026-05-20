@@ -12,6 +12,8 @@ export interface User {
   role?: string,
   token?: string,
   payment_plan?: string,
+  warning_emails_enabled?: boolean,
+  warning_email?: string,
   date_registered?: string,
   last_seen?: string,
   payment_plans?: PaymentPlan[],
