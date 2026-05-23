@@ -56,6 +56,11 @@
                   [matTooltip]="'paymentRetries.viewTransaction' | translate">
             <mat-icon>visibility</mat-icon>
           </button>
+          <button mat-icon-button (click)="forceRetry(row)"
+                  [disabled]="forcingId === row.transaction_id"
+                  [matTooltip]="'paymentRetries.forceRetry' | translate">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
         </td>
       </ng-container>
 

@@ -325,7 +325,13 @@
       "lastError": "Último error",
       "actions": "Acciones"
     },
-    "viewTransaction": "Ver transacción"
+    "viewTransaction": "Ver transacción",
+    "forceRetry": "Reintentar ahora",
+    "forceTitle": "Forzar reintento de pago",
+    "forceContent": "¿Lanzar un reintento de pago inmediato para la transacción #{{transaction}}?",
+    "forceYes": "Reintentar",
+    "forceNo": "Cancelar",
+    "forceDone": "Reintento de pago lanzado"
   },
   "transactionDetail": {
     "back": "Atrás",
@@ -739,6 +745,7 @@
     "sendTestMail": "No se pudo enviar el correo de prueba",
     "sendReport": "No se pudo enviar el informe",
     "loadRetryQueue": "No se pudo cargar la cola de reintentos de pago",
+    "forceRetry": "No se pudo lanzar el reintento de pago",
     "loadTransaction": "No se pudieron cargar los detalles de la transacción"
   }
 }

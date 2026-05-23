@@ -325,7 +325,13 @@
       "lastError": "Last error",
       "actions": "Actions"
     },
-    "viewTransaction": "View transaction"
+    "viewTransaction": "View transaction",
+    "forceRetry": "Retry now",
+    "forceTitle": "Force payment retry",
+    "forceContent": "Trigger an immediate payment retry for transaction #{{transaction}}?",
+    "forceYes": "Retry now",
+    "forceNo": "Cancel",
+    "forceDone": "Payment retry triggered"
   },
   "transactionDetail": {
     "back": "Back",
@@ -739,6 +745,7 @@
     "sendTestMail": "Failed to send test mail",
     "sendReport": "Failed to send report",
     "loadRetryQueue": "Failed to load payment retry queue",
+    "forceRetry": "Failed to trigger payment retry",
     "loadTransaction": "Failed to load transaction details"
   }
 }

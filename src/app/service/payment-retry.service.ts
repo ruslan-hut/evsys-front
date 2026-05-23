@@ -13,4 +13,11 @@ export class PaymentRetryService {
   list(): Observable<PaymentRetryItem[]> {
     return this.http.get<PaymentRetryItem[]>(environment.apiUrl + environment.paymentRetries);
   }
+
+  forceRetry(transactionId: number): Observable<{status: string}> {
+    return this.http.post<{status: string}>(
+      `${environment.apiUrl}${environment.paymentRetries}/${transactionId}/force`,
+      {},
+    );
+  }
 }
