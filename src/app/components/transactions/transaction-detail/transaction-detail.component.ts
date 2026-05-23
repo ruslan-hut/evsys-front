@@ -7,6 +7,7 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatDivider} from '@angular/material/divider';
+import {MatDialog} from '@angular/material/dialog';
 import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material/expansion';
 import {MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow} from '@angular/material/table';
 import {NgxChartsModule, Color, ScaleType} from '@swimlane/ngx-charts';
@@ -17,6 +18,8 @@ import {ErrorService} from '../../../service/error.service';
 import {PaymentRetryService} from '../../../service/payment-retry.service';
 import {TransactionListItem, TransactionMeterValue, PaymentOrder, calculateConsumed} from '../../../models/transaction-list-item';
 import {PaymentRetryItem} from '../../../models/payment-retry';
+import {BasicDialogComponent} from '../../dialogs/basic/basic-dialog.component';
+import {DialogData} from '../../../models/dialog-data';
 
 interface ChartDataPoint {
   name: string;
@@ -72,10 +75,12 @@ export class TransactionDetailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly dialog = inject(MatDialog);
 
   transaction: TransactionListItem | null = null;
   activeRetry: PaymentRetryItem | null = null;
   loading = false;
+  forcingRetry = false;
 
   paymentOrderColumns: string[] = ['order', 'amount', 'result', 'time_opened', 'time_closed'];
 
@@ -124,6 +129,38 @@ export class TransactionDetailComponent implements OnInit {
 
   viewRetryQueue(): void {
     this.router.navigate(['/payment-retries']);
+  }
+
+  forceRetry(): void {
+    const tx = this.transaction;
+    if (!tx?.transaction_id) return;
+    const data: DialogData = {
+      title: this.translate.instant('paymentRetries.forceTitle'),
+      content: this.translate.instant('paymentRetries.forceContent',
+        {transaction: tx.transaction_id}),
+      buttonYes: this.translate.instant('paymentRetries.forceYes'),
+      buttonNo: this.translate.instant('paymentRetries.forceNo'),
+      checkboxes: [],
+    };
+    const ref = this.dialog.open(BasicDialogComponent, {width: '360px', data});
+    ref.afterClosed().subscribe((result) => {
+      if (result !== 'yes') return;
+      const transactionId = tx.transaction_id!;
+      this.forcingRetry = true;
+      this.cdr.markForCheck();
+      this.retryService.forceRetry(transactionId).subscribe({
+        next: () => {
+          this.forcingRetry = false;
+          this.errorService.handle(this.translate.instant('paymentRetries.forceDone'));
+          this.loadTransaction(transactionId);
+        },
+        error: () => {
+          this.forcingRetry = false;
+          this.errorService.handle(this.translate.instant('errors.forceRetry'));
+          this.cdr.markForCheck();
+        },
+      });
+    });
   }
 
   prepareChartData(): void {

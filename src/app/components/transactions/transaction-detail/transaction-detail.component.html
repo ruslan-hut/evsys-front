@@ -153,6 +153,13 @@
                 <span class="detail-label">{{ 'transactionDetail.labels.error' | translate }}</span>
                 <span class="detail-value">{{ transaction.payment_error }}</span>
               </div>
+              <div class="detail-row">
+                <button mat-stroked-button color="warn" (click)="forceRetry()"
+                        [disabled]="forcingRetry">
+                  <mat-icon>play_arrow</mat-icon>
+                  {{ 'paymentRetries.forceRetry' | translate }}
+                </button>
+              </div>
             }
             @if (activeRetry) {
               <div class="retry-banner" role="button" tabindex="0"
