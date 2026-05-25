@@ -217,29 +217,6 @@
               }
             </div>
           }
-
-          @if (transaction.payment_method) {
-            <div class="detail-section">
-              <h3>{{ 'transactionDetail.sections.paymentMethod' | translate }}</h3>
-              @if (transaction.payment_method.card_brand) {
-                <div class="detail-row">
-                  <span class="detail-label">{{ 'transactionDetail.labels.card' | translate }}</span>
-                  <span class="detail-value card-info">
-                    {{ transaction.payment_method.card_brand | titlecase }}
-                    @if (transaction.payment_method.description) {
-                      ({{ transaction.payment_method.description }})
-                    }
-                  </span>
-                </div>
-              }
-              @if (transaction.payment_method.expiry_date) {
-                <div class="detail-row">
-                  <span class="detail-label">{{ 'transactionDetail.labels.expires' | translate }}</span>
-                  <span class="detail-value">{{ transaction.payment_method.expiry_date }}</span>
-                </div>
-              }
-            </div>
-          }
         </div>
 
         @if (chartData.length > 0) {

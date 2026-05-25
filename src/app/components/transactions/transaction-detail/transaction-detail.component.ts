@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
-import {DecimalPipe, DatePipe, TitleCasePipe, Location} from '@angular/common';
+import {DecimalPipe, DatePipe, Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatCard, MatCardHeader, MatCardTitle, MatCardContent} from '@angular/material/card';
@@ -40,7 +40,6 @@ interface ChartSeries {
   imports: [
     DecimalPipe,
     DatePipe,
-    TitleCasePipe,
     MatCard,
     MatCardHeader,
     MatCardTitle,
