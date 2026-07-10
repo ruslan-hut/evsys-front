@@ -1,12 +1,19 @@
 import {TestBed} from '@angular/core/testing';
 import {PrintService} from './print.service';
 
-/** Minimal stand-in for the frame's window; the real one would open a dialog. */
+/**
+ * Minimal stand-in for the frame's window; the real one would open a dialog.
+ * `afterPrint()` replays the event the browser fires once the dialog closes,
+ * which is the only thing that may tear the frame down.
+ */
 function fakeWindow(print: () => void = () => undefined) {
+  const listeners: Record<string, (() => void)[]> = {};
   return {
     focus: jasmine.createSpy('focus'),
     print: jasmine.createSpy('print').and.callFake(print),
-    addEventListener: jasmine.createSpy('addEventListener')
+    addEventListener: jasmine.createSpy('addEventListener').and.callFake(
+      (type: string, fn: () => void) => (listeners[type] ??= []).push(fn)),
+    afterPrint: () => (listeners['afterprint'] ?? []).forEach(fn => fn())
   };
 }
 
@@ -15,6 +22,15 @@ describe('PrintService', () => {
 
   const frames = (): HTMLIFrameElement[] =>
     Array.from(document.body.querySelectorAll('iframe'));
+
+  /** The frame's `load` event is a macrotask, so microtask ticks cannot see it. */
+  async function waitFor(condition: () => boolean, what: string): Promise<void> {
+    for (let i = 0; i < 100; i++) {
+      if (condition()) return;
+      await new Promise(resolve => setTimeout(resolve));
+    }
+    throw new Error(`timed out waiting for ${what}`);
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -51,29 +67,53 @@ describe('PrintService', () => {
     expect(iframe.style.visibility).toBe('hidden');
   });
 
-  it('focuses and prints the frame once loaded, then tears it down', async () => {
+  it('focuses and prints the frame once loaded', async () => {
+    const win = fakeWindow();
+    stubContentWindow(win);
+
+    const printing = service.printDocument('<html><body>x</body></html>');
+    await waitFor(() => win.print.calls.any(), 'print()');
+    win.afterPrint();
+    await printing;
+
+    expect(win.focus).toHaveBeenCalled();
+    expect(win.print).toHaveBeenCalled();
+  });
+
+  // Guards the regression that made "save as PDF" a no-op: Chrome's scripted
+  // print() queues the preview and returns immediately, so a frame removed as
+  // soon as print() returns leaves the dialog nothing to render.
+  it('keeps the frame mounted until the dialog closes', async () => {
     const win = fakeWindow();
     stubContentWindow(win);
     const before = frames().length;
 
-    await service.printDocument('<html><body>x</body></html>');
+    const printing = service.printDocument('<html><body>x</body></html>');
+    await waitFor(() => win.print.calls.any(), 'print()');
 
-    expect(win.focus).toHaveBeenCalled();
-    expect(win.print).toHaveBeenCalled();
+    expect(frames().length)
+      .withContext('frame must outlive print(); the dialog renders it asynchronously')
+      .toBe(before + 1);
+
+    win.afterPrint();
+    await printing;
     expect(frames().length).toBe(before);
   });
 
-
-  it('waits for afterprint before resolving', async () => {
+  it('resolves only once the dialog reports closing', async () => {
     const win = fakeWindow();
     stubContentWindow(win);
 
-    await service.printDocument('<html><body>x</body></html>');
+    let resolved = false;
+    const printing = service.printDocument('<html><body>x</body></html>')
+      .then(() => (resolved = true));
+    await waitFor(() => win.print.calls.any(), 'print()');
 
-    // The frame must be given a chance to report the dialog closing, otherwise
-    // removing it mid-dialog cancels the print job.
-    expect(win.addEventListener).toHaveBeenCalledWith(
-      'afterprint', jasmine.any(Function), {once: true});
+    expect(resolved).withContext('must not resolve while the dialog is open').toBeFalse();
+
+    win.afterPrint();
+    await printing;
+    expect(resolved).toBeTrue();
   });
 
   it('rejects and cleans up when printing throws', async () => {

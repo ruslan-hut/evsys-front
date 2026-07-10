@@ -12,6 +12,13 @@ import {DOCUMENT} from '@angular/common';
 export class PrintService {
   private readonly document = inject(DOCUMENT);
 
+  /**
+   * Frames whose dialog never reported closing are swept after this long. Long
+   * enough that a user reading the preview cannot have the job pulled from
+   * under them; short enough that a stuck frame does not live for the session.
+   */
+  private static readonly CLEANUP_TIMEOUT_MS = 10 * 60 * 1000;
+
   printDocument(html: string, title = 'document'): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const iframe = this.document.createElement('iframe');
@@ -23,9 +30,11 @@ export class PrintService {
         'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
 
       let settled = false;
+      let timer: ReturnType<typeof setTimeout> | undefined;
       const finish = (err?: Error): void => {
         if (settled) return;
         settled = true;
+        clearTimeout(timer);
         iframe.remove();
         err ? reject(err) : resolve();
       };
@@ -36,18 +45,23 @@ export class PrintService {
           finish(new Error('print frame unavailable'));
           return;
         }
-        // Tearing the frame down before the dialog closes cancels the job, so
-        // wait for afterprint. Browsers that never fire it still resolve, because
-        // print() only returns once the dialog is dismissed.
-        frame.addEventListener('afterprint', () => finish(), {once: true});
+        // Chrome's scripted print() only *queues* the preview and returns
+        // immediately, so the frame must stay mounted until the dialog is gone:
+        // removing it here leaves the preview nothing to render and the job is
+        // silently dropped. afterprint marks that moment. It reaches the frame
+        // in some browsers and only the host window in others, so listen on
+        // both, and sweep the frame if neither ever reports.
+        const onAfterPrint = (): void => finish();
+        frame.addEventListener('afterprint', onAfterPrint, {once: true});
+        this.document.defaultView?.addEventListener('afterprint', onAfterPrint, {once: true});
+        timer = setTimeout(() => finish(), PrintService.CLEANUP_TIMEOUT_MS);
+
         try {
           frame.focus();
           frame.print();
         } catch (e) {
           finish(e instanceof Error ? e : new Error('print failed'));
-          return;
         }
-        finish();
       };
 
       iframe.onerror = (): void => finish(new Error('print frame failed to load'));
