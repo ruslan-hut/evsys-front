@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>{{ 'transactionDetail.email.title' | translate }}</h1>
+
+<div mat-dialog-content>
+  <p class="email-dialog-hint">
+    {{ 'transactionDetail.email.hint' | translate:{ id: data.transactionId } }}
+  </p>
+
+  <mat-form-field appearance="outline" class="email-dialog-field">
+    <mat-label>{{ 'transactionDetail.email.label' | translate }}</mat-label>
+    <input matInput type="email" [formControl]="email" (keydown.enter)="send()"
+           autocomplete="email" required />
+    @if (email.hasError('required')) {
+      <mat-error>{{ 'transactionDetail.email.required' | translate }}</mat-error>
+    } @else if (email.hasError('pattern')) {
+      <mat-error>{{ 'transactionDetail.email.invalid' | translate }}</mat-error>
+    }
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()">{{ 'common.cancel' | translate }}</button>
+  <button mat-button color="primary" [disabled]="email.invalid" (click)="send()">
+    {{ 'transactionDetail.email.send' | translate }}
+  </button>
+</div>

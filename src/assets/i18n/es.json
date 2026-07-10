@@ -390,6 +390,16 @@
       "result": "Resultado",
       "opened": "Abierta",
       "closed": "Cerrada"
+    },
+    "email": {
+      "action": "Enviar por correo",
+      "title": "Enviar transacción por correo",
+      "hint": "Se enviarán todos los datos de la transacción #{{id}} a esta dirección.",
+      "label": "Dirección de correo",
+      "required": "La dirección de correo es obligatoria",
+      "invalid": "Introduce una dirección de correo válida",
+      "send": "Enviar",
+      "sent": "Transacción enviada a {{email}}"
     }
   },
   "statistic": {
@@ -746,6 +756,7 @@
     "sendReport": "No se pudo enviar el informe",
     "loadRetryQueue": "No se pudo cargar la cola de reintentos de pago",
     "forceRetry": "No se pudo lanzar el reintento de pago",
-    "loadTransaction": "No se pudieron cargar los detalles de la transacción"
+    "loadTransaction": "No se pudieron cargar los detalles de la transacción",
+    "sendTransactionEmail": "No se pudo enviar el correo de la transacción"
   }
 }

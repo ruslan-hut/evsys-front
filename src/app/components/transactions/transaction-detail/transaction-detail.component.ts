@@ -15,10 +15,15 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 import {TransactionService} from '../../../service/transaction.service';
 import {ErrorService} from '../../../service/error.service';
+import {AccountService} from '../../../service/account.service';
 import {PaymentRetryService} from '../../../service/payment-retry.service';
 import {TransactionListItem, TransactionMeterValue, PaymentOrder, calculateConsumed} from '../../../models/transaction-list-item';
 import {PaymentRetryItem} from '../../../models/payment-retry';
 import {BasicDialogComponent} from '../../dialogs/basic/basic-dialog.component';
+import {
+  EmailTransactionDialogComponent,
+  EmailTransactionDialogData
+} from '../../dialogs/email-transaction/email-transaction-dialog.component';
 import {DialogData} from '../../../models/dialog-data';
 
 interface ChartDataPoint {
@@ -68,6 +73,7 @@ interface ChartSeries {
 export class TransactionDetailComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
   private readonly retryService = inject(PaymentRetryService);
+  private readonly accountService = inject(AccountService);
   private readonly errorService = inject(ErrorService);
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
@@ -80,6 +86,7 @@ export class TransactionDetailComponent implements OnInit {
   activeRetry: PaymentRetryItem | null = null;
   loading = false;
   forcingRetry = false;
+  sendingEmail = false;
 
   paymentOrderColumns: string[] = ['order', 'amount', 'result', 'time_opened', 'time_closed'];
 
@@ -158,6 +165,35 @@ export class TransactionDetailComponent implements OnInit {
           this.errorService.handle(this.translate.instant('errors.forceRetry'));
           this.cdr.markForCheck();
         },
+      });
+    });
+  }
+
+  sendEmail(): void {
+    const tx = this.transaction;
+    if (!tx?.transaction_id) return;
+
+    const data: EmailTransactionDialogData = {
+      transactionId: tx.transaction_id,
+      defaultEmail: this.accountService.userValue?.email ?? ''
+    };
+    const ref = this.dialog.open(EmailTransactionDialogComponent, {width: '400px', data});
+
+    ref.afterClosed().subscribe((email?: string) => {
+      if (!email) return;
+      this.sendingEmail = true;
+      this.cdr.markForCheck();
+      this.transactionService.sendTransactionEmail(tx.transaction_id, email).subscribe({
+        next: () => {
+          this.sendingEmail = false;
+          this.errorService.handle(this.translate.instant('transactionDetail.email.sent', {email}));
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.sendingEmail = false;
+          this.errorService.handle(this.translate.instant('errors.sendTransactionEmail'));
+          this.cdr.markForCheck();
+        }
       });
     });
   }

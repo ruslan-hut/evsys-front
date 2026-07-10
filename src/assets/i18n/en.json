@@ -390,6 +390,16 @@
       "result": "Result",
       "opened": "Opened",
       "closed": "Closed"
+    },
+    "email": {
+      "action": "Send by email",
+      "title": "Send transaction by email",
+      "hint": "The full data of transaction #{{id}} will be sent to this address.",
+      "label": "Email address",
+      "required": "Email address is required",
+      "invalid": "Enter a valid email address",
+      "send": "Send",
+      "sent": "Transaction sent to {{email}}"
     }
   },
   "statistic": {
@@ -746,6 +756,7 @@
     "sendReport": "Failed to send report",
     "loadRetryQueue": "Failed to load payment retry queue",
     "forceRetry": "Failed to trigger payment retry",
-    "loadTransaction": "Failed to load transaction details"
+    "loadTransaction": "Failed to load transaction details",
+    "sendTransactionEmail": "Failed to send transaction email"
   }
 }

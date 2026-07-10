@@ -162,6 +162,15 @@ export class TransactionService implements OnDestroy {
     );
   }
 
+  // Errors are surfaced by the caller so the dialog can keep the entered
+  // address on screen instead of the global snackbar swallowing the failure.
+  sendTransactionEmail(transactionId: number, email: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(
+      `${environment.apiUrl}${environment.transactionInfo}${transactionId}/email`,
+      { email }
+    );
+  }
+
   private formatDate(date: Date): string {
     return new Intl.DateTimeFormat('en-CA').format(date);
   }

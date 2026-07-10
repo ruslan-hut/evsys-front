@@ -8,6 +8,14 @@
       <mat-icon>arrow_back</mat-icon>
       {{ 'transactionDetail.back' | translate }}
     </button>
+
+    @if (transaction) {
+      <button mat-button (click)="sendEmail()" [disabled]="sendingEmail"
+              [attr.aria-label]="'transactionDetail.email.action' | translate">
+        <mat-icon>email</mat-icon>
+        {{ 'transactionDetail.email.action' | translate }}
+      </button>
+    }
   </div>
 
   @if (transaction) {
