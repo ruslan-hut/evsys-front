@@ -171,6 +171,15 @@ export class TransactionService implements OnDestroy {
     );
   }
 
+  // The receipt is a standalone HTML document, not JSON: it is the same template
+  // the emailed copy uses, so the printed PDF cannot drift from it.
+  getTransactionReceipt(transactionId: number): Observable<string> {
+    return this.http.get(
+      `${environment.apiUrl}${environment.transactionInfo}${transactionId}/receipt`,
+      { responseType: 'text' }
+    );
+  }
+
   private formatDate(date: Date): string {
     return new Intl.DateTimeFormat('en-CA').format(date);
   }

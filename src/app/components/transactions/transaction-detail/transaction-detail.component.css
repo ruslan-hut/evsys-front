@@ -12,6 +12,12 @@
   margin-bottom: var(--spacing-md);
 }
 
+.header-actions-end {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
 .detail-card {
   margin-bottom: var(--spacing-md);
 }

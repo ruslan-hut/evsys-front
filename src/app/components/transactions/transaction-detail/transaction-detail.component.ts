@@ -3,8 +3,9 @@ import {DecimalPipe, DatePipe, Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatCard, MatCardHeader, MatCardTitle, MatCardContent} from '@angular/material/card';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatDivider} from '@angular/material/divider';
 import {MatDialog} from '@angular/material/dialog';
@@ -16,6 +17,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {TransactionService} from '../../../service/transaction.service';
 import {ErrorService} from '../../../service/error.service';
 import {AccountService} from '../../../service/account.service';
+import {PrintService} from '../../../service/print.service';
 import {PaymentRetryService} from '../../../service/payment-retry.service';
 import {TransactionListItem, TransactionMeterValue, PaymentOrder, calculateConsumed} from '../../../models/transaction-list-item';
 import {PaymentRetryItem} from '../../../models/payment-retry';
@@ -50,6 +52,8 @@ interface ChartSeries {
     MatCardTitle,
     MatCardContent,
     MatButton,
+    MatIconButton,
+    MatTooltip,
     MatIcon,
     MatProgressBar,
     MatDivider,
@@ -74,6 +78,7 @@ export class TransactionDetailComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
   private readonly retryService = inject(PaymentRetryService);
   private readonly accountService = inject(AccountService);
+  private readonly printService = inject(PrintService);
   private readonly errorService = inject(ErrorService);
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
@@ -87,6 +92,7 @@ export class TransactionDetailComponent implements OnInit {
   loading = false;
   forcingRetry = false;
   sendingEmail = false;
+  savingPdf = false;
 
   paymentOrderColumns: string[] = ['order', 'amount', 'result', 'time_opened', 'time_closed'];
 
@@ -195,6 +201,33 @@ export class TransactionDetailComponent implements OnInit {
           this.cdr.markForCheck();
         }
       });
+    });
+  }
+
+  savePdf(): void {
+    const tx = this.transaction;
+    if (!tx?.transaction_id) return;
+
+    this.savingPdf = true;
+    this.cdr.markForCheck();
+
+    const done = (): void => {
+      this.savingPdf = false;
+      this.cdr.markForCheck();
+    };
+    const fail = (): void => {
+      done();
+      this.errorService.handle(this.translate.instant('errors.savePdf'));
+    };
+
+    this.transactionService.getTransactionReceipt(tx.transaction_id).subscribe({
+      next: (html) => {
+        this.printService
+          .printDocument(html, `transaction-${tx.transaction_id}`)
+          .then(done)
+          .catch(fail);
+      },
+      error: fail
     });
   }
 

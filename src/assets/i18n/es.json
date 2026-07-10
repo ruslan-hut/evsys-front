@@ -400,6 +400,9 @@
       "invalid": "Introduce una dirección de correo válida",
       "send": "Enviar",
       "sent": "Transacción enviada a {{email}}"
+    },
+    "pdf": {
+      "action": "Guardar PDF"
     }
   },
   "statistic": {
@@ -757,6 +760,7 @@
     "loadRetryQueue": "No se pudo cargar la cola de reintentos de pago",
     "forceRetry": "No se pudo lanzar el reintento de pago",
     "loadTransaction": "No se pudieron cargar los detalles de la transacción",
-    "sendTransactionEmail": "No se pudo enviar el correo de la transacción"
+    "sendTransactionEmail": "No se pudo enviar el correo de la transacción",
+    "savePdf": "No se pudo preparar el PDF de la transacción"
   }
 }

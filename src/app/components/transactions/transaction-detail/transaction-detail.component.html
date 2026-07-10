@@ -4,17 +4,26 @@
 
 <div class="transaction-detail-container">
   <div class="header-actions">
-    <button mat-button (click)="goBack()" [attr.aria-label]="'transactionDetail.goBack' | translate">
+    <button mat-icon-button (click)="goBack()"
+            [matTooltip]="'transactionDetail.back' | translate"
+            [attr.aria-label]="'transactionDetail.goBack' | translate">
       <mat-icon>arrow_back</mat-icon>
-      {{ 'transactionDetail.back' | translate }}
     </button>
 
     @if (transaction) {
-      <button mat-button (click)="sendEmail()" [disabled]="sendingEmail"
-              [attr.aria-label]="'transactionDetail.email.action' | translate">
-        <mat-icon>email</mat-icon>
-        {{ 'transactionDetail.email.action' | translate }}
-      </button>
+      <div class="header-actions-end">
+        <button mat-icon-button (click)="savePdf()" [disabled]="savingPdf"
+                [matTooltip]="'transactionDetail.pdf.action' | translate"
+                [attr.aria-label]="'transactionDetail.pdf.action' | translate">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="sendEmail()" [disabled]="sendingEmail"
+                [matTooltip]="'transactionDetail.email.action' | translate"
+                [attr.aria-label]="'transactionDetail.email.action' | translate">
+          <mat-icon>email</mat-icon>
+        </button>
+      </div>
     }
   </div>
 

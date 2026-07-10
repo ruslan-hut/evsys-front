@@ -400,6 +400,9 @@
       "invalid": "Enter a valid email address",
       "send": "Send",
       "sent": "Transaction sent to {{email}}"
+    },
+    "pdf": {
+      "action": "Save PDF"
     }
   },
   "statistic": {
@@ -757,6 +760,7 @@
     "loadRetryQueue": "Failed to load payment retry queue",
     "forceRetry": "Failed to trigger payment retry",
     "loadTransaction": "Failed to load transaction details",
-    "sendTransactionEmail": "Failed to send transaction email"
+    "sendTransactionEmail": "Failed to send transaction email",
+    "savePdf": "Failed to prepare the transaction PDF"
   }
 }
