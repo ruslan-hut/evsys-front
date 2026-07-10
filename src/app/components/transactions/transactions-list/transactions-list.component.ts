@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatSort, MatSortHeader} from '@angular/material/sort';
+import {MatSort, MatSortHeader, SortDirection} from '@angular/material/sort';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
@@ -23,6 +23,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 import {TransactionService} from '../../../service/transaction.service';
+import {TransactionListStateService} from '../../../service/transaction-list-state.service';
 import {ChargepointService} from '../../../service/chargepoint.service';
 import {ErrorService} from '../../../service/error.service';
 import {PaymentRetryService} from '../../../service/payment-retry.service';
@@ -80,8 +81,9 @@ import {DateRange, getLast12Months, getLast30Days, getTransactionRanges} from '.
     TranslatePipe
   ]
 })
-export class TransactionsListComponent implements OnInit {
+export class TransactionsListComponent implements OnInit, OnDestroy {
   private readonly transactionService = inject(TransactionService);
+  private readonly listState = inject(TransactionListStateService);
   private readonly chargepointService = inject(ChargepointService);
   private readonly retryService = inject(PaymentRetryService);
   private readonly breakpointObserver = inject(BreakpointObserver);
@@ -118,14 +120,34 @@ export class TransactionsListComponent implements OnInit {
   // Predefined date ranges
   predefinedRanges = getTransactionRanges();
 
+  // Paging/sorting carried across a detail round-trip; applied once the
+  // matching view child exists (only one of mobile/desktop is rendered).
+  private queryKey = '';
+  private pendingPageIndex = 0;
+  private pendingPageSize = 0;
+  private pendingSortActive = '';
+  private pendingSortDirection: SortDirection = '';
+
   isMobile$ = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
     .pipe(map(result => result.matches));
 
   @ViewChild('transactionPaginator') set paginator(pager: MatPaginator) {
-    if (pager) this.dataSource.paginator = pager;
+    if (!pager) return;
+    // Restore before handing the paginator to the data source, so the first
+    // render already shows the page the user left from.
+    if (this.pendingPageSize && pager.pageSizeOptions.includes(this.pendingPageSize)) {
+      pager.pageSize = this.pendingPageSize;
+    }
+    pager.pageIndex = this.pendingPageIndex;
+    this.dataSource.paginator = pager;
   }
   @ViewChild(MatSort) set sort(sorter: MatSort) {
-    if (sorter) this.dataSource.sort = sorter;
+    if (!sorter) return;
+    if (this.pendingSortActive) {
+      sorter.active = this.pendingSortActive;
+      sorter.direction = this.pendingSortDirection;
+    }
+    this.dataSource.sort = sorter;
   }
 
   ngOnInit(): void {
@@ -146,15 +168,32 @@ export class TransactionsListComponent implements OnInit {
 
     // Read query params for initial filtering
     const params = this.route.snapshot.queryParamMap;
-    if (params.get('username')) {
-      this.usernameFilter = params.get('username')!;
+    const username = params.get('username') ?? '';
+    const idTag = params.get('id_tag') ?? '';
+    const chargePoint = params.get('charge_point_id') ?? '';
+    this.queryKey = `${username}|${idTag}|${chargePoint}`;
+
+    // Coming back from a transaction detail: reuse the filters, rows and paging
+    // the user left behind instead of falling back to the defaults.
+    const saved = this.listState.restore(this.queryKey);
+    if (saved) {
+      this.startDate = saved.startDate;
+      this.endDate = saved.endDate;
+      this.usernameFilter = saved.usernameFilter;
+      this.idTagFilter = saved.idTagFilter;
+      this.chargePointFilter = saved.chargePointFilter;
+      this.withErrorFilter = saved.withErrorFilter;
+      this.pendingPageIndex = saved.pageIndex;
+      this.pendingPageSize = saved.pageSize;
+      this.pendingSortActive = saved.sortActive;
+      this.pendingSortDirection = saved.sortDirection;
+      this.dataSource.data = saved.rows;
+      return;
     }
-    if (params.get('id_tag')) {
-      this.idTagFilter = params.get('id_tag')!;
-    }
-    if (params.get('charge_point_id')) {
-      this.chargePointFilter = params.get('charge_point_id')!;
-    }
+
+    this.usernameFilter = username;
+    this.idTagFilter = idTag;
+    this.chargePointFilter = chargePoint;
 
     // Set default date range based on filters
     // If username or id_tag filter is set, use last 12 months; otherwise use last 30 days
@@ -166,6 +205,28 @@ export class TransactionsListComponent implements OnInit {
 
     // Load initial data
     this.loadTransactions();
+  }
+
+  ngOnDestroy(): void {
+    // Only worth keeping when the user steps into a detail and is expected
+    // back; leaving for any other screen should give a clean list next time.
+    const target = this.router.getCurrentNavigation()?.finalUrl?.toString() ?? '';
+    if (!/^\/transactions\/\d+/.test(target)) return;
+
+    this.listState.save({
+      queryKey: this.queryKey,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      usernameFilter: this.usernameFilter,
+      idTagFilter: this.idTagFilter,
+      chargePointFilter: this.chargePointFilter,
+      withErrorFilter: this.withErrorFilter,
+      rows: this.dataSource.data,
+      pageIndex: this.dataSource.paginator?.pageIndex ?? 0,
+      pageSize: this.dataSource.paginator?.pageSize ?? 0,
+      sortActive: this.dataSource.sort?.active ?? '',
+      sortDirection: this.dataSource.sort?.direction ?? ''
+    });
   }
 
   loadTransactions(): void {
@@ -183,6 +244,8 @@ export class TransactionsListComponent implements OnInit {
     this.transactionService.getTransactionsList(filter).subscribe({
       next: (transactions) => {
         this.dataSource.data = transactions;
+        // A new result set invalidates the page the user was on.
+        this.dataSource.paginator?.firstPage();
         this.loading = false;
         this.cdr.markForCheck();
       },
