@@ -98,6 +98,16 @@ export function getTransactionRanges(): LabeledRange[] {
   ];
 }
 
+export function getPowerRanges(): LabeledRange[] {
+  return [
+    { label: 'common.ranges.today', range: getToday() },
+    { label: 'common.ranges.last7Days', range: getLast7Days() },
+    { label: 'common.ranges.last30Days', range: getLast30Days() },
+    { label: 'common.ranges.currentMonth', range: getCurrentMonth() },
+    { label: 'common.ranges.previousMonth', range: getPreviousMonth() }
+  ];
+}
+
 export function getUptimeRanges(): LabeledRange[] {
   return [
     { label: 'common.ranges.today', range: getToday() },

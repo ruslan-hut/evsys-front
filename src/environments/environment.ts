@@ -20,6 +20,7 @@ export const environment = {
   uptimeReport: '/uptime',
   statusReport: '/status',
   exportReport: '/export',
+  powerReport: '/power',
   mailSubscriptions: '/mail/subscriptions',
   paymentRetries: '/payment/retries',
   debug: false,

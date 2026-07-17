@@ -128,11 +128,24 @@ export class TransactionsListComponent implements OnInit, OnDestroy {
   private pendingSortActive = '';
   private pendingSortDirection: SortDirection = '';
 
+  // The queried views live inside an @if, so these setters re-run on every
+  // change detection pass; restoring unconditionally would overwrite whatever
+  // the user just picked. Track the instance and only restore onto a new one.
+  private paginatorRef?: MatPaginator;
+  private sortRef?: MatSort;
+
   isMobile$ = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
     .pipe(map(result => result.matches));
 
   @ViewChild('transactionPaginator') set paginator(pager: MatPaginator) {
-    if (!pager) return;
+    if (!pager || pager === this.paginatorRef) return;
+    // A layout swap hands over a fresh paginator: carry over the page the user
+    // is on now, not the one restored on entry.
+    if (this.paginatorRef) {
+      this.pendingPageIndex = this.paginatorRef.pageIndex;
+      this.pendingPageSize = this.paginatorRef.pageSize;
+    }
+    this.paginatorRef = pager;
     // Restore before handing the paginator to the data source, so the first
     // render already shows the page the user left from.
     if (this.pendingPageSize && pager.pageSizeOptions.includes(this.pendingPageSize)) {
@@ -142,7 +155,12 @@ export class TransactionsListComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = pager;
   }
   @ViewChild(MatSort) set sort(sorter: MatSort) {
-    if (!sorter) return;
+    if (!sorter || sorter === this.sortRef) return;
+    if (this.sortRef) {
+      this.pendingSortActive = this.sortRef.active;
+      this.pendingSortDirection = this.sortRef.direction;
+    }
+    this.sortRef = sorter;
     if (this.pendingSortActive) {
       sorter.active = this.pendingSortActive;
       sorter.direction = this.pendingSortDirection;

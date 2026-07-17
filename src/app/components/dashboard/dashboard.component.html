@@ -130,7 +130,7 @@
           </mat-card-header>
           <mat-card-content>
             @if (monthLineChartData.length && monthLineChartData[0].series.length) {
-              <div class="chart-container">
+              <div class="chart-container with-legend">
                 <ngx-charts-line-chart
                   [results]="monthLineChartData"
                   [scheme]="colorScheme"
@@ -142,6 +142,7 @@
                   [autoScale]="true"
                   [legend]="true"
                   [legendPosition]="legendPosition"
+                  [legendTitle]="''"
                   [timeline]="false">
                 </ngx-charts-line-chart>
               </div>
@@ -244,12 +245,13 @@
           </mat-card-header>
           <mat-card-content>
             @if (userPieChartData.length) {
-              <div class="chart-container">
+              <div class="chart-container with-legend">
                 <ngx-charts-pie-chart
                   [results]="userPieChartData"
                   [scheme]="colorScheme"
                   [legend]="true"
                   [legendPosition]="legendPosition"
+                  [legendTitle]="''"
                   [labels]="true"
                   [doughnut]="true">
                 </ngx-charts-pie-chart>
@@ -328,12 +330,13 @@
           </mat-card-header>
           <mat-card-content>
             @if (chargerPieChartData.length) {
-              <div class="chart-container">
+              <div class="chart-container with-legend">
                 <ngx-charts-pie-chart
                   [results]="chargerPieChartData"
                   [scheme]="colorScheme"
                   [legend]="true"
                   [legendPosition]="legendPosition"
+                  [legendTitle]="''"
                   [labels]="true"
                   [doughnut]="true">
                 </ngx-charts-pie-chart>

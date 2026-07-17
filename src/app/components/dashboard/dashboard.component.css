@@ -59,6 +59,12 @@
 .chart-card mat-card-content { display: block; overflow: hidden; padding: var(--spacing-sm); }
 .chart-card mat-card-header { margin-bottom: var(--spacing-sm); }
 .chart-container { width: 100%; height: 350px; display: block; position: relative; }
+/* ngx-charts sizes its svg to the full container and then appends the
+   below-legend after it, so the legend always spills past the container and the
+   card's overflow:hidden swallows it. Reserve room in the flow and let it show. */
+.chart-container.with-legend { margin-bottom: 44px; }
+.chart-card:has(.with-legend),
+.chart-card:has(.with-legend) mat-card-content { overflow: visible; }
 .no-data {
   display: flex;
   align-items: center;
@@ -106,6 +112,9 @@ ngx-charts-line-chart, ngx-charts-bar-vertical, ngx-charts-bar-horizontal, ngx-c
   .chart-container { height: 300px; }
   .chart-container:has(ngx-charts-pie-chart) { height: 380px; }
   .chart-container:has(ngx-charts-bar-horizontal) { height: 350px; }
+  /* Legends wrap onto several rows at this width -- the distribution charts
+     have one entry per charger -- so reserve more than the desktop single row. */
+  .chart-container.with-legend { margin-bottom: 72px; }
   ::ng-deep .legend-label { font-size: 11px; margin: 2px var(--spacing-xs); }
   ::ng-deep .tick text { font-size: 10px; }
   ::ng-deep .axis-label { font-size: 11px; }

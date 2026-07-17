@@ -44,6 +44,7 @@
     "consumptionChart": "Consumption chart",
     "consumption": "Consumption",
     "uptime": "Uptime",
+    "powerAnalysis": "Power analysis",
     "exportData": "Export data",
     "management": "Management",
     "users": "Users",
@@ -430,7 +431,8 @@
   "reports": {
     "tabs": {
       "stationStatus": "Station Status",
-      "uptime": "Uptime Report"
+      "uptime": "Uptime Report",
+      "power": "Power Analysis"
     },
     "stationStatus": {
       "online": "Online",
@@ -464,6 +466,63 @@
         "finalState": "Final State"
       },
       "viewDetails": "View station details"
+    },
+    "power": {
+      "dateRange": "Date Range",
+      "start": "Start",
+      "end": "End",
+      "dateHint": "DD/MM/YYYY - DD/MM/YYYY",
+      "selectRange": "Select predefined range",
+      "loadData": "Load Data",
+      "filters": "Filters",
+      "station": "Station",
+      "allStations": "All Stations",
+      "group": "Group",
+      "allGroups": "All Groups",
+      "period": "Period:",
+      "view": "Breakdown",
+      "bucket": "Time bucket",
+      "views": {
+        "timeline": "Production",
+        "charger": "By Charger",
+        "session": "By Session"
+      },
+      "buckets": {
+        "hour": "Hourly",
+        "day": "Daily"
+      },
+      "series": {
+        "peak": "Peak",
+        "average": "Average",
+        "charging": "Charging",
+        "session": "Session"
+      },
+      "peakFleetLoad": "Peak Fleet Load",
+      "peakSessionPower": "Peak Session Power",
+      "totalEnergy": "Total Energy",
+      "avgChargingPower": "Avg Charging Power",
+      "chargingHours": "Charging Hours",
+      "sessions": "Sessions",
+      "energyDelivered": "Energy Delivered",
+      "fleetLoad": "Fleet Load",
+      "powerByCharger": "Power by Charger",
+      "timeBucket": "Time",
+      "energyKWh": "Energy (kWh)",
+      "powerKw": "Power (kW)",
+      "noData": "No power data available for the selected period",
+      "details": "Details",
+      "headers": {
+        "bucket": "Time",
+        "station": "Station",
+        "transaction": "Session",
+        "sessions": "Sessions",
+        "energy": "Energy (kWh)",
+        "duration": "Duration",
+        "avgCharging": "Avg Charging (kW)",
+        "avgSession": "Avg Session (kW)",
+        "peak": "Peak (kW)"
+      },
+      "viewDetails": "View session details"
     },
     "exportData": {
       "dateRangeLabel": "Enter a date range",

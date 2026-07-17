@@ -26,8 +26,11 @@
             <button mat-menu-item (click)="navigateTo('/statistic')">
               <mat-icon>bar_chart</mat-icon><span>{{ 'header.consumption' | translate }}</span>
             </button>
-            <button mat-menu-item (click)="navigateTo('/reports')">
+            <button mat-menu-item (click)="navigateTo('/reports?tab=uptime')">
               <mat-icon>monitor_heart</mat-icon><span>{{ 'header.uptime' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="navigateTo('/reports?tab=power')">
+              <mat-icon>bolt</mat-icon><span>{{ 'header.powerAnalysis' | translate }}</span>
             </button>
             <button mat-menu-item (click)="navigateTo('/export')">
               <mat-icon>file_download</mat-icon><span>{{ 'header.exportData' | translate }}</span>
@@ -119,8 +122,11 @@
               <button mat-menu-item (click)="navigateTo('/statistic')">
                 <mat-icon>bar_chart</mat-icon><span>{{ 'header.consumption' | translate }}</span>
               </button>
-              <button mat-menu-item (click)="navigateTo('/reports')">
+              <button mat-menu-item (click)="navigateTo('/reports?tab=uptime')">
                 <mat-icon>monitor_heart</mat-icon><span>{{ 'header.uptime' | translate }}</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/reports?tab=power')">
+                <mat-icon>bolt</mat-icon><span>{{ 'header.powerAnalysis' | translate }}</span>
               </button>
               <mat-divider></mat-divider>
               <button mat-menu-item (click)="navigateTo('/export')">

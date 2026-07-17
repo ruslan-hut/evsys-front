@@ -44,6 +44,7 @@
     "consumptionChart": "Gráfico de consumo",
     "consumption": "Consumo",
     "uptime": "Disponibilidad",
+    "powerAnalysis": "Análisis de potencia",
     "exportData": "Exportar datos",
     "management": "Administración",
     "users": "Usuarios",
@@ -430,7 +431,8 @@
   "reports": {
     "tabs": {
       "stationStatus": "Estado de estaciones",
-      "uptime": "Informe de disponibilidad"
+      "uptime": "Informe de disponibilidad",
+      "power": "Análisis de potencia"
     },
     "stationStatus": {
       "online": "En línea",
@@ -464,6 +466,63 @@
         "finalState": "Estado final"
       },
       "viewDetails": "Ver detalles de la estación"
+    },
+    "power": {
+      "dateRange": "Intervalo de fechas",
+      "start": "Inicio",
+      "end": "Fin",
+      "dateHint": "DD/MM/AAAA - DD/MM/AAAA",
+      "selectRange": "Seleccionar intervalo predefinido",
+      "loadData": "Cargar datos",
+      "filters": "Filtros",
+      "station": "Estación",
+      "allStations": "Todas las estaciones",
+      "group": "Grupo",
+      "allGroups": "Todos los grupos",
+      "period": "Periodo:",
+      "view": "Desglose",
+      "bucket": "Intervalo",
+      "views": {
+        "timeline": "Producción",
+        "charger": "Por estación",
+        "session": "Por sesión"
+      },
+      "buckets": {
+        "hour": "Por hora",
+        "day": "Por día"
+      },
+      "series": {
+        "peak": "Pico",
+        "average": "Media",
+        "charging": "Carga",
+        "session": "Sesión"
+      },
+      "peakFleetLoad": "Pico de carga total",
+      "peakSessionPower": "Potencia máxima de sesión",
+      "totalEnergy": "Energía total",
+      "avgChargingPower": "Potencia media de carga",
+      "chargingHours": "Horas de carga",
+      "sessions": "Sesiones",
+      "energyDelivered": "Energía suministrada",
+      "fleetLoad": "Carga total",
+      "powerByCharger": "Potencia por estación",
+      "timeBucket": "Tiempo",
+      "energyKWh": "Energía (kWh)",
+      "powerKw": "Potencia (kW)",
+      "noData": "No hay datos de potencia para el periodo seleccionado",
+      "details": "Detalle",
+      "headers": {
+        "bucket": "Tiempo",
+        "station": "Estación",
+        "transaction": "Sesión",
+        "sessions": "Sesiones",
+        "energy": "Energía (kWh)",
+        "duration": "Duración",
+        "avgCharging": "Media de carga (kW)",
+        "avgSession": "Media de sesión (kW)",
+        "peak": "Pico (kW)"
+      },
+      "viewDetails": "Ver detalles de la sesión"
     },
     "exportData": {
       "dateRangeLabel": "Selecciona un intervalo de fechas",

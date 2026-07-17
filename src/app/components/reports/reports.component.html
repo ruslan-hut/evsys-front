@@ -10,5 +10,10 @@
         <app-station-uptime></app-station-uptime>
       </ng-template>
     </mat-tab>
+    <mat-tab [label]="'reports.tabs.power' | translate">
+      <ng-template matTabContent>
+        <app-power-analysis></app-power-analysis>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </div>

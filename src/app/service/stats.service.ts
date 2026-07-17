@@ -9,6 +9,7 @@ import {Group} from "../models/group";
 import {StationUptime} from "../models/station-uptime";
 import {StationStatus} from "../models/station-status";
 import {ExportData} from "../models/export-data";
+import {PowerGroupBy, PowerStats} from "../models/power-stats";
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +97,31 @@ export class StatsService {
     }
 
     return this.http.get<StationUptime[]>(environment.apiUrl + environment.report + environment.uptimeReport, { params })
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
+  /**
+   * Power statistics from the meter values of finished sessions.
+   *
+   * `group` is optional here, unlike the totals reports: omitting it reports
+   * every session rather than defaulting to a group.
+   */
+  getPowerReport(from: Date, to: Date, groupBy: PowerGroupBy, chargePointId?: string, group?: string): Observable<PowerStats[]> {
+    let params = new HttpParams()
+      .set('from', this.formatDateRFC3339(from))
+      .set('to', this.formatDateRFC3339EndOfDay(to))
+      .set('group_by', groupBy);
+
+    if (chargePointId) {
+      params = params.set('charge_point_id', chargePointId);
+    }
+    if (group) {
+      params = params.set('group', group);
+    }
+
+    return this.http.get<PowerStats[]>(environment.apiUrl + environment.report + environment.powerReport, { params })
       .pipe(
         catchError(this.errorHandler.bind(this))
       );
