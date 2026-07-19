@@ -69,7 +69,33 @@ Both use `https://wattbrews.me/api/v1` API and `wss://wattbrews.me/ws` WebSocket
 
 ## Related Repositories
 
-- **Backend**: `~/projects/evsys-back` - API and WebSocket server powering this frontend
+| Repository | Local path | Role |
+|---|---|---|
+| evsys-back | `~/projects/evsys-back` | API and WebSocket server powering this frontend |
+| evsys | `~/projects/evsys` | OCPP central system; original source of charge point and transaction data |
+| Wattbrews | `~/projects/Wattbrews` | Android app on the same API |
+| wattbrews-web | `~/projects/wattbrews-web` | Second Angular web app on the same API |
+
+This app is **not the only client** of evsys-back. Wattbrews (Android) and
+wattbrews-web call the same endpoints, and the Android app ships through the
+Play Store where old versions stay in use. A change needing a different
+response shape has to be made additively in the backend - never by editing an
+existing shape.
+
+Data flows evsys -> MongoDB -> evsys-back -> here, and the models are
+hand-copied at each hop. A field present in the database is not necessarily
+declared in `~/projects/evsys-back/entity/`, and one declared there is not
+necessarily sent by the endpoint this app calls - the transaction detail
+endpoint returns the `ChargeState` DTO rather than the full transaction. When a
+value renders empty, check each hop before assuming the frontend is at fault.
+
+### Environment files
+
+`src/environments/environment.development.ts` is gitignored because it carries
+real Firebase credentials. Copy it from `environment.development.example.ts`
+and keep its keys in step with `environment.ts` - both files must satisfy the
+same shape, so a key present in one and missing from the other fails the build
+with TS2339.
 
 ## PWA Support
 
