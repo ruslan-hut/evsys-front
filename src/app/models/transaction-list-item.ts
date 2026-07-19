@@ -6,6 +6,10 @@ export interface TransactionMeterValue {
   transaction_id?: number;
   value: number;
   power_rate: number;
+  // power_rate expressed in kW; power_active is what the charger reported,
+  // where power_rate may be derived from consecutive meter readings.
+  power_rate_wh?: number;
+  power_active?: number;
   battery_level?: number;
   consumed_energy?: number;
   price: number;
