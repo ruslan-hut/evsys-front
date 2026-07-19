@@ -720,6 +720,8 @@
     "location": "Ubicación",
     "latitude": "Latitud",
     "longitude": "Longitud",
+    "triggerMessage": "Valores del contador",
+    "triggerMessageHint": "Solicitar lecturas durante una sesión",
     "description": "Descripción",
     "close": "Cerrar",
     "save": "Guardar",

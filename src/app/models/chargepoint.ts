@@ -20,5 +20,8 @@ export interface Chargepoint {
   access_type: string,
   access_level: number,
   location: Location,
-  connectors: Connector[]
+  connectors: Connector[],
+  // Controls whether the central system triggers MeterValues during a
+  // transaction. Optional: omitting it on save leaves the stored value alone.
+  trigger_message?: boolean
 }

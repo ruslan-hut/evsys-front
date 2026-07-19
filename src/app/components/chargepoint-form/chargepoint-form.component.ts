@@ -12,6 +12,7 @@ import { ConnectorFormComponent } from '../connector-form/connector-form.compone
 import { MatButton } from '@angular/material/button';
 import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
     selector: 'app-chargepoint-form',
@@ -19,7 +20,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     styleUrls: ['./chargepoint-form.component.css'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, FormsModule, MatInput, CdkTextareaAutosize, ConnectorFormComponent, MatCardActions, MatButton, SortConnectorsPipe, TranslatePipe]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, FormsModule, MatInput, CdkTextareaAutosize, ConnectorFormComponent, MatCardActions, MatButton, SortConnectorsPipe, TranslatePipe, MatSlideToggle]
 })
 export class ChargepointFormComponent implements OnInit {
   private readonly chargePointService = inject(ChargepointService);

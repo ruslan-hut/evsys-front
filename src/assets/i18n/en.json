@@ -720,6 +720,8 @@
     "location": "Location",
     "latitude": "Latitude",
     "longitude": "Longitude",
+    "triggerMessage": "Meter values",
+    "triggerMessageHint": "Request readings during a session",
     "description": "Description",
     "close": "Close",
     "save": "Save",

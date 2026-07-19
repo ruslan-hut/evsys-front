@@ -49,6 +49,13 @@
           </div>
         </div>
         <div class="form-row form-row--inline">
+          <label for="cp-trigger-message">{{ 'chargepointForm.triggerMessage' | translate }}</label>
+          <mat-slide-toggle id="cp-trigger-message" color="primary"
+                            [(ngModel)]="chargePoint.trigger_message">
+            {{ 'chargepointForm.triggerMessageHint' | translate }}
+          </mat-slide-toggle>
+        </div>
+        <div class="form-row form-row--inline">
           <label for="cp-description">{{ 'chargepointForm.description' | translate }}</label>
           <textarea id="cp-description" class="equal-height-input"
                     matInput
