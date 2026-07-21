@@ -225,6 +225,8 @@
     "duration": "Duración:",
     "powerCurrent": "Potencia (actual):",
     "kw": "kW",
+    "powerLimit": "Límite de potencia:",
+    "amp": "A",
     "consumed": "Consumido:",
     "kwh": "kWh",
     "price": "Precio:",

@@ -13,6 +13,7 @@ export interface Transaction{
   duration: number,
   consumed: number,
   power_rate: number,
+  power_limit: number,
   price: number,
   status: string,
   is_charging: boolean,
