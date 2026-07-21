@@ -253,18 +253,6 @@ export class TransactionDetailComponent implements OnInit {
       {name: this.translate.instant('transactionDetail.energySeries'), series: energySeries},
       {name: this.translate.instant('transactionDetail.powerSeries'), series: powerSeries}
     ];
-
-    // Only chargers that report Power.Active.Import populate this; plotting it
-    // unconditionally would draw a flat zero line for the rest.
-    if (this.transaction.meter_values.some(mv => (mv.power_active ?? 0) > 0)) {
-      this.chartData.push({
-        name: this.translate.instant('transactionDetail.reportedPowerSeries'),
-        series: this.transaction.meter_values.map((mv, index) => ({
-          name: this.formatChartTime(mv.time || mv.timestamp, index),
-          value: (mv.power_active ?? 0) / 1000
-        }))
-      });
-    }
   }
 
   formatChartTime(timestamp: string | undefined, index: number): string {

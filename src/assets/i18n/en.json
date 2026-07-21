@@ -384,7 +384,6 @@
     "chartTime": "Time",
     "energySeries": "Energy (kWh)",
     "powerSeries": "Power (kW)",
-    "reportedPowerSeries": "Reported power (kW)",
     "paymentOrders": "Payment Orders ({{count}})",
     "orderHeaders": {
       "order": "Order",
