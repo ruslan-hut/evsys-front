@@ -212,6 +212,7 @@
     "statusTime": "Status time:",
     "info": "info:",
     "kwatt": "kWatt:",
+    "powerLimit": "Current limit (A):",
     "transaction": "Transaction:",
     "start": "Start",
     "stop": "Stop",
