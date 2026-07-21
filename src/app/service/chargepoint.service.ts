@@ -154,8 +154,9 @@ export class ChargepointService implements OnDestroy {
   }
 
   private errorHandler(err: HttpErrorResponse) {
-    this.errorService.handle(err.message);
-    return throwError(() => err.message);
+    const message = err.error?.status_message ?? err.message;
+    this.errorService.handle(message);
+    return throwError(() => message);
   }
 
   onStop(): void {
