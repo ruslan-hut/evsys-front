@@ -16,6 +16,7 @@ import {getConnectorName} from '../../models/connector';
 import {ConfigKey, CsConfigResponse} from '../../models/cs-config-response';
 import {ConnectorProfile, CsCompositeSchedule, ProfileAgreement} from '../../models/cs-composite-schedule';
 import {ChargepointService} from '../../service/chargepoint.service';
+import {TimeService} from '../../service/time.service';
 
 // The keys that decide whether a charging profile can be enforced at all: a
 // stack level below the one the central system asks for, or a charge point that
@@ -48,11 +49,12 @@ export class ChargepointProfileComponent implements OnChanges {
   private readonly chargePointService = inject(ChargepointService);
   private readonly translate = inject(TranslateService);
   private readonly cdr = inject(ChangeDetectorRef);
+  readonly timeService = inject(TimeService);
 
   @Input({required: true}) chargePoint!: Chargepoint;
 
   connectorProfiles: ConnectorProfile[] = [];
-  profileColumns: string[] = ['connector', 'status', 'expected', 'reported', 'agreement'];
+  profileColumns: string[] = ['connector', 'expected', 'recorded', 'reported', 'agreement'];
   smartChargingConfig: ConfigKey[] = [];
   loadingConfig = false;
 
@@ -60,10 +62,12 @@ export class ChargepointProfileComponent implements OnChanges {
     this.resetConnectorProfiles();
   }
 
-  // Seeds a row per connector with what the central system believes it set. The
-  // charge point's own view stays empty until it is asked: this page is opened
-  // to check status, and firing OCPP commands on every visit would make it slow
-  // for exactly the offline charge points most worth looking at.
+  // Seeds a row per connector from data already on the charge point document:
+  // what the central system asked for, and what the charge point answered at the
+  // time. The charge point's *current* view stays empty until it is asked - this
+  // page is opened to check status, and firing OCPP commands on every visit
+  // would make it slow for exactly the offline charge points most worth looking
+  // at.
   private resetConnectorProfiles(): void {
     this.smartChargingConfig = [];
     this.connectorProfiles = (this.chargePoint?.connectors ?? []).map(connector => ({
@@ -72,9 +76,20 @@ export class ChargepointProfileComponent implements OnChanges {
       status: connector.status,
       transactionId: connector.current_transaction_id,
       expectedLimit: connector.current_power_limit,
+      lastProfile: connector.last_profile,
       agreement: 'unknown' as ProfileAgreement,
       loading: false
     }));
+  }
+
+  // The stored verdict answers "did this limit land" without asking the charge
+  // point anything. It is deliberately not folded into the live agreement: a
+  // profile accepted an hour ago may since have been cleared by a reboot, so
+  // saying so would overstate what is known.
+  recordedState(profile: ConnectorProfile): ProfileAgreement {
+    const status = profile.lastProfile?.status;
+    if (!status) return 'unknown';
+    return status === 'Accepted' ? 'match' : 'not-enforced';
   }
 
   get canRead(): boolean {

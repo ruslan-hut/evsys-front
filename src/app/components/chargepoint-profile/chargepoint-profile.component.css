@@ -91,3 +91,14 @@ mat-card {
     font-size: 12px;
   }
 }
+
+.recorded-cell {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+
+.recorded-detail {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}

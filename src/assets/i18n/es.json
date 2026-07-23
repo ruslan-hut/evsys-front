@@ -835,7 +835,6 @@
     "title": "Perfil de carga",
     "hint": "Lo que el sistema central cree haber fijado, frente a lo que el cargador declara aplicar. Un perfil aceptado solo queda guardado; esto es el cargador resolviendo todos los perfiles que tiene.",
     "connector": "Conector",
-    "status": "Estado",
     "centralSystem": "Sistema central",
     "chargePoint": "Cargador",
     "agreement": "Concordancia",
@@ -850,6 +849,9 @@
       "mismatch": "Difiere",
       "not-enforced": "No aplicado",
       "unknown": "Sin comprobar"
-    }
+    },
+    "recorded": "Registrado",
+    "stackLevel": "nivel",
+    "neverSent": "nunca enviado"
   }
 }

@@ -835,7 +835,6 @@
     "title": "Charging Profile",
     "hint": "What the central system believes it set, against what the charge point reports it is enforcing. An accepted profile is only stored — this is the charge point resolving every profile it holds.",
     "connector": "Connector",
-    "status": "Status",
     "centralSystem": "Central system",
     "chargePoint": "Charge point",
     "agreement": "Agreement",
@@ -850,6 +849,9 @@
       "mismatch": "Differs",
       "not-enforced": "Not enforced",
       "unknown": "Not checked"
-    }
+    },
+    "recorded": "Recorded",
+    "stackLevel": "level",
+    "neverSent": "never sent"
   }
 }

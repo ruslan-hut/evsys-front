@@ -1,3 +1,5 @@
+import {ProfileVerdict} from './connector';
+
 // Response to GetCompositeSchedule: the charge point's own resolution of every
 // charging profile installed on a connector. It is the only statement the
 // charge point makes about the limit it is actually enforcing, so it is what a
@@ -36,9 +38,13 @@ export interface ConnectorProfile {
   connectorName: string,
   status: string,
   transactionId: number,
-  // what the central system recorded when it installed the limit
+  // what the central system asked for when it installed the limit
   expectedLimit: number,
-  // what the charge point reports it is enforcing
+  // what the charge point answered at that moment, stored on the connector.
+  // Available without asking the charge point anything.
+  lastProfile?: ProfileVerdict,
+  // what the charge point reports it is enforcing right now; only filled in
+  // once an operator asks for it
   reportedLimit?: number,
   reportedUnit?: string,
   agreement: ProfileAgreement,
