@@ -14,6 +14,7 @@ import { CSService } from '../../service/cs.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatAccordion } from '@angular/material/expansion';
 import { ConnectorInfoComponent } from '../connector-info/connector-info.component';
+import { ChargepointProfileComponent } from '../chargepoint-profile/chargepoint-profile.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { SortConnectorsPipe } from '../pipes/sortConnectorsPipe';
@@ -25,7 +26,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   styleUrls: ['./chargepoint-info.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe, TranslatePipe]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, ChargepointProfileComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe, TranslatePipe]
 })
 export class ChargepointInfoComponent implements OnInit, OnDestroy {
   private readonly chargePointService = inject(ChargepointService);

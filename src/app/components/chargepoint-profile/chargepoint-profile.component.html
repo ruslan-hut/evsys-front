@@ -1,0 +1,89 @@
+<mat-card class="profile-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'chargepointProfile.title' | translate }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="profile-hint">{{ 'chargepointProfile.hint' | translate }}</p>
+
+    @if (smartChargingConfig.length > 0) {
+      <div class="smart-charging-keys">
+        @for (key of smartChargingConfig; track key.key) {
+          <div class="smart-charging-key">
+            <span class="key-name">{{ key.key }}</span>
+            <span class="key-value">{{ key.value }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    @if (connectorProfiles.length > 0) {
+      <table mat-table [dataSource]="connectorProfiles" class="profile-table">
+        <ng-container matColumnDef="connector">
+          <th mat-header-cell *matHeaderCellDef>{{ 'chargepointProfile.connector' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.connectorName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>{{ 'chargepointProfile.status' | translate }}</th>
+          <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="expected">
+          <th mat-header-cell *matHeaderCellDef>{{ 'chargepointProfile.centralSystem' | translate }}</th>
+          <td mat-cell *matCellDef="let row">
+            @if (row.expectedLimit > 0) {
+              {{ row.expectedLimit }} A
+            } @else {
+              <span class="muted">{{ 'chargepointProfile.noLimit' | translate }}</span>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reported">
+          <th mat-header-cell *matHeaderCellDef>{{ 'chargepointProfile.chargePoint' | translate }}</th>
+          <td mat-cell *matCellDef="let row">
+            @if (row.loading) {
+              <mat-spinner [diameter]="18" color="primary"></mat-spinner>
+            } @else if (row.reportedLimit !== undefined) {
+              {{ row.reportedLimit }} {{ row.reportedUnit }}
+            } @else if (row.error) {
+              <span class="muted">{{ row.error }}</span>
+            } @else {
+              <span class="muted">&mdash;</span>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="agreement">
+          <th mat-header-cell *matHeaderCellDef>{{ 'chargepointProfile.agreement' | translate }}</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="agreement-cell">
+              <mat-icon [class]="'agreement-' + row.agreement" aria-hidden="true">{{ agreementIcon(row.agreement) }}</mat-icon>
+              <span>{{ 'chargepointProfile.agreementState.' + row.agreement | translate }}</span>
+              <button mat-button color="primary"
+                      [disabled]="row.loading || !chargePoint.is_online"
+                      (click)="readProfile(row)">
+                {{ 'chargepointProfile.read' | translate }}
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="profileColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: profileColumns;"></tr>
+      </table>
+    } @else {
+      <p class="muted">{{ 'chargepointProfile.noConnectors' | translate }}</p>
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-flat-button color="primary" [disabled]="!canRead" (click)="readAll()">
+      {{ 'chargepointProfile.readAll' | translate }}
+    </button>
+    @if (!chargePoint.is_online) {
+      <span class="muted offline-note">{{ 'chargepointProfile.offline' | translate }}</span>
+    }
+  </mat-card-actions>
+</mat-card>

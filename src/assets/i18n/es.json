@@ -830,5 +830,26 @@
     "loadTransaction": "No se pudieron cargar los detalles de la transacción",
     "sendTransactionEmail": "No se pudo enviar el correo de la transacción",
     "savePdf": "No se pudo preparar el PDF de la transacción"
+  },
+  "chargepointProfile": {
+    "title": "Perfil de carga",
+    "hint": "Lo que el sistema central cree haber fijado, frente a lo que el cargador declara aplicar. Un perfil aceptado solo queda guardado; esto es el cargador resolviendo todos los perfiles que tiene.",
+    "connector": "Conector",
+    "status": "Estado",
+    "centralSystem": "Sistema central",
+    "chargePoint": "Cargador",
+    "agreement": "Concordancia",
+    "read": "Leer",
+    "readAll": "Leer perfiles",
+    "readFailed": "Sin respuesta legible",
+    "noLimit": "sin límite",
+    "noConnectors": "No hay conectores registrados para este cargador.",
+    "offline": "El cargador está desconectado.",
+    "agreementState": {
+      "match": "Aplicado",
+      "mismatch": "Difiere",
+      "not-enforced": "No aplicado",
+      "unknown": "Sin comprobar"
+    }
   }
 }

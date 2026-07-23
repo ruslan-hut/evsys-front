@@ -830,5 +830,26 @@
     "loadTransaction": "Failed to load transaction details",
     "sendTransactionEmail": "Failed to send transaction email",
     "savePdf": "Failed to prepare the transaction PDF"
+  },
+  "chargepointProfile": {
+    "title": "Charging Profile",
+    "hint": "What the central system believes it set, against what the charge point reports it is enforcing. An accepted profile is only stored — this is the charge point resolving every profile it holds.",
+    "connector": "Connector",
+    "status": "Status",
+    "centralSystem": "Central system",
+    "chargePoint": "Charge point",
+    "agreement": "Agreement",
+    "read": "Read",
+    "readAll": "Read profiles",
+    "readFailed": "No readable answer",
+    "noLimit": "none set",
+    "noConnectors": "No connectors registered for this charge point.",
+    "offline": "Charge point is offline.",
+    "agreementState": {
+      "match": "Enforced",
+      "mismatch": "Differs",
+      "not-enforced": "Not enforced",
+      "unknown": "Not checked"
+    }
   }
 }

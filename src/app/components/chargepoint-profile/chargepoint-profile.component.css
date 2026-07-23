@@ -1,0 +1,93 @@
+mat-card {
+  margin: var(--spacing-sm);
+}
+
+.profile-hint {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.smart-charging-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.smart-charging-key {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-background-light);
+}
+
+.smart-charging-key .key-name {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  word-break: break-word;
+}
+
+.smart-charging-key .key-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.profile-table {
+  width: 100%;
+  background: transparent;
+}
+
+.profile-table td {
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.agreement-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.muted {
+  color: var(--color-text-secondary);
+}
+
+.offline-note {
+  font-size: 13px;
+  margin-left: var(--spacing-sm);
+}
+
+.agreement-match {
+  color: var(--color-success);
+}
+
+/* The central system installed a limit the charge point does not report, or
+   reports differently: whatever the session is doing, it is not doing it
+   because of us. */
+.agreement-mismatch,
+.agreement-not-enforced {
+  color: var(--color-warn, #d32f2f);
+}
+
+.agreement-unknown {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 599px) {
+  .smart-charging-keys {
+    flex-direction: column;
+  }
+
+  .agreement-cell {
+    flex-wrap: wrap;
+  }
+
+  .profile-table td,
+  .profile-table th {
+    padding: var(--spacing-xs);
+    font-size: 12px;
+  }
+}
