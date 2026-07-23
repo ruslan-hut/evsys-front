@@ -387,6 +387,10 @@
     "chartTime": "Time",
     "energySeries": "Energy (kWh)",
     "powerSeries": "Power (kW)",
+    "currentDelivered": "Current Delivered",
+    "currentAxis": "Current (A)",
+    "currentImportSeries": "Drawn (A)",
+    "currentOfferedSeries": "Offered (A)",
     "paymentOrders": "Payment Orders ({{count}})",
     "orderHeaders": {
       "order": "Order",

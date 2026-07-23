@@ -387,6 +387,10 @@
     "chartTime": "Tiempo",
     "energySeries": "Energía (kWh)",
     "powerSeries": "Potencia (kW)",
+    "currentDelivered": "Corriente entregada",
+    "currentAxis": "Corriente (A)",
+    "currentImportSeries": "Consumida (A)",
+    "currentOfferedSeries": "Ofrecida (A)",
     "paymentOrders": "Órdenes de pago ({{count}})",
     "orderHeaders": {
       "order": "Pedido",

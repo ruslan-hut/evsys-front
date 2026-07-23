@@ -257,6 +257,28 @@
           </div>
         }
 
+        @if (currentChartData.length > 0) {
+          <mat-divider class="section-divider"></mat-divider>
+
+          <h3>{{ 'transactionDetail.currentDelivered' | translate }}</h3>
+          <div class="chart-container">
+            <ngx-charts-line-chart
+              [results]="currentChartData"
+              [scheme]="currentColorScheme"
+              [animations]="false"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="'transactionDetail.chartTime' | translate"
+              [yAxisLabel]="'transactionDetail.currentAxis' | translate"
+              [xAxisTickFormatting]="xAxisTickFormatting"
+              [autoScale]="true"
+              [legend]="true">
+            </ngx-charts-line-chart>
+          </div>
+        }
+
         @if (getPaymentOrders().length > 0) {
           <mat-divider class="section-divider"></mat-divider>
 

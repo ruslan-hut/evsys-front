@@ -104,6 +104,17 @@ export class TransactionDetailComponent implements OnInit {
     domain: ['#3f51b5', '#4caf50']
   };
 
+  // Current drawn against current offered, on its own chart because amperes and
+  // kilowatts do not share an axis. The pair is what tells a session limited by
+  // the load balancer apart from one limited by the car or by the hardware.
+  currentChartData: ChartSeries[] = [];
+  currentColorScheme: Color = {
+    name: 'current',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#e65100', '#9e9e9e']
+  };
+
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
@@ -234,8 +245,10 @@ export class TransactionDetailComponent implements OnInit {
   prepareChartData(): void {
     if (!this.transaction?.meter_values?.length) {
       this.chartData = [];
+      this.currentChartData = [];
       return;
     }
+    this.prepareCurrentChartData();
 
     const energySeries: ChartDataPoint[] = this.transaction.meter_values.map((mv, index) => ({
       name: this.formatChartTime(mv.time || mv.timestamp, index),
@@ -253,6 +266,40 @@ export class TransactionDetailComponent implements OnInit {
       {name: this.translate.instant('transactionDetail.energySeries'), series: energySeries},
       {name: this.translate.instant('transactionDetail.powerSeries'), series: powerSeries}
     ];
+  }
+
+  // Only charted when the charge point actually reported current: sessions
+  // recorded before the backend stored these read as a flat zero line, which
+  // would look like a fault rather than missing data.
+  private prepareCurrentChartData(): void {
+    const meterValues = this.transaction?.meter_values ?? [];
+    const hasCurrent = meterValues.some(mv => (mv.current_import ?? 0) > 0 || (mv.current_offered ?? 0) > 0);
+    if (!hasCurrent) {
+      this.currentChartData = [];
+      return;
+    }
+
+    const series: ChartSeries[] = [{
+      name: this.translate.instant('transactionDetail.currentImportSeries'),
+      series: meterValues.map((mv, index) => ({
+        name: this.formatChartTime(mv.time || mv.timestamp, index),
+        value: mv.current_import ?? 0
+      }))
+    }];
+
+    // The offered line is the charge point restating its own limit, so it is
+    // only worth drawing when the charge point reports it.
+    if (meterValues.some(mv => (mv.current_offered ?? 0) > 0)) {
+      series.push({
+        name: this.translate.instant('transactionDetail.currentOfferedSeries'),
+        series: meterValues.map((mv, index) => ({
+          name: this.formatChartTime(mv.time || mv.timestamp, index),
+          value: mv.current_offered ?? 0
+        }))
+      });
+    }
+
+    this.currentChartData = series;
   }
 
   formatChartTime(timestamp: string | undefined, index: number): string {

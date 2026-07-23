@@ -10,6 +10,14 @@ export interface TransactionMeterValue {
   // where power_rate may be derived from consecutive meter readings.
   power_rate_wh?: number;
   power_active?: number;
+  // Measured on the vehicle side of the charge point. current_offered is the
+  // limit the charger advertises to the car, so comparing it against the
+  // session's power_limit shows whether the load balancer's limit landed, and
+  // against current_import whether the car drew what it was offered. Absent on
+  // samples stored before the backend recorded them.
+  voltage?: number;
+  current_import?: number;
+  current_offered?: number;
   battery_level?: number;
   consumed_energy?: number;
   price: number;
