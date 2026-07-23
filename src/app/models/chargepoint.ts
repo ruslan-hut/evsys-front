@@ -20,6 +20,12 @@ export interface Chargepoint {
   access_type: string,
   access_level: number,
   location: Location,
+  // Groups the charge point under a site (the locations collection); empty when
+  // it is not assigned to one.
+  location_id?: string,
+  // Whether the central system manages this charge point's power limits. Only
+  // smart-charging charge points have a profile verdict worth showing.
+  smart_charging?: boolean,
   connectors: Connector[],
   // Controls whether the central system triggers MeterValues during a
   // transaction. Optional: omitting it on save leaves the stored value alone.

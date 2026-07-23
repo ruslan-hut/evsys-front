@@ -8,6 +8,7 @@ export const environment = {
   readPayLog: '/log/pay',
   chargePointList: '/chp',
   chargePoint: '/point/',
+  locations: '/locations',
   transactionInfo: '/transactions/info/',
   transactionsList: '/transactions/list',
   recentChargePoints: '/transactions/recent',

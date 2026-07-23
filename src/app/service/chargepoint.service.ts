@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 import { Chargepoint } from '../models/chargepoint';
+import { ChargingLocation } from '../models/charging-location';
 import { ErrorService } from './error.service';
 import { environment } from '../../environments/environment';
 import { WebsocketService } from './websocket.service';
@@ -93,6 +94,13 @@ export class ChargepointService implements OnDestroy {
 
   getChargePoint(id: string): Observable<Chargepoint> {
     return this.http.get<Chargepoint>(environment.apiUrl + environment.chargePoint + id)
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
+  getLocations(): Observable<ChargingLocation[]> {
+    return this.http.get<ChargingLocation[]>(environment.apiUrl + environment.locations)
       .pipe(
         catchError(this.errorHandler.bind(this))
       );

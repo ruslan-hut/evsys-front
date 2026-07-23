@@ -32,6 +32,9 @@
             <button mat-menu-item (click)="navigateTo('/reports?tab=power')">
               <mat-icon>bolt</mat-icon><span>{{ 'header.powerAnalysis' | translate }}</span>
             </button>
+            <button mat-menu-item (click)="navigateTo('/reports?tab=smart')">
+              <mat-icon>ev_station</mat-icon><span>{{ 'header.smartCharging' | translate }}</span>
+            </button>
             <button mat-menu-item (click)="navigateTo('/export')">
               <mat-icon>file_download</mat-icon><span>{{ 'header.exportData' | translate }}</span>
             </button>
@@ -127,6 +130,9 @@
               </button>
               <button mat-menu-item (click)="navigateTo('/reports?tab=power')">
                 <mat-icon>bolt</mat-icon><span>{{ 'header.powerAnalysis' | translate }}</span>
+              </button>
+              <button mat-menu-item (click)="navigateTo('/reports?tab=smart')">
+                <mat-icon>ev_station</mat-icon><span>{{ 'header.smartCharging' | translate }}</span>
               </button>
               <mat-divider></mat-divider>
               <button mat-menu-item (click)="navigateTo('/export')">

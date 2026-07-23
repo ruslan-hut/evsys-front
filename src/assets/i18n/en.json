@@ -45,6 +45,7 @@
     "consumption": "Consumption",
     "uptime": "Uptime",
     "powerAnalysis": "Power analysis",
+    "smartCharging": "Smart charging",
     "exportData": "Export data",
     "management": "Management",
     "users": "Users",
@@ -439,7 +440,8 @@
     "tabs": {
       "stationStatus": "Station Status",
       "uptime": "Uptime Report",
-      "power": "Power Analysis"
+      "power": "Power Analysis",
+      "smartCharging": "Smart Charging"
     },
     "stationStatus": {
       "online": "Online",
@@ -852,6 +854,16 @@
     },
     "recorded": "Recorded",
     "stackLevel": "level",
+    "neverSent": "never sent"
+  },
+  "smartCharging": {
+    "location": "Location",
+    "allLocations": "All locations",
+    "refresh": "Refresh",
+    "empty": "No smart-charging charge points for this location.",
+    "offline": "offline",
+    "asked": "asked",
+    "noLimit": "no limit",
     "neverSent": "never sent"
   }
 }

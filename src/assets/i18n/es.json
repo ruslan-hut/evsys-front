@@ -45,6 +45,7 @@
     "consumption": "Consumo",
     "uptime": "Disponibilidad",
     "powerAnalysis": "Análisis de potencia",
+    "smartCharging": "Carga inteligente",
     "exportData": "Exportar datos",
     "management": "Administración",
     "users": "Usuarios",
@@ -439,7 +440,8 @@
     "tabs": {
       "stationStatus": "Estado de estaciones",
       "uptime": "Informe de disponibilidad",
-      "power": "Análisis de potencia"
+      "power": "Análisis de potencia",
+      "smartCharging": "Carga inteligente"
     },
     "stationStatus": {
       "online": "En línea",
@@ -852,6 +854,16 @@
     },
     "recorded": "Registrado",
     "stackLevel": "nivel",
+    "neverSent": "nunca enviado"
+  },
+  "smartCharging": {
+    "location": "Ubicación",
+    "allLocations": "Todas las ubicaciones",
+    "refresh": "Actualizar",
+    "empty": "No hay cargadores con carga inteligente en esta ubicación.",
+    "offline": "desconectado",
+    "asked": "solicitado",
+    "noLimit": "sin límite",
     "neverSent": "nunca enviado"
   }
 }

@@ -7,9 +7,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { StationStatusComponent } from './station-status/station-status.component';
 import { StationUptimeComponent } from './station-uptime/station-uptime.component';
 import { PowerAnalysisComponent } from './power-analysis/power-analysis.component';
+import { SmartChargingComponent } from './smart-charging/smart-charging.component';
 
 /** Query-param values for each tab, in tab order. */
-const TAB_KEYS = ['status', 'uptime', 'power'] as const;
+const TAB_KEYS = ['status', 'uptime', 'power', 'smart'] as const;
 
 type TabKey = typeof TAB_KEYS[number];
 
@@ -26,6 +27,7 @@ type TabKey = typeof TAB_KEYS[number];
     StationStatusComponent,
     StationUptimeComponent,
     PowerAnalysisComponent,
+    SmartChargingComponent,
     TranslatePipe
   ]
 })
