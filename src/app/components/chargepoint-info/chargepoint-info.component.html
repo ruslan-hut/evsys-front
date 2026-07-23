@@ -89,6 +89,11 @@
       <button mat-stroked-button (click)="close()">{{ 'common.close' | translate }}</button>
       <button mat-flat-button color="primary" (click)="reboot(1)">{{ 'chargepointInfo.softReset' | translate }}</button>
       <button mat-flat-button color="primary" (click)="reboot(0)">{{ 'chargepointInfo.hardReset' | translate }}</button>
+      @if (accountService.isAdmin) {
+        <button mat-stroked-button [disabled]="!chargePoint.is_online" (click)="requestDiagnostics()">
+          {{ 'diagnostics.button' | translate }}
+        </button>
+      }
       <div class="flex-spacer"></div>
       @if (chargePoint.is_online) {
         <mat-icon class="status-online" aria-hidden="true">cloud_queue</mat-icon>

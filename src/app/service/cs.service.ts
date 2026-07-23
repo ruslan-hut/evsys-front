@@ -53,6 +53,12 @@ export class CSService {
     return this.sendCsCommand(chargePointId, 0, "Reset", "Hard")
   }
 
+  // Tells the charge point to upload its diagnostics file to location, an
+  // FTP/HTTP URL the charge point itself must be able to reach.
+  getDiagnostics(chargePointId: string, location: string): Observable<CsCommandResponse> {
+    return this.sendCsCommand(chargePointId, 0, "GetDiagnostics", location)
+  }
+
   processCentralSystemResponse(response: CsCommandResponse, description: string) {
     const resp = (JSON.parse(response.info) as CsResponse);
     if (resp.status == "Accepted" && response.status == 'success') {

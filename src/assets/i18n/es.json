@@ -865,5 +865,17 @@
     "asked": "solicitado",
     "noLimit": "sin límite",
     "neverSent": "nunca enviado"
+  },
+  "diagnostics": {
+    "button": "Diagnóstico",
+    "title": "Solicitar diagnóstico",
+    "hint": "El cargador {{id}} subirá su archivo de diagnóstico a la ubicación indicada. Debe ser una URL accesible por el propio cargador (normalmente FTP).",
+    "label": "Ubicación de subida",
+    "required": "Se requiere una ubicación de subida",
+    "invalid": "Introduce una URL ftp:// o http(s):// válida",
+    "request": "Solicitar",
+    "uploading": "El cargador subirá {{file}}",
+    "nothing": "El cargador no tiene diagnóstico que subir",
+    "failed": "La solicitud de diagnóstico no fue aceptada"
   }
 }

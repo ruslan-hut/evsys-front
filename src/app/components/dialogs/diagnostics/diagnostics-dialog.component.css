@@ -1,0 +1,10 @@
+.diagnostics-dialog-hint {
+  margin: 0 0 var(--spacing-md);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.diagnostics-dialog-field {
+  width: 100%;
+  min-width: 320px;
+}

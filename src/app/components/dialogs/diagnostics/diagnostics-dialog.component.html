@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>{{ 'diagnostics.title' | translate }}</h1>
+
+<div mat-dialog-content>
+  <p class="diagnostics-dialog-hint">
+    {{ 'diagnostics.hint' | translate:{ id: data.chargePointId } }}
+  </p>
+
+  <mat-form-field appearance="outline" class="diagnostics-dialog-field">
+    <mat-label>{{ 'diagnostics.label' | translate }}</mat-label>
+    <input matInput type="url" [formControl]="location" (keydown.enter)="send()"
+           placeholder="ftp://user:pass@host/path/" required />
+    @if (location.hasError('required')) {
+      <mat-error>{{ 'diagnostics.required' | translate }}</mat-error>
+    } @else if (location.hasError('pattern')) {
+      <mat-error>{{ 'diagnostics.invalid' | translate }}</mat-error>
+    }
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()">{{ 'common.cancel' | translate }}</button>
+  <button mat-button color="primary" [disabled]="location.invalid" (click)="send()">
+    {{ 'diagnostics.request' | translate }}
+  </button>
+</div>

@@ -865,5 +865,17 @@
     "asked": "asked",
     "noLimit": "no limit",
     "neverSent": "never sent"
+  },
+  "diagnostics": {
+    "button": "Diagnostics",
+    "title": "Request diagnostics",
+    "hint": "Charge point {{id}} will upload its diagnostics file to the location below. It must be a URL the charge point itself can reach (usually FTP).",
+    "label": "Upload location",
+    "required": "An upload location is required",
+    "invalid": "Enter a valid ftp:// or http(s):// URL",
+    "request": "Request",
+    "uploading": "Charge point will upload {{file}}",
+    "nothing": "Charge point reported no diagnostics to upload",
+    "failed": "Diagnostics request was not accepted"
   }
 }

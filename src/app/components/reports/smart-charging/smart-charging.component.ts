@@ -2,8 +2,8 @@ import {
   Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject
 } from '@angular/core';
 import {Router} from '@angular/router';
-import {Subject, forkJoin} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, combineLatest, of} from 'rxjs';
+import {catchError, takeUntil} from 'rxjs/operators';
 
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatProgressBar} from '@angular/material/progress-bar';
@@ -98,15 +98,18 @@ export class SmartChargingComponent implements OnInit, OnDestroy {
 
   loadData(): void {
     this.loading = true;
-    // Charge points come from the live list; locations name the sites the
-    // filter groups by. Both are needed before the view can render.
-    forkJoin({
-      chargePoints: this.chargePointService.getChargePoints(),
-      locations: this.chargePointService.getLocations()
-    })
+    // getChargePoints() is a live BehaviorSubject that never completes, so
+    // combineLatest - not forkJoin - is what emits here; it also keeps the view
+    // current as charge points change over the websocket. Locations are a
+    // one-shot lookup for the filter names; a failure there must not blank the
+    // charge points, which still group by location_id on their own.
+    combineLatest([
+      this.chargePointService.getChargePoints(),
+      this.chargePointService.getLocations().pipe(catchError(() => of([])))
+    ])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({chargePoints, locations}) => {
+        next: ([chargePoints, locations]) => {
           this.build(chargePoints, locations ?? []);
           this.loading = false;
           this.cdr.markForCheck();
