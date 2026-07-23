@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-content>
+    <div class="toolbar">
+      <mat-form-field appearance="outline" class="location-filter">
+        <mat-label>{{ 'smartCharging.location' | translate }}</mat-label>
+        <mat-select [value]="selectedLocation" (valueChange)="onLocationChange($event)">
+          <mat-option [value]="allLocations">{{ 'smartCharging.allLocations' | translate }}</mat-option>
+          @for (loc of locations; track loc.id) {
+            <mat-option [value]="loc.id">{{ loc.name || loc.id }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="summary">
+        <span class="summary-item summary-enforced">
+          <mat-icon>check_circle</mat-icon> {{ enforcedCount }}
+        </span>
+        <span class="summary-item summary-not-enforced">
+          <mat-icon>error</mat-icon> {{ notEnforcedCount }}
+        </span>
+        <span class="summary-item summary-no-limit">
+          <mat-icon>remove_circle_outline</mat-icon> {{ noLimitCount }}
+        </span>
+      </div>
+
+      <button mat-icon-button (click)="refresh()" [matTooltip]="'smartCharging.refresh' | translate">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+
+    @if (loading) {
+      <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+    }
+
+    @if (chargers.length === 0 && !loading) {
+      <p class="muted empty">{{ 'smartCharging.empty' | translate }}</p>
+    }
+
+    @for (charger of chargers; track charger.chargePointId) {
+      <div class="charger" [class.offline]="!charger.isOnline">
+        <div class="charger-header" (click)="navigateToStation(charger.chargePointId)">
+          <mat-icon [class]="'state-' + charger.state">{{ stateIcon(charger.state) }}</mat-icon>
+          <div class="charger-id">
+            <span class="charger-title">{{ charger.title }}</span>
+            <span class="charger-meta">
+              {{ charger.model }}
+              @if (charger.firmware) { &middot; {{ charger.firmware }} }
+              @if (!charger.isOnline) { &middot; <span class="offline-tag">{{ 'smartCharging.offline' | translate }}</span> }
+            </span>
+          </div>
+          <mat-icon class="chevron">chevron_right</mat-icon>
+        </div>
+
+        <div class="connectors">
+          @for (connector of charger.connectors; track connector.name) {
+            <div class="connector-row">
+              <mat-icon [class]="'state-' + connector.state">{{ stateIcon(connector.state) }}</mat-icon>
+              <span class="connector-name">{{ connector.name }}</span>
+              <span class="connector-expected">
+                @if (connector.expectedLimit > 0) {
+                  {{ 'smartCharging.asked' | translate }} {{ connector.expectedLimit }} A
+                } @else {
+                  <span class="muted">{{ 'smartCharging.noLimit' | translate }}</span>
+                }
+              </span>
+              <span class="connector-verdict">
+                @if (connector.verdictStatus) {
+                  <span [class]="'state-' + connector.state">{{ connector.verdictStatus }}</span>
+                  <span class="muted">
+                    {{ connector.verdictLimit }} A &middot; {{ timeService.getTimeDifference(connector.verdictTime || '') }}
+                  </span>
+                } @else {
+                  <span class="muted">{{ 'smartCharging.neverSent' | translate }}</span>
+                }
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>
