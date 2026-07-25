@@ -1,8 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Message } from '../models/message';
+import { LogFilter } from '../models/log-filter';
 import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { filter, map, take, takeUntil, tap } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ErrorService } from './error.service';
 import { environment } from '../../environments/environment';
 import { WebsocketService } from './websocket.service';
@@ -91,6 +92,20 @@ export class LoggerService implements OnDestroy {
     });
   }
 
+  /**
+   * Reload the log from the API with the given filter and replace the cached
+   * messages. Live WebSocket updates keep arriving on top of the result.
+   */
+  reload(logFilter: LogFilter = {}): Observable<Message[]> {
+    this.isInitialized = true;
+    return this.loadFromApi(logFilter).pipe(
+      tap(messages => {
+        this.messages = messages ?? [];
+        this.messages$.next(this.messages);
+      })
+    );
+  }
+
   private onWsMessage(message: any): void {
     if (message.status === 'error') {
       if (message.info) {
@@ -107,10 +122,26 @@ export class LoggerService implements OnDestroy {
     }
   }
 
-  private loadFromApi(): Observable<Message[]> {
+  private loadFromApi(logFilter: LogFilter = {}): Observable<Message[]> {
     const url = environment.apiUrl + environment.readSysLog;
-    return this.http.get<Message[]>(url)
+    let params = new HttpParams();
+
+    if (logFilter.from) {
+      params = params.set('from', this.formatDate(logFilter.from));
+    }
+    if (logFilter.to) {
+      params = params.set('to', `${this.formatDate(logFilter.to)}T23:59:59`);
+    }
+    if (logFilter.charge_point_id) {
+      params = params.set('charge_point_id', logFilter.charge_point_id);
+    }
+
+    return this.http.get<Message[]>(url, { params })
       .pipe(catchError(this.errorHandler.bind(this)));
+  }
+
+  private formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('en-CA').format(date);
   }
 
   getMessages(): Observable<Message[]> {

@@ -9,9 +9,37 @@
 }
 
 <div class="log-container">
-  <!-- Filter input -->
+  <!-- Filters -->
   <div class="filter-container">
-    <mat-form-field appearance="fill" class="filter-field">
+    <mat-form-field appearance="outline" class="date-range-field">
+      <mat-label>Period</mat-label>
+      <mat-date-range-input [rangePicker]="logPicker">
+        <input matStartDate [(ngModel)]="startDate" placeholder="Start">
+        <input matEndDate [(ngModel)]="endDate" placeholder="End">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="logPicker"></mat-datepicker-toggle>
+      <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenu" aria-label="Select predefined range">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #rangeMenu="matMenu">
+        @for (range of predefinedRanges; track range.label) {
+          <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
+        }
+      </mat-menu>
+      <mat-date-range-picker #logPicker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="charger-field">
+      <mat-label>Charge point</mat-label>
+      <mat-select [(value)]="chargePointFilter">
+        <mat-option value="">All</mat-option>
+        @for (cp of chargePoints; track cp.charge_point_id) {
+          <mat-option [value]="cp.charge_point_id">{{ cp.title || cp.charge_point_id }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
       <mat-label>Filter</mat-label>
       <input matInput placeholder="search..." [(ngModel)]="filter" name="filter" (ngModelChange)="applyFilter($event)"/>
       @if (filter) {
@@ -20,6 +48,21 @@
         </button>
       }
     </mat-form-field>
+
+    <div class="filter-actions">
+      <button mat-raised-button color="primary" (click)="applyFilters()">
+        <mat-icon>search</mat-icon>
+        Search
+      </button>
+      <button mat-button (click)="clearFilters()" [disabled]="!hasAdvancedFilters()">
+        <mat-icon>clear</mat-icon>
+        Clear
+      </button>
+      <button mat-stroked-button (click)="exportCsv()" [disabled]="dataSource.filteredData.length === 0">
+        <mat-icon>download</mat-icon>
+        Export CSV
+      </button>
+    </div>
   </div>
 
   <!-- Mobile Card Layout -->

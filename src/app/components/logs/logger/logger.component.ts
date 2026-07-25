@@ -6,15 +6,22 @@ import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeader
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { Message } from '../../../models/message';
+import { Chargepoint } from '../../../models/chargepoint';
 import { LoggerService } from '../../../service/logger.service';
+import { ChargepointService } from '../../../service/chargepoint.service';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { MatIconButton } from '@angular/material/button';
+import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
+import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDateRangePicker } from '@angular/material/datepicker';
 import { AsyncPipe } from '@angular/common';
 import { MatCard, MatCardContent } from '@angular/material/card';
+import { DateRange, getCurrentMonth, getLast7Days, getLast30Days, getToday } from '../../../helpers/date-ranges';
 
 @Component({
   selector: 'app-logger',
@@ -29,8 +36,19 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     MatInput,
     FormsModule,
     MatIconButton,
+    MatButton,
     MatSuffix,
     MatIcon,
+    MatSelect,
+    MatOption,
+    MatMenu,
+    MatMenuTrigger,
+    MatMenuItem,
+    MatDateRangeInput,
+    MatStartDate,
+    MatEndDate,
+    MatDatepickerToggle,
+    MatDateRangePicker,
     MatTable,
     MatSort,
     MatColumnDef,
@@ -52,6 +70,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 })
 export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
   readonly logger = inject(LoggerService);
+  private readonly chargepointService = inject(ChargepointService);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -62,6 +81,20 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
   loading = false;
   dataSource = new MatTableDataSource<Message>();
   isOnline = false;
+
+  // Server-side filters: the API returns only the newest records, so a period
+  // outside that window is only reachable by asking the backend for it.
+  startDate: Date | null = null;
+  endDate: Date | null = null;
+  chargePointFilter = '';
+  chargePoints: Chargepoint[] = [];
+
+  readonly predefinedRanges: { label: string, range: DateRange }[] = [
+    { label: 'Today', range: getToday() },
+    { label: 'Last 7 days', range: getLast7Days() },
+    { label: 'Last 30 days', range: getLast30Days() },
+    { label: 'Current month', range: getCurrentMonth() }
+  ];
 
   // Mobile detection
   isMobile$ = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
@@ -92,6 +125,13 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
       this.isOnline = status;
       this.cdr.markForCheck();
     });
+
+    this.chargepointService.getChargePoints().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(points => {
+      this.chargePoints = points ?? [];
+      this.cdr.markForCheck();
+    });
   }
 
   ngAfterContentInit(): void {
@@ -109,6 +149,81 @@ export class LoggerComponent implements OnInit, AfterContentInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  setRange(range: DateRange): void {
+    this.startDate = range.start;
+    this.endDate = range.end;
+  }
+
+  // Reload the log from the API for the selected period and charge point.
+  applyFilters(): void {
+    this.loading = true;
+    this.cdr.markForCheck();
+
+    this.logger.reload({
+      from: this.startDate ?? undefined,
+      to: this.endDate ?? undefined,
+      charge_point_id: this.chargePointFilter || undefined
+    }).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => {
+        this.dataSource.paginator?.firstPage();
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  clearFilters(): void {
+    this.startDate = null;
+    this.endDate = null;
+    this.chargePointFilter = '';
+    this.applyFilters();
+  }
+
+  hasAdvancedFilters(): boolean {
+    return !!(this.startDate || this.endDate || this.chargePointFilter);
+  }
+
+  // Exports what the table currently shows: the loaded period, narrowed by the
+  // text filter.
+  exportCsv(): void {
+    const rows = this.dataSource.filteredData;
+    if (!rows.length) return;
+
+    const header = ['time', 'feature', 'charge_point_id', 'text'].join(',');
+    const lines = rows.map(row => [row.time, row.feature, row.id, row.text]
+      .map(value => this.csvCell(value))
+      .join(','));
+    const csv = [header, ...lines].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = this.exportFilename();
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  private csvCell(value: string): string {
+    const text = value ?? '';
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  }
+
+  private exportFilename(): string {
+    const format = (date: Date) => new Intl.DateTimeFormat('en-CA').format(date);
+    const charger = this.chargePointFilter ? `_${this.chargePointFilter}` : '';
+    if (this.startDate && this.endDate) {
+      return `system-log${charger}_${format(this.startDate)}_${format(this.endDate)}.csv`;
+    }
+    return `system-log${charger}_${format(new Date())}.csv`;
   }
 
   ngOnDestroy(): void {
