@@ -167,6 +167,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'webhooks',
+    loadComponent: () => import('./components/webhooks/webhooks.component').then(m => m.WebhooksComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'payment-retries',
     loadComponent: () => import('./components/payment-retries/payment-retries.component').then(m => m.PaymentRetriesComponent),
     canActivate: [authGuard]

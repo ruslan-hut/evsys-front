@@ -36,6 +36,7 @@ export const environment = {
   powerReport: '/power',
   mailSubscriptions: '/mail/subscriptions',
   paymentRetries: '/payment/retries',
+  webhooks: '/webhooks',
   debug: true,
   firebaseConfig: {
     apiKey: "fb-api-key",

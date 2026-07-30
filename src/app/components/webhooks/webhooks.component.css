@@ -1,0 +1,80 @@
+.webhooks-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.webhooks-card {
+  width: 100%;
+}
+
+.webhooks-card mat-card-header {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.webhooks-refresh {
+  margin-left: auto;
+}
+
+.webhooks-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.webhooks-field {
+  min-width: 180px;
+  flex: 1 1 180px;
+}
+
+.webhooks-field--wide {
+  min-width: 280px;
+  flex: 2 1 280px;
+}
+
+.webhooks-toggle {
+  margin: 0 8px;
+}
+
+.webhooks-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.webhooks-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.webhooks-url {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.webhooks-error {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.webhooks-failed {
+  color: #c62828;
+  font-weight: 500;
+}
+
+.webhooks-warn-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  opacity: 0.6;
+}

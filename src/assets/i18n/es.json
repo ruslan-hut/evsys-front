@@ -63,7 +63,8 @@
     "signOut": "Cerrar sesión",
     "openNavigation": "Abrir navegación",
     "back": "Volver",
-    "profile": "Perfil: {{name}}"
+    "profile": "Perfil: {{name}}",
+    "webhooks": "Webhooks"
   },
   "login": {
     "title": "Iniciar sesión",
@@ -831,7 +832,10 @@
     "forceRetry": "No se pudo lanzar el reintento de pago",
     "loadTransaction": "No se pudieron cargar los detalles de la transacción",
     "sendTransactionEmail": "No se pudo enviar el correo de la transacción",
-    "savePdf": "No se pudo preparar el PDF de la transacción"
+    "savePdf": "No se pudo preparar el PDF de la transacción",
+    "loadWebhooks": "Error al cargar los datos de webhooks",
+    "saveWebhook": "Error al guardar el suscriptor de webhook",
+    "deleteWebhook": "Error al eliminar el suscriptor de webhook"
   },
   "chargepointProfile": {
     "title": "Perfil de carga",
@@ -877,5 +881,49 @@
     "uploading": "El cargador subirá {{file}}",
     "nothing": "El cargador no tiene diagnóstico que subir",
     "failed": "La solicitud de diagnóstico no fue aceptada"
+  },
+  "webhooks": {
+    "healthTitle": "Estado de entregas",
+    "refresh": "Actualizar",
+    "newTitle": "Nuevo suscriptor",
+    "editTitle": "Editar suscriptor",
+    "name": "Nombre",
+    "url": "URL",
+    "token": "Token",
+    "events": "Eventos",
+    "eventsHint": "Separados por comas: transaction.start, transaction.*, status, alert, o *",
+    "enabled": "Activo",
+    "create": "Crear",
+    "update": "Actualizar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "deleteTitle": "Eliminar suscriptor",
+    "deleteContent": "¿Eliminar el suscriptor de webhook \"{{name}}\"? El historial de entregas se conserva.",
+    "deleteYes": "Eliminar",
+    "deleteNo": "Cancelar",
+    "noSubscribers": "No hay suscriptores de webhook configurados",
+    "noHealth": "Aún no hay datos de entregas",
+    "notConfigured": "Existen entregas, pero la configuración del suscriptor fue eliminada",
+    "failuresTitle": "Fallos y reintentos recientes",
+    "headers": {
+      "name": "Nombre",
+      "url": "URL",
+      "events": "Eventos",
+      "enabled": "Activo",
+      "actions": "Acciones",
+      "pending": "Pendientes",
+      "failed": "Fallidas",
+      "delivered": "Entregadas",
+      "oldestPending": "Pendiente más antigua",
+      "lastDelivered": "Última entrega",
+      "created": "Creado",
+      "subscriber": "Suscriptor",
+      "type": "Tipo",
+      "status": "Estado",
+      "attempts": "Intentos",
+      "nextAttempt": "Próximo intento",
+      "error": "Último error"
+    }
   }
 }

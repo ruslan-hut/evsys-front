@@ -63,7 +63,8 @@
     "signOut": "Sign out",
     "openNavigation": "Open navigation",
     "back": "Back",
-    "profile": "Profile: {{name}}"
+    "profile": "Profile: {{name}}",
+    "webhooks": "Webhooks"
   },
   "login": {
     "title": "Sign In",
@@ -831,7 +832,10 @@
     "forceRetry": "Failed to trigger payment retry",
     "loadTransaction": "Failed to load transaction details",
     "sendTransactionEmail": "Failed to send transaction email",
-    "savePdf": "Failed to prepare the transaction PDF"
+    "savePdf": "Failed to prepare the transaction PDF",
+    "loadWebhooks": "Failed to load webhook data",
+    "saveWebhook": "Failed to save webhook subscriber",
+    "deleteWebhook": "Failed to delete webhook subscriber"
   },
   "chargepointProfile": {
     "title": "Charging Profile",
@@ -877,5 +881,49 @@
     "uploading": "Charge point will upload {{file}}",
     "nothing": "Charge point reported no diagnostics to upload",
     "failed": "Diagnostics request was not accepted"
+  },
+  "webhooks": {
+    "healthTitle": "Delivery health",
+    "refresh": "Refresh",
+    "newTitle": "New subscriber",
+    "editTitle": "Edit subscriber",
+    "name": "Name",
+    "url": "URL",
+    "token": "Token",
+    "events": "Events",
+    "eventsHint": "Comma-separated: transaction.start, transaction.*, status, alert, or *",
+    "enabled": "Enabled",
+    "create": "Create",
+    "update": "Update",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete subscriber",
+    "deleteContent": "Delete webhook subscriber \"{{name}}\"? Delivery history is kept.",
+    "deleteYes": "Delete",
+    "deleteNo": "Cancel",
+    "noSubscribers": "No webhook subscribers configured",
+    "noHealth": "No delivery data yet",
+    "notConfigured": "Deliveries exist, but the subscriber configuration was deleted",
+    "failuresTitle": "Recent failures and retries",
+    "headers": {
+      "name": "Name",
+      "url": "URL",
+      "events": "Events",
+      "enabled": "Enabled",
+      "actions": "Actions",
+      "pending": "Pending",
+      "failed": "Failed",
+      "delivered": "Delivered",
+      "oldestPending": "Oldest pending",
+      "lastDelivered": "Last delivered",
+      "created": "Created",
+      "subscriber": "Subscriber",
+      "type": "Type",
+      "status": "Status",
+      "attempts": "Attempts",
+      "nextAttempt": "Next attempt",
+      "error": "Last error"
+    }
   }
 }
