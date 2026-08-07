@@ -22,7 +22,6 @@ const PUBLIC_ROUTES = [
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [RouterOutlet, HeaderComponent, SnackBarComponent, OfflineBannerComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

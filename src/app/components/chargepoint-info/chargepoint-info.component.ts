@@ -28,7 +28,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   selector: 'app-chargepoint-info',
   templateUrl: './chargepoint-info.component.html',
   styleUrls: ['./chargepoint-info.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, ChargepointProfileComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe, TranslatePipe]
 })

@@ -47,7 +47,6 @@ interface SummaryMetrics {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
-  standalone: true,
   imports: [
     FormsModule,
     DecimalPipe,

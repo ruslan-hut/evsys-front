@@ -28,7 +28,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatCardFooter, MatProgressBar, MatExpansionPanelActionRow, MatButton, FormsModule, ReactiveFormsModule, MatFormField, MatInput, TranslatePipe]
 })

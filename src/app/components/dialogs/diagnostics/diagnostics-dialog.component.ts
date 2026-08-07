@@ -30,7 +30,6 @@ const LOCATION_PATTERN = /^(ftp|ftps|http|https):\/\/.+/i;
   selector: 'app-diagnostics-dialog',
   templateUrl: './diagnostics-dialog.component.html',
   styleUrls: ['./diagnostics-dialog.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,

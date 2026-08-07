@@ -1,31 +1,31 @@
-import { Component, Input, ChangeDetectionStrategy, inject } from "@angular/core"
+import { Component, ChangeDetectionStrategy, inject, input } from "@angular/core"
 import {Connector} from "../../models/connector";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import { MatCardContent } from "@angular/material/card";
 import { MatButton } from "@angular/material/button";
-import { NgClass, NgStyle, TitleCasePipe } from "@angular/common";
+import { TitleCasePipe } from "@angular/common";
 
 @Component({
     selector: 'app-connector',
     templateUrl: './connector.component.html',
     styleUrls: ['./connector.component.css'],
-    standalone: true,
-    imports: [MatCardContent, MatButton, NgClass, NgStyle, TitleCasePipe],
+    imports: [MatCardContent, MatButton, TitleCasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConnectorComponent {
   readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
 
-  @Input() connector!: Connector;
+  readonly connector = input.required<Connector>();
 
   getConnectorStatusClass(): string {
-    if (this.connector.state === "available") {
+    const connector = this.connector();
+    if (connector.state === "available") {
       return "connector-available";
-    } else if (this.connector.state === "occupied") {
+    } else if (connector.state === "occupied") {
       return "connector-occupied";
-    } else if (this.connector.current_transaction_id > -1) {
+    } else if (connector.current_transaction_id > -1) {
       return "connector-charging";
     } else {
       return "connector-error";
@@ -33,11 +33,12 @@ export class ConnectorComponent {
   }
 
   getConnectorStatusColor(): string {
-    if (this.connector.state === "available") {
+    const connector = this.connector();
+    if (connector.state === "available") {
       return "var(--color-connector-available)";
-    } else if (this.connector.state === "occupied") {
+    } else if (connector.state === "occupied") {
       return "var(--color-connector-occupied)";
-    } else if (this.connector.current_transaction_id > -1) {
+    } else if (connector.current_transaction_id > -1) {
       return "var(--color-connector-charging)";
     } else {
       return "var(--color-connector-error)";
@@ -45,19 +46,20 @@ export class ConnectorComponent {
   }
 
   isDisabled() {
-    return this.connector.status.toLowerCase() === "unavailable";
+    return this.connector().status.toLowerCase() === "unavailable";
   }
 
   getConnectorName(): string {
-    if(this.connector.connector_id_name!="") {
-      return this.connector.connector_id_name;
+    const connector = this.connector();
+    if(connector.connector_id_name!="") {
+      return connector.connector_id_name;
     } else {
-      return this.connector.connector_id;
+      return connector.connector_id;
     }
   }
 
   getConnectorTypeIcon(): string {
-   switch (this.connector.type) {
+   switch (this.connector().type) {
       case "Type 2":
         return "assets/icons/ev_plug_type1.svg";
       case "Type 1":
@@ -80,7 +82,7 @@ export class ConnectorComponent {
     // });
 
     this.router.navigate(['new-transactions'], {
-      queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
+      queryParams: { charge_point_id: this.connector().charge_point_id, connector_id: this.connector().connector_id }
     }).then(_ => {});
 
   }

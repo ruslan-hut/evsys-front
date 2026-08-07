@@ -14,7 +14,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-chargepoint-list',
   templateUrl: './chargepoint-list.component.html',
   styleUrls: ['./chargepoint-list.component.css'],
-  standalone: true,
   imports: [ChargepointComponent, AsyncPipe, MatButtonModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

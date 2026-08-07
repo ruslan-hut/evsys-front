@@ -18,7 +18,6 @@ type TabKey = typeof TAB_KEYS[number];
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatTabGroup,

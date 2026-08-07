@@ -16,7 +16,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatInput, MatCardActions, MatButton, MatCardFooter, MatProgressBar, TranslatePipe]
 })

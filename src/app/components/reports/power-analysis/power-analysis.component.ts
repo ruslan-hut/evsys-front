@@ -60,7 +60,6 @@ type TimelineBucket = Extract<PowerGroupBy, 'hour' | 'day'>;
   selector: 'app-power-analysis',
   templateUrl: './power-analysis.component.html',
   styleUrl: './power-analysis.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,

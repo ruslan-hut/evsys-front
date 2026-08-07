@@ -12,7 +12,6 @@ import { TranslateService } from '@ngx-translate/core';
     selector: 'app-basic-dialog',
     templateUrl: './basic-dialog.component.html',
     styleUrls: ['./basic-dialog.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
     MatDialogTitle,

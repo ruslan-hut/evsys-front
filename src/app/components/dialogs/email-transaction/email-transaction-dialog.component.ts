@@ -26,7 +26,6 @@ const EMAIL_PATTERN = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
   selector: 'app-email-transaction-dialog',
   templateUrl: './email-transaction-dialog.component.html',
   styleUrls: ['./email-transaction-dialog.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,

@@ -17,7 +17,6 @@ import { AppLanguage, LanguageService } from '../../service/language.service';
 
 @Component({
   selector: 'app-user-profile',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,

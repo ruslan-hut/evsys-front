@@ -23,7 +23,6 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
   selector: 'app-user-tag-edit',
   templateUrl: './user-tag-edit.component.html',
   styleUrls: ['./user-tag-edit.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,

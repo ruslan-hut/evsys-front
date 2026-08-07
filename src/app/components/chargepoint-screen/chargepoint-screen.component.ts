@@ -25,7 +25,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   selector: 'app-chargepoint-screen',
   templateUrl: './chargepoint-screen.component.html',
   styleUrl: './chargepoint-screen.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe, TranslatePipe]
 })

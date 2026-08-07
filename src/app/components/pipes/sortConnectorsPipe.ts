@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {Connector} from "../../models/connector";
 
 @Pipe({
-    name: 'sortConnectors',
-    standalone: true
+    name: 'sortConnectors'
 })
 export class SortConnectorsPipe implements PipeTransform {
   transform(connectors: Connector[]): Connector[] {

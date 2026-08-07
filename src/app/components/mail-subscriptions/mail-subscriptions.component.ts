@@ -23,7 +23,6 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
   selector: 'app-mail-subscriptions',
   templateUrl: './mail-subscriptions.component.html',
   styleUrls: ['./mail-subscriptions.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,

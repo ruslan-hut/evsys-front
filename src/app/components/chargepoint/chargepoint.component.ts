@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, inject } from "@angular/core"
+import { Component, ChangeDetectionStrategy, inject, input } from "@angular/core"
 import {Chargepoint} from "../../models/chargepoint";
 import { Router } from '@angular/router';
 import {AccountService} from "../../service/account.service";
@@ -13,7 +13,6 @@ import { SortConnectorsPipe } from "../pipes/sortConnectorsPipe";
     selector: 'app-chargepoint',
     templateUrl: './chargepoint.component.html',
     styleUrls: ['./chargepoint.component.css'],
-    standalone: true,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ConnectorComponent, MatCardActions, MatIconButton, MatIcon, SortConnectorsPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -22,7 +21,7 @@ export class ChargepointComponent {
   readonly accountService = inject(AccountService);
   readonly timeService = inject(TimeService);
 
-  @Input() chargepoint!: Chargepoint;
+  readonly chargepoint = input.required<Chargepoint>();
 
   /**
    * Returns the status indicator color:
@@ -31,11 +30,12 @@ export class ChargepointComponent {
    * - 'red': offline
    */
   getStatusColor(): 'green' | 'yellow' | 'red' {
-    if (!this.chargepoint.is_online) {
+    const chargepoint = this.chargepoint();
+    if (!chargepoint.is_online) {
       return 'red';
     }
 
-    const connectors = this.chargepoint.connectors || [];
+    const connectors = chargepoint.connectors || [];
     const allAvailable = connectors.every(c =>
       c.status?.toLowerCase() === 'available'
     );
@@ -51,19 +51,19 @@ export class ChargepointComponent {
   }
 
   configureChargePoint() {
-    const chargepointId = this.chargepoint.charge_point_id;
+    const chargepointId = this.chargepoint().charge_point_id;
 
     this.router.navigate(['points-config', { id: chargepointId }]);
   }
 
   editChargePoint() {
-    const chargepointId = this.chargepoint.charge_point_id;
+    const chargepointId = this.chargepoint().charge_point_id;
 
     this.router.navigate(['points-form', { id: chargepointId }]);
   }
 
   infoChargePoint() {
-    const chargepointId = this.chargepoint.charge_point_id;
+    const chargepointId = this.chargepoint().charge_point_id;
 
     this.router.navigate(['points-info', { id: chargepointId }]);
   }

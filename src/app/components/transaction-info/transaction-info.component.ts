@@ -17,7 +17,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   selector: 'transaction-info',
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatProgressBar, MatCardActions, MatButton, DecimalPipe, DatePipe, TranslatePipe]
 })

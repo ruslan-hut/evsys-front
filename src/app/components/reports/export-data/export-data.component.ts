@@ -18,7 +18,6 @@ import { DateRange, getStatRanges } from '../../../helpers/date-ranges';
   selector: 'app-export-data',
   templateUrl: './export-data.component.html',
   styleUrl: './export-data.component.css',
-  standalone: true,
   imports: [
     MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule,
     MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton,

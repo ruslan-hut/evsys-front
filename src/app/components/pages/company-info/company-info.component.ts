@@ -7,7 +7,6 @@ import { HttpClient } from "@angular/common/http";
     selector: 'app-company-info',
     templateUrl: './company-info.component.html',
     styleUrls: ['./company-info.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: []
 })

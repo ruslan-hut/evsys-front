@@ -26,7 +26,6 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
   selector: 'app-user-tags',
   templateUrl: './user-tags.component.html',
   styleUrls: ['./user-tags.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,

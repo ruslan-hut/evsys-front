@@ -6,7 +6,6 @@ import { NetworkService } from '../../service/network.service';
 
 @Component({
   selector: 'app-offline-banner',
-  standalone: true,
   imports: [AsyncPipe, MatIcon, TranslatePipe],
   template: `
     @if (!(networkService.isOnline$ | async)) {

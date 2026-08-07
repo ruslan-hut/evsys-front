@@ -20,7 +20,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   selector: 'app-transaction-screen',
   templateUrl: './transaction-screen.component.html',
   styleUrl: './transaction-screen.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardContent, MatProgressBar, MatButton, MatCardActions, MatIcon, DecimalPipe, DatePipe, TranslatePipe]
 })

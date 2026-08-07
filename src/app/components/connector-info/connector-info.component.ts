@@ -15,16 +15,15 @@ import { ChargepointService } from '../../service/chargepoint.service';
 import { Router } from '@angular/router';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow } from '@angular/material/expansion';
 import { MatButton } from '@angular/material/button';
-import { NgClass } from '@angular/common';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-connector-info',
   templateUrl: './connector-info.component.html',
   styleUrls: ['./connector-info.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, NgClass, TranslatePipe]
+  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, TranslatePipe]
 })
 export class ConnectorInfoComponent implements OnInit, OnDestroy {
   private readonly csService = inject(CSService);

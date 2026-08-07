@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ErrorService} from "../../service/error.service";
 import {AccountService} from "../../service/account.service";
@@ -9,7 +10,6 @@ import { NOT_AUTHORIZED_KEY } from '../../helpers/error.interceptor';
     selector: 'app-snack-bar',
     templateUrl: './snack-bar.component.html',
     styleUrls: ['./snack-bar.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SnackBarComponent implements OnInit {
@@ -17,13 +17,14 @@ export class SnackBarComponent implements OnInit {
   private readonly accountService = inject(AccountService);
   private readonly errorService = inject(ErrorService);
   private readonly translate = inject(TranslateService);
+  private readonly destroyRef = inject(DestroyRef);
 
   openSnackBar(message: string, action: string){
     this.snack.open(message, action, {duration: 5000});
   }
 
   ngOnInit(): void {
-    this.errorService.error$.subscribe(error => {
+    this.errorService.error$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(error => {
       if (error === NOT_AUTHORIZED_KEY || error === 'Not authorized') {
         this.accountService.reAuthenticate();
         return;

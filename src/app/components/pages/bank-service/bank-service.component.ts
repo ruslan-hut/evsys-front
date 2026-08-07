@@ -12,7 +12,6 @@ declare var storeIdOper: any;
     templateUrl: './bank-service.component.html',
     styleUrls: ['./bank-service.component.css'],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule, TranslatePipe]
 })

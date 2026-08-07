@@ -47,7 +47,6 @@ interface ChartDataPoint {
   selector: 'app-station-uptime',
   templateUrl: './station-uptime.component.html',
   styleUrl: './station-uptime.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,

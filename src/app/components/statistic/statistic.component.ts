@@ -22,7 +22,6 @@ import { DateRange, getStatRanges } from '../../helpers/date-ranges';
     selector: 'app-statistic',
     templateUrl: './statistic.component.html',
     styleUrl: './statistic.component.css',
-    standalone: true,
     imports: [MatFormField, MatLabel, MatDateRangeInput, MatStartDate, FormsModule, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatIconButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDateRangePicker, MatSelect, MatOption, MatButton, MatProgressBar, MatCard, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatFooterCellDef, MatFooterCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatFooterRowDef, MatFooterRow, DecimalPipe, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

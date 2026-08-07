@@ -75,7 +75,7 @@
               <mat-icon [class]="'agreement-' + row.agreement" aria-hidden="true">{{ agreementIcon(row.agreement) }}</mat-icon>
               <span>{{ 'chargepointProfile.agreementState.' + row.agreement | translate }}</span>
               <button mat-button color="primary"
-                      [disabled]="row.loading || !chargePoint.is_online"
+                      [disabled]="row.loading || !chargePoint().is_online"
                       (click)="readProfile(row)">
                 {{ 'chargepointProfile.read' | translate }}
               </button>
@@ -95,7 +95,7 @@
     <button mat-flat-button color="primary" [disabled]="!canRead" (click)="readAll()">
       {{ 'chargepointProfile.readAll' | translate }}
     </button>
-    @if (!chargePoint.is_online) {
+    @if (!chargePoint().is_online) {
       <span class="muted offline-note">{{ 'chargepointProfile.offline' | translate }}</span>
     }
   </mat-card-actions>

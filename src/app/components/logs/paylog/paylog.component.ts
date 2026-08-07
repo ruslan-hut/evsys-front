@@ -20,7 +20,6 @@ import { MatCard, MatCardContent } from '@angular/material/card';
   selector: 'app-paylog',
   templateUrl: './paylog.component.html',
   styleUrls: ['./paylog.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,

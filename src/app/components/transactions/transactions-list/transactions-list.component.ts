@@ -36,7 +36,6 @@ import {DateRange, getLast12Months, getLast30Days, getTransactionRanges} from '.
   selector: 'app-transactions-list',
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,

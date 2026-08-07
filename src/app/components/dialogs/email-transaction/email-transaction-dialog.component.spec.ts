@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {TranslateModule} from '@ngx-translate/core';
+import {provideTranslateService} from '@ngx-translate/core';
 
 import {
   EmailTransactionDialogComponent,
@@ -19,10 +19,10 @@ describe('EmailTransactionDialogComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         EmailTransactionDialogComponent,
-        NoopAnimationsModule,
-        TranslateModule.forRoot()
+        NoopAnimationsModule
       ],
       providers: [
+        provideTranslateService(),
         {provide: MatDialogRef, useValue: dialogRef},
         {provide: MAT_DIALOG_DATA, useValue: data}
       ]

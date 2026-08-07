@@ -17,7 +17,6 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-backlog',
     templateUrl: './backlog.component.html',
     styleUrls: ['./backlog.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatProgressBar, MatFormField, MatLabel, MatInput, FormsModule, MatIconButton, MatSuffix, MatIcon, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
 })

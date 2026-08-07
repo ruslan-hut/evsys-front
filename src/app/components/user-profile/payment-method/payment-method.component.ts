@@ -16,7 +16,6 @@ import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'app-payment-method',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,

@@ -17,7 +17,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     selector: 'app-user-info',
     templateUrl: './user-info.component.html',
     styleUrls: ['./user-info.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardContent, MatList, MatListItem, MatCardActions, MatButton, MatIcon, TitleCasePipe, TranslatePipe]
 })

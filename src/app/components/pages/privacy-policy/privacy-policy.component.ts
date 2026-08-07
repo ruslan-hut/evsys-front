@@ -7,7 +7,6 @@ import { HttpClient } from "@angular/common/http";
     selector: 'app-privacy-policy',
     templateUrl: './privacy-policy.component.html',
     styleUrls: ['./privacy-policy.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: []
 })

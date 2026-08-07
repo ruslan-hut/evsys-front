@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Message } from '../models/message';
 import { LogFilter } from '../models/log-filter';
 import { BehaviorSubject, catchError, Observable, Subject, Subscription, throwError } from 'rxjs';
@@ -14,6 +14,11 @@ import { WsConnectionState } from '../models/ws-connection-state';
   providedIn: 'root'
 })
 export class LoggerService implements OnDestroy {
+  private http = inject(HttpClient);
+  private websocketService = inject(WebsocketService);
+  private errorService = inject(ErrorService);
+  private accountService = inject(AccountService);
+
   private messages: Message[] = [];
   private messages$ = new Subject<Message[]>();
 
@@ -25,12 +30,7 @@ export class LoggerService implements OnDestroy {
   private isSubscribed = false;
   private isInitialized = false;
 
-  constructor(
-    private http: HttpClient,
-    private websocketService: WebsocketService,
-    private errorService: ErrorService,
-    private accountService: AccountService,
-  ) {
+  constructor() {
     // Track connection state
     this.websocketService.connectionState$.pipe(
       takeUntil(this.destroy$),

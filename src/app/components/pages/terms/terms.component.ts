@@ -7,7 +7,6 @@ import { HttpClient } from "@angular/common/http";
     selector: 'app-terms',
     templateUrl: './terms.component.html',
     styleUrls: ['./terms.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: []
 })

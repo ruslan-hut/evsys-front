@@ -19,7 +19,6 @@ import { StationStatus } from '../../../models/station-status';
   selector: 'app-station-status',
   templateUrl: './station-status.component.html',
   styleUrl: './station-status.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,

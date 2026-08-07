@@ -27,7 +27,6 @@ import { DateRange, getCurrentMonth, getLast7Days, getLast30Days, getToday } fro
   selector: 'app-logger',
   templateUrl: './logger.component.html',
   styleUrls: ['./logger.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatProgressBar,

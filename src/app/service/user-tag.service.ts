@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -8,8 +8,7 @@ import {UserTag} from '../models/user-tag';
   providedIn: 'root'
 })
 export class UserTagService {
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAll(): Observable<UserTag[]> {
     return this.http.get<UserTag[]>(`${environment.apiUrl}/user-tags/list`);

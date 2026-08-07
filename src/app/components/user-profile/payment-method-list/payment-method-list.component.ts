@@ -1,4 +1,5 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {PaymentMethodComponent} from "../payment-method/payment-method.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {PaymentMethod} from "../../../models/payment-method";
@@ -11,7 +12,6 @@ import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-payment-method-list',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     PaymentMethodComponent,
@@ -26,11 +26,12 @@ export class PaymentMethodListComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   dataSource = new MatTableDataSource<PaymentMethod>();
 
   ngOnInit(): void {
-    this.accountService.user$.subscribe(user => {
+    this.accountService.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(user => {
       if (user) {
         this.accountService.getUserInfo(user.username).subscribe(info => {
           if (info.payment_methods) {

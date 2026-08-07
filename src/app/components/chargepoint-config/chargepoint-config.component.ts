@@ -21,7 +21,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     selector: 'app-chargepoint-config',
     templateUrl: './chargepoint-config.component.html',
     styleUrls: ['./chargepoint-config.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatProgressSpinner, MatInput, MatButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatProgressBar, MatCardActions, MatIcon, TranslatePipe]
 })

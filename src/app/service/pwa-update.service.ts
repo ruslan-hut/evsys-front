@@ -1,4 +1,4 @@
-import { Injectable, ApplicationRef, OnDestroy } from '@angular/core';
+import { Injectable, ApplicationRef, OnDestroy, inject } from '@angular/core';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { BehaviorSubject, Subject, concat, interval } from 'rxjs';
 import { filter, first, takeUntil } from 'rxjs/operators';
@@ -8,6 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class PwaUpdateService implements OnDestroy {
+  private swUpdate = inject(SwUpdate);
+  private appRef = inject(ApplicationRef);
+  private snackBar = inject(MatSnackBar);
+
   private destroy$ = new Subject<void>();
   private updateAvailable = new BehaviorSubject<boolean>(false);
 
@@ -19,11 +23,7 @@ export class PwaUpdateService implements OnDestroy {
     return this.swUpdate.isEnabled;
   }
 
-  constructor(
-    private swUpdate: SwUpdate,
-    private appRef: ApplicationRef,
-    private snackBar: MatSnackBar
-  ) {
+  constructor() {
     if (!this.swUpdate.isEnabled) {
       return;
     }

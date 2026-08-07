@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from "@angular/router";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
@@ -18,7 +19,6 @@ import { LanguageService } from '../../../service/language.service';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  standalone: true,
   imports: [MatToolbar, MatIconButton, MatButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, MatDivider, AsyncPipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
   private readonly languageService = inject(LanguageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   title = 'WattBrews';
   username = '';
@@ -60,7 +61,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    this.accountService.user$.subscribe(user => {
+    this.accountService.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(user => {
       if (user) {
         if (user.name) {
           this.username = user.name;

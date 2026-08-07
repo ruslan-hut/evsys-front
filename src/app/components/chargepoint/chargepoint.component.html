@@ -9,43 +9,43 @@
             [attr.aria-label]="getStatusLabel()"
             role="img">
       </span>
-      {{chargepoint.title}}
+      {{chargepoint().title}}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div>
-      {{ chargepoint.address }}
+      {{ chargepoint().address }}
     </div>
     <div>
-      {{chargepoint.description}}
+      {{chargepoint().description}}
     </div>
     <div class="status-line">
-      <span class="status-text">{{chargepoint.status}}</span>
+      <span class="status-text">{{chargepoint().status}}</span>
       <span class="status-separator">•</span>
-      <span class="update-text">{{ timeService.getTimeDifference(chargepoint.event_time) }}</span>
+      <span class="update-text">{{ timeService.getTimeDifference(chargepoint().event_time) }}</span>
     </div>
   </mat-card-content>
   <div class="connector-container">
-    @for (connector of chargepoint.connectors| sortConnectors; track connector) {
+    @for (connector of chargepoint().connectors| sortConnectors; track connector) {
       <app-connector [connector]="connector"></app-connector>
     }
   </div>
   <mat-card-actions align="end" class="tool-panel">
     @if (accountService.isAdmin || accountService.isOperator) {
       <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()"
-              aria-label="Configure {{chargepoint.title}}">
+              aria-label="Configure {{chargepoint().title}}">
         <mat-icon class="edit-icon">settings</mat-icon>
       </button>
     }
     @if (accountService.isAdmin) {
       <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()"
-              aria-label="Edit {{chargepoint.title}}">
+              aria-label="Edit {{chargepoint().title}}">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
     }
     @if (accountService.isAdmin || accountService.isOperator) {
       <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()"
-              aria-label="View details for {{chargepoint.title}}">
+              aria-label="View details for {{chargepoint().title}}">
         <mat-icon class="edit-icon">remove_red_eye</mat-icon>
       </button>
     }

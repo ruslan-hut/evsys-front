@@ -1,5 +1,6 @@
 import {
-  Component, Input, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef, inject
+  Component, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef, inject,
+  input
 } from '@angular/core';
 import {
   MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
@@ -36,7 +37,6 @@ const SCHEDULE_DURATION = 3600;
   selector: 'app-chargepoint-profile',
   templateUrl: './chargepoint-profile.component.html',
   styleUrls: ['./chargepoint-profile.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions,
@@ -51,7 +51,7 @@ export class ChargepointProfileComponent implements OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
   readonly timeService = inject(TimeService);
 
-  @Input({required: true}) chargePoint!: Chargepoint;
+  readonly chargePoint = input.required<Chargepoint>();
 
   connectorProfiles: ConnectorProfile[] = [];
   profileColumns: string[] = ['connector', 'expected', 'recorded', 'reported', 'agreement'];
@@ -70,7 +70,7 @@ export class ChargepointProfileComponent implements OnChanges {
   // at.
   private resetConnectorProfiles(): void {
     this.smartChargingConfig = [];
-    this.connectorProfiles = (this.chargePoint?.connectors ?? []).map(connector => ({
+    this.connectorProfiles = (this.chargePoint()?.connectors ?? []).map(connector => ({
       connectorId: Number(connector.connector_id),
       connectorName: getConnectorName(connector),
       status: connector.status,
@@ -93,7 +93,7 @@ export class ChargepointProfileComponent implements OnChanges {
   }
 
   get canRead(): boolean {
-    return this.chargePoint?.is_online === true && this.connectorProfiles.length > 0;
+    return this.chargePoint()?.is_online === true && this.connectorProfiles.length > 0;
   }
 
   readAll(): void {
@@ -103,7 +103,7 @@ export class ChargepointProfileComponent implements OnChanges {
 
   // Asks for the four keys in one round trip rather than one call per key.
   private readSmartChargingConfig(): void {
-    const chargePointId = this.chargePoint?.charge_point_id;
+    const chargePointId = this.chargePoint()?.charge_point_id;
     if (chargePointId == null || this.loadingConfig) return;
 
     this.loadingConfig = true;
@@ -134,7 +134,7 @@ export class ChargepointProfileComponent implements OnChanges {
   // about the limit it is actually enforcing, so it is what the central system's
   // figure has to be checked against.
   readProfile(profile: ConnectorProfile): void {
-    const chargePointId = this.chargePoint?.charge_point_id;
+    const chargePointId = this.chargePoint()?.charge_point_id;
     if (chargePointId == null || profile.loading) return;
 
     profile.loading = true;

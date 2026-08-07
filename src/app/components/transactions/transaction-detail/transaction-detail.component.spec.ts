@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {TranslateModule} from '@ngx-translate/core';
+import {provideTranslateService} from '@ngx-translate/core';
 import {of, throwError} from 'rxjs';
 
 import {TransactionDetailComponent} from './transaction-detail.component';
@@ -49,8 +49,9 @@ describe('TransactionDetailComponent', () => {
     retryService.list.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
-      imports: [TransactionDetailComponent, NoopAnimationsModule, TranslateModule.forRoot()],
+      imports: [TransactionDetailComponent, NoopAnimationsModule],
       providers: [
+        provideTranslateService(),
         {provide: TransactionService, useValue: transactionService},
         {provide: PaymentRetryService, useValue: retryService},
         {provide: AccountService, useValue: {userValue: {email: 'me@example.com'}}},

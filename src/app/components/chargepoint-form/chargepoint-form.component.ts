@@ -18,7 +18,6 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     selector: 'app-chargepoint-form',
     templateUrl: './chargepoint-form.component.html',
     styleUrls: ['./chargepoint-form.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatIcon, MatCardContent, FormsModule, MatInput, CdkTextareaAutosize, ConnectorFormComponent, MatCardActions, MatButton, SortConnectorsPipe, TranslatePipe, MatSlideToggle]
 })

@@ -11,7 +11,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     selector: 'app-promo-dialog',
     templateUrl: './promo-dialog.component.html',
     styleUrls: ['./promo-dialog.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatDialogTitle,

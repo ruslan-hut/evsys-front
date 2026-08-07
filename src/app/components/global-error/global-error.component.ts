@@ -6,7 +6,6 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-global-error',
     templateUrl: './global-error.component.html',
     styleUrls: ['./global-error.component.css'],
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [AsyncPipe]
 })

@@ -54,7 +54,6 @@ const ALL_LOCATIONS = '';
   selector: 'app-smart-charging',
   templateUrl: './smart-charging.component.html',
   styleUrl: './smart-charging.component.css',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard, MatCardContent, MatProgressBar, MatFormField, MatLabel,

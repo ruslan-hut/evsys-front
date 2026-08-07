@@ -13,7 +13,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-promo-list',
   templateUrl: './promo-list.component.html',
   styleUrls: ['./promo-list.component.css'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatFabButton, TranslatePipe]
 })

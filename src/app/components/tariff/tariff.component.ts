@@ -10,7 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     selector: 'app-tariff',
     templateUrl: './tariff.component.html',
     styleUrl: './tariff.component.css',
-    standalone: true,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, CurrencyPipe, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
