@@ -1,5 +1,5 @@
-import {TestBed} from '@angular/core/testing';
-import {PrintService} from './print.service';
+import { TestBed } from '@angular/core/testing';
+import { PrintService } from './print.service';
 
 /**
  * Minimal stand-in for the frame's window; the real one would open a dialog.
@@ -9,10 +9,9 @@ import {PrintService} from './print.service';
 function fakeWindow(print: () => void = () => undefined) {
   const listeners: Record<string, (() => void)[]> = {};
   return {
-    focus: jasmine.createSpy('focus'),
-    print: jasmine.createSpy('print').and.callFake(print),
-    addEventListener: jasmine.createSpy('addEventListener').and.callFake(
-      (type: string, fn: () => void) => (listeners[type] ??= []).push(fn)),
+    focus: vi.fn().mockName('focus'),
+    print: vi.fn().mockName('print').mockImplementation(print),
+    addEventListener: vi.fn().mockName('addEventListener').mockImplementation((type: string, fn: () => void) => (listeners[type] ??= []).push(fn)),
     afterPrint: () => (listeners['afterprint'] ?? []).forEach(fn => fn())
   };
 }
@@ -20,13 +19,13 @@ function fakeWindow(print: () => void = () => undefined) {
 describe('PrintService', () => {
   let service: PrintService;
 
-  const frames = (): HTMLIFrameElement[] =>
-    Array.from(document.body.querySelectorAll('iframe'));
+  const frames = (): HTMLIFrameElement[] => Array.from(document.body.querySelectorAll('iframe'));
 
   /** The frame's `load` event is a macrotask, so microtask ticks cannot see it. */
   async function waitFor(condition: () => boolean, what: string): Promise<void> {
     for (let i = 0; i < 100; i++) {
-      if (condition()) return;
+      if (condition())
+        return;
       await new Promise(resolve => setTimeout(resolve));
     }
     throw new Error(`timed out waiting for ${what}`);
@@ -40,8 +39,7 @@ describe('PrintService', () => {
   afterEach(() => frames().forEach(f => f.remove()));
 
   function stubContentWindow(win: unknown): void {
-    spyOnProperty(HTMLIFrameElement.prototype, 'contentWindow', 'get')
-      .and.returnValue(win as Window);
+    vi.spyOn(HTMLIFrameElement.prototype, 'contentWindow', 'get').mockReturnValue(win as Window);
   }
 
   // Guards a regression: appending the frame before assigning srcdoc makes the
@@ -55,9 +53,7 @@ describe('PrintService', () => {
     void service.printDocument(html, 'receipt');
 
     const live = frames();
-    expect(live.length)
-      .withContext('frame must still be mounted; srcdoc has to be set before insertion')
-      .toBe(before + 1);
+    expect(live.length, 'frame must still be mounted; srcdoc has to be set before insertion').toBe(before + 1);
 
     const iframe = live[live.length - 1];
     expect(iframe.srcdoc).toBe(html);
@@ -72,7 +68,7 @@ describe('PrintService', () => {
     stubContentWindow(win);
 
     const printing = service.printDocument('<html><body>x</body></html>');
-    await waitFor(() => win.print.calls.any(), 'print()');
+    await waitFor(() => vi.mocked(win.print).mock.calls.length > 0, 'print()');
     win.afterPrint();
     await printing;
 
@@ -89,11 +85,9 @@ describe('PrintService', () => {
     const before = frames().length;
 
     const printing = service.printDocument('<html><body>x</body></html>');
-    await waitFor(() => win.print.calls.any(), 'print()');
+    await waitFor(() => vi.mocked(win.print).mock.calls.length > 0, 'print()');
 
-    expect(frames().length)
-      .withContext('frame must outlive print(); the dialog renders it asynchronously')
-      .toBe(before + 1);
+    expect(frames().length, 'frame must outlive print(); the dialog renders it asynchronously').toBe(before + 1);
 
     win.afterPrint();
     await printing;
@@ -107,13 +101,13 @@ describe('PrintService', () => {
     let resolved = false;
     const printing = service.printDocument('<html><body>x</body></html>')
       .then(() => (resolved = true));
-    await waitFor(() => win.print.calls.any(), 'print()');
+    await waitFor(() => vi.mocked(win.print).mock.calls.length > 0, 'print()');
 
-    expect(resolved).withContext('must not resolve while the dialog is open').toBeFalse();
+    expect(resolved, 'must not resolve while the dialog is open').toBe(false);
 
     win.afterPrint();
     await printing;
-    expect(resolved).toBeTrue();
+    expect(resolved).toBe(true);
   });
 
   it('rejects and cleans up when printing throws', async () => {
@@ -122,7 +116,7 @@ describe('PrintService', () => {
     }));
     const before = frames().length;
 
-    await expectAsync(service.printDocument('<html><body>x</body></html>')).toBeRejected();
+    await expect(service.printDocument('<html><body>x</body></html>')).rejects.toThrow();
     expect(frames().length).toBe(before);
   });
 
@@ -130,7 +124,7 @@ describe('PrintService', () => {
     stubContentWindow(null);
     const before = frames().length;
 
-    await expectAsync(service.printDocument('<html><body>x</body></html>')).toBeRejected();
+    await expect(service.printDocument('<html><body>x</body></html>')).rejects.toThrow();
     expect(frames().length).toBe(before);
   });
 });

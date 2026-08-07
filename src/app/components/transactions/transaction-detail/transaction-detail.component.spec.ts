@@ -1,17 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
-import {provideTranslateService} from '@ngx-translate/core';
-import {of, throwError} from 'rxjs';
+import type { MockedObject } from "vitest";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { provideTranslateService } from '@ngx-translate/core';
+import { of, throwError } from 'rxjs';
 
-import {TransactionDetailComponent} from './transaction-detail.component';
-import {TransactionService} from '../../../service/transaction.service';
-import {PaymentRetryService} from '../../../service/payment-retry.service';
-import {AccountService} from '../../../service/account.service';
-import {PrintService} from '../../../service/print.service';
-import {ErrorService} from '../../../service/error.service';
-import {TransactionListItem} from '../../../models/transaction-list-item';
+import { TransactionDetailComponent } from './transaction-detail.component';
+import { TransactionService } from '../../../service/transaction.service';
+import { PaymentRetryService } from '../../../service/payment-retry.service';
+import { AccountService } from '../../../service/account.service';
+import { PrintService } from '../../../service/print.service';
+import { ErrorService } from '../../../service/error.service';
+import { TransactionListItem } from '../../../models/transaction-list-item';
 
 const TRANSACTION = {
   transaction_id: 4207,
@@ -27,38 +28,51 @@ const TRANSACTION = {
 describe('TransactionDetailComponent', () => {
   let fixture: ComponentFixture<TransactionDetailComponent>;
   let component: TransactionDetailComponent;
-  let transactionService: jasmine.SpyObj<TransactionService>;
-  let printService: jasmine.SpyObj<PrintService>;
-  let errorService: jasmine.SpyObj<ErrorService>;
-  let dialog: jasmine.SpyObj<MatDialog>;
+  let transactionService: MockedObject<Pick<TransactionService,
+    'getTransactionDetails' | 'sendTransactionEmail' | 'getTransactionReceipt'>>;
+  let printService: MockedObject<Pick<PrintService, 'printDocument'>>;
+  let errorService: MockedObject<Pick<ErrorService, 'handle'>>;
+  let dialog: MockedObject<Pick<MatDialog, 'open'>>;
 
   beforeEach(async () => {
-    transactionService = jasmine.createSpyObj('TransactionService',
-      ['getTransactionDetails', 'sendTransactionEmail', 'getTransactionReceipt']);
-    transactionService.getTransactionDetails.and.returnValue(of(TRANSACTION));
-    transactionService.getTransactionReceipt.and.returnValue(of('<html><body>receipt</body></html>'));
-    transactionService.sendTransactionEmail.and.returnValue(of({success: true}));
+    transactionService = {
+      getTransactionDetails: vi.fn().mockName("TransactionService.getTransactionDetails"),
+      sendTransactionEmail: vi.fn().mockName("TransactionService.sendTransactionEmail"),
+      getTransactionReceipt: vi.fn().mockName("TransactionService.getTransactionReceipt")
+    };
+    transactionService.getTransactionDetails.mockReturnValue(of(TRANSACTION));
+    transactionService.getTransactionReceipt.mockReturnValue(of('<html><body>receipt</body></html>'));
+    transactionService.sendTransactionEmail.mockReturnValue(of({ success: true }));
 
-    printService = jasmine.createSpyObj('PrintService', ['printDocument']);
-    printService.printDocument.and.resolveTo();
+    printService = {
+      printDocument: vi.fn().mockName("PrintService.printDocument")
+    };
+    printService.printDocument.mockResolvedValue();
 
-    errorService = jasmine.createSpyObj('ErrorService', ['handle']);
-    dialog = jasmine.createSpyObj('MatDialog', ['open']);
+    errorService = {
+      handle: vi.fn().mockName("ErrorService.handle")
+    };
+    dialog = {
+      open: vi.fn().mockName("MatDialog.open")
+    };
 
-    const retryService = jasmine.createSpyObj('PaymentRetryService', ['list', 'forceRetry']);
-    retryService.list.and.returnValue(of([]));
+    const retryService = {
+      list: vi.fn().mockName("PaymentRetryService.list"),
+      forceRetry: vi.fn().mockName("PaymentRetryService.forceRetry")
+    };
+    retryService.list.mockReturnValue(of([]));
 
     await TestBed.configureTestingModule({
       imports: [TransactionDetailComponent, NoopAnimationsModule],
       providers: [
         provideTranslateService(),
-        {provide: TransactionService, useValue: transactionService},
-        {provide: PaymentRetryService, useValue: retryService},
-        {provide: AccountService, useValue: {userValue: {email: 'me@example.com'}}},
-        {provide: PrintService, useValue: printService},
-        {provide: ErrorService, useValue: errorService},
-        {provide: MatDialog, useValue: dialog},
-        {provide: ActivatedRoute, useValue: {snapshot: {paramMap: {get: () => '4207'}}}}
+        { provide: TransactionService, useValue: transactionService },
+        { provide: PaymentRetryService, useValue: retryService },
+        { provide: AccountService, useValue: { userValue: { email: 'me@example.com' } } },
+        { provide: PrintService, useValue: printService },
+        { provide: ErrorService, useValue: errorService },
+        { provide: MatDialog, useValue: dialog },
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => '4207' } } } }
       ]
     }).compileComponents();
 
@@ -68,8 +82,7 @@ describe('TransactionDetailComponent', () => {
   });
 
   function headerButtons(): HTMLButtonElement[] {
-    return Array.from(
-      fixture.nativeElement.querySelectorAll('.header-actions button') as NodeListOf<HTMLButtonElement>);
+    return Array.from(fixture.nativeElement.querySelectorAll('.header-actions button') as NodeListOf<HTMLButtonElement>);
   }
 
   it('renders three header buttons: back, save pdf, send email', () => {
@@ -84,15 +97,13 @@ describe('TransactionDetailComponent', () => {
       const icon = button.querySelector('mat-icon')!;
       // Strip the icon ligature; whatever remains would be rendered as a label.
       const label = (button.textContent ?? '').replace(icon.textContent ?? '', '').trim();
-      expect(label).withContext(`button "${icon.textContent}" still renders text`).toBe('');
+      expect(label, `button "${icon.textContent}" still renders text`).toBe('');
     }
   });
 
   it('gives every header button an aria-label', () => {
     for (const button of headerButtons()) {
-      expect(button.getAttribute('aria-label')?.length)
-        .withContext(`icon button "${button.querySelector('mat-icon')?.textContent}" needs a label`)
-        .toBeGreaterThan(0);
+      expect(button.getAttribute('aria-label')?.length, `icon button "${button.querySelector('mat-icon')?.textContent}" needs a label`).toBeGreaterThan(0);
     }
   });
 
@@ -103,27 +114,27 @@ describe('TransactionDetailComponent', () => {
     expect(transactionService.getTransactionReceipt).toHaveBeenCalledWith(4207);
     expect(printService.printDocument)
       .toHaveBeenCalledWith('<html><body>receipt</body></html>', 'transaction-4207');
-    expect(component.savingPdf).toBeFalse();
+    expect(component.savingPdf).toBe(false);
   });
 
   it('reports a failed receipt fetch and clears the busy flag', async () => {
-    transactionService.getTransactionReceipt.and.returnValue(throwError(() => new Error('boom')));
+    transactionService.getTransactionReceipt.mockReturnValue(throwError(() => new Error('boom')));
 
     component.savePdf();
     await fixture.whenStable();
 
     expect(printService.printDocument).not.toHaveBeenCalled();
     expect(errorService.handle).toHaveBeenCalled();
-    expect(component.savingPdf).toBeFalse();
+    expect(component.savingPdf).toBe(false);
   });
 
   it('reports a failed print and clears the busy flag', async () => {
-    printService.printDocument.and.rejectWith(new Error('blocked'));
+    printService.printDocument.mockRejectedValue(new Error('blocked'));
 
     component.savePdf();
     await fixture.whenStable();
 
     expect(errorService.handle).toHaveBeenCalled();
-    expect(component.savingPdf).toBeFalse();
+    expect(component.savingPdf).toBe(false);
   });
 });

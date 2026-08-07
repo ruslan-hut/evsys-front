@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { TariffComponent } from './tariff.component';
 
@@ -8,7 +11,12 @@ describe('TariffComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TariffComponent]
+      imports: [TariffComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateService()
+      ]
     })
     .compileComponents();
 

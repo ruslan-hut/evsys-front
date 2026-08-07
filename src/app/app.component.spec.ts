@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -11,6 +13,8 @@ describe('AppComponent', () => {
       providers: [
         provideRouter([]),
         provideHttpClient(withXhr()),
+        provideTranslateService(),
+        provideNativeDateAdapter(),
         provideServiceWorker('ngsw-worker.js', { enabled: false })
       ]
     }).compileComponents();
