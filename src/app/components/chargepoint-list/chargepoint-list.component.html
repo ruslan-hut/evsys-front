@@ -1,11 +1,86 @@
-@for (chp of displayedChargePoints$ | async; track chp) {
-  <app-chargepoint [chargepoint]="chp" />
-} @empty {
-  <div class="no-data">{{ 'chargepointList.noChargePoints' | translate }}</div>
-}
+<div class="cp-toolbar">
+  <mat-form-field appearance="outline" class="cp-filter-field" subscriptSizing="dynamic">
+    <mat-label>{{ 'chargepointList.filterLabel' | translate }}</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput
+           #filterInput
+           [ngModel]="query()"
+           (ngModelChange)="query.set($event)"
+           [placeholder]="'chargepointList.filterPlaceholder' | translate" />
+    @if (query()) {
+      <button matSuffix mat-icon-button class="filter-clear-btn"
+              [attr.aria-label]="'chargepointList.clearFilter' | translate"
+              (click)="clearFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
 
-@if (!showingFullList && (displayedChargePoints$ | async)?.length) {
-  <div class="show-full-list">
-    <button mat-button color="primary" (click)="loadFullList()">{{ 'chargepointList.showFullList' | translate }}</button>
+  <mat-button-toggle-group class="cp-status-toggle"
+                           [value]="statusFilter()"
+                           (change)="statusFilter.set($event.value)"
+                           [attr.aria-label]="'chargepointList.statusFilter' | translate">
+    <mat-button-toggle value="all">{{ 'chargepointList.status.all' | translate }}</mat-button-toggle>
+    <mat-button-toggle value="online">{{ 'chargepointList.status.online' | translate }}</mat-button-toggle>
+    <mat-button-toggle value="charging">{{ 'chargepointList.status.charging' | translate }}</mat-button-toggle>
+    <mat-button-toggle value="offline">{{ 'chargepointList.status.offline' | translate }}</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-form-field appearance="outline" class="cp-sort-field" subscriptSizing="dynamic">
+    <mat-label>{{ 'chargepointList.sortLabel' | translate }}</mat-label>
+    <mat-select [value]="sortKey()" (valueChange)="sortKey.set($event)">
+      <mat-option value="status">{{ 'chargepointList.sort.status' | translate }}</mat-option>
+      <mat-option value="title">{{ 'chargepointList.sort.title' | translate }}</mat-option>
+      <mat-option value="updated">{{ 'chargepointList.sort.updated' | translate }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  @if (!loading()) {
+    <span class="cp-count" aria-live="polite">
+      @if (isFiltered()) {
+        {{ 'chargepointList.countFiltered' | translate:{ shown: visibleCount(), total: totalCount() } }}
+      } @else {
+        {{ 'chargepointList.count' | translate:{ total: totalCount() } }}
+      }
+    </span>
+  }
+</div>
+
+@if (loading()) {
+  <div class="cp-skeleton-list" aria-busy="true" [attr.aria-label]="'chargepointList.loading' | translate">
+    @for (row of skeletonRows; track row) {
+      <div class="cp-skeleton-card">
+        <div class="cp-skeleton-main">
+          <div class="skeleton-line skeleton-line--title"></div>
+          <div class="skeleton-line skeleton-line--sub"></div>
+          <div class="skeleton-line skeleton-line--meta"></div>
+        </div>
+        <div class="cp-skeleton-connectors">
+          <div class="skeleton-block"></div>
+          <div class="skeleton-block"></div>
+        </div>
+      </div>
+    }
   </div>
+} @else {
+  @for (chp of visibleChargePoints(); track trackById($index, chp)) {
+    <app-chargepoint [chargepoint]="chp" />
+  } @empty {
+    <div class="no-data">
+      @if (isFiltered()) {
+        <p>{{ 'chargepointList.noMatches' | translate }}</p>
+        <button mat-button color="primary" (click)="resetFilters()">
+          {{ 'chargepointList.clearFilters' | translate }}
+        </button>
+      } @else {
+        {{ 'chargepointList.noChargePoints' | translate }}
+      }
+    </div>
+  }
+
+  @if (!showingFullList() && totalCount()) {
+    <div class="show-full-list">
+      <button mat-button color="primary" (click)="loadFullList()">{{ 'chargepointList.showFullList' | translate }}</button>
+    </div>
+  }
 }

@@ -17,7 +17,7 @@ table {
   width: 100%;
 }
 th,td {
-  padding: 2px;
+  padding: var(--space-05);
 }
 td {
   max-width: 20%;

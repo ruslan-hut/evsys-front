@@ -7,7 +7,7 @@ table {
   width: 100%;
 }
 th,td {
-  padding: 2px;
+  padding: var(--space-05);
 }
 td {
   max-width: 20%;
@@ -27,12 +27,12 @@ td {
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 2px 5px;
+  padding: var(--space-05) var(--spacing-xs);
 }
 
 .two-in-one_input {
   width: 200%;
-  padding-right: 12px;
+  padding-right: var(--spacing-md);
 }
 
 .flex-container {
@@ -55,7 +55,7 @@ button {
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   background-color: var(--color-background-light);
   margin: var(--spacing-md) auto;
   max-width: 700px;

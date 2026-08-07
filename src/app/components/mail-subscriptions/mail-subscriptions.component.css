@@ -1,8 +1,8 @@
 .mail-subs-container {
-  padding: 16px;
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
   max-width: 960px;
   margin: 0 auto;
 }
@@ -15,7 +15,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-md);
 }
 
 .mail-subs-field {
@@ -24,12 +24,12 @@
 }
 
 .mail-subs-toggle {
-  margin: 0 8px;
+  margin: 0 var(--spacing-sm);
 }
 
 .mail-subs-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-sm);
   margin-left: auto;
 }
 

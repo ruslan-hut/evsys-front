@@ -45,11 +45,11 @@ mat-card {
   }
 
   .info-item dt {
-    font-size: 12px;
+    font-size: var(--text-sm);
   }
 
   .info-item dd {
-    font-size: 13px;
+    font-size: var(--text-md);
   }
 }
 

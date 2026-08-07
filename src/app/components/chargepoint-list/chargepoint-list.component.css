@@ -1,12 +1,123 @@
+.cp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--card-margin);
+}
+
+.cp-filter-field {
+  flex: 1 1 220px;
+  min-width: 180px;
+}
+
+.cp-sort-field {
+  flex: 0 0 auto;
+  width: 160px;
+}
+
+.cp-status-toggle {
+  flex: 0 0 auto;
+  height: var(--touch-target-min);
+}
+
+.cp-count {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
 .no-data {
   text-align: center;
   padding: var(--spacing-lg);
-  color: var(--color-text-muted, #757575);
-  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.no-data p {
+  margin: 0 0 var(--spacing-sm);
 }
 
 .show-full-list {
   display: flex;
   justify-content: center;
-  padding: var(--spacing-md, 16px);
+  padding: var(--spacing-md);
+}
+
+/* Skeleton cards mirror the real card's geometry so nothing shifts on load */
+.cp-skeleton-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin: var(--card-margin);
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--elevation-1);
+}
+
+.cp-skeleton-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.skeleton-line--title {
+  width: 40%;
+  height: var(--text-lg);
+}
+
+.skeleton-line--sub {
+  width: 65%;
+}
+
+.skeleton-line--meta {
+  width: 30%;
+  height: var(--text-xs);
+}
+
+.cp-skeleton-connectors {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.cp-skeleton-connectors .skeleton-block {
+  width: 160px;
+  height: 80px;
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 899px) {
+  .cp-skeleton-connectors .skeleton-block:nth-child(2) {
+    display: none;
+  }
+
+  .cp-skeleton-connectors .skeleton-block {
+    width: 110px;
+  }
+}
+
+@media (max-width: 599px) {
+  .cp-toolbar {
+    padding: var(--spacing-sm);
+  }
+
+  .cp-filter-field,
+  .cp-sort-field {
+    flex: 1 1 100%;
+    width: auto;
+  }
+
+  .cp-status-toggle {
+    flex: 1 1 100%;
+  }
+
+  .cp-count {
+    margin-left: 0;
+  }
+
+  .cp-skeleton-card {
+    margin: var(--spacing-sm);
+  }
 }

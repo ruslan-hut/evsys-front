@@ -26,7 +26,7 @@ button {
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   background-color: var(--color-background-light);
   margin: var(--spacing-lg) auto;
   max-width: 1000px;

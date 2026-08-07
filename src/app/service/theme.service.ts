@@ -67,7 +67,8 @@ export class ThemeService {
     // Update mobile browser theme-color
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', theme === 'dark' ? '#1a1a2e' : '#3F51B5');
+      // Keep in step with --color-header-surface in styles.css
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#06090f' : '#0f172a');
     }
   }
 

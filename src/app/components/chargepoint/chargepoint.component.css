@@ -11,20 +11,36 @@ mat-card {
   display: inline-block;
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   margin-right: var(--spacing-sm);
   flex-shrink: 0;
+  transition: background-color var(--duration-base) var(--ease-standard);
 }
 
+/* The dot is the smallest thing on the card, so it gets a brief halo of its
+   own current colour when live state lands — enough to catch the eye. */
+.chargepoint-card.state-changed .status-dot {
+  animation: status-dot-pulse var(--duration-slow) var(--ease-emphasized);
+}
+
+@keyframes status-dot-pulse {
+  from { box-shadow: 0 0 0 0 currentColor; }
+  to { box-shadow: 0 0 0 7px transparent; }
+}
+
+/* color as well as background so the pulse keyframe can use currentColor */
 .status-green {
+  color: var(--color-success);
   background-color: var(--color-success);
 }
 
 .status-yellow {
+  color: var(--color-warning);
   background-color: var(--color-warning);
 }
 
 .status-red {
+  color: var(--color-error);
   background-color: var(--color-error);
 }
 
@@ -47,7 +63,7 @@ mat-card {
 
 .update-text {
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: var(--text-md);
 }
 
 button {
@@ -68,11 +84,11 @@ mat-card-title {
   min-height: var(--touch-target-min);
   min-width: var(--touch-target-min);
   margin-right: -4px;
-  padding: 8px;
+  padding: var(--spacing-sm);
 }
 
 .edit-icon {
-  font-size: 20px;
+  font-size: var(--icon-md);
 }
 
 .details-container {
@@ -113,12 +129,12 @@ mat-card-title {
 
 .connector-container::-webkit-scrollbar-track {
   background: var(--color-border-light);
-  border-radius: 3px;
+  border-radius: var(--radius-xs);
 }
 
 .connector-container::-webkit-scrollbar-thumb {
   background: var(--color-border);
-  border-radius: 3px;
+  border-radius: var(--radius-xs);
 }
 
 .connector-container::-webkit-scrollbar-thumb:hover {

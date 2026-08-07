@@ -22,13 +22,13 @@
 }
 
 .summary-value {
-  font-size: 28px;
+  font-size: var(--text-4xl);
   font-weight: 600;
   line-height: 1.2;
 }
 
 .summary-label {
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--color-text-secondary);
   text-transform: uppercase;
 }
@@ -72,7 +72,7 @@
 }
 
 .station-id {
-  font-size: 16px;
+  font-size: var(--text-lg);
   font-weight: 600;
   color: var(--color-accent);
   min-width: 120px;
@@ -80,9 +80,9 @@
 
 .status-indicator {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: var(--space-05) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   min-width: 60px;
@@ -100,7 +100,7 @@
 }
 
 .duration-value {
-  font-size: 16px;
+  font-size: var(--text-lg);
   font-weight: 600;
   min-width: 80px;
 }
@@ -115,7 +115,7 @@
 
 .since-value {
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: var(--text-md);
   margin-left: auto;
 }
 

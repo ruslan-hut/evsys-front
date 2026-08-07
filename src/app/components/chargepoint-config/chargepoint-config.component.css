@@ -26,7 +26,7 @@ tr{
   width: 49.5%;
   min-height: 20px;
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: var(--text-base);
   padding: 3px;
 }
 
@@ -34,12 +34,12 @@ tr{
   min-height: 30px;
   line-height: 21px;
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: var(--text-base);
   padding: 3px;
   color: var(--color-text-primary);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .readonly-input {
@@ -47,7 +47,7 @@ tr{
   user-select: none;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   box-sizing: border-box;
   padding: 3px;
 }
@@ -76,7 +76,7 @@ button {
 }
 
 .value-cell {
-  font-size: 16px;
+  font-size: var(--text-lg);
   max-width: 200px; /* Adjust to your desired maximum width */
   overflow-wrap: break-word; /* Allows long words to break and wrap */
   word-wrap: break-word; /* Older property for compatibility */
@@ -98,12 +98,12 @@ button {
 .mat-spinner {
   display: inline-block;
   vertical-align: middle; /* Align spinner with text */
-  margin-left: 8px; /* Optional: Add margin if needed */
+  margin-left: var(--spacing-sm); /* Optional: Add margin if needed */
 }
 
 /* Ensure that input and button sizes are consistent */
 .equal-height-input {
-  margin-right: 8px; /* Adjust spacing between elements if needed */
+  margin-right: var(--spacing-sm); /* Adjust spacing between elements if needed */
 }
 
 .mat-cell {
@@ -146,7 +146,7 @@ button {
   /* Mobile card layout */
   .config-card {
     background: var(--color-background-light);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: var(--spacing-sm) var(--spacing-md);
     margin-bottom: var(--spacing-xs);
     border: 1px solid var(--color-border);
@@ -180,7 +180,7 @@ button {
   .config-key {
     font-weight: 600;
     color: var(--color-text-primary);
-    font-size: 13px;
+    font-size: var(--text-md);
     word-break: break-word;
   }
 
@@ -189,7 +189,7 @@ button {
     align-items: center;
     gap: var(--spacing-xs);
     color: var(--color-text-secondary);
-    font-size: 13px;
+    font-size: var(--text-md);
     word-break: break-word;
   }
 
@@ -220,9 +220,9 @@ button {
     flex: 1;
     min-width: 0;
     padding: var(--spacing-sm);
-    font-size: 16px;
+    font-size: var(--text-lg);
     border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     box-sizing: border-box;
     color: var(--color-text-primary);
     background-color: var(--color-surface);

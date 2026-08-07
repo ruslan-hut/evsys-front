@@ -6,14 +6,14 @@
 }
 
 .connector-title {
-  font-size: 14px;
+  font-size: var(--text-base);
   max-lines: 1;
 }
 
 .status-indicator {
   width: 16px;
   height: 16px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
 }
 
 .data {
@@ -27,10 +27,10 @@
   display: flex;
   align-items: center;
   border: 2px solid;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: inherit;
-  font-size: 14px;
+  font-size: var(--text-base);
   color: var(--color-text-primary);
   background-color: var(--color-surface);
   width: 100%;
@@ -38,6 +38,23 @@
   height: 80px;
   z-index: 0;
   box-sizing: border-box;
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.custom-button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.custom-button:not(:disabled):active {
+  transform: translateY(1px);
+  transition-duration: var(--duration-instant);
+}
+
+.status-item {
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
 /* Connector status styles */
@@ -70,7 +87,7 @@
 }
 
 .connector-number {
-  font-size: 24px;
+  font-size: var(--text-3xl);
   font-weight: bold;
   margin-right: var(--spacing-sm);
   flex-shrink: 0;
@@ -85,7 +102,7 @@
 .info-item {
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-xs);
 }
 
 .info-item:last-child {

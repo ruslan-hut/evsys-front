@@ -33,7 +33,7 @@
 }
 
 .toggle-hint {
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--color-text-muted);
   margin-left: 44px;
 }
@@ -41,14 +41,14 @@
 .readonly-info {
   background-color: var(--color-background);
   padding: var(--spacing-md);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin-top: var(--spacing-sm);
 }
 
 .readonly-info p {
   margin: var(--spacing-xs) 0;
   color: var(--color-text-secondary);
-  font-size: 14px;
+  font-size: var(--text-base);
 }
 
 mat-card-actions {

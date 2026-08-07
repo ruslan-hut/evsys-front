@@ -1,7 +1,7 @@
 
 .connector-content {
   padding: 0;
-  margin-left: 16px;
+  margin-left: var(--space-4);
   display: flex;
   align-items: flex-start;
 }
@@ -13,8 +13,8 @@
 }
 
 .connector-title {
-  font-size: 14px;
-  margin-right: 8px;
+  font-size: var(--text-base);
+  margin-right: var(--spacing-sm);
 }
 
 .status-indicator {
@@ -24,7 +24,7 @@
   justify-content: center;
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
 }
 
 .space {

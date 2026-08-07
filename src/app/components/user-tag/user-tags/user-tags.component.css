@@ -61,7 +61,7 @@ td:last-child, th:last-child {
 .tag-accordion {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-05);
 }
 
 .tag-panel {
@@ -75,17 +75,17 @@ td:last-child, th:last-child {
 }
 
 .tag-id {
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 600;
   color: var(--color-accent);
 }
 
 .tag-status-badge {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 600;
   text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: var(--space-05) var(--spacing-sm);
+  border-radius: var(--radius-sm);
 }
 
 .tag-status-badge.disabled {
@@ -94,7 +94,7 @@ td:last-child, th:last-child {
 }
 
 .tag-panel-description {
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
   justify-content: flex-end;
 }
@@ -113,12 +113,12 @@ td:last-child, th:last-child {
 }
 
 .tag-detail-label {
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--color-text-muted);
 }
 
 .tag-detail-value {
-  font-size: 13px;
+  font-size: var(--text-md);
   color: var(--color-text-primary);
   font-weight: 500;
 }

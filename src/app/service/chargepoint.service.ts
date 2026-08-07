@@ -24,6 +24,14 @@ export class ChargepointService implements OnDestroy {
   private chargePoints: Chargepoint[] = [];
   private chargePoints$ = new BehaviorSubject<Chargepoint[]>([]);
 
+  /**
+   * Emits a single charge point each time the WebSocket reports it changed.
+   * Screens that render their own subset of the list (rather than
+   * `getChargePoints()`) subscribe to this to stay live.
+   */
+  private chargePointUpdated = new Subject<Chargepoint>();
+  readonly chargePointUpdated$ = this.chargePointUpdated.asObservable();
+
   private destroy$ = new Subject<void>();
   private wsSubscription: Subscription | null = null;
   private isSubscribed = false;
@@ -149,14 +157,15 @@ export class ChargepointService implements OnDestroy {
         if (environment.debug) {
           console.log('Charge point update', message);
         }
-        if (index !== -1) {
-          this.getChargePoint(updated).pipe(
-            takeUntil(this.destroy$)
-          ).subscribe(chargePoint => {
+        this.getChargePoint(updated).pipe(
+          takeUntil(this.destroy$)
+        ).subscribe(chargePoint => {
+          if (index !== -1) {
             this.chargePoints[index] = chargePoint;
-            this.chargePoints$.next(this.chargePoints);
-          });
-        }
+            this.chargePoints$.next([...this.chargePoints]);
+          }
+          this.chargePointUpdated.next(chargePoint);
+        });
       }
     }
   }

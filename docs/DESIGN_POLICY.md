@@ -1,307 +1,449 @@
 # WattBrews Design Policy
 
-This document defines the design principles, patterns, and standards for the WattBrews (EvSys Front) application. All UI development should adhere to these guidelines to maintain a consistent, clean, and professional interface.
+Design standards for the WattBrews (EvSys Front) operator console.
 
-## Design Philosophy
-
-### Core Principles
-
-1. **Minimalism** - Every element must serve a purpose. Remove visual noise and unnecessary decorations.
-2. **Clarity** - Information hierarchy should be immediately apparent. Users should understand the interface without explanation.
-3. **Consistency** - Same patterns, colors, and behaviors across all components.
-4. **Responsiveness** - Mobile-first approach with graceful desktop enhancements.
-
-### Visual Goals
-
-- Clean, uncluttered layouts with generous whitespace
-- Subtle visual hierarchy through typography and spacing (not heavy borders or backgrounds)
-- Muted color palette with strategic accent colors for important actions
-- Professional appearance suitable for enterprise/industrial applications
+**`src/styles.css` is the single source of truth.** Every value in this document
+is transcribed from it. If the two ever disagree, the stylesheet is right and
+this file is stale — fix it.
 
 ---
 
-## Color Palette
+## Design Philosophy
 
-**IMPORTANT:** Always use CSS custom properties (variables) instead of hardcoded hex values. All color variables are defined in `src/styles.css`.
+This is a console for technicians and operators who keep it open all day, not a
+marketing surface. The visual direction follows from that.
 
-### Primary Colors
+### Core Principles
 
-| Purpose | CSS Variable | Hex | Usage |
-|---------|--------------|-----|-------|
-| Primary | `--color-primary` | `#3f51b5` | Primary actions, links, focus states |
-| Primary Dark | `--color-primary-dark` | `#303f9f` | Hover states for primary elements |
-| Accent | `--color-accent` | `#1976d2` | Highlighted values, important data |
+1. **Density** — Fit more real information on screen. Whitespace is tuned for
+   scanning rows of live data, not for editorial breathing room.
+2. **Calm** — Colour carries meaning and nothing else. A screen with no problems
+   on it should look quiet.
+3. **Legibility** — Numbers align, timestamps are monospaced, labels stay out of
+   the way of values.
+4. **Consistency** — Same patterns, tokens and behaviours everywhere.
+5. **Responsiveness** — Mobile-first, with desktop earning its extra width by
+   showing more data rather than the same data larger.
 
-### Text Colors
+### Visual identity
 
-| Purpose | CSS Variable | Hex | Usage |
-|---------|--------------|-----|-------|
-| Text Primary | `--color-text-primary` | `#212121` | Main content text |
-| Text Secondary | `--color-text-secondary` | `#616161` | Secondary text, labels |
-| Text Muted | `--color-text-muted` | `#757575` | Placeholder text, descriptions |
+Slate/steel palette, IBM Plex Sans and IBM Plex Mono, tight spacing, small
+radii, near-flat elevation, and a dark "console" header surface that stays dark
+in both themes. Tabular numerals (`tnum`, `zero`) are on globally so meter
+values, IDs and currency align in columns.
 
-### Border & Background Colors
+---
 
-| Purpose | CSS Variable | Hex | Usage |
-|---------|--------------|-----|-------|
-| Border | `--color-border` | `#e0e0e0` | Dividers, card borders |
-| Border Light | `--color-border-light` | `#f0f0f0` | Subtle dividers |
-| Background | `--color-background` | `#f5f5f5` | Page background |
-| Background Light | `--color-background-light` | `#fafafa` | Alternate backgrounds |
-| Surface | `--color-surface` | `#ffffff` | Cards, panels, dialogs |
+## Tokens
 
-### Action Button Colors
+### Spacing
 
-| Purpose | CSS Variable | Hex | Usage |
-|---------|--------------|-----|-------|
-| Action Default | `--color-action` | `#616161` | List action buttons (edit, view) |
-| Action Hover | `--color-action-hover` | `#424242` | Hover state for action buttons |
-| Destructive | `--color-action-warn` | `#c62828` | Delete buttons |
-| Destructive Hover | `--color-action-warn-hover` | `#b71c1c` | Hover state for delete |
+A 4px grid, exposed as numeric primitives with named aliases layered on top.
+Prefer the named alias when one fits; reach for the primitive when it doesn't.
 
-### Status Colors
+| Token | Value | | Alias | Resolves to |
+|---|---|---|---|---|
+| `--space-05` | 2px | | `--spacing-xs` | 4px |
+| `--space-1` | 4px | | `--spacing-sm` | 8px |
+| `--space-2` | 8px | | `--spacing-md` | 12px |
+| `--space-3` | 12px | | `--spacing-lg` | 20px |
+| `--space-4` | 16px | | `--spacing-xl` | 28px |
+| `--space-5` | 20px | | | |
+| `--space-6` | 24px | | | |
+| `--space-7` | 28px | | | |
+| `--space-8` | 32px | | | |
 
-| Status | CSS Variable | Hex | Usage |
-|--------|--------------|-----|-------|
-| Success/Online | `--color-success` / `--color-online` | `#4caf50` | Success states, online indicators |
-| Warning | `--color-warning` | `#ff9800` | Warning states |
-| Error/Offline | `--color-error` | `#f44336` | Error states, offline indicators |
-| Neutral/Inactive | `--color-offline` | `#9e9e9e` | Inactive, disabled states |
+`--space-05` (2px) exists only for badge padding, which is sub-grid by design.
 
-### Status Badge Colors
+### Radius
 
-| Purpose | CSS Variable | Hex | Usage |
-|---------|--------------|-----|-------|
-| Active Background | `--color-status-active-bg` | `#e3f2fd` | Active status badge background |
-| Active Text | `--color-status-active-text` | `#1565c0` | Active status badge text |
-| Finished Background | `--color-status-finished-bg` | `#e8f5e9` | Finished status badge background |
-| Finished Text | `--color-status-finished-text` | `#2e7d32` | Finished status badge text |
+| Token | Value | Usage |
+|---|---|---|
+| `--radius-xs` | 3px | Inline chips, tight markers |
+| `--radius-sm` | 4px | Badges, small controls |
+| `--radius-md` | 6px | Cards, panels, dialogs |
+| `--radius-lg` | 8px | Large containers |
+| `--radius-pill` | 999px | Pill-shaped chips |
+| `--radius-circle` | 50% | Status dots, avatars |
 
-### Role Badge Colors
+`--card-border-radius` is an alias of `--radius-md`.
 
-| Role | CSS Variable | Hex | Usage |
-|------|--------------|-----|-------|
-| Admin | `--color-role-admin` | `#d32f2f` | Administrator badge |
-| Operator | `--color-role-operator` | `#1976d2` | Operator badge |
-| Default | `--color-role-default` | `#757575` | Other roles |
+### Typography
+
+| Token | Value | Usage |
+|---|---|---|
+| `--text-2xs` | 10px | Badges |
+| `--text-xs` | 11px | Timestamps, meta |
+| `--text-sm` | 12px | Labels, captions |
+| `--text-md` | 13px | Secondary body |
+| `--text-base` | 14px | Body (matches `body` font-size) |
+| `--text-lg` | 16px | Subsection heading |
+| `--text-xl` | 18px | Section heading |
+| `--text-2xl` | 20px | Page title |
+| `--text-3xl` | 24px | Connector number |
+| `--text-4xl` | 28px | Hero metric |
+
+| Token | Value |
+|---|---|
+| `--weight-regular` | 400 |
+| `--weight-medium` | 500 |
+| `--weight-semibold` | 600 |
+| `--leading-tight` | 1.25 |
+| `--leading-base` | 1.45 |
+| `--leading-relaxed` | 1.6 |
+
+**Families**
+
+- `--font-sans` — IBM Plex Sans, Inter, system stack
+- `--font-display` — IBM Plex Sans (headings; `letter-spacing: -0.01em`, weight 600)
+- `--font-mono` — IBM Plex Mono, JetBrains Mono, SF Mono
+
+Monospace is applied automatically to `.mono`, `code`, `kbd`, `samp`, `pre`,
+`.cell-id`, `.timestamp`, `.meter-value`, `.currency`, `.numeric` and
+`td.numeric`. Use those classes rather than setting `font-family` by hand.
+
+### Icon sizes
+
+Icon sizing is a separate scale from the type scale. Never size an icon with a
+`--text-*` token.
+
+| Token | Value |
+|---|---|
+| `--icon-xs` | 16px |
+| `--icon-sm` | 18px |
+| `--icon-md` | 20px |
+| `--icon-lg` | 24px (Material default) |
+
+### Motion
+
+| Token | Value | Usage |
+|---|---|---|
+| `--duration-instant` | 80ms | Press feedback |
+| `--duration-fast` | 140ms | Hover, focus |
+| `--duration-base` | 220ms | Most transitions |
+| `--duration-slow` | 380ms | Entrances, state arrivals |
+| `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Default |
+| `--ease-emphasized` | `cubic-bezier(0.05, 0.7, 0.1, 1)` | Entrances |
+| `--ease-exit` | `cubic-bezier(0.3, 0, 1, 1)` | Exits |
+
+A global `prefers-reduced-motion: reduce` block collapses all animation and
+transition durations to 1ms. Do not re-implement that per component.
+
+### Layout
+
+| Token | Value |
+|---|---|
+| `--card-margin` | 10px |
+| `--header-height-mobile` | 52px |
+| `--header-height-desktop` | 56px |
+| `--touch-target-min` | 40px |
+| `--elevation-1` | `0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06)` |
+| `--elevation-2` | `0 2px 4px rgba(15,23,42,.05), 0 4px 12px rgba(15,23,42,.06)` |
+
+Breakpoint tokens (`--breakpoint-xs` 400px, `-sm` 600px, `-md` 900px, `-lg`
+1200px) document the scale but cannot be used in media queries — CSS custom
+properties don't work there. Write the px value and keep it in step with the
+token.
+
+---
+
+## Colour
+
+**Always use tokens. Never write a hex value in component CSS.** There are
+currently zero hex literals outside `styles.css`; keep it that way.
+
+### Light theme
+
+| Purpose | Token | Value |
+|---|---|---|
+| Primary | `--color-primary` | `#1e3a8a` |
+| Primary dark | `--color-primary-dark` | `#1e293b` |
+| Accent | `--color-accent` | `#0284c7` |
+| On primary | `--color-on-primary` | `#ffffff` |
+| Text primary | `--color-text-primary` | `#0f172a` |
+| Text secondary | `--color-text-secondary` | `#475569` |
+| Text muted | `--color-text-muted` | `#64748b` |
+| Border | `--color-border` | `#d4dae3` |
+| Border light | `--color-border-light` | `#e8ecf2` |
+| Background | `--color-background` | `#f1f4f8` |
+| Background light | `--color-background-light` | `#f7f9fc` |
+| Surface | `--color-surface` | `#ffffff` |
+| Focus ring | `--color-focus-ring` | `rgba(2,132,199,.35)` |
+
+### Status
+
+| Purpose | Token | Light | Dark |
+|---|---|---|---|
+| Success / online | `--color-success`, `--color-online` | `#059669` | `#34d399` |
+| Warning | `--color-warning` | `#d97706` | `#fbbf24` |
+| Error | `--color-error` | `#dc2626` | `#f87171` |
+| Offline / neutral | `--color-offline` | `#94a3b8` | `#64748b` |
+| On error | `--color-on-error` | `#ffffff` | `#2e0a0a` |
+| Error container | `--color-error-container` | `#fee2e2` | `#2e0a0a` |
+| On error container | `--color-on-error-container` | `#991b1b` | `#fca5a5` |
+
+### Badges and roles
+
+| Purpose | Token | Light | Dark |
+|---|---|---|---|
+| Active bg / text | `--color-status-active-bg` / `-text` | `#dbeafe` / `#1e40af` | `#172554` / `#93c5fd` |
+| Finished bg / text | `--color-status-finished-bg` / `-text` | `#d1fae5` / `#065f46` | `#064e3b` / `#6ee7b7` |
+| Admin | `--color-role-admin` | `#b91c1c` | `#f87171` |
+| Operator | `--color-role-operator` | `#1e40af` | `#60a5fa` |
+| Other roles | `--color-role-default` | `#64748b` | `#94a3b8` |
+
+### Connector status
+
+| State | Foreground | Background |
+|---|---|---|
+| Available | `--color-connector-available` | `--color-connector-available-bg` |
+| Occupied | `--color-connector-occupied` | `--color-connector-occupied-bg` |
+| Charging | `--color-connector-charging` | `--color-connector-charging-bg` |
+| Error | `--color-connector-error` | `--color-connector-error-bg` |
+
+Use these for anything showing connector or charge point state. Do not invent
+ad-hoc green/yellow/red classes.
+
+### Action buttons
+
+`--color-action` / `--color-action-hover` for standard actions,
+`--color-action-warn` / `--color-action-warn-hover` for destructive ones.
+
+### Header surface
+
+The header is a dark console surface in both themes.
+
+`--color-header-surface`, `--color-header-text`, `--color-header-text-muted`,
+`--color-header-border`, `--color-header-accent`, `--color-header-accent-2`
+(brand gradient second stop), `--color-header-on-accent`.
+
+`ThemeService.applyTheme()` writes `--color-header-surface`'s value into the
+`<meta name="theme-color">` tag. If you change that token, change the service
+too — the values are duplicated by necessity.
 
 ---
 
 ## Dark Theme
 
-The application supports three theme modes:
-- **Auto** (default): Inherits from the operating system's color scheme preference
-- **Light**: Forces light theme
-- **Dark**: Forces dark theme
+Three modes: **auto** (follows the OS), **light**, **dark**. Managed by
+`ThemeService`, persisted in `localStorage` under `theme-preference`, changed in
+**User Profile > Appearance**.
 
-### Theme Implementation
+### How it works
 
-Theme preference is managed by `ThemeService` and persisted in `localStorage` under the key `theme-preference`.
+1. `ThemeService` resolves the mode to an effective theme and toggles a single
+   `.dark-theme` class on `<html>`. `auto` is always resolved to an explicit
+   class — it is never left to CSS.
+2. An inline script in `index.html` applies the same class before first paint to
+   prevent a flash of the wrong theme.
+3. `.dark-theme` redefines the `--color-*` tokens. Nothing else.
+4. `color-scheme` is set to `light` on `:root` and `dark` on `.dark-theme`, so
+   native scrollbars, form controls and the like follow the theme for free.
 
-### Dark Theme Color Palette
+### Developer notes
 
-| Purpose | CSS Variable | Dark Value | Notes |
-|---------|--------------|------------|-------|
-| Primary | `--color-primary` | `#7986cb` | Lighter indigo for dark backgrounds |
-| Accent | `--color-accent` | `#64b5f6` | Lighter blue |
-| Text Primary | `--color-text-primary` | `#e0e0e0` | High contrast white-ish |
-| Text Secondary | `--color-text-secondary` | `#b0b0b0` | Medium gray |
-| Text Muted | `--color-text-muted` | `#909090` | Low emphasis |
-| Background | `--color-background` | `#121212` | Material dark surface |
-| Background Light | `--color-background-light` | `#1e1e1e` | Elevated surface |
-| Surface | `--color-surface` | `#1e1e1e` | Card/panel background |
-| Border | `--color-border` | `#424242` | Dividers |
-
-### Theme Toggle Location
-
-Users can change their theme preference in **User Profile > Appearance**.
-
-### Developer Notes
-
-1. Always use CSS custom properties - they automatically adapt to dark theme
-2. The `.dark-theme` class is applied to `<html>` element
-3. Flash of incorrect theme is prevented via inline script in `index.html`
-4. To test dark theme, use browser DevTools to toggle `prefers-color-scheme` or set theme manually
+- Use `--color-*` tokens and dark theme works automatically. There is no reason
+  to write a `.dark-theme` rule in a component stylesheet.
+- The only `.dark-theme` descendant rules that remain in `styles.css` target
+  ngx-charts (a third party that doesn't read our tokens) and bare native
+  elements. Don't add more.
 
 ---
 
-## Typography
+## Angular Material
 
-### Font Family
+The app uses the **modern token-based** prebuilt theme
+(`@angular/material/prebuilt-themes/azure-blue.css`), not the legacy M2
+`indigo-pink` theme.
 
-- **Primary**: Roboto, "Helvetica Neue", sans-serif
-- **Monospace**: For code, IDs, technical values (system default)
+`styles.css` contains a **Material System Token Bridge** section that maps
+Material's `--mat-sys-*` system tokens onto our design tokens — colour, type
+scale, corners and elevation. Because the bridge is declared once on `:root` and
+its values are `var(--color-*)` references, it follows the active theme
+automatically.
 
-### Font Sizes
+**This means you should not need per-component Material overrides.** If a
+Material component looks wrong:
 
-| Element | Size | Weight | Usage |
-|---------|------|--------|-------|
-| Page Title | 24px | 500 | Main page headers |
-| Section Title | 18px | 500 | Card headers, section titles |
-| Subsection | 16px | 500 | Subsection headers |
-| Body | 14px | 400 | Default text |
-| Small | 13px | 400 | Secondary information |
-| Caption | 12px | 400 | Labels, captions |
-| Micro | 11px | 400 | Timestamps, meta info |
-| Badge | 10px | 600 | Role badges, status chips |
+1. Find the `--mat-sys-*` token it reads.
+2. Fix the mapping in the bridge.
+3. Only if that genuinely can't express it, write a scoped override — and say
+   why in a comment.
 
-### Text Colors by Context
-
-- **Primary identifiers** (usernames, IDs): `#1976d2` with weight 600
-- **Labels**: `#757575` with weight 400
-- **Values**: `#212121` with weight 500
-- **Descriptions/Meta**: `#757575` with weight 400
-
----
-
-## Spacing System
-
-Use CSS custom properties defined in `styles.css`:
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--spacing-xs` | 4px | Tight spacing, badge padding |
-| `--spacing-sm` | 8px | Default gap, small padding |
-| `--spacing-md` | 16px | Container padding, section gaps |
-| `--spacing-lg` | 24px | Large section spacing |
-| `--spacing-xl` | 32px | Page-level spacing |
-
-### Spacing Guidelines
-
-- **Mobile container padding**: `var(--spacing-sm)` (8px)
-- **Desktop container padding**: `var(--spacing-md)` (16px)
-- **Between form fields**: `var(--spacing-md)` (16px)
-- **Between list items**: 2px (tight) or `var(--spacing-sm)` (8px)
-- **Action button gaps**: 4-8px
+Adding a `--mdc-*` or `--mat-*` component-level override to a component
+stylesheet is the thing this bridge exists to prevent.
 
 ---
 
 ## Component Patterns
 
-### Lists (Tables & Accordions)
+### Lists
 
-#### Desktop: Material Table
+**Desktop — Material table**
+- `mat-table` with `mat-sort` for sortable columns
+- Wrap in `.table-responsive` for horizontal scroll
+- Keep columns concise; tooltips for overflow text
 
-- Use `mat-table` with `mat-sort` for sortable columns
-- Wrap in `.table-responsive` for horizontal scroll on small screens
-- Add `.mat-elevation-z8` for subtle shadow
-- Keep columns concise; use tooltips for overflow text
+**Mobile — expansion panels**
+- `mat-accordion` with `mat-expansion-panel`
+- Header: primary identifier + key value/badge
+- Description: timestamp or secondary info
+- Expanded: label/value detail rows
+- Actions at the bottom, separated by a top border
 
-#### Mobile: Expansion Panels
+**Common**
+- Filter bar: `mat-form-field` with a clear button, above the list
+- Add button: `mat-raised-button color="primary"` with icon
+- Paginator below the list — mobile `[10, 25, 50]` without first/last, desktop
+  `[10, 50, 100]` with them
 
-- Use `mat-accordion` with `mat-expansion-panel`
-- Panel header shows: Primary identifier + key value/badge
-- Panel description shows: Timestamp or secondary info
-- Expanded content: Detail rows with label-value pairs
-- Actions at bottom with top border separator
-
-#### Common Elements
-
-- **Filter bar**: `mat-form-field` with clear button, positioned above list
-- **Add button**: `mat-raised-button color="primary"` with icon
-- **Pagination**: `mat-paginator` below list
-  - Mobile: `[10, 25, 50]` options, no first/last buttons
-  - Desktop: `[10, 50, 100]` options, with first/last buttons
-
-### Action Buttons
-
-Use the global `.list-action-btn` class for consistent styling:
+### Action buttons
 
 ```html
-<!-- Standard action -->
 <button mat-icon-button class="list-action-btn" (click)="action()">
   <mat-icon>edit</mat-icon>
 </button>
 
-<!-- Destructive action -->
 <button mat-icon-button class="list-action-btn warn" (click)="delete()">
   <mat-icon>delete</mat-icon>
 </button>
 ```
 
-**Do NOT use** `color="warn"` on icon buttons in lists - it's too aggressive. Use `.list-action-btn warn` instead.
+**Do not** use `color="warn"` on icon buttons in lists — too aggressive. Use
+`.list-action-btn warn`.
 
-### Filter Clear Buttons
+### Filter clear buttons
 
-Use the global `.filter-clear-btn` class for filter input clear buttons:
-
-```html
-<mat-form-field appearance="fill" class="filter-field">
-  <mat-label>Filter</mat-label>
-  <input matInput [(ngModel)]="filter" />
-  @if (filter) {
-    <button matSuffix mat-icon-button class="filter-clear-btn" aria-label="Clear" (click)="clearFilter()">
-      <mat-icon>close</mat-icon>
-    </button>
-  }
-</mat-form-field>
-```
-
-This provides a muted, non-distracting appearance for filter clear buttons.
+Use `.filter-clear-btn` on the `matSuffix` clear button for a muted appearance.
 
 ### Cards
 
-- Use `mat-card` for detail views and forms
-- Standard margin: `var(--card-margin)` (16px)
-- Border radius: `var(--card-border-radius)` (8px)
-- Use `mat-card-header` with `mat-card-title` for headers
-- Use `mat-divider` to separate sections within cards
+- `mat-card` for detail views and forms
+- Margin `var(--card-margin)` (10px), radius `var(--card-border-radius)` (6px)
+- Cards get a 1px `--color-border-light` border and `--elevation-1` globally —
+  don't add your own border or shadow
+- `mat-divider` to separate sections within a card
 
 ### Forms
 
-- Use `appearance="outline"` for form fields
-- Group related fields in sections with headings
-- Submit button: `mat-raised-button color="primary"`
-- Cancel/Back button: `mat-button` (text button)
-- Place actions at bottom, right-aligned
+- `appearance="outline"` on form fields
+- Group related fields under headings
+- Submit `mat-raised-button color="primary"`, cancel `mat-button`
+- Actions at the bottom, right-aligned
+- Layout helpers: `.form-grid`, `.form-row`, `.form-row--inline`,
+  `.form-row-two-col`
 
 ### Dialogs
 
-- Keep dialogs focused on single task
-- Use `mat-dialog-title`, `mat-dialog-content`, `mat-dialog-actions`
-- Destructive confirmation: Clear warning text, red confirm button
-- Actions: Cancel (left), Confirm (right)
+- One task per dialog
+- `mat-dialog-title` / `mat-dialog-content` / `mat-dialog-actions`
+- Destructive confirmations: explicit warning text, red confirm button
+- Cancel left, confirm right
 
-### Status Indicators
-
-#### Badges
+### Badges
 
 ```css
 .status-badge {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
+  padding: var(--space-05) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
 }
 ```
 
-#### Online/Offline Dots
+---
 
-Use CSS classes `.status-online` and `.status-offline` with appropriate icons.
+## Motion
+
+Motion in this app has one job: tell the operator something changed. Data
+arrives over a WebSocket without them asking for it, so a state change that
+repaints silently is a change they can miss.
+
+### Global utilities
+
+| Class | Use |
+|---|---|
+| `.interactive-surface` | Hover/press feedback on clickable cards and rows. Lifts shadow on hover, presses 1px on active. |
+| `.state-changed` | Apply briefly when live data changes an item. Fades a ring out over `--duration-slow`. |
+| `.skeleton-line`, `.skeleton-block` | Loading placeholders (see above). |
+
+### Rules
+
+1. Every clickable surface gets hover and press feedback. A click with no
+   response reads as a broken click.
+2. Transition the properties that carry state — `background-color`,
+   `border-color`, `color` — so a status change is visible as a change rather
+   than an instant repaint.
+3. Live updates get `.state-changed`. The animation must finish on its own; do
+   not leave a permanent "new" marker that needs dismissing.
+4. Use the `--duration-*` and `--ease-*` tokens. Don't write raw ms values.
+5. Never animate anything that isn't communicating something. Decorative motion
+   is the fastest way to make a dense console feel unreliable.
+6. Reduced motion is handled globally — don't re-implement it per component.
+
+### Live state pattern
+
+Components receiving live data derive a *state key* and flag a change when it
+moves. See `chargepoint.component.ts` for the reference implementation:
+
+```typescript
+effect(() => {
+  const key = this.stateKey(this.chargepoint());
+  const previous = this.lastStateKey;
+  this.lastStateKey = key;
+  if (previous === null || previous === key) return;   // first render is not a change
+  this.stateChanged.set(true);
+  this.resetTimer = setTimeout(() => this.stateChanged.set(false), 1200);
+});
+```
+
+---
+
+## Keyboard
+
+This is a console people keep open all day. Keyboard access is a primary
+interface, not an accessibility afterthought.
+
+| Key | Action |
+|---|---|
+| `Cmd/Ctrl + K` | Open the command palette |
+| `?` | Open the command palette (its footer lists the shortcuts) |
+| `/` | Focus the current page's filter input |
+| `g` `p` | Charge points |
+| `g` `t` | Transactions |
+| `g` `d` | Dashboard |
+| `g` `u` | Users |
+| `g` `l` | System log |
+| `g` `r` | Reports |
+
+### Implementation
+
+`ShortcutService` owns the key handling and the command registry.
+`AppComponent` binds `(document:keydown)` and delegates to it.
+
+- Bare-key shortcuts are suppressed while focus is in an `input`, `textarea`,
+  `select` or contenteditable. `Cmd/Ctrl + K` is the deliberate exception — the
+  palette must be reachable from a focused filter.
+- A page that has a filter subscribes to `filterFocusRequested$` and focuses its
+  input. Adding a filter to a screen means wiring this up too.
+- New destinations go in the `COMMANDS` array in `shortcut.service.ts` with a
+  `groupKey` and, if they deserve one, a `hint`. Admin-only entries set
+  `adminOnly: true` and are filtered by role.
+- The palette is discoverable through the header's search button, which shows
+  the platform-correct shortcut. A shortcut nobody can find doesn't exist.
 
 ---
 
 ## Responsive Design
 
-### Breakpoints
-
-| Name | Width | Usage |
-|------|-------|-------|
+| Name | Width | Layout |
+|---|---|---|
 | Mobile | < 600px | Single column, accordion lists |
-| Tablet Portrait | 600-899px | Transitional layouts |
-| Tablet Landscape | 900-1199px | Two-column where appropriate |
-| Desktop | >= 1200px | Full table layouts, sidebars |
-
-### Mobile-First Patterns
-
-1. **Lists**: Accordion on mobile, table on desktop
-2. **Filters**: Collapsible panel on mobile, inline on desktop
-3. **Navigation**: Bottom sheet or hamburger menu on mobile
-4. **Touch targets**: Minimum 44px for interactive elements
-
-### Using BreakpointObserver
+| Tablet portrait | 600–899px | Transitional |
+| Tablet landscape | 900–1199px | Two column where useful |
+| Desktop | ≥ 1200px | Full tables |
 
 ```typescript
 isMobile$ = this.breakpointObserver
@@ -309,200 +451,160 @@ isMobile$ = this.breakpointObserver
   .pipe(map(result => result.matches));
 ```
 
-```html
-@if (isMobile$ | async) {
-  <!-- Mobile layout -->
-} @else {
-  <!-- Desktop layout -->
-}
-```
+Utilities: `.hide-mobile`, `.hide-desktop`.
 
 ---
 
 ## Icons
 
-Use Material Icons consistently:
+Material Icons, used consistently:
 
-| Action | Icon | Usage |
-|--------|------|-------|
-| Add | `add` | Create new item |
-| Edit | `edit` | Modify item |
-| Delete | `delete` | Remove item |
-| View | `visibility` | View details |
-| Back | `arrow_back` | Navigate back |
-| Search | `search` | Search/filter |
-| Clear | `close` | Clear input/filter |
-| Filter | `filter_list` | Filter panel toggle |
-| Copy | `content_copy` | Copy to clipboard |
-| Settings | `settings` | Configuration |
-| Menu | `menu` | Navigation menu |
-| User | `person` | User-related |
-| Transactions | `receipt_long` | Transaction list |
-| Tags | `local_offer` | User tags |
+| Action | Icon | | Action | Icon |
+|---|---|---|---|---|
+| Add | `add` | | Settings | `settings` |
+| Edit | `edit` | | Menu | `menu` |
+| Delete | `delete` | | User | `person` |
+| View | `visibility` | | Transactions | `receipt_long` |
+| Back | `arrow_back` | | Tags | `local_offer` |
+| Search | `search` | | Charge points | `ev_station` |
+| Clear | `close` | | Copy | `content_copy` |
+| Filter | `filter_list` | | | |
 
 ---
 
-## Loading States
+## Loading and Empty States
 
-### Progress Indicators
+### Loading
 
-**IMPORTANT:** Always use horizontal progress bar (`mat-progress-bar`) for page/component loading states. This provides a consistent, unobtrusive loading experience across the application.
-
-#### Standard Loading Pattern
+**Lists load with skeleton rows.** A list knows the shape of what's coming, so
+it should hold that shape instead of collapsing and letting content jump in.
+Compose the global `.skeleton-line` (text) and `.skeleton-block` (chips,
+thumbnails) primitives into a placeholder that mirrors the real row's geometry —
+see `chargepoint-list` for the reference implementation.
 
 ```html
-@if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
-}
-
-<div class="component-content">
-  <!-- Component content here -->
-</div>
-```
-
-#### Rules
-
-1. **Page/Component load**: Always use `mat-progress-bar mode="indeterminate"` at the top of the component
-2. **Position**: Progress bar should be the first element, above all other content
-3. **Wrapper**: Wrap in a `<div>` to ensure proper block display
-4. **DO NOT use** `mat-spinner` for page loading - spinners are only for inline micro-interactions
-5. **Button actions**: Disable the button during action, no spinner needed if page has progress bar
-
-#### Examples
-
-**Correct - Horizontal progress bar:**
-```html
-@if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+@if (loading()) {
+  <div class="cp-skeleton-list" aria-busy="true">
+    @for (row of skeletonRows; track row) {
+      <div class="cp-skeleton-card">
+        <div class="skeleton-line skeleton-line--title"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    }
+  </div>
 }
 ```
 
-**Incorrect - Do not use spinners for page loading:**
+**Everything else uses an indeterminate progress bar** as the first element of
+the component:
+
 ```html
-<!-- WRONG: Don't use mat-spinner for page loading -->
 @if (loading) {
-  <mat-spinner diameter="30"></mat-spinner>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 ```
 
-### Empty States
+**Do not** use `mat-spinner` for page or component loading — spinners are for
+inline micro-interactions only. Two components still violate this
+(`chargepoint-profile`, `chargepoint-config`); they are known debt, not
+precedent.
+
+### Empty states
 
 ```html
-<div class="no-data">No items found</div>
+<div class="no-data">No charge points match this filter</div>
 ```
 
-Style: Centered, muted text, italic, generous padding.
+Say what is empty and, where there's an action available, what to do about it.
 
 ---
 
 ## Accessibility
 
-### Requirements
-
-1. **Focus indicators**: Visible focus ring on all interactive elements
-2. **Color contrast**: Minimum 4.5:1 for normal text, 3:1 for large text
-3. **Touch targets**: Minimum 44x44px
-4. **ARIA labels**: On icon-only buttons
-5. **Screen reader text**: Use `.sr-only` class for context
-
-### Focus Styles
-
-```css
-:focus-visible {
-  outline: 2px solid #3f51b5;
-  outline-offset: 2px;
-}
-```
-
-### Button Labels
-
-Always include `aria-label` on icon buttons:
-
-```html
-<button mat-icon-button aria-label="Edit user John">
-  <mat-icon>edit</mat-icon>
-</button>
-```
+1. Visible focus ring on every interactive element — `:focus-visible` is styled
+   globally with a 2px `--color-primary` outline at 2px offset
+2. Contrast: 4.5:1 normal text, 3:1 large text
+3. Touch targets at least `--touch-target-min` (40px); use `.touch-target`
+4. `aria-label` on every icon-only button
+5. `.sr-only` for screen-reader-only context
 
 ---
 
 ## CSS Architecture
 
-### File Organization
+### Files
 
-- **Global styles**: `src/styles.css` - Variables, utility classes, global overrides
-- **Component styles**: `component-name.component.css` - Scoped component styles
+- `src/styles.css` — tokens, the Material bridge, utilities, global rules
+- `<component>.component.css` — scoped component styles
 
-### Naming Conventions
+### Naming
 
-- Use lowercase with hyphens: `.user-panel-title`
-- Prefix with component context: `.transaction-details`, `.tag-actions`
-- Use BEM-like structure for related elements:
-  - `.user-panel` (block)
-  - `.user-panel-title` (element)
-  - `.user-panel.expanded` (modifier)
+Lowercase with hyphens, prefixed with component context, BEM-ish:
+`.user-panel`, `.user-panel-title`, `.user-panel.expanded`.
 
-### CSS Custom Properties
+### Rules
 
-Always use design tokens from `:root`:
+- No hex values outside `styles.css`
+- No raw px for spacing, radius, type or icon size where a token exists
+- No `.dark-theme` rules in component stylesheets
+- No `--mdc-*` / `--mat-*` overrides in component stylesheets — fix the bridge
 
-```css
-/* Good */
-padding: var(--spacing-md);
-color: var(--color-error);
+### `!important`
 
-/* Avoid */
-padding: 16px;
-color: #f44336;
-```
+Only to override Material internals, or on a global utility class that must
+always win. Every other use is a specificity bug.
 
-### Avoiding !important
+### Known exceptions
 
-Only use `!important` when:
-1. Overriding Material component internal styles
-2. Global utility classes that must always apply
+A handful of off-grid one-off values survive in component CSS — layout offsets
+(44px, 64px, 72px, 80px, 100px) and micro-padding (3px, 5px, 6px, 10px). They
+are deliberate one-offs, not a second scale. Don't copy them into new code, and
+don't add more.
 
 ---
 
-## Anti-Patterns (What NOT to Do)
+## Anti-Patterns
 
-1. **Heavy borders** - Use subtle shadows or background differences instead
-2. **Multiple font weights on same line** - Keep typography simple
-3. **Bright colors for non-critical elements** - Reserve color for meaning
-4. **Dense layouts without breathing room** - Maintain generous whitespace
-5. **Inconsistent button styles** - Always use established patterns
-6. **Custom scrollbars** - Use native scrolling behavior
-7. **Animations for everything** - Keep motion subtle and purposeful
-8. **All-caps for body text** - Reserve uppercase for badges/labels only
+1. **Heavy borders** — use the global card border and elevation
+2. **Multiple font weights on one line**
+3. **Colour without meaning** — colour signals state, nothing else
+4. **Ad-hoc status colours** — use the connector/status tokens
+5. **Inconsistent button styles**
+6. **Custom scrollbars** — except a thin scrollbar on a deliberately
+   horizontally-scrolling strip (see `.connector-container`)
+7. **Animation for its own sake** — motion should signal that something changed
+8. **All-caps or italics for body text** — uppercase is for badges only
 
 ---
 
 ## Checklist for New Components
 
-Before submitting a new component:
-
-- [ ] Uses CSS custom properties for spacing and colors
-- [ ] Has both mobile and desktop layouts (if applicable)
-- [ ] Action buttons use `.list-action-btn` class
-- [ ] Icon buttons have `aria-label` attributes
-- [ ] Empty states are handled gracefully
-- [ ] Loading states show progress indicator
-- [ ] Follows established naming conventions
-- [ ] No hardcoded colors or spacing values
-- [ ] Touch targets are minimum 44px
-- [ ] Component is tested on mobile viewport
+- [ ] Tokens for colour, spacing, radius, type and icon size — no raw values
+- [ ] `ChangeDetectionStrategy.OnPush`
+- [ ] Mobile and desktop layouts where applicable
+- [ ] Action buttons use `.list-action-btn`
+- [ ] `aria-label` on icon-only buttons
+- [ ] Empty state handled and worded usefully — and offers a way out when a
+      filter caused it
+- [ ] Loading uses skeleton rows (lists) or `mat-progress-bar` (everything else)
+- [ ] Clickable surfaces carry `.interactive-surface` or their own hover/press
+      feedback
+- [ ] Live-updating items flag changes with `.state-changed`
+- [ ] A filterable screen subscribes to `filterFocusRequested$` for `/`
+- [ ] No `.dark-theme` or `--mat-*` overrides in the component stylesheet
+- [ ] Verified in both themes
+- [ ] Verified at a mobile viewport
 
 ---
 
 ## Reference Implementations
 
-Refer to these components as examples of proper implementation:
-
 - **List with filters**: `transactions-list.component`
-- **Mobile accordion pattern**: `users.component`
+- **Mobile accordion**: `users.component`
 - **Detail view**: `transaction-detail.component`
 - **Edit form**: `user-edit.component`
 
 ---
 
-*Last updated: January 2026*
+*Last updated: August 2026 — rewritten against `src/styles.css` after the
+design-token and Material-theme migration.*

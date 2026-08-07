@@ -62,18 +62,18 @@ td:last-child, th:last-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-xs);
 }
 
 .log-time {
   font-family: monospace;
-  font-size: 13px;
+  font-size: var(--text-md);
   font-weight: 600;
   color: var(--color-accent);
 }
 
 .log-date {
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
 
@@ -81,31 +81,31 @@ td:last-child, th:last-child {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-xs);
   flex-wrap: wrap;
 }
 
 .log-level {
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 600;
   text-transform: uppercase;
   color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: var(--space-05) var(--spacing-sm);
+  border-radius: var(--radius-sm);
 }
 
 .log-category {
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 500;
   text-transform: uppercase;
   background-color: var(--color-background);
   color: var(--color-action-hover);
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: var(--space-05) var(--spacing-sm);
+  border-radius: var(--radius-sm);
 }
 
 .log-card-text {
-  font-size: 13px;
+  font-size: var(--text-md);
   color: var(--color-action-hover);
   line-height: 1.4;
   word-break: break-word;

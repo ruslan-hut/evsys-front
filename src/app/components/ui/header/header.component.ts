@@ -14,6 +14,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../service/language.service';
+import { ShortcutService } from '../../../service/shortcut.service';
 
 @Component({
   selector: 'app-header',
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   private readonly translate = inject(TranslateService);
   private readonly languageService = inject(LanguageService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly shortcuts = inject(ShortcutService);
 
   title = 'WattBrews';
   username = '';
@@ -38,6 +40,33 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
 
   isAdmin = false;
   isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset);
+
+  /** Routes that light up each top-level nav group. */
+  private static readonly MONITORING_ROUTES = ['/dashboard', '/statistic', '/reports', '/export'];
+  private static readonly MANAGE_ROUTES = ['/users', '/user-tags', '/mail-subscriptions', '/webhooks', '/log/', '/payment-retries'];
+
+  /** True when the current URL belongs to this nav destination. */
+  isActive(route: string): boolean {
+    return this.router.url.startsWith(route);
+  }
+
+  isMonitoringActive(): boolean {
+    return HeaderComponent.MONITORING_ROUTES.some(route => this.isActive(route));
+  }
+
+  isManageActive(): boolean {
+    return HeaderComponent.MANAGE_ROUTES.some(route => this.isActive(route));
+  }
+
+  openCommandPalette(): void {
+    this.shortcuts.openPalette();
+  }
+
+  /** Shown on the palette button: ⌘K on Apple platforms, Ctrl K elsewhere. */
+  get paletteHint(): string {
+    const isApple = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    return isApple ? '⌘K' : 'Ctrl K';
+  }
 
   get privacyLink(): string {
     return `/privacy/${this.languageService.current}`;

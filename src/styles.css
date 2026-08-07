@@ -2,16 +2,39 @@
    CSS Custom Properties (Design Tokens)
    =========================================== */
 :root {
-  /* Spacing — tighter scale for information-dense technician UI */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 20px;
-  --spacing-xl: 28px;
+  /* Native controls, scrollbars and form widgets follow the resolved theme.
+     ThemeService always resolves 'auto' to an explicit class, so this is safe. */
+  color-scheme: light;
+
+  /* Spacing primitives — 4px grid, plus a half-step for badge padding */
+  --space-05: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+
+  /* Spacing aliases — tighter scale for information-dense technician UI */
+  --spacing-xs: var(--space-1);
+  --spacing-sm: var(--space-2);
+  --spacing-md: var(--space-3);
+  --spacing-lg: var(--space-5);
+  --spacing-xl: var(--space-7);
+
+  /* Radius */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
 
   /* Card styling — sharper corners, tighter margins */
   --card-margin: 10px;
-  --card-border-radius: 6px;
+  --card-border-radius: var(--radius-md);
 
   /* Header heights — slimmer profile */
   --header-height-mobile: 52px;
@@ -28,10 +51,53 @@
   --font-mono: "IBM Plex Mono", "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --font-display: "IBM Plex Sans", -apple-system, sans-serif;
 
+  /* Type scale */
+  --text-2xs: 10px;  /* badges */
+  --text-xs: 11px;   /* timestamps, meta */
+  --text-sm: 12px;   /* labels, captions */
+  --text-md: 13px;   /* secondary body */
+  --text-base: 14px; /* body */
+  --text-lg: 16px;   /* subsection heading */
+  --text-xl: 18px;   /* section heading */
+  --text-2xl: 20px;  /* page title */
+  --text-3xl: 24px;  /* connector number */
+  --text-4xl: 28px;  /* hero metric */
+
+  /* Icon sizes — distinct from the type scale */
+  --icon-xs: 16px;
+  --icon-sm: 18px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Line heights */
+  --leading-tight: 1.25;
+  --leading-base: 1.45;
+  --leading-relaxed: 1.6;
+
+  /* Motion */
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 380ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+
   /* Primary & Accent — slate/steel professional palette */
   --color-primary: #1e3a8a;
   --color-primary-dark: #1e293b;
   --color-accent: #0284c7;
+  --color-on-primary: #ffffff;
+
+  /* Inverted surface — snackbars, tooltips */
+  --color-inverse-surface: #1e293b;
+  --color-inverse-text: #e2e8f0;
+  --color-inverse-primary: #60a5fa;
 
   /* Text */
   --color-text-primary: #0f172a;
@@ -53,6 +119,9 @@
   --color-error: #dc2626;
   --color-online: #059669;
   --color-offline: #94a3b8;
+  --color-on-error: #ffffff;
+  --color-error-container: #fee2e2;
+  --color-on-error-container: #991b1b;
 
   /* Status Badges */
   --color-status-active-bg: #dbeafe;
@@ -94,6 +163,8 @@
   --color-header-text-muted: #94a3b8;
   --color-header-border: #1e293b;
   --color-header-accent: #38bdf8;
+  --color-header-accent-2: #6366f1;
+  --color-header-on-accent: #06090f;
 
   /* Touch target minimum size (WCAG) */
   --touch-target-min: 40px;
@@ -103,10 +174,18 @@
    Dark Theme Color Overrides
    =========================================== */
 .dark-theme {
+  color-scheme: dark;
+
   /* Primary & Accent — luminous against deep slate */
   --color-primary: #60a5fa;
   --color-primary-dark: #3b82f6;
   --color-accent: #38bdf8;
+  --color-on-primary: #0a0f1a;
+
+  /* Inverted surface — snackbars, tooltips */
+  --color-inverse-surface: #e2e8f0;
+  --color-inverse-text: #0f172a;
+  --color-inverse-primary: #1e3a8a;
 
   /* Text */
   --color-text-primary: #e2e8f0;
@@ -128,6 +207,9 @@
   --color-error: #f87171;
   --color-online: #34d399;
   --color-offline: #64748b;
+  --color-on-error: #2e0a0a;
+  --color-error-container: #2e0a0a;
+  --color-on-error-container: #fca5a5;
 
   /* Status Badges */
   --color-status-active-bg: #172554;
@@ -165,314 +247,196 @@
   --color-header-text-muted: #94a3b8;
   --color-header-border: #1e293b;
   --color-header-accent: #38bdf8;
-
-  /* Angular Material Overrides */
-  --mdc-elevated-card-container-color: var(--color-surface);
-  --mdc-outlined-card-container-color: var(--color-surface);
-  --mat-card-container-color: var(--color-surface);
-  --mat-card-subtitle-text-color: var(--color-text-secondary);
-  --mdc-filled-text-field-container-color: #2d2d2d;
-  --mdc-outlined-text-field-outline-color: var(--color-border);
-  --mdc-outlined-text-field-label-text-color: var(--color-text-secondary);
-  --mdc-outlined-text-field-input-text-color: var(--color-text-primary);
-  --mdc-outlined-text-field-caret-color: var(--color-primary);
-  --mdc-outlined-text-field-focus-outline-color: var(--color-primary);
-  --mdc-outlined-text-field-hover-outline-color: var(--color-text-secondary);
-  --mat-form-field-container-text-color: var(--color-text-primary);
-  --mat-select-trigger-text-color: var(--color-text-primary);
-  --mat-select-enabled-arrow-color: var(--color-text-secondary);
-  --mat-option-label-text-color: var(--color-text-primary);
-  --mat-optgroup-label-text-color: var(--color-text-secondary);
-  --mat-select-panel-background-color: var(--color-surface);
-  --mat-menu-container-color: var(--color-surface);
-  --mat-menu-item-label-text-color: var(--color-text-primary);
-  --mat-menu-item-icon-color: var(--color-text-primary);
-  --mdc-dialog-container-color: var(--color-surface);
-  --mat-toolbar-container-background-color: #1a1a2e;
-  --mat-table-background-color: var(--color-surface);
-  --mat-table-row-item-label-text-color: var(--color-text-primary);
-  --mat-table-header-headline-color: var(--color-text-primary);
-  --mat-expansion-container-background-color: var(--color-surface);
-  --mat-expansion-header-text-color: var(--color-text-primary);
-  --mat-expansion-container-text-color: var(--color-text-primary);
-  --mat-paginator-container-background-color: var(--color-surface);
-  --mat-paginator-container-text-color: var(--color-text-primary);
-  --mat-paginator-enabled-icon-color: var(--color-text-secondary);
-  --mat-paginator-disabled-icon-color: var(--color-text-muted);
-  --mat-tab-header-inactive-label-text-color: var(--color-text-secondary);
-  --mat-tab-header-active-label-text-color: var(--color-primary);
-  --mat-tab-header-disabled-ripple-color: transparent;
-  --mdc-tab-indicator-active-indicator-color: var(--color-primary);
-  --mat-tab-header-active-focus-label-text-color: var(--color-primary);
-  --mat-tab-header-active-hover-label-text-color: var(--color-primary);
-  --mat-tab-header-inactive-focus-label-text-color: var(--color-text-secondary);
-  --mat-tab-header-inactive-hover-label-text-color: var(--color-text-primary);
-  --mat-divider-color: var(--color-border);
-
-  /* Button overrides */
-  --mdc-text-button-label-text-color: var(--color-text-primary);
-  --mdc-outlined-button-label-text-color: var(--color-text-primary);
-  --mdc-outlined-button-outline-color: var(--color-border);
+  --color-header-accent-2: #6366f1;
+  --color-header-on-accent: #06090f;
 }
 
 .dark-theme :focus-visible {
   outline: 2px solid var(--color-primary);
 }
 
-/* Direct mat-card override for dark theme */
-.dark-theme mat-card,
-.dark-theme .mat-mdc-card {
-  background-color: var(--color-surface) !important;
-  color: var(--color-text-primary) !important;
-}
+/* ===========================================
+   Material System Token Bridge
 
-.dark-theme .mat-mdc-card-title,
-.dark-theme .mat-mdc-card-subtitle,
-.dark-theme mat-card-title,
-.dark-theme mat-card-subtitle {
-  color: var(--color-text-primary) !important;
-}
+   Maps Material's M3 system tokens onto the design tokens above, so every
+   Material component inherits the palette, type scale and radii without
+   per-component overrides. Declared once on :root — the values resolve
+   against whichever theme block is active on <html>.
+   =========================================== */
+:root {
+  /* Key colors */
+  --mat-sys-primary: var(--color-primary);
+  --mat-sys-on-primary: var(--color-on-primary);
+  --mat-sys-primary-container: var(--color-status-active-bg);
+  --mat-sys-on-primary-container: var(--color-status-active-text);
+  --mat-sys-inverse-primary: var(--color-inverse-primary);
+  --mat-sys-surface-tint: var(--color-primary);
 
-.dark-theme .mat-mdc-card-content,
-.dark-theme mat-card-content {
-  color: var(--color-text-primary);
-}
+  --mat-sys-secondary: var(--color-text-secondary);
+  --mat-sys-on-secondary: var(--color-surface);
+  --mat-sys-secondary-container: var(--color-background-light);
+  --mat-sys-on-secondary-container: var(--color-text-primary);
 
-/* Button overrides for dark theme */
-.dark-theme .mat-mdc-outlined-button:not(:disabled),
-.dark-theme .mat-mdc-stroked-button:not(:disabled) {
-  color: var(--color-text-primary);
-  border-color: var(--color-border);
-}
+  --mat-sys-tertiary: var(--color-accent);
+  --mat-sys-on-tertiary: var(--color-on-primary);
+  --mat-sys-tertiary-container: var(--color-status-active-bg);
+  --mat-sys-on-tertiary-container: var(--color-status-active-text);
 
-.dark-theme .mat-mdc-button:not(:disabled) {
-  color: var(--color-text-primary);
-}
+  --mat-sys-error: var(--color-error);
+  --mat-sys-on-error: var(--color-on-error);
+  --mat-sys-error-container: var(--color-error-container);
+  --mat-sys-on-error-container: var(--color-on-error-container);
 
-/* Dialog overrides for dark theme */
-.dark-theme .mat-mdc-dialog-container,
-.dark-theme .mat-mdc-dialog-surface {
-  background-color: var(--color-surface) !important;
-  color: var(--color-text-primary);
-}
+  /* Surfaces */
+  --mat-sys-background: var(--color-background);
+  --mat-sys-on-background: var(--color-text-primary);
+  --mat-sys-surface: var(--color-surface);
+  --mat-sys-on-surface: var(--color-text-primary);
+  --mat-sys-on-surface-variant: var(--color-text-secondary);
+  --mat-sys-surface-variant: var(--color-background-light);
+  --mat-sys-surface-bright: var(--color-surface);
+  --mat-sys-surface-dim: var(--color-background);
+  --mat-sys-surface-container-lowest: var(--color-surface);
+  --mat-sys-surface-container-low: var(--color-background-light);
+  --mat-sys-surface-container: var(--color-background-light);
+  --mat-sys-surface-container-high: var(--color-background);
+  --mat-sys-surface-container-highest: var(--color-background);
+  --mat-sys-inverse-surface: var(--color-inverse-surface);
+  --mat-sys-inverse-on-surface: var(--color-inverse-text);
 
-.dark-theme .mat-mdc-dialog-title {
-  color: var(--color-text-primary);
-}
+  /* Outlines */
+  --mat-sys-outline: var(--color-border);
+  --mat-sys-outline-variant: var(--color-border-light);
 
-.dark-theme .mat-mdc-dialog-content {
-  color: var(--color-text-primary);
-}
+  /* Elevation — flatter than M3 default, to match the card treatment */
+  --mat-sys-level0: none;
+  --mat-sys-level1: var(--elevation-1);
+  --mat-sys-level2: var(--elevation-2);
+  --mat-sys-level3: var(--elevation-2);
+  --mat-sys-level4: var(--elevation-2);
+  --mat-sys-level5: var(--elevation-2);
 
-/* List overrides for dark theme */
-.dark-theme .mat-mdc-list,
-.dark-theme .mat-mdc-list-base {
-  background-color: transparent;
-}
+  /* Corners */
+  --mat-sys-corner-none: 0;
+  --mat-sys-corner-extra-small: var(--radius-xs);
+  --mat-sys-corner-extra-small-top: var(--radius-xs) var(--radius-xs) 0 0;
+  --mat-sys-corner-small: var(--radius-sm);
+  --mat-sys-corner-medium: var(--radius-md);
+  --mat-sys-corner-large: var(--radius-lg);
+  --mat-sys-corner-large-top: var(--radius-lg) var(--radius-lg) 0 0;
+  --mat-sys-corner-large-start: var(--radius-lg) 0 0 var(--radius-lg);
+  --mat-sys-corner-large-end: 0 var(--radius-lg) var(--radius-lg) 0;
+  --mat-sys-corner-extra-large: var(--radius-lg);
+  --mat-sys-corner-extra-large-top: var(--radius-lg) var(--radius-lg) 0 0;
+  --mat-sys-corner-full: var(--radius-pill);
 
-.dark-theme .mat-mdc-list-item {
-  color: var(--color-text-primary);
-}
+  /* Typography — IBM Plex on the console type scale */
+  --mat-sys-body-large-font: var(--font-sans);
+  --mat-sys-body-large-size: var(--text-base);
+  --mat-sys-body-large-line-height: var(--leading-base);
+  --mat-sys-body-large-weight: var(--weight-regular);
+  --mat-sys-body-large-tracking: 0;
+  --mat-sys-body-large: var(--weight-regular) var(--text-base) / var(--leading-base) var(--font-sans);
 
-.dark-theme .mdc-list-item__primary-text {
-  color: var(--color-text-primary) !important;
-}
+  --mat-sys-body-medium-font: var(--font-sans);
+  --mat-sys-body-medium-size: var(--text-md);
+  --mat-sys-body-medium-line-height: var(--leading-base);
+  --mat-sys-body-medium-weight: var(--weight-regular);
+  --mat-sys-body-medium-tracking: 0;
+  --mat-sys-body-medium: var(--weight-regular) var(--text-md) / var(--leading-base) var(--font-sans);
 
-.dark-theme .mdc-list-item__secondary-text {
-  color: var(--color-text-secondary) !important;
-}
+  --mat-sys-body-small-font: var(--font-sans);
+  --mat-sys-body-small-size: var(--text-sm);
+  --mat-sys-body-small-line-height: var(--leading-base);
+  --mat-sys-body-small-weight: var(--weight-regular);
+  --mat-sys-body-small-tracking: 0;
+  --mat-sys-body-small: var(--weight-regular) var(--text-sm) / var(--leading-base) var(--font-sans);
 
-/* Expansion panel overrides for dark theme */
-.dark-theme .mat-expansion-panel-header-title,
-.dark-theme .mat-expansion-panel-header-description {
-  color: var(--color-text-primary);
-}
+  --mat-sys-label-large-font: var(--font-sans);
+  --mat-sys-label-large-size: var(--text-md);
+  --mat-sys-label-large-line-height: var(--leading-tight);
+  --mat-sys-label-large-weight: var(--weight-medium);
+  --mat-sys-label-large-weight-prominent: var(--weight-semibold);
+  --mat-sys-label-large-tracking: 0;
+  --mat-sys-label-large: var(--weight-medium) var(--text-md) / var(--leading-tight) var(--font-sans);
 
-/* Table overrides for dark theme */
-.dark-theme .mat-mdc-cell,
-.dark-theme .mat-mdc-header-cell,
-.dark-theme .mat-mdc-footer-cell,
-.dark-theme .mat-cell,
-.dark-theme .mat-header-cell,
-.dark-theme .mat-footer-cell,
-.dark-theme td,
-.dark-theme th,
-.dark-theme tfoot td {
-  color: var(--color-text-primary);
-}
+  --mat-sys-label-medium-font: var(--font-sans);
+  --mat-sys-label-medium-size: var(--text-sm);
+  --mat-sys-label-medium-line-height: var(--leading-tight);
+  --mat-sys-label-medium-weight: var(--weight-medium);
+  --mat-sys-label-medium-weight-prominent: var(--weight-semibold);
+  --mat-sys-label-medium-tracking: 0;
+  --mat-sys-label-medium: var(--weight-medium) var(--text-sm) / var(--leading-tight) var(--font-sans);
 
-.dark-theme .mat-mdc-header-row,
-.dark-theme .mat-mdc-footer-row {
-  background-color: var(--color-background-light);
-}
+  --mat-sys-label-small-font: var(--font-sans);
+  --mat-sys-label-small-size: var(--text-xs);
+  --mat-sys-label-small-line-height: var(--leading-tight);
+  --mat-sys-label-small-weight: var(--weight-medium);
+  --mat-sys-label-small-tracking: 0;
+  --mat-sys-label-small: var(--weight-medium) var(--text-xs) / var(--leading-tight) var(--font-sans);
 
-/* Form field overrides for dark theme */
-.dark-theme .mat-mdc-form-field {
-  color: var(--color-text-primary);
-}
+  --mat-sys-title-large-font: var(--font-display);
+  --mat-sys-title-large-size: var(--text-2xl);
+  --mat-sys-title-large-line-height: var(--leading-tight);
+  --mat-sys-title-large-weight: var(--weight-semibold);
+  --mat-sys-title-large-tracking: -0.01em;
+  --mat-sys-title-large: var(--weight-semibold) var(--text-2xl) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mdc-text-field--outlined .mdc-notched-outline__leading,
-.dark-theme .mdc-text-field--outlined .mdc-notched-outline__notch,
-.dark-theme .mdc-text-field--outlined .mdc-notched-outline__trailing {
-  border-color: var(--color-border) !important;
-}
+  --mat-sys-title-medium-font: var(--font-display);
+  --mat-sys-title-medium-size: var(--text-lg);
+  --mat-sys-title-medium-line-height: var(--leading-tight);
+  --mat-sys-title-medium-weight: var(--weight-semibold);
+  --mat-sys-title-medium-tracking: -0.01em;
+  --mat-sys-title-medium: var(--weight-semibold) var(--text-lg) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
-.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
-.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-  border-color: var(--color-border) !important;
-}
+  --mat-sys-title-small-font: var(--font-display);
+  --mat-sys-title-small-size: var(--text-base);
+  --mat-sys-title-small-line-height: var(--leading-tight);
+  --mat-sys-title-small-weight: var(--weight-semibold);
+  --mat-sys-title-small-tracking: -0.01em;
+  --mat-sys-title-small: var(--weight-semibold) var(--text-base) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline__leading,
-.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline__notch,
-.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline__trailing {
-  border-color: var(--color-text-secondary) !important;
-}
+  --mat-sys-headline-small-font: var(--font-display);
+  --mat-sys-headline-small-size: var(--text-xl);
+  --mat-sys-headline-small-line-height: var(--leading-tight);
+  --mat-sys-headline-small-weight: var(--weight-semibold);
+  --mat-sys-headline-small-tracking: -0.01em;
+  --mat-sys-headline-small: var(--weight-semibold) var(--text-xl) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__leading,
-.dark-theme .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__notch,
-.dark-theme .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__trailing {
-  border-color: var(--color-primary) !important;
-}
+  --mat-sys-headline-medium-font: var(--font-display);
+  --mat-sys-headline-medium-size: var(--text-2xl);
+  --mat-sys-headline-medium-line-height: var(--leading-tight);
+  --mat-sys-headline-medium-weight: var(--weight-semibold);
+  --mat-sys-headline-medium-tracking: -0.01em;
+  --mat-sys-headline-medium: var(--weight-semibold) var(--text-2xl) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mat-mdc-form-field-subscript-wrapper {
-  color: var(--color-text-muted);
-}
+  --mat-sys-headline-large-font: var(--font-display);
+  --mat-sys-headline-large-size: var(--text-4xl);
+  --mat-sys-headline-large-line-height: var(--leading-tight);
+  --mat-sys-headline-large-weight: var(--weight-semibold);
+  --mat-sys-headline-large-tracking: -0.02em;
+  --mat-sys-headline-large: var(--weight-semibold) var(--text-4xl) / var(--leading-tight) var(--font-display);
 
-/* Form field label overrides for dark theme */
-.dark-theme .mdc-floating-label {
-  color: var(--color-text-secondary) !important;
-}
+  --mat-sys-display-small-font: var(--font-display);
+  --mat-sys-display-small-size: var(--text-4xl);
+  --mat-sys-display-small-line-height: var(--leading-tight);
+  --mat-sys-display-small-weight: var(--weight-semibold);
+  --mat-sys-display-small-tracking: -0.02em;
+  --mat-sys-display-small: var(--weight-semibold) var(--text-4xl) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mdc-floating-label--float-above {
-  color: var(--color-text-secondary) !important;
-}
+  --mat-sys-display-medium-font: var(--font-display);
+  --mat-sys-display-medium-size: var(--text-4xl);
+  --mat-sys-display-medium-line-height: var(--leading-tight);
+  --mat-sys-display-medium-weight: var(--weight-semibold);
+  --mat-sys-display-medium-tracking: -0.02em;
+  --mat-sys-display-medium: var(--weight-semibold) var(--text-4xl) / var(--leading-tight) var(--font-display);
 
-.dark-theme .mdc-text-field--focused .mdc-floating-label {
-  color: var(--color-primary) !important;
-}
-
-.dark-theme .mat-mdc-form-field-required-marker {
-  color: var(--color-error);
-}
-
-.dark-theme .mat-mdc-form-field-hint,
-.dark-theme .mat-mdc-form-field-error {
-  color: var(--color-text-muted);
-}
-
-/* Paginator overrides for dark theme */
-.dark-theme .mat-mdc-paginator {
-  background-color: var(--color-surface);
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-mdc-paginator-page-size-label,
-.dark-theme .mat-mdc-paginator-range-label {
-  color: var(--color-text-primary);
-}
-
-/* Select/Option overrides for dark theme */
-.dark-theme .mat-mdc-select {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-mdc-select-value {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-mdc-select-arrow {
-  color: var(--color-text-secondary);
-}
-
-.dark-theme .mat-mdc-select-placeholder {
-  color: var(--color-text-muted);
-}
-
-.dark-theme .mat-mdc-option {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
-  background-color: var(--color-background-light);
-}
-
-/* Menu item icon color for dark theme */
-.dark-theme .mat-mdc-menu-item .mat-icon {
-  color: var(--color-text-primary);
-}
-
-/* Date picker overrides for dark theme */
-.dark-theme .mat-datepicker-content {
-  background-color: var(--color-surface);
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-calendar-body-cell-content {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-calendar-body-label,
-.dark-theme .mat-calendar-period-button {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-calendar-table-header th {
-  color: var(--color-text-secondary);
-}
-
-.dark-theme .mat-calendar-arrow {
-  fill: var(--color-text-primary);
-}
-
-/* Date range input overrides for dark theme */
-.dark-theme .mat-date-range-input-container {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-date-range-input-separator {
-  color: var(--color-text-muted);
-}
-
-.dark-theme .mat-date-range-input-inner {
-  color: var(--color-text-primary);
-}
-
-.dark-theme .mat-date-range-input-inner::placeholder {
-  color: var(--color-text-muted);
-}
-
-/* Form field input text for dark theme */
-.dark-theme .mat-mdc-input-element {
-  color: var(--color-text-primary) !important;
-  caret-color: var(--color-primary);
-}
-
-.dark-theme .mat-mdc-input-element::placeholder {
-  color: var(--color-text-muted);
-}
-
-/* Datepicker toggle icon */
-.dark-theme .mat-datepicker-toggle-default-icon {
-  color: var(--color-text-secondary);
-}
-
-/* Form field hint */
-.dark-theme .mat-mdc-form-field-hint {
-  color: var(--color-text-muted);
-}
-
-/* Tab overrides for dark theme */
-.dark-theme .mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab__text-label {
-  color: var(--color-text-secondary);
-}
-
-.dark-theme .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
-  color: var(--color-primary);
-}
-
-.dark-theme .mat-mdc-tab-header {
-  border-bottom-color: var(--color-border);
+  --mat-sys-display-large-font: var(--font-display);
+  --mat-sys-display-large-size: var(--text-4xl);
+  --mat-sys-display-large-line-height: var(--leading-tight);
+  --mat-sys-display-large-weight: var(--weight-semibold);
+  --mat-sys-display-large-tracking: -0.02em;
+  --mat-sys-display-large: var(--weight-semibold) var(--text-4xl) / var(--leading-tight) var(--font-display);
 }
 
 /* ngx-charts legend overrides for dark theme */
@@ -498,39 +462,6 @@
 
 .dark-theme .ngx-charts .tick text {
   fill: var(--color-text-secondary);
-}
-
-/* Filled text field overrides for dark theme */
-.dark-theme .mdc-text-field--filled {
-  background-color: #2d2d2d !important;
-}
-
-.dark-theme .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-  background-color: #2d2d2d !important;
-}
-
-.dark-theme .mdc-text-field--filled .mdc-line-ripple::before {
-  border-bottom-color: var(--color-border) !important;
-}
-
-.dark-theme .mdc-text-field--filled:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-line-ripple::before {
-  border-bottom-color: var(--color-text-secondary) !important;
-}
-
-.dark-theme .mdc-text-field--filled.mdc-text-field--focused .mdc-line-ripple::after {
-  border-bottom-color: var(--color-primary) !important;
-}
-
-.dark-theme .mdc-text-field--filled .mdc-floating-label {
-  color: var(--color-text-secondary) !important;
-}
-
-.dark-theme .mdc-text-field--filled.mdc-text-field--focused .mdc-floating-label {
-  color: var(--color-primary) !important;
-}
-
-.dark-theme .mdc-text-field--filled .mdc-text-field__input {
-  color: var(--color-text-primary) !important;
 }
 
 /* Native input/textarea dark theme support */
@@ -622,11 +553,6 @@ mat-card {
   border-radius: var(--card-border-radius) !important;
   border: 1px solid var(--color-border-light);
   box-shadow: var(--elevation-1) !important;
-}
-
-.dark-theme .mat-mdc-card,
-.dark-theme mat-card {
-  border-color: var(--color-border);
 }
 
 /* ===========================================
@@ -756,6 +682,20 @@ mat-card {
 }
 
 /* ===========================================
+   Reduced Motion
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===========================================
    Responsive Visibility Utilities
    =========================================== */
 .hide-mobile {
@@ -809,5 +749,89 @@ mat-card {
   text-align: center;
   padding: var(--spacing-lg);
   color: var(--color-text-muted);
-  font-style: italic;
+}
+
+/* ===========================================
+   Skeleton Placeholders
+
+   Hold the layout while a list loads, instead of letting content jump in.
+   Compose .skeleton-line (text) and .skeleton-block (chips, thumbnails).
+   =========================================== */
+.skeleton-line,
+.skeleton-block {
+  background: linear-gradient(
+    90deg,
+    var(--color-border-light) 25%,
+    var(--color-border) 50%,
+    var(--color-border-light) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.4s var(--ease-standard) infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-line {
+  height: var(--text-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.skeleton-line:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes skeleton-sweep {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line,
+  .skeleton-block {
+    animation: none;
+    background: var(--color-border-light);
+  }
+}
+
+/* ===========================================
+   Interactive Surfaces
+
+   Hover and press feedback for clickable cards and rows. Motion is the only
+   confirmation an operator gets that a click landed, so keep it on every
+   interactive surface.
+   =========================================== */
+.interactive-surface {
+  transition:
+    box-shadow var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.interactive-surface:hover {
+  box-shadow: var(--elevation-2) !important;
+  border-color: var(--color-border);
+}
+
+.interactive-surface:active {
+  transform: translateY(1px);
+  transition-duration: var(--duration-instant);
+}
+
+/* ===========================================
+   Live State Change
+
+   A charge point or connector whose state just arrived over the WebSocket.
+   The ring fades out on its own, so a change that happens while the operator
+   is looking elsewhere still leaves a trace when they look back.
+   =========================================== */
+.state-changed {
+  animation: state-change-ring var(--duration-slow) var(--ease-emphasized);
+}
+
+@keyframes state-change-ring {
+  from {
+    box-shadow: 0 0 0 0 var(--color-focus-ring), var(--elevation-1);
+  }
+  to {
+    box-shadow: 0 0 0 6px transparent, var(--elevation-1);
+  }
 }

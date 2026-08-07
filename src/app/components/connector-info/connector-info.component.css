@@ -28,7 +28,7 @@ td {
   justify-content: center;
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
 }
 
 /* Connector status colors */

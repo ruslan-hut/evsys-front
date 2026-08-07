@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, input } from "@angular/core"
+import { Component, ChangeDetectionStrategy, DestroyRef, effect, inject, input, signal } from "@angular/core"
 import {Chargepoint} from "../../models/chargepoint";
 import { Router } from '@angular/router';
 import {AccountService} from "../../service/account.service";
@@ -22,6 +22,47 @@ export class ChargepointComponent {
   readonly timeService = inject(TimeService);
 
   readonly chargepoint = input.required<Chargepoint>();
+
+  /** True briefly after a WebSocket update changes this charge point's state. */
+  readonly stateChanged = signal(false);
+
+  private lastStateKey: string | null = null;
+  private resetTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+
+    effect(() => {
+      const key = this.stateKey(this.chargepoint());
+      const previous = this.lastStateKey;
+      this.lastStateKey = key;
+
+      // Skip the first pass: an initial render is not a change.
+      if (previous === null || previous === key) {
+        return;
+      }
+
+      this.stateChanged.set(true);
+      if (this.resetTimer) {
+        clearTimeout(this.resetTimer);
+      }
+      this.resetTimer = setTimeout(() => this.stateChanged.set(false), 1200);
+    });
+
+    destroyRef.onDestroy(() => {
+      if (this.resetTimer) {
+        clearTimeout(this.resetTimer);
+      }
+    });
+  }
+
+  /** Everything that should visibly flag a change when it moves. */
+  private stateKey(chargepoint: Chargepoint): string {
+    const connectors = (chargepoint.connectors || [])
+      .map(c => `${c.connector_id}:${c.status}:${c.state}:${c.current_transaction_id}`)
+      .join('|');
+    return `${chargepoint.is_online}:${chargepoint.status}:${connectors}`;
+  }
 
   /**
    * Returns the status indicator color:

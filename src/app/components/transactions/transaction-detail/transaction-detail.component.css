@@ -31,8 +31,8 @@ mat-card-title {
 .status-badge {
   display: inline-block;
   padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
   font-weight: 500;
 }
 
@@ -56,7 +56,7 @@ mat-card-title {
 .detail-section h3 {
   margin: 0 0 var(--spacing-md) 0;
   color: var(--color-text-primary);
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -90,7 +90,7 @@ mat-card-title {
 
 .detail-value.session-id {
   font-family: monospace;
-  font-size: 12px;
+  font-size: var(--text-sm);
 }
 
 .detail-value.card-info {
@@ -109,7 +109,7 @@ mat-card-title {
 h3 {
   margin: 0 0 var(--spacing-md) 0;
   color: var(--color-text-primary);
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -149,9 +149,9 @@ table {
 
 .order-status {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: var(--space-05) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -201,7 +201,7 @@ mat-expansion-panel {
   }
 
   .detail-section h3 {
-    font-size: 11px;
+    font-size: var(--text-xs);
     margin: 0 0 var(--spacing-xs) 0;
   }
 
@@ -213,21 +213,21 @@ mat-expansion-panel {
 
   .detail-label {
     min-width: unset;
-    font-size: 11px;
+    font-size: var(--text-xs);
     color: var(--color-text-secondary);
   }
 
   .detail-value {
-    font-size: 13px;
+    font-size: var(--text-md);
   }
 
   .detail-value.session-id {
-    font-size: 10px;
+    font-size: var(--text-2xs);
     word-break: break-all;
   }
 
   mat-card-title {
-    font-size: 16px !important;
+    font-size: var(--text-lg) !important;
   }
 
   .section-divider {
@@ -241,7 +241,7 @@ mat-expansion-panel {
   }
 
   h3 {
-    font-size: 11px;
+    font-size: var(--text-xs);
     margin: 0 0 var(--spacing-xs) 0;
   }
 
@@ -257,7 +257,7 @@ mat-expansion-panel {
   ::ng-deep .mat-mdc-cell,
   ::ng-deep .mat-mdc-header-cell {
     padding: 4px 8px !important;
-    font-size: 11px !important;
+    font-size: var(--text-xs) !important;
   }
 
   /* Reduce card padding on mobile */
@@ -296,20 +296,20 @@ mat-expansion-panel {
 
 .retry-text {
   flex: 1;
-  font-size: 13px;
+  font-size: var(--text-md);
   font-weight: 500;
 }
 
 .retry-icon {
   flex: 0 0 auto;
-  font-size: 20px;
+  font-size: var(--icon-md);
   width: 20px;
   height: 20px;
 }
 
 .retry-chevron {
   flex: 0 0 auto;
-  font-size: 18px;
+  font-size: var(--icon-sm);
   width: 18px;
   height: 18px;
   opacity: 0.7;

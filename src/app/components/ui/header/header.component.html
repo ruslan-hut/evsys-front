@@ -110,14 +110,18 @@
 
       @if (menuEnabled && username) {
         <nav class="desktop-menu" aria-label="Primary">
-          <button mat-button class="hdr-nav-btn" (click)="navigateTo('/points')">
+          <button mat-button class="hdr-nav-btn" [class.active]="isActive('/points')"
+                  [attr.aria-current]="isActive('/points') ? 'page' : null"
+                  (click)="navigateTo('/points')">
             <mat-icon class="hdr-nav-icon">ev_station</mat-icon>{{ 'header.points' | translate }}
           </button>
           @if (isAdmin) {
-            <button mat-button class="hdr-nav-btn" (click)="navigateTo('/transactions')">
+            <button mat-button class="hdr-nav-btn" [class.active]="isActive('/transactions')"
+                    [attr.aria-current]="isActive('/transactions') ? 'page' : null"
+                    (click)="navigateTo('/transactions')">
               <mat-icon class="hdr-nav-icon">receipt_long</mat-icon>{{ 'header.transactions' | translate }}
             </button>
-            <button mat-button class="hdr-nav-btn" [matMenuTriggerFor]="reportMenu">
+            <button mat-button class="hdr-nav-btn" [class.active]="isMonitoringActive()" [matMenuTriggerFor]="reportMenu">
               <mat-icon class="hdr-nav-icon">insights</mat-icon>{{ 'header.monitoring' | translate }}
               <mat-icon class="hdr-caret">expand_more</mat-icon>
             </button>
@@ -143,7 +147,7 @@
               </button>
             </mat-menu>
 
-            <button mat-button class="hdr-nav-btn" [matMenuTriggerFor]="adminMenu">
+            <button mat-button class="hdr-nav-btn" [class.active]="isManageActive()" [matMenuTriggerFor]="adminMenu">
               <mat-icon class="hdr-nav-icon">admin_panel_settings</mat-icon>{{ 'header.manage' | translate }}
               <mat-icon class="hdr-caret">expand_more</mat-icon>
             </button>
@@ -189,6 +193,14 @@
       }
 
       <span class="bar-spacer"></span>
+
+      @if (menuEnabled && username) {
+        <button class="hdr-palette-btn" (click)="openCommandPalette()" [attr.aria-label]="'shortcuts.paletteLabel' | translate">
+          <mat-icon class="hdr-nav-icon">search</mat-icon>
+          <span class="hdr-palette-label">{{ 'shortcuts.paletteButton' | translate }}</span>
+          <kbd class="hdr-palette-kbd">{{ paletteHint }}</kbd>
+        </button>
+      }
 
       @if (menuEnabled && username) {
         <button class="hdr-user-chip" (click)="openUserProfile()" [attr.aria-label]="'header.profile' | translate:{ name: username }">

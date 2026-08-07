@@ -187,7 +187,28 @@
   },
   "chargepointList": {
     "noChargePoints": "No charge points available",
-    "showFullList": "Show full list"
+    "showFullList": "Show full list",
+    "filterLabel": "Filter",
+    "filterPlaceholder": "Name, address or ID",
+    "clearFilter": "Clear filter",
+    "statusFilter": "Filter by status",
+    "status": {
+      "all": "All",
+      "online": "Online",
+      "charging": "Charging",
+      "offline": "Offline"
+    },
+    "sortLabel": "Sort by",
+    "sort": {
+      "status": "Needs attention",
+      "title": "Name",
+      "updated": "Recently updated"
+    },
+    "count": "{{total}} charge points",
+    "countFiltered": "{{shown}} of {{total}}",
+    "loading": "Loading charge points",
+    "noMatches": "No charge points match this filter.",
+    "clearFilters": "Clear filters"
   },
   "chargepointInfo": {
     "title": "Title",
@@ -924,6 +945,44 @@
       "attempts": "Attempts",
       "nextAttempt": "Next attempt",
       "error": "Last error"
+    }
+  },
+  "shortcuts": {
+    "paletteLabel": "Search commands",
+    "paletteButton": "Search…",
+    "palettePlaceholder": "Jump to a page…",
+    "noResults": "No commands match",
+    "footer": {
+      "move": "navigate",
+      "open": "open",
+      "goto": "go to",
+      "filter": "filter",
+      "close": "close"
+    },
+    "groups": {
+      "operations": "Operations",
+      "monitoring": "Monitoring",
+      "management": "Management",
+      "diagnostics": "Diagnostics",
+      "account": "Account"
+    },
+    "commands": {
+      "points": "Charge points",
+      "transactions": "Transactions",
+      "dashboard": "Consumption chart",
+      "statistic": "Consumption",
+      "uptime": "Uptime",
+      "power": "Power analysis",
+      "smart": "Smart charging",
+      "export": "Export data",
+      "users": "Users",
+      "tags": "RFID tags",
+      "mail": "Mail reports",
+      "webhooks": "Webhooks",
+      "systemLog": "System log",
+      "paymentLog": "Payment log",
+      "paymentRetries": "Payment retries",
+      "profile": "Profile and appearance"
     }
   }
 }

@@ -1,0 +1,46 @@
+<div class="palette">
+  <div class="palette-search">
+    <mat-icon aria-hidden="true">search</mat-icon>
+    <input class="palette-input"
+           type="text"
+           autocomplete="off"
+           cdkFocusInitial
+           role="combobox"
+           aria-expanded="true"
+           aria-controls="palette-results"
+           [attr.aria-label]="'shortcuts.paletteLabel' | translate"
+           [placeholder]="'shortcuts.palettePlaceholder' | translate"
+           [ngModel]="query()"
+           (ngModelChange)="onQueryChange($event)" />
+  </div>
+
+  <div class="palette-results" id="palette-results" role="listbox">
+    @for (row of rows(); track row.command.id) {
+      @if (row.groupKey) {
+        <div class="palette-group">{{ row.groupKey | translate }}</div>
+      }
+      <button type="button"
+              class="palette-row"
+              role="option"
+              [class.active]="isActive(row.command)"
+              [attr.aria-selected]="isActive(row.command)"
+              (click)="run(row.command)">
+        <mat-icon class="palette-row-icon" aria-hidden="true">{{ row.command.icon }}</mat-icon>
+        <span class="palette-row-label">{{ row.command.labelKey | translate }}</span>
+        @if (row.command.hint) {
+          <kbd class="palette-row-hint">{{ row.command.hint }}</kbd>
+        }
+      </button>
+    } @empty {
+      <div class="palette-empty">{{ 'shortcuts.noResults' | translate }}</div>
+    }
+  </div>
+
+  <div class="palette-footer">
+    <span><kbd>↑</kbd><kbd>↓</kbd> {{ 'shortcuts.footer.move' | translate }}</span>
+    <span><kbd>↵</kbd> {{ 'shortcuts.footer.open' | translate }}</span>
+    <span><kbd>g</kbd> {{ 'shortcuts.footer.goto' | translate }}</span>
+    <span><kbd>/</kbd> {{ 'shortcuts.footer.filter' | translate }}</span>
+    <span><kbd>esc</kbd> {{ 'shortcuts.footer.close' | translate }}</span>
+  </div>
+</div>

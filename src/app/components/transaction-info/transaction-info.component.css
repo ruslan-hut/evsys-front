@@ -31,7 +31,7 @@ td:last-child {
 }
 
 .status {
-  font-size: 20px;
+  font-size: var(--text-2xl);
   font-weight: 600;
   padding: 0 0 var(--spacing-sm) 0;
   color: var(--color-text-primary);

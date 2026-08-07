@@ -1,7 +1,7 @@
 .email-dialog-hint {
   margin: 0 0 var(--spacing-md);
   color: var(--color-text-secondary);
-  font-size: 14px;
+  font-size: var(--text-base);
 }
 
 .email-dialog-field {

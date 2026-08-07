@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-EvSys Front (WattBrews) is an Angular 21.0.6 standalone components application for managing electric vehicle charging infrastructure. It uses Firebase + custom API backend with real-time WebSocket communication.
+EvSys Front (WattBrews) is an Angular 22.1 standalone components application for managing electric vehicle charging infrastructure. It uses Firebase + custom API backend with real-time WebSocket communication.
 
 ## Common Commands
 
@@ -53,8 +53,13 @@ src/app/
 Lazy-loaded routes defined in `app.routes.ts`. Protected routes require `authGuard` (admin/operator role).
 
 ### Styling
-- Angular Material with `indigo-pink` prebuilt theme
-- Component-level CSS files (not SCSS)
+- Angular Material with the modern token-based `azure-blue` prebuilt theme. Its
+  `--mat-sys-*` system tokens are remapped onto the app's design tokens by the
+  "Material System Token Bridge" block in `src/styles.css` — components should
+  never need their own `--mat-*` overrides.
+- Component-level CSS files (not SCSS). There is no Sass toolchain, so
+  `mat.theme()` and other Material Sass APIs are unavailable; theming is done
+  through CSS custom properties only.
 - Responsive design using `@angular/cdk/layout` Breakpoints
 - Global styles in `src/styles.css`
 - **Design standards**: See [Design Policy](docs/DESIGN_POLICY.md) for colors, spacing, component patterns

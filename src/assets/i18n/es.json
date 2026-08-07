@@ -187,7 +187,28 @@
   },
   "chargepointList": {
     "noChargePoints": "No hay puntos de carga disponibles",
-    "showFullList": "Mostrar lista completa"
+    "showFullList": "Mostrar lista completa",
+    "filterLabel": "Filtrar",
+    "filterPlaceholder": "Nombre, dirección o ID",
+    "clearFilter": "Borrar filtro",
+    "statusFilter": "Filtrar por estado",
+    "status": {
+      "all": "Todos",
+      "online": "En línea",
+      "charging": "Cargando",
+      "offline": "Sin conexión"
+    },
+    "sortLabel": "Ordenar por",
+    "sort": {
+      "status": "Requiere atención",
+      "title": "Nombre",
+      "updated": "Actualizados recientemente"
+    },
+    "count": "{{total}} puntos de carga",
+    "countFiltered": "{{shown}} de {{total}}",
+    "loading": "Cargando puntos de carga",
+    "noMatches": "Ningún punto de carga coincide con este filtro.",
+    "clearFilters": "Borrar filtros"
   },
   "chargepointInfo": {
     "title": "Título",
@@ -924,6 +945,44 @@
       "attempts": "Intentos",
       "nextAttempt": "Próximo intento",
       "error": "Último error"
+    }
+  },
+  "shortcuts": {
+    "paletteLabel": "Buscar comandos",
+    "paletteButton": "Buscar…",
+    "palettePlaceholder": "Ir a una página…",
+    "noResults": "Ningún comando coincide",
+    "footer": {
+      "move": "navegar",
+      "open": "abrir",
+      "goto": "ir a",
+      "filter": "filtrar",
+      "close": "cerrar"
+    },
+    "groups": {
+      "operations": "Operaciones",
+      "monitoring": "Monitorización",
+      "management": "Gestión",
+      "diagnostics": "Diagnóstico",
+      "account": "Cuenta"
+    },
+    "commands": {
+      "points": "Puntos de carga",
+      "transactions": "Transacciones",
+      "dashboard": "Gráfico de consumo",
+      "statistic": "Consumo",
+      "uptime": "Disponibilidad",
+      "power": "Análisis de potencia",
+      "smart": "Carga inteligente",
+      "export": "Exportar datos",
+      "users": "Usuarios",
+      "tags": "Tarjetas RFID",
+      "mail": "Informes por correo",
+      "webhooks": "Webhooks",
+      "systemLog": "Registro del sistema",
+      "paymentLog": "Registro de pagos",
+      "paymentRetries": "Reintentos de pago",
+      "profile": "Perfil y apariencia"
     }
   }
 }

@@ -59,8 +59,8 @@
   width: 22px;
   height: 22px;
   position: relative;
-  background: linear-gradient(135deg, var(--color-header-accent) 0%, #6366f1 100%);
-  border-radius: 5px;
+  background: linear-gradient(135deg, var(--color-header-accent) 0%, var(--color-header-accent-2) 100%);
+  border-radius: var(--radius-md);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,27 +80,27 @@
 .hdr-brand-text {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--text-base);
   letter-spacing: 0.01em;
 }
 
 .hdr-brand-tag {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--text-2xs);
   font-weight: 600;
   letter-spacing: 0.18em;
-  padding: 2px 6px;
+  padding: var(--space-05) var(--spacing-sm);
   color: var(--color-header-accent);
   border: 1px solid rgba(56, 189, 248, 0.4);
-  border-radius: 3px;
-  margin-left: 2px;
+  border-radius: var(--radius-xs);
+  margin-left: var(--space-05);
   text-transform: uppercase;
   line-height: 1;
 }
 
 @media (max-width: 599px) {
   .hdr-brand-tag { display: none; }
-  .hdr-brand-text { font-size: 14px; }
+  .hdr-brand-text { font-size: var(--text-base); }
   .hdr-brand { margin-right: var(--spacing-sm); }
 }
 
@@ -108,10 +108,11 @@
 .desktop-menu {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-05);
 }
 
 .hdr-nav-btn {
+  position: relative;
   display: inline-flex !important;
   align-items: center;
   gap: 6px;
@@ -119,11 +120,11 @@
   min-height: 34px !important;
   padding: 0 12px !important;
   font-family: var(--font-sans);
-  font-size: 13px !important;
+  font-size: var(--text-md) !important;
   font-weight: 500;
   letter-spacing: 0.005em;
   color: var(--color-header-text-muted) !important;
-  border-radius: 6px !important;
+  border-radius: var(--radius-md) !important;
   transition: background-color 120ms ease, color 120ms ease;
 }
 
@@ -138,8 +139,77 @@
   color: var(--color-header-accent) !important;
 }
 
+/* Current section — an underline rather than a fill, so it stays legible
+   next to the hover and open-menu states above. */
+.hdr-nav-btn.active {
+  color: var(--color-header-text) !important;
+}
+
+.hdr-nav-btn.active::after {
+  content: '';
+  position: absolute;
+  left: var(--spacing-md);
+  right: var(--spacing-md);
+  bottom: 2px;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-header-accent);
+}
+
+/* ---------- Command palette trigger ---------- */
+.hdr-palette-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 30px;
+  padding: 0 var(--spacing-sm);
+  margin-right: var(--spacing-sm);
+  border: 1px solid var(--color-header-border);
+  border-radius: var(--radius-md);
+  background-color: rgba(148, 163, 184, 0.06);
+  color: var(--color-header-text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.hdr-palette-btn:hover {
+  background-color: rgba(148, 163, 184, 0.12);
+  border-color: var(--color-header-accent);
+  color: var(--color-header-text);
+}
+
+.hdr-palette-label {
+  min-width: 90px;
+  text-align: left;
+}
+
+.hdr-palette-kbd {
+  padding: 0 var(--spacing-xs);
+  border: 1px solid var(--color-header-border);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--color-header-text-muted);
+}
+
+@media (max-width: 1100px) {
+  .hdr-palette-label,
+  .hdr-palette-kbd {
+    display: none;
+  }
+
+  .hdr-palette-btn {
+    padding: 0 var(--spacing-xs);
+  }
+}
+
 .hdr-nav-icon {
-  font-size: 17px !important;
+  font-size: var(--icon-sm) !important;
   width: 17px !important;
   height: 17px !important;
   line-height: 17px !important;
@@ -147,11 +217,11 @@
 }
 
 .hdr-caret {
-  font-size: 16px !important;
+  font-size: var(--icon-xs) !important;
   width: 16px !important;
   height: 16px !important;
   line-height: 16px !important;
-  margin-left: 2px;
+  margin-left: var(--space-05);
   opacity: 0.6;
 }
 
@@ -167,13 +237,13 @@
   min-width: 36px !important;
   min-height: 36px !important;
   padding: 0 !important;
-  border-radius: 6px !important;
+  border-radius: var(--radius-md) !important;
 }
 .hdr-icon-btn:hover {
   background-color: rgba(148, 163, 184, 0.1) !important;
 }
 .hdr-icon-btn .mat-icon {
-  font-size: 20px;
+  font-size: var(--icon-md);
   width: 20px;
   height: 20px;
   line-height: 20px;
@@ -183,16 +253,16 @@
 .hdr-user-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
   height: 34px;
   padding: 0 10px 0 4px;
-  margin-right: 4px;
+  margin-right: var(--spacing-xs);
   background: rgba(148, 163, 184, 0.08);
   border: 1px solid var(--color-header-border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   color: var(--color-header-text);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--text-md);
   font-weight: 500;
   cursor: pointer;
   transition: background-color 120ms ease, border-color 120ms ease;
@@ -206,14 +276,14 @@
 .hdr-user-avatar {
   width: 26px;
   height: 26px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-header-accent), #6366f1);
-  color: #06090f;
+  background: linear-gradient(135deg, var(--color-header-accent), var(--color-header-accent-2));
+  color: var(--color-header-on-accent);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--text-sm);
   line-height: 1;
   font-family: var(--font-display);
 }
@@ -228,24 +298,24 @@
 
 /* ---------- Menu panel polish ---------- */
 ::ng-deep .hdr-menu-panel.mat-mdc-menu-panel {
-  border-radius: 8px !important;
+  border-radius: var(--radius-lg) !important;
   border: 1px solid var(--color-border);
   box-shadow:
     0 4px 6px rgba(15, 23, 42, 0.05),
     0 12px 28px rgba(15, 23, 42, 0.18) !important;
   min-width: 232px;
-  padding: 4px 0;
+  padding: var(--spacing-xs) 0;
 }
 
 ::ng-deep .hdr-menu-panel .mat-mdc-menu-item {
   min-height: 36px;
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: var(--text-md);
   letter-spacing: 0.005em;
 }
 
 ::ng-deep .hdr-menu-panel .mat-mdc-menu-item .mat-icon {
-  font-size: 18px;
+  font-size: var(--icon-sm);
   width: 18px;
   height: 18px;
   line-height: 18px;
@@ -255,7 +325,7 @@
 
 ::ng-deep .hdr-menu-panel .hdr-menu-section-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -264,7 +334,7 @@
 }
 
 ::ng-deep .hdr-menu-panel .mat-divider {
-  margin: 4px 0;
+  margin: var(--spacing-xs) 0;
   border-top-color: var(--color-border-light);
 }
 
