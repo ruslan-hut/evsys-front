@@ -21,6 +21,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Runs before the secrets are injected: the suite needs no Firebase
+      # credentials, so a failure here stops the deploy without touching them.
+      - name: Run unit tests
+        run: npm test -- --watch=false
+
       - name: Inject Firebase parameters into environment file
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
