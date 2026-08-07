@@ -1,5 +1,5 @@
 @for (chp of displayedChargePoints$ | async; track chp) {
-  <app-chargepoint [chargepoint]="chp"></app-chargepoint>
+  <app-chargepoint [chargepoint]="chp" />
 } @empty {
   <div class="no-data">{{ 'chargepointList.noChargePoints' | translate }}</div>
 }

@@ -1,9 +1,9 @@
 @if (!isOnline) {
-  <div><mat-progress-bar mode="buffer"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="buffer" /></div>
 } @else {
   @if (loading) {
     <div>
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar mode="indeterminate" />
     </div>
   }
 }
@@ -17,7 +17,7 @@
         <input matStartDate [(ngModel)]="startDate" placeholder="Start">
         <input matEndDate [(ngModel)]="endDate" placeholder="End">
       </mat-date-range-input>
-      <mat-datepicker-toggle matSuffix [for]="logPicker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="logPicker" />
       <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenu" aria-label="Select predefined range">
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
@@ -26,7 +26,7 @@
           <button mat-menu-item (click)="setRange(range.range)">{{ range.label }}</button>
         }
       </mat-menu>
-      <mat-date-range-picker #logPicker></mat-date-range-picker>
+      <mat-date-range-picker #logPicker />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="charger-field">
@@ -94,12 +94,10 @@
     </div>
 
     <!-- Mobile Paginator -->
-    <mat-paginator
-      #logDataPaginator
+    <mat-paginator #logDataPaginator
       [pageSizeOptions]="[10, 25, 50]"
       [showFirstLastButtons]="false"
-      aria-label="Select page of log entries">
-    </mat-paginator>
+      aria-label="Select page of log entries" />
   } @else {
     <!-- Desktop Table Layout -->
     <div class="mat-elevation-z8">
@@ -133,12 +131,10 @@
         </table>
       </div>
 
-      <mat-paginator
-        #logDataPaginator
+      <mat-paginator #logDataPaginator
         [pageSizeOptions]="[10, 50, 100]"
         [showFirstLastButtons]="true"
-        aria-label="Select page of log entries">
-      </mat-paginator>
+        aria-label="Select page of log entries" />
     </div>
   }
 </div>

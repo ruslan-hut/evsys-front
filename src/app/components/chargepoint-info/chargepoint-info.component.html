@@ -79,7 +79,7 @@
       <mat-accordion>
         @for (connector of chargePoint.connectors| sortConnectors ; track connector) {
           <div>
-            <app-connector-info [connector]="connector"></app-connector-info>
+            <app-connector-info [connector]="connector" />
           </div>
         }
       </mat-accordion>
@@ -105,5 +105,5 @@
     </mat-card-actions>
   </mat-card>
 
-  <app-chargepoint-profile [chargePoint]="chargePoint"></app-chargepoint-profile>
+  <app-chargepoint-profile [chargePoint]="chargePoint" />
 }

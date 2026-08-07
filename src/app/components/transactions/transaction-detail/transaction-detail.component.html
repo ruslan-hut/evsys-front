@@ -1,5 +1,5 @@
 @if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <div class="transaction-detail-container">
@@ -237,12 +237,11 @@
         </div>
 
         @if (chartData.length > 0) {
-          <mat-divider class="section-divider"></mat-divider>
+          <mat-divider class="section-divider" />
 
           <h3>{{ 'transactionDetail.chargingProgress' | translate }}</h3>
           <div class="chart-container">
-            <ngx-charts-line-chart
-              [results]="chartData"
+            <ngx-charts-line-chart [results]="chartData"
               [scheme]="colorScheme"
               [animations]="false"
               [xAxis]="true"
@@ -252,18 +251,16 @@
               [xAxisLabel]="'transactionDetail.chartTime' | translate"
               [xAxisTickFormatting]="xAxisTickFormatting"
               [autoScale]="true"
-              [legend]="false">
-            </ngx-charts-line-chart>
+              [legend]="false" />
           </div>
         }
 
         @if (currentChartData.length > 0) {
-          <mat-divider class="section-divider"></mat-divider>
+          <mat-divider class="section-divider" />
 
           <h3>{{ 'transactionDetail.currentDelivered' | translate }}</h3>
           <div class="chart-container">
-            <ngx-charts-line-chart
-              [results]="currentChartData"
+            <ngx-charts-line-chart [results]="currentChartData"
               [scheme]="currentColorScheme"
               [animations]="false"
               [xAxis]="true"
@@ -274,13 +271,12 @@
               [yAxisLabel]="'transactionDetail.currentAxis' | translate"
               [xAxisTickFormatting]="xAxisTickFormatting"
               [autoScale]="true"
-              [legend]="true">
-            </ngx-charts-line-chart>
+              [legend]="true" />
           </div>
         }
 
         @if (getPaymentOrders().length > 0) {
-          <mat-divider class="section-divider"></mat-divider>
+          <mat-divider class="section-divider" />
 
           <mat-expansion-panel>
             <mat-expansion-panel-header>

@@ -22,7 +22,7 @@
                 <table>
                   <tr><td class="value-cell">{{ element.value }}</td>
                   <td>@if (element.loading) {
-                    <mat-spinner [diameter]="20" color="primary"></mat-spinner>
+                    <mat-spinner [diameter]="20" color="primary" />
                   }</td></tr>
                 </table>
               </td>
@@ -60,7 +60,7 @@
                   <div class="config-value">
                     <span>{{ element.value }}</span>
                     @if (element.loading) {
-                      <mat-spinner [diameter]="16" color="primary"></mat-spinner>
+                      <mat-spinner [diameter]="16" color="primary" />
                     }
                   </div>
                 </div>
@@ -80,7 +80,7 @@
       </mat-card-content>
     }
     @if (loading) {
-      <mat-progress-bar mode="indeterminate" color="primary" class="progressbar"></mat-progress-bar>
+      <mat-progress-bar mode="indeterminate" color="primary" class="progressbar" />
     }
     <mat-card-actions>
       <button mat-stroked-button (click)="close()">{{ 'chargepointConfig.close' | translate }}</button>

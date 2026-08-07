@@ -17,9 +17,9 @@
         <span class="info-value">{{ transaction.status }}</span>
       </div>
       @if (isCharging()) {
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate" />
       } @else {
-        <mat-progress-bar mode="determinate" [value]="0"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="0" />
       }
       <div class="info-item">
         <span class="info-label">{{ 'transactionScreen.startTime' | translate }}</span>
@@ -50,14 +50,14 @@
         </div>
       }
       @if (transactionService.isWaiting) {
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate" />
       }
       @if (!transactionService.isWaiting && (canStop || accountService.isAdmin || accountService.isOperator)) {
         <button mat-flat-button  color="accent" (click)="stop()" [disabled]="stopButtonIsDisabled">{{ 'transactionScreen.stop' | translate }}</button>
       }
     }
     @if (!transaction) {
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar mode="indeterminate" />
     }
   </mat-card-content>
 

@@ -1,5 +1,5 @@
 @if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <div class="users-container">
@@ -101,12 +101,10 @@
     </mat-accordion>
 
     <!-- Mobile Paginator -->
-    <mat-paginator
-      #logDataPaginator
+    <mat-paginator #logDataPaginator
       [pageSizeOptions]="[10, 25, 50]"
       [showFirstLastButtons]="false"
-      [attr.aria-label]="'users.selectPage' | translate">
-    </mat-paginator>
+      [attr.aria-label]="'users.selectPage' | translate" />
   } @else {
     <!-- Desktop Table Layout -->
     <div class="mat-elevation-z8">
@@ -177,12 +175,10 @@
         </table>
       </div>
 
-      <mat-paginator
-        #logDataPaginator
+      <mat-paginator #logDataPaginator
         [pageSizeOptions]="[10, 50, 100]"
         [showFirstLastButtons]="showFirstLastButtons"
-        [attr.aria-label]="'users.selectPage' | translate">
-      </mat-paginator>
+        [attr.aria-label]="'users.selectPage' | translate" />
     </div>
   }
 </div>

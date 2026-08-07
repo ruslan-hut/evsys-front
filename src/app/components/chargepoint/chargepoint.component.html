@@ -27,7 +27,7 @@
   </mat-card-content>
   <div class="connector-container">
     @for (connector of chargepoint().connectors| sortConnectors; track connector) {
-      <app-connector [connector]="connector"></app-connector>
+      <app-connector [connector]="connector" />
     }
   </div>
   <mat-card-actions align="end" class="tool-panel">

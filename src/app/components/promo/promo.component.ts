@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
-import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DialogData } from '../../models/dialog-data';
 import { BasicDialogComponent } from '../dialogs/basic/basic-dialog.component';
@@ -23,15 +23,15 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatExpansionPanelActionRow, MatButton, MatCardActions, MatIcon, SortConnectorsPipe, TranslatePipe]
 })
-export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PromoComponent implements OnInit, AfterViewInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   readonly dialog = inject(MatDialog);
   private readonly chargePointService = inject(ChargepointService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly translate = inject(TranslateService);
 
-  private destroy$ = new Subject<void>();
   private promoCode: string;
 
   chargePointId: string;
@@ -39,7 +39,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.pipe(
-      takeUntil(this.destroy$),
+      takeUntilDestroyed(this.destroyRef),
       switchMap((params: Params) => {
         const code = params['promoCode'];
         if (code != null && code !== '') {
@@ -56,11 +56,6 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.loadPromo();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   loadPromo(): void {
@@ -91,7 +86,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(result => {
       switch (result) {
         case 'yes':
@@ -109,7 +104,7 @@ export class PromoComponent implements OnInit, AfterViewInit, OnDestroy {
     const dialogRef = this.dialog.open(PromoDialogComponent, {});
 
     dialogRef.afterClosed().pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(result => {
       if (result === 'yes') {
         this.loadPromo();

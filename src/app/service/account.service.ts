@@ -1,6 +1,7 @@
-import { Injectable, OnDestroy, inject } from '@angular/core';
+import { Injectable, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {User} from "../models/user";
-import {BehaviorSubject, map, ReplaySubject, Subject, takeUntil} from "rxjs";
+import {BehaviorSubject, map, ReplaySubject} from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
@@ -10,11 +11,10 @@ import {PaymentMethod} from "../models/payment-method";
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService implements OnDestroy {
+export class AccountService {
   private readonly http = inject(HttpClient);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
-
-  private destroy$ = new Subject<void>();
 
   private userSubject = new BehaviorSubject<User|null>(null);
   public user$ = this.userSubject.asObservable();
@@ -32,7 +32,7 @@ export class AccountService implements OnDestroy {
     }
 
     this.user$.pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(user => {
       if (user) {
         if (environment.debug) {
@@ -206,8 +206,4 @@ export class AccountService implements OnDestroy {
     return this.http.delete<{success: boolean; message: string}>(`${environment.apiUrl}/users/delete/${username}`);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }

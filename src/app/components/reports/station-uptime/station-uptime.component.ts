@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe, DatePipe } from '@angular/common';
 
@@ -95,13 +95,12 @@ interface ChartDataPoint {
     TranslatePipe
   ]
 })
-export class StationUptimeComponent implements OnInit, OnDestroy {
+export class StationUptimeComponent implements OnInit {
   private readonly statsService = inject(StatsService);
   private readonly chargepointService = inject(ChargepointService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
-
-  private destroy$ = new Subject<void>();
 
   stations: StationUptime[] = [];
   loading = false;
@@ -133,14 +132,9 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   private loadChargePoints(): void {
     this.chargepointService.getChargePoints()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: points => {
           this.chargePoints = points.map(p => ({ id: p.charge_point_id || '', title: p.title || p.charge_point_id || '' }));
@@ -154,7 +148,7 @@ export class StationUptimeComponent implements OnInit, OnDestroy {
     const chargePointId = this.selectedStation || undefined;
 
     this.statsService.getUptimeReport(this.startDate, this.endDate, chargePointId)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           this.stations = data.sort((a, b) => a.charge_point_id.localeCompare(b.charge_point_id));

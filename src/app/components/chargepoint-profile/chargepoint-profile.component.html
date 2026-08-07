@@ -57,7 +57,7 @@
           <th mat-header-cell *matHeaderCellDef>{{ 'chargepointProfile.chargePoint' | translate }}</th>
           <td mat-cell *matCellDef="let row">
             @if (row.loading) {
-              <mat-spinner [diameter]="18" color="primary"></mat-spinner>
+              <mat-spinner [diameter]="18" color="primary" />
             } @else if (row.reportedLimit !== undefined) {
               {{ row.reportedLimit }} {{ row.reportedUnit }}
             } @else if (row.error) {

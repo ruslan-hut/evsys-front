@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe, DatePipe } from '@angular/common';
 
@@ -67,12 +67,11 @@ interface SummaryMetrics {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
   private readonly statsService = inject(StatsService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly languageService = inject(LanguageService);
-
-  private destroy$ = new Subject<void>();
+  private readonly destroyRef = inject(DestroyRef);
 
   monthStats: MonthStats[] = [];
   userStats: UserStats[] = [];
@@ -116,11 +115,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.requestData();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   setRange(range: DateRange): void {
     this.startDate = range.start;
     this.endDate = range.end;
@@ -136,7 +130,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private fetchMonthData(): void {
     this.statsService.getMonthlyReport(this.startDate, this.endDate, this.selectedGroup)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           this.monthStats = data;
@@ -149,7 +143,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private fetchUserData(): void {
     this.statsService.getUserReport(this.startDate, this.endDate, this.selectedGroup)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           this.userStats = data;
@@ -162,7 +156,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private fetchChargerData(): void {
     this.statsService.getChargerReport(this.startDate, this.endDate, this.selectedGroup)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           this.chargerStats = data;

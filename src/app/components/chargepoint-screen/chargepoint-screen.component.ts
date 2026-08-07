@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
-import { Subject, combineLatest } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { combineLatest } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { Chargepoint } from '../../models/chargepoint';
 import { ChargepointService } from '../../service/chargepoint.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +29,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardContent, PaymentMethodComponent, MatButton, MatIcon, MatProgressBar, MatCardActions, DecimalPipe, TranslatePipe]
 })
-export class ChargepointScreenComponent implements OnInit, OnDestroy {
+export class ChargepointScreenComponent implements OnInit {
   private readonly authService = inject(AccountService);
   private readonly chargePointService = inject(ChargepointService);
   private readonly route = inject(ActivatedRoute);
@@ -38,8 +39,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
   readonly transactionService = inject(TransactionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
-
-  private destroy$ = new Subject<void>();
+  private readonly destroyRef = inject(DestroyRef);
 
   chargePointId!: string;
   connectorId!: number;
@@ -56,18 +56,13 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
     window.scrollTo(0, 0);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   private loadData(): void {
     // Combine route params with user state
     combineLatest([
       this.route.queryParams,
       this.authService.user$
     ]).pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(([params, user]) => {
       this.chargePointId = params['charge_point_id'];
       this.connectorId = parseInt(params['connector_id']);
@@ -84,7 +79,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
 
     // Listen for transaction start
     this.transactionService.transactionId.pipe(
-      takeUntil(this.destroy$),
+      takeUntilDestroyed(this.destroyRef),
       filter(id => id !== -1)
     ).subscribe((transactionId) => {
       this.transactionId = transactionId;
@@ -160,7 +155,7 @@ export class ChargepointScreenComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(_ => {
       // Dialog closed
     });

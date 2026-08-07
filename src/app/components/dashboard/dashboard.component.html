@@ -1,5 +1,5 @@
 @if (inProgress) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <!-- Desktop: always visible filter container -->
@@ -11,7 +11,7 @@
       <input matEndDate [(ngModel)]="endDate" [placeholder]="'dashboard.end' | translate" />
     </mat-date-range-input>
     <mat-hint>{{ 'dashboard.dateHint' | translate }}</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="pickerDesktop"></mat-datepicker-toggle>
+    <mat-datepicker-toggle matSuffix [for]="pickerDesktop" />
     <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuDesktop" [attr.aria-label]="'dashboard.selectRange' | translate">
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
@@ -20,7 +20,7 @@
         <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
       }
     </mat-menu>
-    <mat-date-range-picker #pickerDesktop></mat-date-range-picker>
+    <mat-date-range-picker #pickerDesktop />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
@@ -55,7 +55,7 @@
         <input matEndDate [(ngModel)]="endDate" [placeholder]="'dashboard.end' | translate" />
       </mat-date-range-input>
       <mat-hint>{{ 'dashboard.dateHint' | translate }}</mat-hint>
-      <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="pickerMobile" />
       <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuMobile" [attr.aria-label]="'dashboard.selectRange' | translate">
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
@@ -64,7 +64,7 @@
           <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
         }
       </mat-menu>
-      <mat-date-range-picker #pickerMobile></mat-date-range-picker>
+      <mat-date-range-picker #pickerMobile />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -131,8 +131,7 @@
           <mat-card-content>
             @if (monthLineChartData.length && monthLineChartData[0].series.length) {
               <div class="chart-container with-legend">
-                <ngx-charts-line-chart
-                  [results]="monthLineChartData"
+                <ngx-charts-line-chart [results]="monthLineChartData"
                   [scheme]="colorScheme"
                   [xAxis]="true"
                   [yAxis]="true"
@@ -143,8 +142,7 @@
                   [legend]="true"
                   [legendPosition]="legendPosition"
                   [legendTitle]="''"
-                  [timeline]="false">
-                </ngx-charts-line-chart>
+                  [timeline]="false" />
               </div>
             } @else {
               <div class="no-data">{{ 'dashboard.noDataClickLoad' | translate }}</div>
@@ -159,8 +157,7 @@
           <mat-card-content>
             @if (monthBarChartData.length) {
               <div class="chart-container">
-                <ngx-charts-bar-vertical
-                  [results]="monthBarChartData"
+                <ngx-charts-bar-vertical [results]="monthBarChartData"
                   [scheme]="colorScheme"
                   [xAxis]="true"
                   [yAxis]="true"
@@ -168,8 +165,7 @@
                   [showYAxisLabel]="true"
                   [xAxisLabel]="'dashboard.charts.month' | translate"
                   [yAxisLabel]="'dashboard.charts.kwh' | translate"
-                  [gradient]="true">
-                </ngx-charts-bar-vertical>
+                  [gradient]="true" />
               </div>
             } @else {
               <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
@@ -221,8 +217,7 @@
           <mat-card-content>
             @if (userBarChartData.length) {
               <div class="chart-container">
-                <ngx-charts-bar-horizontal
-                  [results]="userBarChartData"
+                <ngx-charts-bar-horizontal [results]="userBarChartData"
                   [scheme]="colorScheme"
                   [xAxis]="true"
                   [yAxis]="true"
@@ -230,8 +225,7 @@
                   [showYAxisLabel]="true"
                   [xAxisLabel]="'dashboard.charts.kwh' | translate"
                   [yAxisLabel]="'dashboard.charts.user' | translate"
-                  [gradient]="true">
-                </ngx-charts-bar-horizontal>
+                  [gradient]="true" />
               </div>
             } @else {
               <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
@@ -246,15 +240,13 @@
           <mat-card-content>
             @if (userPieChartData.length) {
               <div class="chart-container with-legend">
-                <ngx-charts-pie-chart
-                  [results]="userPieChartData"
+                <ngx-charts-pie-chart [results]="userPieChartData"
                   [scheme]="colorScheme"
                   [legend]="true"
                   [legendPosition]="legendPosition"
                   [legendTitle]="''"
                   [labels]="true"
-                  [doughnut]="true">
-                </ngx-charts-pie-chart>
+                  [doughnut]="true" />
               </div>
             } @else {
               <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
@@ -306,8 +298,7 @@
           <mat-card-content>
             @if (chargerBarChartData.length) {
               <div class="chart-container">
-                <ngx-charts-bar-horizontal
-                  [results]="chargerBarChartData"
+                <ngx-charts-bar-horizontal [results]="chargerBarChartData"
                   [scheme]="colorScheme"
                   [xAxis]="true"
                   [yAxis]="true"
@@ -315,8 +306,7 @@
                   [showYAxisLabel]="true"
                   [xAxisLabel]="'dashboard.charts.kwh' | translate"
                   [yAxisLabel]="'dashboard.charts.charger' | translate"
-                  [gradient]="true">
-                </ngx-charts-bar-horizontal>
+                  [gradient]="true" />
               </div>
             } @else {
               <div class="no-data">{{ 'dashboard.noData' | translate }}</div>
@@ -331,15 +321,13 @@
           <mat-card-content>
             @if (chargerPieChartData.length) {
               <div class="chart-container with-legend">
-                <ngx-charts-pie-chart
-                  [results]="chargerPieChartData"
+                <ngx-charts-pie-chart [results]="chargerPieChartData"
                   [scheme]="colorScheme"
                   [legend]="true"
                   [legendPosition]="legendPosition"
                   [legendTitle]="''"
                   [labels]="true"
-                  [doughnut]="true">
-                </ngx-charts-pie-chart>
+                  [doughnut]="true" />
               </div>
             } @else {
               <div class="no-data">{{ 'dashboard.noData' | translate }}</div>

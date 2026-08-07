@@ -1,5 +1,5 @@
 @if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <div class="transactions-container">
@@ -24,7 +24,7 @@
             <input matStartDate [(ngModel)]="startDate" [placeholder]="'transactionsList.start' | translate">
             <input matEndDate [(ngModel)]="endDate" [placeholder]="'transactionsList.end' | translate">
           </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
+          <mat-datepicker-toggle matSuffix [for]="pickerMobile" />
           <button mat-icon-button matSuffix [matMenuTriggerFor]="dateMenuMobile"
                   [attr.aria-label]="'transactionsList.selectRange' | translate">
             <mat-icon>keyboard_arrow_down</mat-icon>
@@ -36,7 +36,7 @@
               </button>
             }
           </mat-menu>
-          <mat-date-range-picker #pickerMobile></mat-date-range-picker>
+          <mat-date-range-picker #pickerMobile />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="filter-field">
@@ -93,7 +93,7 @@
           <input matStartDate [(ngModel)]="startDate" [placeholder]="'transactionsList.start' | translate">
           <input matEndDate [(ngModel)]="endDate" [placeholder]="'transactionsList.end' | translate">
         </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matSuffix [for]="picker" />
         <button mat-icon-button matSuffix [matMenuTriggerFor]="dateMenu"
                 [attr.aria-label]="'transactionsList.selectRange' | translate">
           <mat-icon>keyboard_arrow_down</mat-icon>
@@ -105,7 +105,7 @@
             </button>
           }
         </mat-menu>
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-picker #picker />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-field">
@@ -233,12 +233,10 @@
       }
     </mat-accordion>
 
-    <mat-paginator
-      #transactionPaginator
+    <mat-paginator #transactionPaginator
       [pageSizeOptions]="[10, 25, 50]"
       [showFirstLastButtons]="false"
-      [attr.aria-label]="'transactionsList.selectPage' | translate">
-    </mat-paginator>
+      [attr.aria-label]="'transactionsList.selectPage' | translate" />
   } @else {
     <!-- Desktop Table Layout -->
     <div class="mat-elevation-z8">
@@ -328,12 +326,10 @@
         </table>
       </div>
 
-      <mat-paginator
-        #transactionPaginator
+      <mat-paginator #transactionPaginator
         [pageSizeOptions]="[10, 50, 100]"
         [showFirstLastButtons]="showFirstLastButtons"
-        [attr.aria-label]="'transactionsList.selectPage' | translate">
-      </mat-paginator>
+        [attr.aria-label]="'transactionsList.selectPage' | translate" />
     </div>
   }
 </div>

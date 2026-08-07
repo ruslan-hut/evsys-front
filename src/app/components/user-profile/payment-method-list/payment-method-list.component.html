@@ -1,5 +1,5 @@
 @for (pm of dataSource.data; track pm) {
-  <app-payment-method [paymentMethod]="pm" (click)="selectPaymentMethod(pm)"></app-payment-method>
+  <app-payment-method [paymentMethod]="pm" (click)="selectPaymentMethod(pm)" />
 } @empty {
   <div class="no-data">No payment methods configured</div>
 }

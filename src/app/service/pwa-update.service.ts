@@ -1,18 +1,19 @@
-import { Injectable, ApplicationRef, OnDestroy, inject } from '@angular/core';
+import { Injectable, ApplicationRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { BehaviorSubject, Subject, concat, interval } from 'rxjs';
-import { filter, first, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, concat, interval } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PwaUpdateService implements OnDestroy {
+export class PwaUpdateService {
   private swUpdate = inject(SwUpdate);
   private appRef = inject(ApplicationRef);
   private snackBar = inject(MatSnackBar);
+  private readonly destroyRef = inject(DestroyRef);
 
-  private destroy$ = new Subject<void>();
   private updateAvailable = new BehaviorSubject<boolean>(false);
 
   /** Observable that emits true when an update is available */
@@ -31,7 +32,7 @@ export class PwaUpdateService implements OnDestroy {
     // Listen for version updates
     this.swUpdate.versionUpdates.pipe(
       filter((event): event is VersionReadyEvent => event.type === 'VERSION_READY'),
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(event => {
       console.log('PWA: New version available:', event.latestVersion);
       this.updateAvailable.next(true);
@@ -40,7 +41,7 @@ export class PwaUpdateService implements OnDestroy {
 
     // Handle unrecoverable state (corrupted cache)
     this.swUpdate.unrecoverable.pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(event => {
       console.error('PWA: Unrecoverable state:', event.reason);
       this.snackBar.open(
@@ -54,11 +55,6 @@ export class PwaUpdateService implements OnDestroy {
 
     // Check for updates periodically (every 6 hours)
     this.setupPeriodicUpdateCheck();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /** Manually check for updates */
@@ -107,7 +103,7 @@ export class PwaUpdateService implements OnDestroy {
     const everySixHoursOnceAppIsStable$ = concat(appIsStable$, everySixHours$);
 
     everySixHoursOnceAppIsStable$.pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(() => {
       this.checkForUpdate().then(hasUpdate => {
         if (hasUpdate) {

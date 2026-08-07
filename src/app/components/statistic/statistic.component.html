@@ -1,5 +1,5 @@
 @if (inProgress) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <div class="filter-container">
@@ -13,7 +13,7 @@
     <mat-hint>{{ 'statistic.dateHint' | translate }}</mat-hint>
 
     <!-- Date Picker Toggle Icon -->
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker-toggle matSuffix [for]="picker" />
 
     <!-- Custom Dropdown Button for Predefined Ranges -->
     <button mat-icon-button matSuffix [matMenuTriggerFor]="menu" [attr.aria-label]="'statistic.selectRange' | translate">
@@ -29,7 +29,7 @@
       }
     </mat-menu>
 
-    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-date-range-picker #picker />
   </mat-form-field>
 
 

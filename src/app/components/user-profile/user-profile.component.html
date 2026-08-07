@@ -69,10 +69,8 @@
   <mat-card-content>
     <div class="toggle-setting">
       <span class="toggle-label">{{ 'userProfile.alwaysLoadAll' | translate }}</span>
-      <mat-slide-toggle
-        [checked]="alwaysLoadAllChargers"
-        (change)="onAlwaysLoadAllChargersChange($event.checked)">
-      </mat-slide-toggle>
+      <mat-slide-toggle [checked]="alwaysLoadAllChargers"
+        (change)="onAlwaysLoadAllChargersChange($event.checked)" />
     </div>
   </mat-card-content>
 </mat-card>

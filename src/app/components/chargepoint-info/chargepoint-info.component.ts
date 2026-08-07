@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Location } from '@angular/common';
-import { Subject } from 'rxjs';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ChargepointService } from '../../service/chargepoint.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -31,7 +31,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatAccordion, ConnectorInfoComponent, ChargepointProfileComponent, MatCardActions, MatButton, MatIcon, SortConnectorsPipe, TranslatePipe]
 })
-export class ChargepointInfoComponent implements OnInit, OnDestroy {
+export class ChargepointInfoComponent implements OnInit {
   private readonly chargePointService = inject(ChargepointService);
   readonly timeService = inject(TimeService);
   private readonly route = inject(ActivatedRoute);
@@ -41,9 +41,8 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
   private readonly errorService = inject(ErrorService);
   readonly accountService = inject(AccountService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly translate = inject(TranslateService);
-
-  private destroy$ = new Subject<void>();
 
   // The upload URL is remembered between requests so an operator does not retype
   // the FTP location every time; it is the same across charge points in practice.
@@ -58,7 +57,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.pipe(
-      takeUntil(this.destroy$),
+      takeUntilDestroyed(this.destroyRef),
       switchMap((params: Params) => {
         this.chargePointId = params['id'];
         return this.chargePointService.getChargePoint(this.chargePointId);
@@ -69,11 +68,6 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
     });
 
     window.scrollTo(0, 0);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   close(): void {
@@ -96,7 +90,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(result => {
       if (result === 'yes') {
         if (mode === 0) {
@@ -139,7 +133,7 @@ export class ChargepointInfoComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().pipe(
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe((location: string | undefined) => {
       if (!location) return;
       localStorage.setItem(ChargepointInfoComponent.DIAG_LOCATION_KEY, location);

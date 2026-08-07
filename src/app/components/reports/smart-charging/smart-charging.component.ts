@@ -1,9 +1,8 @@
-import {
-  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
-import {Subject, combineLatest, of} from 'rxjs';
-import {catchError, takeUntil} from 'rxjs/operators';
+import {combineLatest, of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatProgressBar} from '@angular/material/progress-bar';
@@ -60,13 +59,12 @@ const ALL_LOCATIONS = '';
     MatSelect, MatOption, MatIcon, MatIconButton, MatTooltip, TranslatePipe
   ]
 })
-export class SmartChargingComponent implements OnInit, OnDestroy {
+export class SmartChargingComponent implements OnInit {
   private readonly chargePointService = inject(ChargepointService);
   readonly timeService = inject(TimeService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
-
-  private destroy$ = new Subject<void>();
 
   readonly allLocations = ALL_LOCATIONS;
   loading = false;
@@ -90,11 +88,6 @@ export class SmartChargingComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   loadData(): void {
     this.loading = true;
     // getChargePoints() is a live BehaviorSubject that never completes, so
@@ -106,7 +99,7 @@ export class SmartChargingComponent implements OnInit, OnDestroy {
       this.chargePointService.getChargePoints(),
       this.chargePointService.getLocations().pipe(catchError(() => of([])))
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: ([chargePoints, locations]) => {
           this.build(chargePoints, locations ?? []);

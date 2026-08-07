@@ -1,5 +1,5 @@
 @if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <!-- Desktop: always visible filter container -->
@@ -11,7 +11,7 @@
       <input matEndDate [(ngModel)]="endDate" [placeholder]="'reports.power.end' | translate" />
     </mat-date-range-input>
     <mat-hint>{{ 'reports.power.dateHint' | translate }}</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="pickerDesktop"></mat-datepicker-toggle>
+    <mat-datepicker-toggle matSuffix [for]="pickerDesktop" />
     <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuDesktop" [attr.aria-label]="'reports.power.selectRange' | translate">
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
@@ -20,7 +20,7 @@
         <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
       }
     </mat-menu>
-    <mat-date-range-picker #pickerDesktop></mat-date-range-picker>
+    <mat-date-range-picker #pickerDesktop />
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="station-select-field">
@@ -66,7 +66,7 @@
         <input matEndDate [(ngModel)]="endDate" [placeholder]="'reports.power.end' | translate" />
       </mat-date-range-input>
       <mat-hint>{{ 'reports.power.dateHint' | translate }}</mat-hint>
-      <mat-datepicker-toggle matSuffix [for]="pickerMobile"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="pickerMobile" />
       <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenuMobile" [attr.aria-label]="'reports.power.selectRange' | translate">
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
@@ -75,7 +75,7 @@
           <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
         }
       </mat-menu>
-      <mat-date-range-picker #pickerMobile></mat-date-range-picker>
+      <mat-date-range-picker #pickerMobile />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="station-select-field">
@@ -171,8 +171,7 @@
         </mat-card-header>
         <mat-card-content>
           <div class="chart-container">
-            <ngx-charts-bar-vertical
-              [results]="energyChart"
+            <ngx-charts-bar-vertical [results]="energyChart"
               [xAxisLabel]="'reports.power.timeBucket' | translate"
               [yAxisLabel]="'reports.power.energyKWh' | translate"
               [showXAxisLabel]="true"
@@ -180,8 +179,7 @@
               [xAxis]="true"
               [yAxis]="true"
               [xAxisTickFormatting]="xAxisTickFormatting"
-              [scheme]="energyColorScheme">
-            </ngx-charts-bar-vertical>
+              [scheme]="energyColorScheme" />
           </div>
         </mat-card-content>
       </mat-card>
@@ -192,8 +190,7 @@
         </mat-card-header>
         <mat-card-content>
           <div class="chart-container with-legend">
-            <ngx-charts-line-chart
-              [results]="loadChart"
+            <ngx-charts-line-chart [results]="loadChart"
               [xAxisLabel]="'reports.power.timeBucket' | translate"
               [yAxisLabel]="'reports.power.powerKw' | translate"
               [showXAxisLabel]="true"
@@ -204,8 +201,7 @@
               [legendPosition]="legendPosition"
               [legendTitle]="''"
               [xAxisTickFormatting]="xAxisTickFormatting"
-              [scheme]="colorScheme">
-            </ngx-charts-line-chart>
+              [scheme]="colorScheme" />
           </div>
         </mat-card-content>
       </mat-card>
@@ -220,8 +216,7 @@
         </mat-card-header>
         <mat-card-content>
           <div class="chart-container with-legend">
-            <ngx-charts-bar-vertical-2d
-              [results]="chargerChart"
+            <ngx-charts-bar-vertical-2d [results]="chargerChart"
               [xAxisLabel]="'reports.power.station' | translate"
               [yAxisLabel]="'reports.power.powerKw' | translate"
               [showXAxisLabel]="true"
@@ -231,8 +226,7 @@
               [legend]="true"
               [legendPosition]="legendPosition"
               [legendTitle]="''"
-              [scheme]="colorScheme">
-            </ngx-charts-bar-vertical-2d>
+              [scheme]="colorScheme" />
           </div>
         </mat-card-content>
       </mat-card>
@@ -373,13 +367,11 @@
           }
         </div>
 
-        <mat-paginator
-          [length]="rows.length"
+        <mat-paginator [length]="rows.length"
           [pageIndex]="pageIndex"
           [pageSize]="pageSize"
           [pageSizeOptions]="pageSizeOptions"
-          (page)="onPage($event)">
-        </mat-paginator>
+          (page)="onPage($event)" />
       </mat-card-content>
     </mat-card>
   }

@@ -1,5 +1,5 @@
 @if (loading) {
-  <div><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+  <div><mat-progress-bar mode="indeterminate" /></div>
 }
 
 <div class="log-container">
@@ -45,12 +45,10 @@
     </div>
 
     <!-- Mobile Paginator -->
-    <mat-paginator
-      #logDataPaginator
+    <mat-paginator #logDataPaginator
       [pageSizeOptions]="[10, 25, 50]"
       [showFirstLastButtons]="false"
-      aria-label="Select page of log entries">
-    </mat-paginator>
+      aria-label="Select page of log entries" />
   } @else {
     <!-- Desktop Table Layout -->
     <div class="mat-elevation-z8">
@@ -84,12 +82,10 @@
         </table>
       </div>
 
-      <mat-paginator
-        #logDataPaginator
+      <mat-paginator #logDataPaginator
         [pageSizeOptions]="[10, 50, 100]"
         [showFirstLastButtons]="true"
-        aria-label="Select page of log entries">
-      </mat-paginator>
+        aria-label="Select page of log entries" />
     </div>
   }
 </div>

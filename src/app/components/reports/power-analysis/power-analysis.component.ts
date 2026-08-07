@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe, DatePipe } from '@angular/common';
 
@@ -111,14 +111,13 @@ type TimelineBucket = Extract<PowerGroupBy, 'hour' | 'day'>;
     TranslatePipe
   ]
 })
-export class PowerAnalysisComponent implements OnInit, OnDestroy {
+export class PowerAnalysisComponent implements OnInit {
   private readonly statsService = inject(StatsService);
   private readonly chargepointService = inject(ChargepointService);
   private readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
   private readonly cdr = inject(ChangeDetectorRef);
-
-  private destroy$ = new Subject<void>();
+  private readonly destroyRef = inject(DestroyRef);
 
   rows: PowerStats[] = [];
   loading = false;
@@ -184,14 +183,9 @@ export class PowerAnalysisComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   private loadChargePoints(): void {
     this.chargepointService.getChargePoints()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: points => {
           this.chargePoints = points.map(p => ({ id: p.charge_point_id || '', title: p.title || p.charge_point_id || '' }));
@@ -211,7 +205,7 @@ export class PowerAnalysisComponent implements OnInit, OnDestroy {
       this.selectedStation || undefined,
       this.selectedGroup || undefined
     )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           this.rows = data ?? [];

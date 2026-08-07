@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { MatTabGroup, MatTab, MatTabContent } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StationStatusComponent } from './station-status/station-status.component';
@@ -30,12 +30,11 @@ type TabKey = typeof TAB_KEYS[number];
     TranslatePipe
   ]
 })
-export class ReportsComponent implements OnInit, OnDestroy {
+export class ReportsComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
-
-  private destroy$ = new Subject<void>();
+  private readonly destroyRef = inject(DestroyRef);
 
   activeTabIndex = 0;
 
@@ -46,7 +45,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     this.route.queryParamMap
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(params => {
         const index = TAB_KEYS.indexOf(params.get('tab') as TabKey);
         if (index >= 0 && index !== this.activeTabIndex) {
@@ -54,11 +53,6 @@ export class ReportsComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onTabChange(index: number): void {

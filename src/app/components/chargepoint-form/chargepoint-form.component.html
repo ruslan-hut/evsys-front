@@ -67,7 +67,7 @@
       </div>
     </mat-card-content>
     <mat-card>
-      <app-connector-form [connectors]="chargePoint.connectors | sortConnectors"></app-connector-form>
+      <app-connector-form [connectors]="chargePoint.connectors | sortConnectors" />
     </mat-card>
     <mat-card-actions>
       <button mat-stroked-button (click)="close()">{{ 'chargepointForm.close' | translate }}</button>
