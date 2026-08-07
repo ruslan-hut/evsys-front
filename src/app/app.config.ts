@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FirebaseService } from './service/firebase.service';
 import { tokenInterceptor } from './helpers/token.interceptor';
 import { errorInterceptor } from './helpers/error.interceptor';
@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
         provideAnimations(),
-        provideHttpClient(withXhr(), withInterceptors([tokenInterceptor, errorInterceptor])),
+        provideHttpClient(withInterceptors([tokenInterceptor, errorInterceptor])),
         provideNativeDateAdapter(),
         { provide: LOCALE_ID, useValue: 'en-GB' },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

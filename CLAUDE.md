@@ -111,4 +111,11 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`) deploys to wattbrews.me
 
 ## Claude Code Preferences
 
-- Do not run builds (`npm run build`) - user will run builds manually
+- After a significant change, run `npm run build` and `npm test -- --watch=false`
+  before reporting the work done. Significant means anything touching templates,
+  DI/providers, routing, dependencies or build config - not a comment or a
+  string literal.
+- `tsc --noEmit` is not a substitute for the build: AOT template type-checking
+  only runs in `ng build`, and `ng test` builds with `aot: false`.
+- Specs use `HttpTestingController`, which replaces the HTTP backend. A green
+  suite says nothing about real requests - verify those against a running app.
