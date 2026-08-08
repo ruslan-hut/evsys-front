@@ -981,5 +981,18 @@
       "paymentRetries": "Reintentos de pago",
       "profile": "Perfil y apariencia"
     }
+  },
+  "actions": {
+    "menuFor": "Acciones para {{name}}",
+    "edit": "Editar",
+    "view": "Ver detalles",
+    "delete": "Eliminar",
+    "transactions": "Transacciones",
+    "tags": "Tarjetas RFID",
+    "info": "Datos del usuario",
+    "sendNow": "Enviar ahora",
+    "forceRetry": "Reintentar ahora",
+    "configure": "Configurar",
+    "viewTransaction": "Ver transacción"
   }
 }

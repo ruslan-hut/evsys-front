@@ -62,18 +62,7 @@
               </div>
             }
             <div class="tag-actions">
-              <button mat-icon-button class="list-action-btn" [routerLink]="['/user-tags/edit', row.id_tag]"
-                      [attr.aria-label]="'userTags.editTag' | translate">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button class="list-action-btn" [routerLink]="['/transactions']" [queryParams]="{id_tag: row.id_tag}"
-                      [attr.aria-label]="'userTags.transactionsFor' | translate:{ tag: row.id_tag }">
-                <mat-icon>receipt_long</mat-icon>
-              </button>
-              <button mat-icon-button class="list-action-btn warn" (click)="deleteTag(row.id_tag)"
-                      [attr.aria-label]="'userTags.deleteTag' | translate">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <app-row-actions [actions]="actionsFor(row)" [forLabel]="row.id_tag" />
             </div>
           </div>
         </mat-expansion-panel>
@@ -119,18 +108,7 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>{{ 'userTags.headers.actions' | translate }}</th>
             <td mat-cell *matCellDef="let row">
-              <button mat-icon-button class="list-action-btn" [routerLink]="['/user-tags/edit', row.id_tag]"
-                      [attr.aria-label]="'userTags.editTag' | translate">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button class="list-action-btn" [routerLink]="['/transactions']" [queryParams]="{id_tag: row.id_tag}"
-                      [attr.aria-label]="'userTags.transactionsFor' | translate:{ tag: row.id_tag }">
-                <mat-icon>receipt_long</mat-icon>
-              </button>
-              <button mat-icon-button class="list-action-btn warn" (click)="deleteTag(row.id_tag)"
-                      [attr.aria-label]="'userTags.deleteTag' | translate">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <app-row-actions [actions]="actionsFor(row)" [forLabel]="row.id_tag" />
             </td>
           </ng-container>
 

@@ -95,7 +95,7 @@ export class TransactionsListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'transaction_id', 'id_tag', 'charge_point_id', 'connector_id',
     'time_start', 'time_stop', 'consumed',
-    'payment_amount', 'actions'
+    'payment_amount'
   ];
 
   loading = false;
@@ -288,16 +288,18 @@ export class TransactionsListComponent implements OnInit, OnDestroy {
     this.loadTransactions();
   }
 
+  /** Keyboard equivalent of clicking the row. */
+  onRowActivate(event: Event, transactionId: number): void {
+    event.preventDefault();
+    this.viewDetails(transactionId);
+  }
+
   viewDetails(transactionId: number): void {
     this.router.navigate(['/transactions', transactionId]);
   }
 
   hasActiveRetry(transactionId: number): boolean {
     return this.retryTxIds.has(transactionId);
-  }
-
-  viewRetryQueue(): void {
-    this.router.navigate(['/payment-retries']);
   }
 
   getConsumed(transaction: TransactionListItem): number {

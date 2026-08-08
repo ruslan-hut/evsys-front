@@ -129,12 +129,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>{{ 'webhooks.headers.actions' | translate }}</th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button class="list-action-btn" [attr.aria-label]="'webhooks.edit' | translate" (click)="startEdit(row)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button class="list-action-btn warn" [attr.aria-label]="'webhooks.delete' | translate" (click)="delete(row)">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <app-row-actions [actions]="actionsFor(row)" [forLabel]="row.name" />
         </td>
       </ng-container>
 

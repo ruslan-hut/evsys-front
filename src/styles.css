@@ -732,6 +732,37 @@ mat-card {
 }
 
 /* ===========================================
+   Clickable Rows and Cards
+
+   A row or card whose only action is applied by clicking it. Rows with more
+   than one action keep their action buttons out of the way in an overflow menu
+   (app-row-actions) instead.
+
+   Anything interactive nested inside must stop click propagation, or it will
+   fire the row action as well.
+   =========================================== */
+.row-clickable {
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+tr.row-clickable:hover,
+.row-clickable:hover {
+  background-color: var(--color-background-light);
+}
+
+.row-clickable:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+/* Destructive entries in a row's overflow menu */
+.row-action--warn .mat-icon,
+.row-action--warn span {
+  color: var(--color-action-warn);
+}
+
+/* ===========================================
    Filter Clear Buttons (Input Suffix)
    =========================================== */
 .filter-clear-btn {

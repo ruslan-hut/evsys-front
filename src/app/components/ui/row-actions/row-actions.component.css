@@ -1,0 +1,11 @@
+:host {
+  display: inline-flex;
+}
+
+.row-actions-trigger {
+  color: var(--color-action) !important;
+}
+
+.row-actions-trigger:hover {
+  color: var(--color-action-hover) !important;
+}

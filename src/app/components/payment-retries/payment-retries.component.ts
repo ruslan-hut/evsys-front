@@ -4,9 +4,6 @@ import {DatePipe} from '@angular/common';
 import {MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
   MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow} from '@angular/material/table';
 import {MatProgressBar} from '@angular/material/progress-bar';
-import {MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatTooltip} from '@angular/material/tooltip';
 import {MatCard, MatCardHeader, MatCardSubtitle, MatCardTitle} from '@angular/material/card';
 import {MatDialog} from '@angular/material/dialog';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
@@ -17,17 +14,19 @@ import {PaymentRetryItem} from '../../models/payment-retry';
 import {BasicDialogComponent} from '../dialogs/basic/basic-dialog.component';
 import {DialogData} from '../../models/dialog-data';
 
+import {RowAction, RowActionsComponent} from '../ui/row-actions/row-actions.component';
+
 @Component({
   selector: 'app-payment-retries',
   templateUrl: './payment-retries.component.html',
   styleUrls: ['./payment-retries.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RowActionsComponent,
     DatePipe,
     MatProgressBar,
     MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
     MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow,
-    MatIconButton, MatIcon, MatTooltip,
     MatCard, MatCardHeader, MatCardSubtitle, MatCardTitle,
     TranslatePipe,
   ],
@@ -65,6 +64,14 @@ export class PaymentRetriesComponent implements OnInit {
         this.cdr.markForCheck();
       },
     });
+  }
+
+  /** Two actions per queued retry, so they live behind an overflow menu. */
+  actionsFor(row: PaymentRetryItem): RowAction[] {
+    return [
+      { labelKey: 'actions.viewTransaction', icon: 'visibility', run: () => this.viewTransaction(row.transaction_id) },
+      { labelKey: 'actions.forceRetry', icon: 'play_arrow', disabled: this.forcingId === row.transaction_id, run: () => this.forceRetry(row) }
+    ];
   }
 
   viewTransaction(transactionId: number): void {

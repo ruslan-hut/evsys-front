@@ -17,10 +17,11 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { RowAction, RowActionsComponent } from '../../ui/row-actions/row-actions.component';
 
 @Component({
   selector: 'app-users',
@@ -45,7 +46,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     MatSortHeader,
     MatCellDef,
     MatCell,
-    RouterLink,
+    RowActionsComponent,
     MatHeaderRowDef,
     MatHeaderRow,
     MatRowDef,
@@ -58,6 +59,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   ]
 })
 export class UsersComponent implements OnInit {
+  private readonly router = inject(Router);
   readonly account = inject(AccountService);
   readonly dialog = inject(MatDialog);
   private readonly breakpointObserver = inject(BreakpointObserver);
@@ -97,6 +99,17 @@ export class UsersComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  /** Five actions per user, so they live behind an overflow menu. */
+  actionsFor(row: User): RowAction[] {
+    return [
+      { labelKey: 'actions.edit', icon: 'edit', run: () => this.router.navigate(['/users/edit', row.username]) },
+      { labelKey: 'actions.info', icon: 'visibility', run: () => this.openUserInfo(row.username) },
+      { labelKey: 'actions.tags', icon: 'local_offer', run: () => this.router.navigate(['/user-tags'], { queryParams: { username: row.username } }) },
+      { labelKey: 'actions.transactions', icon: 'receipt_long', run: () => this.router.navigate(['/transactions'], { queryParams: { username: row.username } }) },
+      { labelKey: 'actions.delete', icon: 'delete', warn: true, run: () => this.deleteUser(row.username) }
+    ];
   }
 
   openUserInfo(username: string): void {

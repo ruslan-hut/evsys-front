@@ -981,5 +981,18 @@
       "paymentRetries": "Payment retries",
       "profile": "Profile and appearance"
     }
+  },
+  "actions": {
+    "menuFor": "Actions for {{name}}",
+    "edit": "Edit",
+    "view": "View details",
+    "delete": "Delete",
+    "transactions": "Transactions",
+    "tags": "RFID tags",
+    "info": "User info",
+    "sendNow": "Send now",
+    "forceRetry": "Retry now",
+    "configure": "Configure",
+    "viewTransaction": "View transaction"
   }
 }

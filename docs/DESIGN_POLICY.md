@@ -297,20 +297,76 @@ stylesheet is the thing this bridge exists to prevent.
 - Paginator below the list — mobile `[10, 25, 50]` without first/last, desktop
   `[10, 50, 100]` with them
 
-### Action buttons
+### Row and card actions
+
+**Rows and cards never show a strip of action buttons.** A row of four icon
+buttons repeated down a table is most of the visual noise in a dense list, and
+the icons are guesswork without tooltips. The rule is decided by how many
+actions the row actually has:
+
+| Actions | Treatment |
+|---|---|
+| 0 | Nothing. The row is inert. |
+| 1 | The row or card itself is clickable and performs it. No button at all. |
+| 2+ | A single `more_vert` overflow menu with labelled entries. |
+
+Count the actions **for the current user** — role-gating changes the answer. The
+charge point card is a menu for an admin, a single click target for a role with
+one action, and inert for a plain user.
+
+**Two or more — use `app-row-actions`:**
 
 ```html
-<button mat-icon-button class="list-action-btn" (click)="action()">
-  <mat-icon>edit</mat-icon>
-</button>
-
-<button mat-icon-button class="list-action-btn warn" (click)="delete()">
-  <mat-icon>delete</mat-icon>
-</button>
+<app-row-actions [actions]="actionsFor(row)" [forLabel]="row.username" />
 ```
 
-**Do not** use `color="warn"` on icon buttons in lists — too aggressive. Use
-`.list-action-btn warn`.
+```typescript
+actionsFor(row: User): RowAction[] {
+  return [
+    { labelKey: 'actions.edit', icon: 'edit', run: () => this.edit(row) },
+    { labelKey: 'actions.delete', icon: 'delete', warn: true, run: () => this.delete(row) }
+  ];
+}
+```
+
+Labels come from the shared `actions.*` i18n group and stay short — the row is
+already the context, so "Edit", not "Edit user {{username}}". Destructive
+entries set `warn: true` and go last. The component renders nothing when given
+one action or none, which is what makes the single-action case fall through to
+a clickable row.
+
+**Exactly one — make the row clickable:**
+
+```html
+<tr mat-row *matRowDef="let row; columns: displayedColumns"
+    class="row-clickable"
+    tabindex="0"
+    (click)="viewDetails(row.id)"
+    (keydown.enter)="onRowActivate($event, row.id)"
+    (keydown.space)="onRowActivate($event, row.id)"></tr>
+```
+
+Drop `'actions'` from `displayedColumns` — the column has nothing left in it.
+
+Rules for clickable rows:
+
+- Always pair the click with `tabindex="0"` and Enter/Space handlers. A click
+  target that the keyboard can't reach is not an action, it's a trap.
+- `.row-clickable` supplies the hover and focus treatment. Don't hand-roll it.
+- **Anything interactive nested inside must call `stopPropagation()`**, or it
+  fires the row action too. `app-row-actions` does this on its trigger;
+  `connector.component.ts` does it in `openInfo()`.
+- An expansion panel header already uses its click to expand. Put the clickable
+  target on the panel body instead, with a visible affordance — see
+  `.transaction-open` in `transactions-list`.
+
+**Status is not an action.** An icon that reports a state belongs next to the
+data it describes, not in an actions column. The transaction retry marker sits
+beside the transaction id as a plain `mat-icon` with a tooltip.
+
+`.list-action-btn` remains only for card-level actions that aren't row actions,
+such as a panel's refresh button. **Do not** use `color="warn"` on icon buttons
+in lists — too aggressive.
 
 ### Filter clear buttons
 
@@ -607,7 +663,8 @@ don't add more.
 - [ ] Tokens for colour, spacing, radius, type and icon size — no raw values
 - [ ] `ChangeDetectionStrategy.OnPush`
 - [ ] Mobile and desktop layouts where applicable
-- [ ] Action buttons use `.list-action-btn`
+- [ ] Row actions follow the count rule: 1 → clickable row, 2+ → `app-row-actions`
+- [ ] Clickable rows are keyboard reachable, and nested controls stop propagation
 - [ ] `aria-label` on icon-only buttons
 - [ ] Empty state handled and worded usefully — and offers a way out when a
       filter caused it

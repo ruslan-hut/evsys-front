@@ -84,7 +84,9 @@ export class ConnectorComponent {
    }
   }
 
-  openInfo() {
+  /** The parent card may itself be clickable, so this click stops here. */
+  openInfo(event?: Event) {
+    event?.stopPropagation();
     this.router.navigate(['new-transactions'], {
       queryParams: { charge_point_id: this.connector().charge_point_id, connector_id: this.connector().connector_id }
     }).then(_ => {});

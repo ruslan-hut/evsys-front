@@ -1,0 +1,21 @@
+@if (actions().length > 1) {
+  <button mat-icon-button
+          class="row-actions-trigger"
+          [matMenuTriggerFor]="menu"
+          (click)="onTriggerClick($event)"
+          [attr.aria-label]="'actions.menuFor' | translate:{ name: forLabel() }">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu" xPosition="before">
+    @for (action of actions(); track action.labelKey) {
+      <button mat-menu-item
+              [disabled]="action.disabled"
+              [class.row-action--warn]="action.warn"
+              (click)="action.run()">
+        <mat-icon>{{ action.icon }}</mat-icon>
+        <span>{{ action.labelKey | translate }}</span>
+      </button>
+    }
+  </mat-menu>
+}

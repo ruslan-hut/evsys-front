@@ -2,7 +2,7 @@
         class="slot"
         [class]="getConnectorStatusClass()"
         [class.charging]="isCharging()"
-        (click)="openInfo()"
+        (click)="openInfo($event)"
         [disabled]="isDisabled()"
         [attr.aria-label]="ariaLabel()">
   <span class="slot-bar" aria-hidden="true"></span>

@@ -20,12 +20,15 @@ import {WebhookService} from '../../service/webhook.service';
 import {ErrorService} from '../../service/error.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
+import {RowAction, RowActionsComponent} from '../ui/row-actions/row-actions.component';
+
 @Component({
   selector: 'app-webhooks',
   templateUrl: './webhooks.component.html',
   styleUrls: ['./webhooks.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RowActionsComponent,
     ReactiveFormsModule,
     DatePipe,
     MatProgressBar,
@@ -89,6 +92,14 @@ export class WebhooksComponent implements OnInit {
         this.cdr.markForCheck();
       },
     });
+  }
+
+  /** Two actions per subscriber, so they live behind an overflow menu. */
+  actionsFor(row: WebhookSubscriber): RowAction[] {
+    return [
+      { labelKey: 'actions.edit', icon: 'edit', run: () => this.startEdit(row) },
+      { labelKey: 'actions.delete', icon: 'delete', warn: true, run: () => this.delete(row) }
+    ];
   }
 
   startEdit(sub: WebhookSubscriber): void {

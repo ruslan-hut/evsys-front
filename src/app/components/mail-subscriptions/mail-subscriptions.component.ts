@@ -6,7 +6,7 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatSelect, MatOption} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatDialog} from '@angular/material/dialog';
@@ -19,19 +19,22 @@ import {ErrorService} from '../../service/error.service';
 import {Group} from '../../models/group';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
+import {RowAction, RowActionsComponent} from '../ui/row-actions/row-actions.component';
+
 @Component({
   selector: 'app-mail-subscriptions',
   templateUrl: './mail-subscriptions.component.html',
   styleUrls: ['./mail-subscriptions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RowActionsComponent,
     ReactiveFormsModule,
     FormsModule,
     MatProgressBar,
     MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
     MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow,
     MatFormField, MatLabel, MatInput, MatSelect, MatOption,
-    MatSlideToggle, MatButton, MatIconButton, MatIcon,
+    MatSlideToggle, MatButton, MatIcon,
     MatCard, MatCardContent, MatCardHeader, MatCardTitle,
     TranslatePipe,
   ],
@@ -92,6 +95,15 @@ export class MailSubscriptionsComponent implements OnInit {
       user_group: this.groups[0]?.id ?? 'default',
       enabled: true,
     });
+  }
+
+  /** Three actions per subscription, so they live behind an overflow menu. */
+  actionsFor(row: MailSubscription): RowAction[] {
+    return [
+      { labelKey: 'actions.edit', icon: 'edit', run: () => this.startEdit(row) },
+      { labelKey: 'actions.sendNow', icon: 'send', disabled: !row.enabled, run: () => this.sendNow(row) },
+      { labelKey: 'actions.delete', icon: 'delete', warn: true, run: () => this.delete(row) }
+    ];
   }
 
   startEdit(sub: MailSubscription): void {

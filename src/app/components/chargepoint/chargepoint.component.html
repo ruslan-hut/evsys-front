@@ -1,5 +1,12 @@
 
-<mat-card class="chargepoint-card interactive-surface" [class.state-changed]="stateChanged()">
+<mat-card class="chargepoint-card interactive-surface"
+          [class.state-changed]="stateChanged()"
+          [class.row-clickable]="isSingleAction()"
+          [attr.role]="isSingleAction() ? 'button' : null"
+          [attr.tabindex]="isSingleAction() ? 0 : null"
+          (click)="onCardClick()"
+          (keydown.enter)="onCardKeydown($event)"
+          (keydown.space)="onCardKeydown($event)">
   <mat-card-header>
     <mat-card-title>
       <span class="status-dot"
@@ -32,25 +39,10 @@
       </div>
     }
   </div>
-  <mat-card-actions align="end" class="tool-panel">
-    @if (accountService.isAdmin || accountService.isOperator) {
-      <button mat-icon-button class="edit-button" color="primary" (click)="configureChargePoint()"
-              aria-label="Configure {{chargepoint().title}}">
-        <mat-icon class="edit-icon">settings</mat-icon>
-      </button>
-    }
-    @if (accountService.isAdmin) {
-      <button mat-icon-button class="edit-button" color="primary" (click)="editChargePoint()"
-              aria-label="Edit {{chargepoint().title}}">
-        <mat-icon class="edit-icon">edit</mat-icon>
-      </button>
-    }
-    @if (accountService.isAdmin || accountService.isOperator) {
-      <button mat-icon-button class="edit-button" color="primary" (click)="infoChargePoint()"
-              aria-label="View details for {{chargepoint().title}}">
-        <mat-icon class="edit-icon">remove_red_eye</mat-icon>
-      </button>
-    }
-  </mat-card-actions>
+  @if (actions().length > 1) {
+    <mat-card-actions align="end" class="tool-panel">
+      <app-row-actions [actions]="actions()" [forLabel]="chargepoint().title" />
+    </mat-card-actions>
+  }
 </mat-card>
 

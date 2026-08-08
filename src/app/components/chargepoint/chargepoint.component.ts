@@ -8,12 +8,13 @@ import { ConnectorComponent } from "../connector/connector.component";
 import { MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { SortConnectorsPipe } from "../pipes/sortConnectorsPipe";
+import { RowAction, RowActionsComponent } from "../ui/row-actions/row-actions.component";
 
 @Component({
     selector: 'app-chargepoint',
     templateUrl: './chargepoint.component.html',
     styleUrls: ['./chargepoint.component.css'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ConnectorComponent, MatCardActions, MatIconButton, MatIcon, SortConnectorsPipe],
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ConnectorComponent, MatCardActions, SortConnectorsPipe, RowActionsComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChargepointComponent {
@@ -89,6 +90,47 @@ export class ChargepointComponent {
     if (color === 'red') return 'Offline';
     if (color === 'yellow') return 'Online, some connectors busy';
     return 'Online, all connectors available';
+  }
+
+  /**
+   * Actions depend on role: an operator gets configure and view, an admin also
+   * gets edit, and a plain user gets none. So this card is sometimes a menu,
+   * sometimes a single click target, and sometimes inert.
+   */
+  actions(): RowAction[] {
+    const list: RowAction[] = [];
+    const privileged = this.accountService.isAdmin || this.accountService.isOperator;
+
+    if (privileged) {
+      list.push({ labelKey: 'actions.configure', icon: 'settings', run: () => this.configureChargePoint() });
+    }
+    if (this.accountService.isAdmin) {
+      list.push({ labelKey: 'actions.edit', icon: 'edit', run: () => this.editChargePoint() });
+    }
+    if (privileged) {
+      list.push({ labelKey: 'actions.view', icon: 'visibility', run: () => this.infoChargePoint() });
+    }
+    return list;
+  }
+
+  /** True when clicking the card itself performs its one and only action. */
+  isSingleAction(): boolean {
+    return this.actions().length === 1;
+  }
+
+  onCardClick(): void {
+    const actions = this.actions();
+    if (actions.length === 1) {
+      actions[0].run();
+    }
+  }
+
+  onCardKeydown(event: Event): void {
+    if (!this.isSingleAction()) {
+      return;
+    }
+    event.preventDefault();
+    this.onCardClick();
   }
 
   configureChargePoint() {

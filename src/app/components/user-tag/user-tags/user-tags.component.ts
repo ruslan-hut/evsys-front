@@ -16,11 +16,12 @@ import {MatInput} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatIconButton, MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatChip} from '@angular/material/chips';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {RowAction, RowActionsComponent} from '../../ui/row-actions/row-actions.component';
 
 @Component({
   selector: 'app-user-tags',
@@ -45,7 +46,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
     MatSortHeader,
     MatCellDef,
     MatCell,
-    RouterLink,
+    RowActionsComponent,
     MatHeaderRowDef,
     MatHeaderRow,
     MatRowDef,
@@ -63,6 +64,7 @@ export class UserTagsComponent implements OnInit {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly errorService = inject(ErrorService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
 
@@ -138,6 +140,15 @@ export class UserTagsComponent implements OnInit {
       return `${ymd[2]}-${ymd[1]}-${ymd[0]}`;
     }
     return dateStr;
+  }
+
+  /** Three actions per tag, so they live behind an overflow menu. */
+  actionsFor(row: UserTag): RowAction[] {
+    return [
+      { labelKey: 'actions.edit', icon: 'edit', run: () => this.router.navigate(['/user-tags/edit', row.id_tag]) },
+      { labelKey: 'actions.transactions', icon: 'receipt_long', run: () => this.router.navigate(['/transactions'], { queryParams: { id_tag: row.id_tag } }) },
+      { labelKey: 'actions.delete', icon: 'delete', warn: true, run: () => this.deleteTag(row.id_tag) }
+    ];
   }
 
   deleteTag(idTag: string): void {

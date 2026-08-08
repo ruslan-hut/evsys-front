@@ -52,15 +52,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>{{ 'paymentRetries.headers.actions' | translate }}</th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="viewTransaction(row.transaction_id)"
-                  [matTooltip]="'paymentRetries.viewTransaction' | translate">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button (click)="forceRetry(row)"
-                  [disabled]="forcingId === row.transaction_id"
-                  [matTooltip]="'paymentRetries.forceRetry' | translate">
-            <mat-icon>play_arrow</mat-icon>
-          </button>
+          <app-row-actions [actions]="actionsFor(row)" [forLabel]="'' + row.transaction_id" />
         </td>
       </ng-container>
 
