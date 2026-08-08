@@ -1,139 +1,179 @@
-.connector-content {
-  padding: 0;
-  margin-left: var(--spacing-md);
+/* ===========================================
+   Connector slot
+
+   One fixed-width slot per connector. Status is carried by the top bar and the
+   status word, not by a background wash — a card with six connectors should
+   read as one calm object, and only the bars should differ down a long list.
+   Each status class sets --slot-accent; everything else derives from it.
+   =========================================== */
+:host {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.slot {
+  position: relative;
   display: flex;
-  align-items: flex-start;
-}
-
-.connector-title {
-  font-size: var(--text-base);
-  max-lines: 1;
-}
-
-.status-indicator {
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-circle);
-}
-
-.data {
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.custom-button {
-  display: flex;
-  align-items: center;
-  border: 2px solid;
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-family: inherit;
-  font-size: var(--text-base);
-  color: var(--color-text-primary);
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 152px;
+  height: 88px;
+  padding: var(--spacing-md) var(--spacing-sm) var(--spacing-sm);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
   background-color: var(--color-surface);
-  width: 100%;
-  max-width: 250px;
-  height: 80px;
-  z-index: 0;
-  box-sizing: border-box;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  scroll-snap-align: start;
   transition:
-    background-color var(--duration-base) var(--ease-standard),
     border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);
 }
 
-.custom-button:not(:disabled):hover {
+.slot:not(:disabled):hover {
+  border-color: var(--slot-accent);
+  box-shadow: var(--elevation-2);
   transform: translateY(-1px);
 }
 
-.custom-button:not(:disabled):active {
+.slot:not(:disabled):active {
   transform: translateY(1px);
   transition-duration: var(--duration-instant);
 }
 
-.status-item {
-  transition: color var(--duration-base) var(--ease-standard);
+.slot:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
-/* Connector status styles */
-.connector-available {
-  border-color: var(--color-connector-available);
-  background-color: var(--color-connector-available-bg);
+/* The status carrier. Sits flush along the top edge of the slot. */
+.slot-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--slot-accent);
+  transition: background-color var(--duration-base) var(--ease-standard);
 }
 
-.connector-occupied {
-  border-color: var(--color-connector-occupied);
-  background-color: var(--color-connector-occupied-bg);
-}
-
-.connector-charging {
-  border-color: var(--color-connector-charging);
-  background-color: var(--color-connector-charging-bg);
-}
-
-.connector-error {
-  border-color: var(--color-connector-error);
-  background-color: var(--color-connector-error-bg);
-}
-
-.button-content {
+.slot-body {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
   align-items: center;
   gap: var(--spacing-sm);
-}
-
-.connector-number {
-  font-size: var(--text-3xl);
-  font-weight: bold;
-  margin-right: var(--spacing-sm);
-  flex-shrink: 0;
-}
-
-.connector-info {
-  display: flex;
-  flex-direction: column;
   min-width: 0;
 }
 
-.info-item {
+.slot-number {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum", "zero";
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.slot-readings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-05);
+  min-width: 0;
+}
+
+.slot-reading {
   display: flex;
   align-items: center;
-  margin-bottom: var(--spacing-xs);
+  gap: var(--spacing-xs);
+  min-width: 0;
 }
 
-.info-item:last-child {
-  margin-bottom: 0;
-}
-
-.icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 5px;
+.slot-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
   flex-shrink: 0;
+  opacity: 0.7;
 }
 
-/* Dynamic status styles */
-[data-available='true'] {
-  color: var(--color-online);
+.slot-type {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-[data-available='false'] {
-  color: var(--color-error);
+/* Tabular figures so readings line up vertically down the rail */
+.slot-power {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum", "zero";
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
 }
 
-.fix-width {
-  width: 160px;
-  flex-shrink: 0;
+.slot-status {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slot-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
-.button-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
+/* ---------- Status accents ---------- */
+.connector-available { --slot-accent: var(--color-connector-available); }
+.connector-occupied  { --slot-accent: var(--color-connector-occupied); }
+.connector-charging  { --slot-accent: var(--color-connector-charging); }
+.connector-error     { --slot-accent: var(--color-connector-error); }
+
+/* ---------- Charging ----------
+   The only animated state in the app. A session is genuinely in progress, so
+   the bar shows energy moving rather than decorating a static value. */
+.slot.charging .slot-bar {
+  background: linear-gradient(
+    90deg,
+    var(--slot-accent) 0%,
+    var(--slot-accent) 40%,
+    var(--color-surface) 50%,
+    var(--slot-accent) 60%,
+    var(--slot-accent) 100%
+  );
+  background-size: 220% 100%;
+  animation: connector-flow 2.2s linear infinite;
 }
 
+.slot.charging {
+  border-color: color-mix(in srgb, var(--slot-accent) 35%, var(--color-border-light));
+}
+
+@keyframes connector-flow {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot.charging .slot-bar {
+    background: var(--slot-accent);
+    animation: none;
+  }
+}
+
+@media (max-width: 599px) {
+  .slot {
+    width: 140px;
+    height: 84px;
+  }
+
+  .slot-number {
+    font-size: var(--text-2xl);
+  }
+}

@@ -1,20 +1,16 @@
 import { Component, ChangeDetectionStrategy, inject, input } from "@angular/core"
 import {Connector} from "../../models/connector";
-import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
-import { MatCardContent } from "@angular/material/card";
-import { MatButton } from "@angular/material/button";
-import { TitleCasePipe } from "@angular/common";
+import { DecimalPipe, TitleCasePipe } from "@angular/common";
 
 @Component({
     selector: 'app-connector',
     templateUrl: './connector.component.html',
     styleUrls: ['./connector.component.css'],
-    imports: [MatCardContent, MatButton, TitleCasePipe],
+    imports: [DecimalPipe, TitleCasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConnectorComponent {
-  readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
 
   readonly connector = input.required<Connector>();
@@ -32,17 +28,9 @@ export class ConnectorComponent {
     }
   }
 
-  getConnectorStatusColor(): string {
-    const connector = this.connector();
-    if (connector.state === "available") {
-      return "var(--color-connector-available)";
-    } else if (connector.state === "occupied") {
-      return "var(--color-connector-occupied)";
-    } else if (connector.current_transaction_id > -1) {
-      return "var(--color-connector-charging)";
-    } else {
-      return "var(--color-connector-error)";
-    }
+  /** A session is running here, so the slot animates to show energy moving. */
+  isCharging(): boolean {
+    return this.connector().current_transaction_id > -1;
   }
 
   isDisabled() {
@@ -58,6 +46,27 @@ export class ConnectorComponent {
     }
   }
 
+  /** The slot shows abbreviated values, so the label carries the full reading. */
+  ariaLabel(): string {
+    const connector = this.connector();
+    const parts = [
+      `Connector ${this.getConnectorName()}`,
+      connector.type,
+      `${connector.power} kW`,
+      `status ${connector.status}`
+    ];
+    if (connector.current_power_limit > 0) {
+      parts.push(`limited to ${connector.current_power_limit} kW`);
+    }
+    return parts.join(', ');
+  }
+
+  /**
+   * The ev_plug_type1/type2 asset names are swapped relative to their contents:
+   * ev_plug_type1.svg draws the Type 2 socket. The mapping below is correct as
+   * written and renders the right graphic — do not "fix" it to match the file
+   * names without re-drawing the assets.
+   */
   getConnectorTypeIcon(): string {
    switch (this.connector().type) {
       case "Type 2":
@@ -76,24 +85,8 @@ export class ConnectorComponent {
   }
 
   openInfo() {
-
-    // const dialogRef = this.dialog.open(ConnectorInfoComponent, {
-    //   data: this.connector,
-    // });
-
     this.router.navigate(['new-transactions'], {
       queryParams: { charge_point_id: this.connector().charge_point_id, connector_id: this.connector().connector_id }
     }).then(_ => {});
-
   }
-
-  // transactionInfo() {
-  //   // const dialogRef = this.dialog.open(TransactionInfoComponent, {
-  //   //   width: '350px',
-  //   //   data: this.connector.current_transaction_id,
-  //   // });
-  //   this.router.navigate(['new-transactions'], {
-  //     queryParams: { charge_point_id: this.connector.charge_point_id, connector_id: this.connector.connector_id }
-  //   });
-  // }
 }

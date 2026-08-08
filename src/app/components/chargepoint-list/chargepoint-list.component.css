@@ -78,14 +78,15 @@
 
 .cp-skeleton-connectors {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   flex-shrink: 0;
 }
 
+/* Matches the connector slot's geometry so the rail doesn't resize on load */
 .cp-skeleton-connectors .skeleton-block {
-  width: 160px;
-  height: 80px;
-  border-radius: var(--radius-lg);
+  width: 152px;
+  height: 88px;
+  border-radius: var(--radius-md);
 }
 
 @media (max-width: 899px) {
@@ -94,7 +95,8 @@
   }
 
   .cp-skeleton-connectors .skeleton-block {
-    width: 110px;
+    width: 140px;
+    height: 84px;
   }
 }
 

@@ -1,35 +1,26 @@
-<mat-card-content class="connector-content">
-  <button mat-flat-button
-          class="custom-button fix-width"
-          [class]="getConnectorStatusClass()"
-          (click)="openInfo()"
-          [disabled]="isDisabled()"
-          [attr.aria-label]="'Connector ' + getConnectorName() + ', ' + connector().type + ', ' + connector().power + ' kW, status: ' + connector().status">
-    <div class="button-content">
-      <div class="connector-number" aria-hidden="true">
-        {{getConnectorName()}}
-      </div>
-      <div class="connector-info" aria-hidden="true">
-        <div class="info-item">
-          <img src="{{getConnectorTypeIcon()}}" alt="" class="icon"/>
-          <span class="info-text">{{ this.connector().type }}</span>
-        </div>
-        <div class="info-item">
-          <img src="assets/icons/bolt.svg" alt="" class="icon"/>
-          <span class="info-text">{{ this.connector().power }} kW</span>
-        </div>
-        <div class="info-item status-item" [style.color]="getConnectorStatusColor()">
-          {{ this.connector().status | titlecase }}
-        </div>
-      </div>
-    </div>
-  </button>
-<!--  <ng-template #noTransaction>-->
-<!--  <button mat-flat-button class="data custom-button fix-width" *ngIf="connector.current_transaction_id>=0"-->
-<!--          (click)="transactionInfo()">{{getConnectorName()}}: {{connector.state | titlecase}}</button>-->
-<!--  </ng-template>-->
-</mat-card-content>
+<button type="button"
+        class="slot"
+        [class]="getConnectorStatusClass()"
+        [class.charging]="isCharging()"
+        (click)="openInfo()"
+        [disabled]="isDisabled()"
+        [attr.aria-label]="ariaLabel()">
+  <span class="slot-bar" aria-hidden="true"></span>
 
+  <span class="slot-body" aria-hidden="true">
+    <span class="slot-number">{{ getConnectorName() }}</span>
 
+    <span class="slot-readings">
+      <span class="slot-reading">
+        <img [src]="getConnectorTypeIcon()" alt="" class="slot-icon" />
+        <span class="slot-type">{{ connector().type }}</span>
+      </span>
+      <span class="slot-reading">
+        <img src="assets/icons/bolt.svg" alt="" class="slot-icon" />
+        <span class="slot-power">{{ connector().power | number:'1.0-1' }} kW</span>
+      </span>
+    </span>
+  </span>
 
-
+  <span class="slot-status" aria-hidden="true">{{ connector().status | titlecase }}</span>
+</button>

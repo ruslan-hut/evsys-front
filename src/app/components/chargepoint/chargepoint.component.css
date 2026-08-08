@@ -114,35 +114,21 @@ mat-card-title {
   width: 12px;
 }
 
-.connector-container {
+/* The connector rail. Fixed-width slots in a single row that scrolls with snap
+   points when a charge point has more connectors than fit. Standard
+   scrollbar-* properties rather than ::-webkit rules, so it follows the theme
+   through color-scheme. */
+.connector-rail {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
   margin-bottom: var(--spacing-sm);
-  gap: var(--spacing-xs);
-}
-
-/* Scrollbar styling */
-.connector-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.connector-container::-webkit-scrollbar-track {
-  background: var(--color-border-light);
-  border-radius: var(--radius-xs);
-}
-
-.connector-container::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: var(--radius-xs);
-}
-
-.connector-container::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
-}
-
-app-connector {
-  margin: var(--spacing-xs) 0 0 0;
+  padding-bottom: var(--spacing-xs);
+  gap: var(--spacing-sm);
 }
 
 /* Desktop horizontal layout */
@@ -180,7 +166,7 @@ app-connector {
     margin-bottom: 0;
   }
 
-  .connector-container {
+  .connector-rail {
     grid-column: 2;
     grid-row: 1 / 3;
     margin-bottom: 0;
@@ -206,7 +192,7 @@ app-connector {
     padding-right: var(--spacing-md);
   }
 
-  .connector-container {
+  .connector-rail {
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
   }

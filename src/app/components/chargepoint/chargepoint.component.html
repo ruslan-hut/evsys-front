@@ -25,9 +25,11 @@
       <span class="update-text">{{ timeService.getTimeDifference(chargepoint().event_time) }}</span>
     </div>
   </mat-card-content>
-  <div class="connector-container">
-    @for (connector of chargepoint().connectors| sortConnectors; track connector) {
-      <app-connector [connector]="connector" />
+  <div class="connector-rail" role="list" [attr.aria-label]="'Connectors on ' + chargepoint().title">
+    @for (connector of chargepoint().connectors | sortConnectors; track connector.connector_id) {
+      <div role="listitem">
+        <app-connector [connector]="connector" />
+      </div>
     }
   </div>
   <mat-card-actions align="end" class="tool-panel">

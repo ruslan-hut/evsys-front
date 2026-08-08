@@ -340,6 +340,30 @@ Use `.filter-clear-btn` on the `matSuffix` clear button for a muted appearance.
 - Destructive confirmations: explicit warning text, red confirm button
 - Cancel left, confirm right
 
+### Connector rail
+
+The rail is the app's signature element and the densest thing on screen, so it
+has its own rules.
+
+A charge point's connectors render as fixed-width slots in a single row
+(`.connector-rail` on the card, `app-connector` per slot). It scrolls
+horizontally with snap points when there are more connectors than fit.
+
+- **Status is carried by the top bar and the status word, never by a background
+  wash.** A card with six connectors must read as one calm object; down a list
+  of forty charge points, only the bars should differ. This is why the slot
+  keeps a plain surface background.
+- Each status class sets `--slot-accent` and everything else derives from it.
+  Adding a status means adding one class with one custom property.
+- Readings are monospace with `tnum`/`zero` so numbers line up down the rail.
+- Slots are a fixed size, and the list's skeleton block matches that geometry
+  so nothing resizes when data lands.
+- **Charging is the only animated state in the app.** A session is genuinely in
+  progress, so the bar shows energy moving. Every other state is still. Don't
+  add a second animated state without a comparably good reason.
+- Use standard `scrollbar-width` / `scrollbar-color` rather than `::-webkit-`
+  rules — they follow the theme through `color-scheme`.
+
 ### Badges
 
 ```css
@@ -570,8 +594,9 @@ don't add more.
 3. **Colour without meaning** — colour signals state, nothing else
 4. **Ad-hoc status colours** — use the connector/status tokens
 5. **Inconsistent button styles**
-6. **Custom scrollbars** — except a thin scrollbar on a deliberately
-   horizontally-scrolling strip (see `.connector-container`)
+6. **Custom scrollbars** — except a thin standard-property scrollbar on a
+   deliberately horizontally-scrolling strip (see `.connector-rail`). Never
+   `::-webkit-scrollbar`.
 7. **Animation for its own sake** — motion should signal that something changed
 8. **All-caps or italics for body text** — uppercase is for badges only
 
