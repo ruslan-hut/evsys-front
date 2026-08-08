@@ -21,8 +21,7 @@ const PUBLIC_ROUTES = [
   '/account/register',
   '/privacy',
   '/terms',
-  '/company-info',
-  '/bank'
+  '/company-info'
 ];
 
 @Component({

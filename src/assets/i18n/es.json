@@ -820,9 +820,6 @@
     "type": "Tipo:",
     "kw": "kW:"
   },
-  "bankService": {
-    "showValues": "Mostrar valores"
-  },
   "groups": {
     "client": "Cliente",
     "office": "Oficina"

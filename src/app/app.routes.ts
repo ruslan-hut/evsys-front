@@ -68,10 +68,6 @@ export const routes: Routes = [
     loadComponent: () => import('./components/chargepoint-list/chargepoint-list.component').then(m => m.ChargepointListComponent)
   },
   {
-    path: 'bank',
-    loadComponent: () => import('./components/pages/bank-service/bank-service.component').then(m => m.BankServiceComponent)
-  },
-  {
     path: 'privacy/:lang',
     loadComponent: () => import('./components/pages/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent)
   },
