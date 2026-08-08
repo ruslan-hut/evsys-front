@@ -43,6 +43,8 @@
 }
 
 /* ---------- Brand ---------- */
+/* A real <button>: it navigates, so it must be keyboard reachable. Reset the
+   native chrome rather than restyling an <a> that has no href. */
 .hdr-brand {
   display: inline-flex;
   align-items: center;
@@ -50,9 +52,20 @@
   cursor: pointer;
   user-select: none;
   margin-right: var(--spacing-lg);
+  padding: var(--spacing-xs);
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
   text-decoration: none;
   color: var(--color-header-text);
   letter-spacing: -0.01em;
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.hdr-brand:hover {
+  background-color: rgba(148, 163, 184, 0.08);
 }
 
 .hdr-brand-mark {

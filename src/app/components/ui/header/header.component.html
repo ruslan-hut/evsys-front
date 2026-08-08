@@ -83,10 +83,10 @@
         </button>
       }
 
-      <a class="hdr-brand" (click)="navigateTo('/points')">
+      <button type="button" class="hdr-brand" (click)="navigateTo('/points')">
         <span class="hdr-brand-mark"></span>
         <span class="hdr-brand-text">{{title}}</span>
-      </a>
+      </button>
       <span class="bar-spacer"></span>
 
       @if (menuEnabled && username) {
@@ -102,11 +102,11 @@
         </button>
       }
 
-      <a class="hdr-brand" (click)="navigateTo('/points')">
+      <button type="button" class="hdr-brand" (click)="navigateTo('/points')">
         <span class="hdr-brand-mark"></span>
         <span class="hdr-brand-text">{{title}}</span>
         <span class="hdr-brand-tag">CONSOLE</span>
-      </a>
+      </button>
 
       @if (menuEnabled && username) {
         <nav class="desktop-menu" aria-label="Primary">
