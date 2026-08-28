@@ -22,6 +22,7 @@ export const environment = {
   statusReport: '/status',
   exportReport: '/export',
   powerReport: '/power',
+  concurrencyReport: '/concurrency',
   mailSubscriptions: '/mail/subscriptions',
   paymentRetries: '/payment/retries',
   webhooks: '/webhooks',

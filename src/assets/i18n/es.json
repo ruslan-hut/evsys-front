@@ -463,7 +463,8 @@
       "stationStatus": "Estado de estaciones",
       "uptime": "Informe de disponibilidad",
       "power": "Análisis de potencia",
-      "smartCharging": "Carga inteligente"
+      "smartCharging": "Carga inteligente",
+      "siteConcurrency": "Carga del sitio"
     },
     "stationStatus": {
       "online": "En línea",
@@ -994,5 +995,40 @@
     "forceRetry": "Reintentar ahora",
     "configure": "Configurar",
     "viewTransaction": "Ver transacción"
+  },
+  "siteConcurrency": {
+    "dateRange": "Rango de fechas",
+    "start": "Fecha inicial",
+    "end": "Fecha final",
+    "dateHint": "Sesiones que se solapan con este rango",
+    "selectRange": "Elegir un rango predefinido",
+    "location": "Ubicación",
+    "allLocations": "Todas las ubicaciones",
+    "wholeTimeline": "Línea completa",
+    "wholeTimelineHint": "Listar todos los tramos, no solo aquellos con sesiones solapadas. Las cifras de arriba no cambian.",
+    "loadData": "Cargar",
+    "empty": "Ninguna sesión de recarga en ninguna ubicación en este rango.",
+    "sessions": "sesiones",
+    "maxSessions": "Máximo a la vez",
+    "atOnce": "sesiones cargando a la vez",
+    "overlap": "Solapamiento",
+    "ofWindow": "del rango",
+    "peakAssigned": "Máximo asignado",
+    "peakAssignedHint": "El total más alto que permitió el balanceador de carga: la suma de los límites asignados. Lo que el sitio tenía permitido consumir, no lo que consumió.",
+    "peakPower": "Máximo medido",
+    "peakPowerHint": "La carga más alta que el sitio llegó a suministrar, según los valores de contador que reportaron los cargadores, con resolución de un minuto.",
+    "drawing": "consumiendo",
+    "noPowerReported": "sin potencia reportada en este rango",
+    "levels": "Tiempo en cada número de sesiones simultáneas",
+    "idle": "inactivo",
+    "segments": "tramos",
+    "truncated": "lista truncada",
+    "colFrom": "Desde",
+    "colTo": "Hasta",
+    "colDuration": "Duración",
+    "colSessions": "Sesiones",
+    "colAssigned": "Asignado",
+    "colComposition": "Sesiones cargando",
+    "noLimit": "sin límite"
   }
 }

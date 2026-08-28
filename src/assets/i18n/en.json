@@ -463,7 +463,8 @@
       "stationStatus": "Station Status",
       "uptime": "Uptime Report",
       "power": "Power Analysis",
-      "smartCharging": "Smart Charging"
+      "smartCharging": "Smart Charging",
+      "siteConcurrency": "Site Load"
     },
     "stationStatus": {
       "online": "Online",
@@ -994,5 +995,40 @@
     "forceRetry": "Retry now",
     "configure": "Configure",
     "viewTransaction": "View transaction"
+  },
+  "siteConcurrency": {
+    "dateRange": "Date range",
+    "start": "Start date",
+    "end": "End date",
+    "dateHint": "Sessions overlapping this range",
+    "selectRange": "Select a preset range",
+    "location": "Location",
+    "allLocations": "All locations",
+    "wholeTimeline": "Whole timeline",
+    "wholeTimelineHint": "List every stretch, not only the ones where sessions overlapped. The figures above do not change.",
+    "loadData": "Load",
+    "empty": "No charging sessions at any location in this range.",
+    "sessions": "sessions",
+    "maxSessions": "Most at once",
+    "atOnce": "sessions charging together",
+    "overlap": "Overlapping",
+    "ofWindow": "of the range",
+    "peakAssigned": "Peak assigned",
+    "peakAssignedHint": "The highest total the load balancer permitted: the assigned limits added up. What the site was allowed to draw, not what it drew.",
+    "peakPower": "Peak measured",
+    "peakPowerHint": "The highest load the site actually supplied, from the meter values the chargers reported, resolved to the minute.",
+    "drawing": "drawing",
+    "noPowerReported": "no power reported in this range",
+    "levels": "Time at each number of concurrent sessions",
+    "idle": "idle",
+    "segments": "segments",
+    "truncated": "list truncated",
+    "colFrom": "From",
+    "colTo": "To",
+    "colDuration": "Duration",
+    "colSessions": "Sessions",
+    "colAssigned": "Assigned",
+    "colComposition": "Sessions charging",
+    "noLimit": "no limit"
   }
 }

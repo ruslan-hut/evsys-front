@@ -1,0 +1,206 @@
+<mat-card>
+  <mat-card-content>
+
+    <div class="toolbar">
+      <mat-form-field appearance="outline" class="date-range-field">
+        <mat-label>{{ 'siteConcurrency.dateRange' | translate }}</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate [(ngModel)]="startDate" [placeholder]="'siteConcurrency.start' | translate" />
+          <input matEndDate [(ngModel)]="endDate" [placeholder]="'siteConcurrency.end' | translate" />
+        </mat-date-range-input>
+        <mat-hint>{{ 'siteConcurrency.dateHint' | translate }}</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker" />
+        <button mat-icon-button matSuffix [matMenuTriggerFor]="rangeMenu"
+                [attr.aria-label]="'siteConcurrency.selectRange' | translate">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+        <mat-menu #rangeMenu="matMenu">
+          @for (range of predefinedRanges; track range.label) {
+            <button mat-menu-item (click)="setRange(range.range)">{{ range.label | translate }}</button>
+          }
+        </mat-menu>
+        <mat-date-range-picker #picker />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="location-filter">
+        <mat-label>{{ 'siteConcurrency.location' | translate }}</mat-label>
+        <mat-select [(ngModel)]="selectedLocation">
+          <mat-option [value]="allLocations">{{ 'siteConcurrency.allLocations' | translate }}</mat-option>
+          @for (loc of locations; track loc.id) {
+            <mat-option [value]="loc.id">{{ loc.name || loc.id }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-slide-toggle [(ngModel)]="wholeTimeline"
+                        [matTooltip]="'siteConcurrency.wholeTimelineHint' | translate">
+        {{ 'siteConcurrency.wholeTimeline' | translate }}
+      </mat-slide-toggle>
+
+      <button mat-raised-button color="primary" (click)="loadData()" [disabled]="loading">
+        <mat-icon>refresh</mat-icon>
+        {{ 'siteConcurrency.loadData' | translate }}
+      </button>
+    </div>
+
+    @if (loading) {
+      <mat-progress-bar mode="indeterminate" color="primary" />
+    }
+
+    @if (rows.length === 0 && !loading) {
+      <p class="muted empty">{{ 'siteConcurrency.empty' | translate }}</p>
+    }
+
+    @for (row of rows; track row.site.location_id) {
+      <div class="site">
+
+        <div class="site-header">
+          <mat-icon>ev_station</mat-icon>
+          <span class="site-name">{{ siteName(row.site) }}</span>
+          <span class="site-meta">
+            {{ row.site.sessions }} {{ 'siteConcurrency.sessions' | translate }}
+          </span>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-key">{{ 'siteConcurrency.maxSessions' | translate }}</span>
+            <span class="stat-value">{{ row.site.max_sessions }}</span>
+            <span class="stat-note">{{ 'siteConcurrency.atOnce' | translate }}</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-key">{{ 'siteConcurrency.overlap' | translate }}</span>
+            <span class="stat-value">{{ formatDuration(row.site.overlap_seconds) }}</span>
+            <span class="stat-note">{{ row.overlapPercent | number:'1.0-1' }}% {{ 'siteConcurrency.ofWindow' | translate }}</span>
+          </div>
+
+          <div class="stat stat-assigned">
+            <span class="stat-key">
+              {{ 'siteConcurrency.peakAssigned' | translate }}
+              <mat-icon class="hint-icon" [matTooltip]="'siteConcurrency.peakAssignedHint' | translate">info_outline</mat-icon>
+            </span>
+            <span class="stat-value">
+              @if (hasLimit(row.site.peak_assigned_amps)) {
+                {{ row.site.peak_assigned_amps }} A
+              } @else {
+                <span class="muted">&mdash;</span>
+              }
+            </span>
+            <span class="stat-note">
+              @if (row.site.peak_assigned_at) {
+                {{ row.site.peak_assigned_at | date:'d MMM HH:mm' }}
+              }
+            </span>
+          </div>
+
+          <div class="stat stat-measured">
+            <span class="stat-key">
+              {{ 'siteConcurrency.peakPower' | translate }}
+              <mat-icon class="hint-icon" [matTooltip]="'siteConcurrency.peakPowerHint' | translate">info_outline</mat-icon>
+            </span>
+            <span class="stat-value">
+              @if (row.site.peak_power_watts > 0) {
+                {{ formatPower(row.site.peak_power_watts) }}
+              } @else {
+                <span class="muted">&mdash;</span>
+              }
+            </span>
+            <span class="stat-note">
+              @if (row.site.peak_power_watts > 0) {
+                {{ row.site.peak_power_at | date:'d MMM HH:mm' }}
+                &middot; {{ row.site.peak_power_sessions }} {{ 'siteConcurrency.drawing' | translate }}
+              } @else {
+                <span class="muted">{{ 'siteConcurrency.noPowerReported' | translate }}</span>
+              }
+            </span>
+          </div>
+        </div>
+
+        @if (row.bars.length > 0) {
+          <div class="levels">
+            <div class="levels-bar" [attr.aria-label]="'siteConcurrency.levels' | translate">
+              @for (bar of row.bars; track bar.sessions) {
+                <div class="levels-slice"
+                     [class]="levelClass(bar.sessions)"
+                     [style.width.%]="bar.percent"
+                     [matTooltip]="bar.sessions + ' · ' + formatDuration(bar.seconds)"></div>
+              }
+            </div>
+            <div class="levels-legend">
+              @for (bar of row.bars; track bar.sessions) {
+                <span class="legend-item">
+                  <span class="legend-swatch" [class]="levelClass(bar.sessions)"></span>
+                  @if (bar.sessions === 0) {
+                    {{ 'siteConcurrency.idle' | translate }}
+                  } @else {
+                    {{ bar.sessions }}
+                  }
+                  <span class="muted">{{ formatDuration(bar.seconds) }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
+
+        @if (row.site.segments.length > 0) {
+          <mat-expansion-panel class="segments-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ row.site.segments.length }} {{ 'siteConcurrency.segments' | translate }}
+                @if (row.site.truncated) {
+                  <span class="truncated">{{ 'siteConcurrency.truncated' | translate }}</span>
+                }
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="segments-scroll">
+              <table class="segments">
+                <thead>
+                <tr>
+                  <th>{{ 'siteConcurrency.colFrom' | translate }}</th>
+                  <th>{{ 'siteConcurrency.colTo' | translate }}</th>
+                  <th class="num">{{ 'siteConcurrency.colDuration' | translate }}</th>
+                  <th class="num">{{ 'siteConcurrency.colSessions' | translate }}</th>
+                  <th class="num">{{ 'siteConcurrency.colAssigned' | translate }}</th>
+                  <th>{{ 'siteConcurrency.colComposition' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (segment of row.site.segments; track segment.from) {
+                    <tr>
+                      <td class="mono">{{ segment.from | date:'d MMM HH:mm' }}</td>
+                      <td class="mono">{{ segment.to | date:'HH:mm' }}</td>
+                      <td class="num mono">{{ formatDuration(segment.seconds) }}</td>
+                      <td class="num mono">{{ segment.sessions }}</td>
+                      <td class="num mono">
+                        @if (hasLimit(segment.assigned_amps)) {
+                          {{ segment.assigned_amps }} A
+                        } @else {
+                          <span class="muted">&mdash;</span>
+                        }
+                      </td>
+                      <td class="composition">
+                        @for (s of segment.detail; track s.transaction_id) {
+                          <span class="chip">
+                            #{{ s.transaction_id }} {{ s.charge_point_id }}/{{ s.connector_id }}
+                            @if (hasLimit(s.power_limit)) {
+                              <span class="chip-amps">{{ s.power_limit }} A</span>
+                            } @else {
+                              <span class="chip-amps muted">{{ 'siteConcurrency.noLimit' | translate }}</span>
+                            }
+                          </span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        }
+      </div>
+    }
+
+  </mat-card-content>
+</mat-card>

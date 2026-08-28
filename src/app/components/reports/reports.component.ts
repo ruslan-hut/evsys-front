@@ -8,9 +8,10 @@ import { StationStatusComponent } from './station-status/station-status.componen
 import { StationUptimeComponent } from './station-uptime/station-uptime.component';
 import { PowerAnalysisComponent } from './power-analysis/power-analysis.component';
 import { SmartChargingComponent } from './smart-charging/smart-charging.component';
+import { SiteConcurrencyComponent } from './site-concurrency/site-concurrency.component';
 
 /** Query-param values for each tab, in tab order. */
-const TAB_KEYS = ['status', 'uptime', 'power', 'smart'] as const;
+const TAB_KEYS = ['status', 'uptime', 'power', 'smart', 'concurrency'] as const;
 
 type TabKey = typeof TAB_KEYS[number];
 
@@ -27,6 +28,7 @@ type TabKey = typeof TAB_KEYS[number];
     StationUptimeComponent,
     PowerAnalysisComponent,
     SmartChargingComponent,
+    SiteConcurrencyComponent,
     TranslatePipe
   ]
 })

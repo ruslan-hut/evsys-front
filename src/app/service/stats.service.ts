@@ -10,6 +10,7 @@ import {StationUptime} from "../models/station-uptime";
 import {StationStatus} from "../models/station-status";
 import {ExportData} from "../models/export-data";
 import {PowerGroupBy, PowerStats} from "../models/power-stats";
+import {SiteConcurrency} from "../models/site-concurrency";
 
 @Injectable({
   providedIn: 'root'
@@ -127,6 +128,32 @@ export class StatsService {
       );
   }
 
+  /**
+   * Site concurrency: when sessions overlapped at a location, the amperage the
+   * load balancer assigned them, and the peak the site actually supplied.
+   *
+   * `minSessions` selects which segments are listed, not what is measured - the
+   * summary figures cover every segment regardless. It defaults to 2 on the
+   * server, which lists overlaps only; pass 1 for the whole timeline.
+   */
+  getConcurrencyReport(from: Date, to: Date, locationId?: string, minSessions?: number): Observable<SiteConcurrency[]> {
+    let params = new HttpParams()
+      .set('from', this.formatDateRFC3339StartOfDay(from))
+      .set('to', this.formatDateRFC3339EndOfDay(to));
+
+    if (locationId) {
+      params = params.set('location_id', locationId);
+    }
+    if (minSessions) {
+      params = params.set('min_sessions', minSessions);
+    }
+
+    return this.http.get<SiteConcurrency[]>(environment.apiUrl + environment.report + environment.concurrencyReport, { params })
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      );
+  }
+
   getStatusReport(chargePointId?: string): Observable<StationStatus[]> {
     let params = new HttpParams();
 
@@ -157,6 +184,19 @@ export class StatsService {
 
   private formatDateRFC3339(date: Date): string {
     return date.toISOString();
+  }
+
+  /**
+   * The range pickers hand back dates carrying the current time of day, so a
+   * range shown as "22 Aug - 28 Aug" would otherwise start at 22 Aug 18:40 and
+   * silently drop that morning's sessions. The end is already widened to the
+   * end of its day; this widens the start to match, so a displayed date range
+   * means the whole of those days.
+   */
+  private formatDateRFC3339StartOfDay(date: Date): string {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    return startOfDay.toISOString();
   }
 
   private formatDateRFC3339EndOfDay(date: Date): string {

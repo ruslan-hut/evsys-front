@@ -20,5 +20,10 @@
         <app-smart-charging />
       </ng-template>
     </mat-tab>
+    <mat-tab [label]="'reports.tabs.siteConcurrency' | translate">
+      <ng-template matTabContent>
+        <app-site-concurrency></app-site-concurrency>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </div>
