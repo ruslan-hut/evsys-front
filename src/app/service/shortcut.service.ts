@@ -28,6 +28,7 @@ const COMMANDS: Command[] = [
   { id: 'uptime', labelKey: 'shortcuts.commands.uptime', groupKey: 'shortcuts.groups.monitoring', icon: 'monitor_heart', route: '/reports?tab=uptime', adminOnly: true },
   { id: 'power', labelKey: 'shortcuts.commands.power', groupKey: 'shortcuts.groups.monitoring', icon: 'bolt', route: '/reports?tab=power', adminOnly: true },
   { id: 'smart', labelKey: 'shortcuts.commands.smart', groupKey: 'shortcuts.groups.monitoring', icon: 'ev_station', route: '/reports?tab=smart', adminOnly: true },
+  { id: 'siteLoad', labelKey: 'shortcuts.commands.siteLoad', groupKey: 'shortcuts.groups.monitoring', icon: 'electric_meter', route: '/reports?tab=concurrency', adminOnly: true, keywords: 'concurrency simultaneous peak load site' },
   { id: 'export', labelKey: 'shortcuts.commands.export', groupKey: 'shortcuts.groups.monitoring', icon: 'file_download', route: '/export', adminOnly: true, keywords: 'download csv' },
 
   { id: 'users', labelKey: 'shortcuts.commands.users', groupKey: 'shortcuts.groups.management', icon: 'group', hint: 'g u', route: '/users', adminOnly: true },
