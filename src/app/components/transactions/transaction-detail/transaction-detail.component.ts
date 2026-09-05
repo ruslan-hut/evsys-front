@@ -408,4 +408,17 @@ export class TransactionDetailComponent implements OnInit {
     const sum = powerValues.reduce((acc, val) => acc + val, 0);
     return sum / powerValues.length;
   }
+
+  getPeakPower(): number | null {
+    const meterValues = this.transaction?.meter_values;
+    if (!meterValues?.length) return null;
+
+    const powerValues = meterValues
+      .map(mv => mv.power_rate)
+      .filter(p => p !== undefined && p > 0);
+
+    if (!powerValues.length) return null;
+
+    return Math.max(...powerValues);
+  }
 }
