@@ -246,12 +246,15 @@
               [animations]="false"
               [xAxis]="true"
               [yAxis]="true"
-              [showXAxisLabel]="true"
+              [showXAxisLabel]="false"
               [showYAxisLabel]="false"
-              [xAxisLabel]="'transactionDetail.chartTime' | translate"
+              [xAxisTicks]="xAxisTicks"
               [xAxisTickFormatting]="xAxisTickFormatting"
               [autoScale]="true"
-              [legend]="false" />
+              [roundDomains]="true"
+              [legend]="true"
+              [legendTitle]="''"
+              [legendPosition]="legendPosition" />
           </div>
         }
 
@@ -265,13 +268,16 @@
               [animations]="false"
               [xAxis]="true"
               [yAxis]="true"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              [xAxisLabel]="'transactionDetail.chartTime' | translate"
-              [yAxisLabel]="'transactionDetail.currentAxis' | translate"
+              [showXAxisLabel]="false"
+              [showYAxisLabel]="false"
+              [xAxisTicks]="xAxisTicks"
               [xAxisTickFormatting]="xAxisTickFormatting"
               [autoScale]="true"
-              [legend]="true" />
+              [roundDomains]="true"
+              [yScaleMax]="currentYScaleMax"
+              [legend]="true"
+              [legendTitle]="''"
+              [legendPosition]="legendPosition" />
           </div>
         }
 

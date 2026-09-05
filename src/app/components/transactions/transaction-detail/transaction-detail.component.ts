@@ -11,7 +11,7 @@ import {MatDivider} from '@angular/material/divider';
 import {MatDialog} from '@angular/material/dialog';
 import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material/expansion';
 import {MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow} from '@angular/material/table';
-import {NgxChartsModule, Color, ScaleType} from '@swimlane/ngx-charts';
+import {NgxChartsModule, Color, LegendPosition, ScaleType} from '@swimlane/ngx-charts';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 import {TransactionService} from '../../../service/transaction.service';
@@ -96,6 +96,8 @@ export class TransactionDetailComponent implements OnInit {
   paymentOrderColumns: string[] = ['order', 'amount', 'result', 'time_opened', 'time_closed'];
 
   chartData: ChartSeries[] = [];
+  xAxisTicks: string[] = [];
+  legendPosition = LegendPosition.Below;
   colorScheme: Color = {
     name: 'custom',
     selectable: true,
@@ -107,6 +109,7 @@ export class TransactionDetailComponent implements OnInit {
   // kilowatts do not share an axis. The pair is what tells a session limited by
   // the load balancer apart from one limited by the car or by the hardware.
   currentChartData: ChartSeries[] = [];
+  currentYScaleMax = 0;
   currentColorScheme: Color = {
     name: 'current',
     selectable: true,
@@ -265,6 +268,32 @@ export class TransactionDetailComponent implements OnInit {
       {name: this.translate.instant('transactionDetail.energySeries'), series: energySeries},
       {name: this.translate.instant('transactionDetail.powerSeries'), series: powerSeries}
     ];
+    this.xAxisTicks = this.pickAxisTicks(energySeries);
+  }
+
+  // ngx-charts draws a tick and a grid line for every point unless it is handed
+  // an explicit set, which with per-minute samples turns the plot into a solid
+  // grid and rotates the labels vertically. One point per quarter hour keeps
+  // the labels horizontal.
+  private pickAxisTicks(points: ChartDataPoint[]): string[] {
+    const ticks: string[] = [];
+    const minutesOfDay: number[] = [];
+    let lastBucket = -1;
+    for (const point of points) {
+      const [hours, minutes] = point.name.split('#')[0].split(':').map(Number);
+      const bucket = hours * 4 + Math.floor(minutes / 15);
+      if (bucket !== lastBucket) {
+        ticks.push(point.name);
+        minutesOfDay.push(hours * 60 + minutes);
+        lastBucket = bucket;
+      }
+    }
+    // A session rarely starts on a quarter hour, so the first tick can sit a
+    // couple of minutes from the second one and the two labels collide.
+    if (ticks.length > 1 && minutesOfDay[1] - minutesOfDay[0] < 6) {
+      ticks.shift();
+    }
+    return ticks;
   }
 
   // Only charted when the charge point actually reported current: sessions
@@ -299,6 +328,10 @@ export class TransactionDetailComponent implements OnInit {
     }
 
     this.currentChartData = series;
+    // Without headroom the offered line, which sits at the domain maximum for
+    // the whole session, is drawn on the top edge and reads as a chart border.
+    const peak = Math.max(...series.flatMap(s => s.series.map(p => p.value)));
+    this.currentYScaleMax = Math.ceil((peak * 1.1) / 10) * 10;
   }
 
   formatChartTime(timestamp: string | undefined, index: number): string {
@@ -310,18 +343,9 @@ export class TransactionDetailComponent implements OnInit {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}#${index}`;
   }
 
-  xAxisTickFormatting = (value: string): string => {
-    // Extract time part before the index marker
-    const timePart = value.split('#')[0];
-    if (!timePart) return '';
-
-    const [hours, minutes] = timePart.split(':').map(Number);
-    // Only show label if minutes are at 15-min intervals (0, 15, 30, 45)
-    if (minutes % 15 === 0) {
-      return timePart;
-    }
-    return '';
-  };
+  // Point names carry an index suffix to keep them unique; the axis shows the
+  // time only.
+  xAxisTickFormatting = (value: string): string => value.split('#')[0];
 
   getConsumed(): number {
     if (!this.transaction) return 0;
