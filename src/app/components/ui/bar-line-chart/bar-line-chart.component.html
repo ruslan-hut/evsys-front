@@ -1,0 +1,96 @@
+<ngx-charts-chart [view]="[width, height]"
+                  [showLegend]="legend"
+                  [legendOptions]="legendOptions"
+                  [activeEntries]="activeEntries"
+                  [animations]="animations"
+                  (legendLabelActivate)="onActivate($event, true)"
+                  (legendLabelDeactivate)="onDeactivate($event, true)">
+  <svg:g [attr.transform]="transform" class="bar-chart chart">
+    @if (xAxis) {
+      <svg:g ngx-charts-x-axis
+             [xScale]="xScale"
+             [dims]="dims"
+             [showGridLines]="showGridLines"
+             [showLabel]="showXAxisLabel"
+             [labelText]="xAxisLabel"
+             [trimTicks]="trimXAxisTicks"
+             [rotateTicks]="rotateXAxisTicks"
+             [maxTickLength]="maxXAxisTickLength"
+             [tickFormatting]="xAxisTickFormatting"
+             [ticks]="xAxisTicks"
+             [wrapTicks]="wrapTicks"
+             (dimensionsChanged)="updateXAxisHeight($event)" />
+    }
+    @if (yAxis) {
+      <svg:g ngx-charts-y-axis
+             [yScale]="yScale"
+             [dims]="dims"
+             [showGridLines]="showGridLines"
+             [showLabel]="showYAxisLabel"
+             [labelText]="yAxisLabel"
+             [trimTicks]="trimYAxisTicks"
+             [maxTickLength]="maxYAxisTickLength"
+             [tickFormatting]="yAxisTickFormatting"
+             [ticks]="yAxisTicks"
+             [wrapTicks]="wrapTicks"
+             (dimensionsChanged)="updateYAxisWidth($event)" />
+    }
+
+    <svg:g ngx-charts-series-vertical
+           [xScale]="xScale"
+           [yScale]="yScale"
+           [colors]="colors"
+           [series]="results"
+           [dims]="dims"
+           [gradient]="gradient"
+           [tooltipDisabled]="tooltipDisabled || hasLine"
+           [activeEntries]="activeEntries"
+           [roundEdges]="roundEdges"
+           [animations]="animations"
+           [noBarWhenZero]="noBarWhenZero"
+           (activate)="onActivate($event)"
+           (deactivate)="onDeactivate($event)"
+           (select)="onClick($event)" />
+
+    @if (hasLine) {
+      <svg:path class="wb-comparison-line" [attr.d]="linePath" [attr.stroke]="lineColor" />
+      @for (marker of lineMarkers; track marker.key) {
+        <svg:circle class="wb-comparison-marker"
+                    [attr.cx]="marker.cx"
+                    [attr.cy]="marker.cy"
+                    [attr.r]="3.5"
+                    [attr.fill]="lineColor" />
+      }
+
+      <!-- Sits over the bars, so it replaces their per-bar tooltips with one
+           tooltip carrying both series for the hovered category. -->
+      <svg:g ngx-charts-tooltip-area
+             [dims]="dims"
+             [xSet]="xDomain"
+             [xScale]="centeredXScale"
+             [yScale]="yScale"
+             [results]="tooltipResults"
+             [colors]="seriesColors"
+             [tooltipDisabled]="tooltipDisabled"
+             [tooltipTemplate]="seriesTooltip" />
+    }
+  </svg:g>
+</ngx-charts-chart>
+
+<ng-template #seriesTooltip let-model="model">
+  <div class="wb-chart-tooltip">
+    <div class="wb-chart-tooltip-title">{{ tooltipTitle(model) }}</div>
+    @for (item of model; track item.series) {
+      <div class="wb-chart-tooltip-row">
+        <span class="wb-chart-tooltip-swatch" [style.background-color]="item.color"></span>
+        <span class="wb-chart-tooltip-series">
+          {{ item.series }}
+          @if (item.extra?.label) {
+            <span class="wb-chart-tooltip-note">({{ item.extra.label }})</span>
+          }
+        </span>
+        <span class="wb-chart-tooltip-value">{{ item.value | number:'1.0-1' }} {{ unit }}</span>
+      </div>
+    }
+  </div>
+</ng-template>

@@ -116,3 +116,24 @@ export function getUptimeRanges(): LabeledRange[] {
     { label: 'common.ranges.currentMonth', range: getCurrentMonth() }
   ];
 }
+
+/**
+ * The same calendar day a whole number of years away.
+ *
+ * 29 February has no counterpart in a common year and `setFullYear` would roll
+ * it forward into March, quietly moving the range into the wrong month; it is
+ * pulled back to the last day of February instead.
+ */
+export function shiftYears(date: Date, years: number): Date {
+  const shifted = new Date(date.getTime());
+  shifted.setFullYear(shifted.getFullYear() + years);
+  if (shifted.getMonth() !== date.getMonth()) {
+    shifted.setDate(0);
+  }
+  return shifted;
+}
+
+/** The same range one year earlier, for year-on-year comparisons. */
+export function previousYearRange(range: DateRange): DateRange {
+  return { start: shiftYears(range.start, -1), end: shiftYears(range.end, -1) };
+}

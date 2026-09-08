@@ -143,7 +143,10 @@
       "month": "Mes",
       "kwh": "kWh",
       "user": "Usuario",
-      "charger": "Cargador"
+      "charger": "Cargador",
+      "comparePreviousYear": "Comparar con el año anterior",
+      "currentPeriod": "Periodo actual",
+      "previousYear": "Año anterior"
     },
     "ranges": {
       "today": "Hoy",

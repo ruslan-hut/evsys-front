@@ -143,7 +143,10 @@
       "month": "Month",
       "kwh": "kWh",
       "user": "User",
-      "charger": "Charger"
+      "charger": "Charger",
+      "comparePreviousYear": "Compare with previous year",
+      "currentPeriod": "Current period",
+      "previousYear": "Previous year"
     },
     "ranges": {
       "today": "Today",

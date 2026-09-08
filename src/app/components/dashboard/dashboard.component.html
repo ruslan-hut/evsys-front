@@ -151,14 +151,24 @@
         </mat-card>
 
         <mat-card class="chart-card">
-          <mat-card-header>
+          <mat-card-header class="chart-card-header">
             <mat-card-title>{{ 'dashboard.charts.monthlyComparison' | translate }}</mat-card-title>
+            <mat-slide-toggle class="compare-toggle"
+                              [checked]="comparePreviousYear"
+                              (change)="onComparePreviousYearChange($event.checked)">
+              {{ 'dashboard.charts.comparePreviousYear' | translate }}
+            </mat-slide-toggle>
           </mat-card-header>
           <mat-card-content>
             @if (monthBarChartData.length) {
-              <div class="chart-container">
-                <ngx-charts-bar-vertical [results]="monthBarChartData"
+              <div class="chart-container" [class.with-legend]="comparePreviousYear">
+                <app-bar-line-chart [results]="monthBarChartData"
+                  [lineResults]="comparePreviousYear ? monthPreviousYearData : []"
+                  [barSeriesName]="'dashboard.charts.currentPeriod' | translate"
+                  [lineSeriesName]="'dashboard.charts.previousYear' | translate"
+                  [unit]="'dashboard.charts.kwh' | translate"
                   [scheme]="colorScheme"
+                  [legendPosition]="legendPosition"
                   [xAxis]="true"
                   [yAxis]="true"
                   [showXAxisLabel]="true"

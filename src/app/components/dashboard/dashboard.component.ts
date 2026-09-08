@@ -15,20 +15,24 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { NgxChartsModule, Color, ScaleType, LegendPosition } from '@swimlane/ngx-charts';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DateRange, getDashboardRanges, getLastYear } from '../../helpers/date-ranges';
+import { DateRange, getDashboardRanges, getLastYear, previousYearRange } from '../../helpers/date-ranges';
 import { LanguageService } from '../../service/language.service';
 
 import { StatsService } from '../../service/stats.service';
 import { MonthStats } from '../../models/month-stats';
 import { UserStats } from '../../models/user-stats';
 import { Group } from '../../models/group';
+import { BarLineChartComponent } from '../ui/bar-line-chart/bar-line-chart.component';
 
 interface ChartDataPoint {
   name: string;
   value: number;
+  /** Tooltip note naming the period a comparison point really stands for. */
+  extra?: { label: string };
 }
 
 interface ChartSeries {
@@ -62,7 +66,9 @@ interface SummaryMetrics {
     MatIcon,
     MatMenuTrigger, MatMenu, MatMenuItem,
     MatProgressBar,
+    MatSlideToggle,
     NgxChartsModule,
+    BarLineChartComponent,
     TranslatePipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -74,6 +80,7 @@ export class DashboardComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   monthStats: MonthStats[] = [];
+  previousYearStats: MonthStats[] = [];
   userStats: UserStats[] = [];
   chargerStats: UserStats[] = [];
 
@@ -83,13 +90,27 @@ export class DashboardComponent implements OnInit {
   selectedGroup = '';
   activeTabIndex = 0;
   inProgress = false;
+  /** Overlays each month with the same month a year earlier. */
+  comparePreviousYear = false;
 
   private loadingCount = 0;
+
+  /**
+   * The range and group the monthly figures on screen were fetched for. The
+   * filter inputs are bound live but only applied on "Load data", so toggling
+   * the comparison has to follow the chart rather than the inputs - otherwise
+   * an edited, unloaded date range would fetch a previous year that does not
+   * line up with the bars beside it.
+   */
+  private monthRange: DateRange = { start: new Date(), end: new Date() };
+  private monthGroup = '';
 
   predefinedRanges = getDashboardRanges();
 
   monthLineChartData: ChartSeries[] = [];
   monthBarChartData: ChartDataPoint[] = [];
+  /** Previous-year values, keyed by the current month they are compared with. */
+  monthPreviousYearData: ChartDataPoint[] = [];
   userBarChartData: ChartDataPoint[] = [];
   userPieChartData: ChartDataPoint[] = [];
   chargerBarChartData: ChartDataPoint[] = [];
@@ -121,15 +142,30 @@ export class DashboardComponent implements OnInit {
   }
 
   requestData(): void {
-    this.inProgress = true;
-    this.loadingCount = 3;
     this.fetchMonthData();
     this.fetchUserData();
     this.fetchChargerData();
   }
 
+  /**
+   * Fetches the previous year on demand rather than with every load: it is a
+   * second round trip that most sessions never look at.
+   */
+  onComparePreviousYearChange(enabled: boolean): void {
+    this.comparePreviousYear = enabled;
+    if (enabled) {
+      this.fetchPreviousYearData();
+      return;
+    }
+    this.previousYearStats = [];
+    this.monthPreviousYearData = [];
+  }
+
   private fetchMonthData(): void {
-    this.statsService.getMonthlyReport(this.startDate, this.endDate, this.selectedGroup)
+    this.monthRange = { start: this.startDate, end: this.endDate };
+    this.monthGroup = this.selectedGroup;
+    this.beginLoading();
+    this.statsService.getMonthlyReport(this.monthRange.start, this.monthRange.end, this.monthGroup)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
@@ -139,9 +175,34 @@ export class DashboardComponent implements OnInit {
         },
         error: () => this.checkLoadingComplete()
       });
+    if (this.comparePreviousYear) {
+      this.fetchPreviousYearData();
+    }
+  }
+
+  private fetchPreviousYearData(): void {
+    const range = previousYearRange(this.monthRange);
+    this.beginLoading();
+    this.statsService.getMonthlyReport(range.start, range.end, this.monthGroup)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: data => {
+          this.previousYearStats = data;
+          this.transformPreviousYearData();
+          this.checkLoadingComplete();
+        },
+        // Dropping the old figures rather than keeping them: they belong to a
+        // period that is no longer the one the bars show.
+        error: () => {
+          this.previousYearStats = [];
+          this.transformPreviousYearData();
+          this.checkLoadingComplete();
+        }
+      });
   }
 
   private fetchUserData(): void {
+    this.beginLoading();
     this.statsService.getUserReport(this.startDate, this.endDate, this.selectedGroup)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -155,6 +216,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private fetchChargerData(): void {
+    this.beginLoading();
     this.statsService.getChargerReport(this.startDate, this.endDate, this.selectedGroup)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -165,6 +227,11 @@ export class DashboardComponent implements OnInit {
         },
         error: () => this.checkLoadingComplete()
       });
+  }
+
+  private beginLoading(): void {
+    this.loadingCount++;
+    this.inProgress = true;
   }
 
   private checkLoadingComplete(): void {
@@ -182,23 +249,27 @@ export class DashboardComponent implements OnInit {
       {
         name: 'Avg kWh/Session',
         series: this.monthStats.map(stat => ({
-          name: this.getMonthName(stat.month) + ' ' + stat.year,
+          name: this.monthLabel(stat.month, stat.year),
           value: stat.average / 1000
         }))
       },
       {
         name: 'Sessions',
         series: this.monthStats.map(stat => ({
-          name: this.getMonthName(stat.month) + ' ' + stat.year,
+          name: this.monthLabel(stat.month, stat.year),
           value: stat.count
         }))
       }
     ];
 
     this.monthBarChartData = this.monthStats.map(stat => ({
-      name: this.getMonthName(stat.month) + ' ' + stat.year,
+      name: this.monthLabel(stat.month, stat.year),
       value: stat.total / 1000
     }));
+
+    // The comparison is plotted against the months on screen, so it has to be
+    // rebuilt whenever those change.
+    this.transformPreviousYearData();
 
     const totalWatts = this.monthStats.reduce((sum, s) => sum + s.total, 0);
     const totalCount = this.monthStats.reduce((sum, s) => sum + s.count, 0);
@@ -207,6 +278,25 @@ export class DashboardComponent implements OnInit {
       totalSessions: totalCount,
       averageKWh: totalCount > 0 ? (totalWatts / totalCount) / 1000 : 0
     };
+  }
+
+  /**
+   * Plots each previous-year month at the position of the month it is compared
+   * with. A month the previous year has no figures for is left out rather than
+   * plotted as zero, so the line breaks instead of claiming no consumption.
+   */
+  private transformPreviousYearData(): void {
+    this.monthPreviousYearData = this.monthStats.reduce<ChartDataPoint[]>((points, stat) => {
+      const previous = this.previousYearStats.find(p => p.year === stat.year - 1 && p.month === stat.month);
+      if (previous) {
+        points.push({
+          name: this.monthLabel(stat.month, stat.year),
+          value: previous.total / 1000,
+          extra: { label: this.monthLabel(previous.month, previous.year) }
+        });
+      }
+      return points;
+    }, []);
   }
 
   private transformUserData(): void {
@@ -253,6 +343,10 @@ export class DashboardComponent implements OnInit {
       averageKWh: totalCount > 0 ? (totalWatts / totalCount) / 1000 : 0,
       count: this.chargerStats.length
     };
+  }
+
+  private monthLabel(month: number, year: number): string {
+    return this.getMonthName(month) + ' ' + year;
   }
 
   private getMonthName(month: number): string {
