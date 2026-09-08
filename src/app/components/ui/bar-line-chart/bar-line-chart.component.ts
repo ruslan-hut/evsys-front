@@ -1,17 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import {
-  BarVerticalComponent,
-  Color,
-  ColorHelper,
-  DataItem,
-  NgxChartsModule,
-  ScaleType,
-  Series,
-  colorSets
-} from '@swimlane/ngx-charts';
+import { DecimalPipe, PercentPipe } from '@angular/common';
+import { BarVerticalComponent, DataItem, NgxChartsModule, Series } from '@swimlane/ngx-charts';
 
-/** A drawn point of the overlay line, in chart coordinates. */
+/** A drawn point of the reference line, in chart coordinates. */
 interface LineMarker {
   key: string;
   cx: number;
@@ -19,7 +10,8 @@ interface LineMarker {
 }
 
 /**
- * Vertical bars with a second series drawn as a line over the same categories.
+ * Vertical bars with a reference series drawn as a line over the same
+ * categories: the period being read, against the period it is measured against.
  *
  * ngx-charts has no combo chart, and two stacked charts cannot be aligned: a
  * bar chart places categories on a band scale and a line chart on a point
@@ -28,12 +20,12 @@ interface LineMarker {
  * keeps every line point on the centre of its bar by construction and shares
  * one y domain between the two series.
  *
- * Inherited inputs (`results`, `scheme`, `xAxis`, `xAxisLabel`, ...) behave as
- * they do on `ngx-charts-bar-vertical`. With no `lineResults` the chart is that
- * bar chart, colour and all. Passing `lineResults` switches colour from meaning
- * "which category" to meaning "which series": every bar takes one colour, the
- * line takes another, a legend names them, and hovering shows both values for
- * the month under the cursor.
+ * Colour is not an input. The bars take `--color-chart-series` and the line
+ * `--color-chart-reference`, applied through CSS because ngx-charts wants
+ * colours as JS strings and could not follow the theme. The `scheme` this
+ * inherits still feeds the library's colour helper - nothing on screen reads
+ * the result. One series means one colour: twelve months in eight hues would
+ * encode nothing.
  *
  * The base class uses decorator inputs, so this one does too - signal inputs
  * cannot override inherited `@Input()`s.
@@ -42,7 +34,7 @@ interface LineMarker {
   selector: 'app-bar-line-chart',
   templateUrl: './bar-line-chart.component.html',
   styleUrls: ['./bar-line-chart.component.css'],
-  imports: [NgxChartsModule, DecimalPipe],
+  imports: [NgxChartsModule, DecimalPipe, PercentPipe],
   // The tooltip body is rendered into ngx-charts' own overlay, outside this
   // component's DOM, so its styles cannot be scoped. Every selector in the
   // stylesheet is `wb-`-prefixed to keep that global reach harmless.
@@ -51,7 +43,7 @@ interface LineMarker {
 })
 export class BarLineChartComponent extends BarVerticalComponent {
   /**
-   * The overlay series. Each point's `name` must be the bar category it sits
+   * The reference series. Each point's `name` must be the bar category it sits
    * on - a point outside the bars' domain has nowhere to be drawn and is
    * dropped. Categories with no point leave a gap in the line rather than a
    * zero, so missing data does not read as no consumption.
@@ -61,19 +53,18 @@ export class BarLineChartComponent extends BarVerticalComponent {
    * (a previous year's month, say).
    */
   @Input() lineResults: DataItem[] = [];
-  /** Legend and tooltip name for the bars. */
+  /** Tooltip name for the bars. */
   @Input() barSeriesName = '';
-  /** Legend and tooltip name for the line. */
+  /** Tooltip name for the line. */
   @Input() lineSeriesName = '';
+  /** Tooltip row label for the difference between the two, e.g. `Difference`. */
+  @Input() deltaLabel = '';
   /** Appended to tooltip values, e.g. `kWh`. */
   @Input() unit = '';
 
-  /** Colours by series name; drives the legend, the line and the tooltip. */
-  seriesColors!: ColorHelper;
   /** `d` of the line, split into subpaths so gaps stay gaps. */
   linePath = '';
   lineMarkers: LineMarker[] = [];
-  lineColor = '';
   /** Both series in the shape `ngx-charts-tooltip-area` expects. */
   tooltipResults: Series[] = [];
   /** The bars' band scale mapped to bar centres, for the line's hover anchor. */
@@ -84,8 +75,6 @@ export class BarLineChartComponent extends BarVerticalComponent {
   }
 
   override update(): void {
-    // The legend only earns its space once there are two series to tell apart.
-    this.legend = this.hasLine;
     super.update();
     this.updateLine();
   }
@@ -100,36 +89,22 @@ export class BarLineChartComponent extends BarVerticalComponent {
     return [Math.min(min, ...values), Math.max(max, ...values)];
   }
 
-  override setColors(): void {
-    if (!this.hasLine) {
-      super.setColors();
-      return;
-    }
-    const [barColor, lineColor] = this.seriesPalette();
-    this.lineColor = lineColor;
-    this.colors = new ColorHelper(this.palette([barColor]), ScaleType.Ordinal, this.xDomain, this.customColors);
-    this.seriesColors = new ColorHelper(this.palette([barColor, lineColor]), ScaleType.Ordinal, [
-      this.barSeriesName,
-      this.lineSeriesName
-    ]);
-  }
-
-  override getLegendOptions() {
-    if (!this.hasLine) {
-      return super.getLegendOptions();
-    }
-    return {
-      scaleType: ScaleType.Ordinal,
-      colors: this.seriesColors,
-      domain: [this.barSeriesName, this.lineSeriesName],
-      title: '',
-      position: this.legendPosition
-    };
-  }
-
   /** Tooltip heading: the category the cursor is nearest to. */
   tooltipTitle(model: DataItem[]): string {
     return model?.length ? String(model[0].name) : '';
+  }
+
+  /**
+   * How far the read period sits above or below its reference, as a ratio.
+   * Null when the month is missing from either series, or when the reference
+   * is zero and the change has no percentage to express.
+   */
+  tooltipDelta(model: DataItem[]): number | null {
+    if (model?.length !== 2) {
+      return null;
+    }
+    const [current, reference] = model;
+    return reference.value ? (current.value - reference.value) / reference.value : null;
   }
 
   private updateLine(): void {
@@ -178,18 +153,5 @@ export class BarLineChartComponent extends BarVerticalComponent {
     const scale = (label: unknown) => band(label) + offset;
     (scale as { domain?: () => unknown[] }).domain = () => band.domain();
     return scale;
-  }
-
-  /** The first two entries of the configured scheme name the two series. */
-  private seriesPalette(): [string, string] {
-    const scheme = typeof this.scheme === 'string'
-      ? colorSets.find(set => set.name === this.scheme)
-      : this.scheme;
-    const domain = scheme?.domain ?? [];
-    return [domain[0] ?? '#3f51b5', domain[1] ?? '#e91e63'];
-  }
-
-  private palette(domain: string[]): Color {
-    return { name: 'series', selectable: true, group: ScaleType.Ordinal, domain };
   }
 }

@@ -1,19 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Color, DataItem, ScaleType } from '@swimlane/ngx-charts';
+import { DataItem } from '@swimlane/ngx-charts';
 
 import { BarLineChartComponent } from './bar-line-chart.component';
 
 describe('BarLineChartComponent', () => {
   let fixture: ComponentFixture<BarLineChartComponent>;
   let component: BarLineChartComponent;
-
-  const scheme: Color = {
-    name: 'test',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#3f51b5', '#e91e63', '#4caf50']
-  };
 
   const bars: DataItem[] = [
     { name: 'jan 2026', value: 10 },
@@ -31,19 +24,19 @@ describe('BarLineChartComponent', () => {
     // jsdom reports no size for anything, so the chart would fall back to its
     // own defaults; a fixed view keeps the geometry assertions deterministic.
     fixture.componentRef.setInput('view', [600, 400]);
-    fixture.componentRef.setInput('scheme', scheme);
     fixture.componentRef.setInput('results', bars);
     fixture.componentRef.setInput('lineResults', lineResults);
     fixture.componentRef.setInput('barSeriesName', 'Current period');
     fixture.componentRef.setInput('lineSeriesName', 'Previous year');
+    fixture.componentRef.setInput('deltaLabel', 'Difference');
     fixture.detectChanges();
   }
 
   const linePath = (): SVGPathElement | null =>
-    fixture.nativeElement.querySelector('path.wb-comparison-line');
+    fixture.nativeElement.querySelector('path.wb-reference-line');
 
   const markers = (): SVGCircleElement[] =>
-    Array.from(fixture.nativeElement.querySelectorAll('circle.wb-comparison-marker'));
+    Array.from(fixture.nativeElement.querySelectorAll('circle.wb-reference-marker'));
 
   /** The x the bar for `label` is centred on, in chart coordinates. */
   const barCenter = (label: string): number =>
@@ -56,15 +49,14 @@ describe('BarLineChartComponent', () => {
 
     // Falling back to a plain bar chart is what lets the dashboard leave the
     // component in place with the comparison switched off.
-    it('draws no line and reserves no legend', () => {
+    it('draws no line', () => {
       expect(linePath()).toBeNull();
       expect(markers().length).toBe(0);
-      expect(component.legend).toBe(false);
     });
 
-    it('keeps colouring bars by category', () => {
-      const colors = bars.map(bar => component.colors.getColor(bar.name));
-      expect(new Set(colors).size).toBe(bars.length);
+    it('never asks ngx-charts for a legend', () => {
+      expect(component.legend).toBe(false);
+      expect(fixture.nativeElement.querySelector('.chart-legend')).toBeNull();
     });
   });
 
@@ -93,19 +85,6 @@ describe('BarLineChartComponent', () => {
       expect(component.yScale(26)).toBeGreaterThan(0);
     });
 
-    it('switches colour from meaning category to meaning series', () => {
-      const barColors = bars.map(bar => component.colors.getColor(bar.name));
-      expect(new Set(barColors).size).toBe(1);
-      expect(component.seriesColors.getColor('Current period')).not
-        .toBe(component.seriesColors.getColor('Previous year'));
-      expect(component.lineColor).toBe(component.seriesColors.getColor('Previous year'));
-    });
-
-    it('names both series in the legend', () => {
-      expect(component.legend).toBe(true);
-      expect(component.legendOptions.domain).toEqual(['Current period', 'Previous year']);
-    });
-
     it('offers both series to the tooltip', () => {
       expect(component.tooltipResults.map(series => series.name))
         .toEqual(['Current period', 'Previous year']);
@@ -114,6 +93,28 @@ describe('BarLineChartComponent', () => {
 
     it('anchors the tooltip over the bar it describes', () => {
       expect(component.centeredXScale('feb 2026')).toBe(barCenter('feb 2026'));
+    });
+
+    // The answer the comparison exists to give: 20 against 26 is a fall of
+    // roughly a quarter.
+    it('reports how far the read month sits from its reference', () => {
+      const delta = component.tooltipDelta([
+        { name: 'feb 2026', value: 20 },
+        { name: 'feb 2026', value: 26 }
+      ]);
+      expect(delta).toBeCloseTo(-6 / 26, 10);
+    });
+
+    it('reports no difference against a zero reference', () => {
+      expect(component.tooltipDelta([
+        { name: 'feb 2026', value: 20 },
+        { name: 'feb 2026', value: 0 }
+      ])).toBeNull();
+    });
+
+    // A month missing from either series leaves the tooltip a single row.
+    it('reports no difference when only one series has the month', () => {
+      expect(component.tooltipDelta([{ name: 'feb 2026', value: 20 }])).toBeNull();
     });
   });
 

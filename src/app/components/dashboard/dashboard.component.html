@@ -161,14 +161,33 @@
           </mat-card-header>
           <mat-card-content>
             @if (monthBarChartData.length) {
-              <div class="chart-container" [class.with-legend]="comparePreviousYear">
+              <!-- The key sits above the plot and aligned with it, rather than
+                   centred underneath where it would fight the axis label. The
+                   delta rides with the period it describes. -->
+              @if (comparePreviousYear) {
+                <div class="chart-key">
+                  <span class="chart-key-item">
+                    <span class="chart-key-mark"></span>
+                    {{ 'dashboard.charts.currentPeriod' | translate }}
+                    @if (comparisonDelta !== null) {
+                      <span class="chart-key-delta">
+                        {{ comparisonDelta > 0 ? '+' : '' }}{{ comparisonDelta | percent:'1.1-1' }}
+                      </span>
+                    }
+                  </span>
+                  <span class="chart-key-item">
+                    <span class="chart-key-mark is-reference"></span>
+                    {{ 'dashboard.charts.previousYear' | translate }}
+                  </span>
+                </div>
+              }
+              <div class="chart-container">
                 <app-bar-line-chart [results]="monthBarChartData"
                   [lineResults]="comparePreviousYear ? monthPreviousYearData : []"
                   [barSeriesName]="'dashboard.charts.currentPeriod' | translate"
                   [lineSeriesName]="'dashboard.charts.previousYear' | translate"
+                  [deltaLabel]="'dashboard.charts.difference' | translate"
                   [unit]="'dashboard.charts.kwh' | translate"
-                  [scheme]="colorScheme"
-                  [legendPosition]="legendPosition"
                   [xAxis]="true"
                   [yAxis]="true"
                   [showXAxisLabel]="true"

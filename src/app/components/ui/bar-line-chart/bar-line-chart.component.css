@@ -6,64 +6,113 @@ app-bar-line-chart {
   height: 100%;
 }
 
-/* Dashed, so the comparison reads as a reference line over the bars even where
-   the two colours are hard to tell apart. */
-.wb-comparison-line {
-  fill: none;
-  stroke-width: 2.5;
-  stroke-dasharray: 6 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+/* One series, one colour. ngx-charts writes a per-bar `fill` attribute from a
+   colour helper that cannot read design tokens; a CSS `fill` beats that
+   attribute, which is how the bars follow the theme. */
+app-bar-line-chart .bar {
+  fill: var(--color-chart-series);
+}
+
+/* The reference reads as an annotation over the bars, not a rival series:
+   graphite, dashed, thinner than the marks it crosses. */
+.wb-reference {
+  animation: wb-reference-in var(--duration-slow) var(--ease-emphasized);
   pointer-events: none;
 }
 
-.wb-comparison-marker {
+/* Same dash pattern, wider and in the surface colour: each dash carries its
+   own margin, so the line reads over a bar as clearly as over the plot. */
+.wb-reference-halo {
+  fill: none;
+  stroke: var(--color-surface);
+  stroke-width: 4;
+  stroke-dasharray: 5 4;
+}
+
+.wb-reference-line {
+  fill: none;
+  stroke: var(--color-chart-reference);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+/* The ring is what makes a reading read as a point rather than as one more
+   dash in the line. */
+.wb-reference-marker {
+  fill: var(--color-chart-reference);
   stroke: var(--color-surface);
   stroke-width: 1.5;
-  pointer-events: none;
+}
+
+@keyframes wb-reference-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Rendered inside ngx-charts' tooltip overlay, which lives outside this
-   component, so these rules have to be global (see ViewEncapsulation.None). */
+   component, so these rules have to be global (see ViewEncapsulation.None).
+   Two values are compared by aligning their digits, so the tooltip is a
+   mono-spaced table rather than prose. */
 .wb-chart-tooltip {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-05);
-  min-width: 160px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--text-sm);
 }
 
 .wb-chart-tooltip-title {
-  font-weight: 600;
-  margin-bottom: var(--space-05);
+  grid-column: 1 / -1;
+  font-weight: var(--weight-semibold);
 }
 
-.wb-chart-tooltip-row {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-xs);
-}
-
-.wb-chart-tooltip-swatch {
-  flex: none;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
+/* Keyed by mark, not colour: a solid block for the bars, a dashed rule for the
+   reference, both in currentColor so they carry on the dark tooltip surface. */
+.wb-chart-tooltip-mark {
   align-self: center;
+  width: 12px;
+  height: 8px;
+  border-radius: var(--radius-xs);
+  background: currentColor;
 }
 
-.wb-chart-tooltip-series {
-  flex: 1 1 auto;
-  white-space: nowrap;
+.wb-chart-tooltip-mark.is-reference {
+  height: 0;
+  border-radius: 0;
+  background: none;
+  border-top: 2px dashed currentColor;
+  opacity: 0.7;
 }
 
 .wb-chart-tooltip-note {
-  opacity: 0.7;
   margin-left: var(--space-05);
+  opacity: 0.7;
 }
 
+/* The difference has no mark of its own; it spans the key column. */
+.wb-chart-tooltip-label.is-delta {
+  grid-column: 1 / 3;
+}
+
+/* Only the digits are set in mono - that is what has to line up. */
 .wb-chart-tooltip-value {
-  flex: none;
-  font-weight: 600;
+  justify-self: end;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.wb-chart-tooltip-unit {
+  margin-left: var(--spacing-xs);
+  font-family: var(--font-sans);
+  opacity: 0.7;
+}
+
+/* Separates the two readings from the difference between them. */
+.wb-chart-tooltip-rule {
+  grid-column: 1 / -1;
+  height: 1px;
+  margin-top: var(--space-05);
+  background: currentColor;
+  opacity: 0.25;
 }

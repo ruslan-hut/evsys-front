@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { FormsModule } from '@angular/forms';
-import { DecimalPipe, DatePipe } from '@angular/common';
+import { DecimalPipe, DatePipe, PercentPipe } from '@angular/common';
 
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
@@ -55,6 +55,7 @@ interface SummaryMetrics {
     FormsModule,
     DecimalPipe,
     DatePipe,
+    PercentPipe,
     MatCard, MatCardContent, MatCardHeader, MatCardTitle,
     MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle,
     MatTabGroup, MatTab,
@@ -111,6 +112,13 @@ export class DashboardComponent implements OnInit {
   monthBarChartData: ChartDataPoint[] = [];
   /** Previous-year values, keyed by the current month they are compared with. */
   monthPreviousYearData: ChartDataPoint[] = [];
+  /**
+   * How far the read period sits above or below the same period a year
+   * earlier, as a ratio. Covers only the months both years have figures for -
+   * the same months the chart draws - so the headline agrees with the picture.
+   * Null when nothing lines up, or when the previous year total is zero.
+   */
+  comparisonDelta: number | null = null;
   userBarChartData: ChartDataPoint[] = [];
   userPieChartData: ChartDataPoint[] = [];
   chargerBarChartData: ChartDataPoint[] = [];
@@ -159,6 +167,7 @@ export class DashboardComponent implements OnInit {
     }
     this.previousYearStats = [];
     this.monthPreviousYearData = [];
+    this.comparisonDelta = null;
   }
 
   private fetchMonthData(): void {
@@ -286,17 +295,26 @@ export class DashboardComponent implements OnInit {
    * plotted as zero, so the line breaks instead of claiming no consumption.
    */
   private transformPreviousYearData(): void {
-    this.monthPreviousYearData = this.monthStats.reduce<ChartDataPoint[]>((points, stat) => {
+    const points: ChartDataPoint[] = [];
+    let current = 0;
+    let previousTotal = 0;
+
+    for (const stat of this.monthStats) {
       const previous = this.previousYearStats.find(p => p.year === stat.year - 1 && p.month === stat.month);
-      if (previous) {
-        points.push({
-          name: this.monthLabel(stat.month, stat.year),
-          value: previous.total / 1000,
-          extra: { label: this.monthLabel(previous.month, previous.year) }
-        });
+      if (!previous) {
+        continue;
       }
-      return points;
-    }, []);
+      points.push({
+        name: this.monthLabel(stat.month, stat.year),
+        value: previous.total / 1000,
+        extra: { label: this.monthLabel(previous.month, previous.year) }
+      });
+      current += stat.total;
+      previousTotal += previous.total;
+    }
+
+    this.monthPreviousYearData = points;
+    this.comparisonDelta = previousTotal > 0 ? (current - previousTotal) / previousTotal : null;
   }
 
   private transformUserData(): void {

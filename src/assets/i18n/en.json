@@ -146,7 +146,8 @@
       "charger": "Charger",
       "comparePreviousYear": "Compare with previous year",
       "currentPeriod": "Current period",
-      "previousYear": "Previous year"
+      "previousYear": "Previous year",
+      "difference": "Difference"
     },
     "ranges": {
       "today": "Today",

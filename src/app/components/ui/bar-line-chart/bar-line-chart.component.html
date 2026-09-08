@@ -1,10 +1,10 @@
+<!-- The key is rendered by the host card, not here: ngx-charts appends its
+     legend after the svg, outside the box it sized, so every card carrying one
+     has to reserve the overflow by hand. -->
 <ngx-charts-chart [view]="[width, height]"
-                  [showLegend]="legend"
-                  [legendOptions]="legendOptions"
+                  [showLegend]="false"
                   [activeEntries]="activeEntries"
-                  [animations]="animations"
-                  (legendLabelActivate)="onActivate($event, true)"
-                  (legendLabelDeactivate)="onDeactivate($event, true)">
+                  [animations]="animations">
   <svg:g [attr.transform]="transform" class="bar-chart chart">
     @if (xAxis) {
       <svg:g ngx-charts-x-axis
@@ -53,24 +53,30 @@
            (select)="onClick($event)" />
 
     @if (hasLine) {
-      <svg:path class="wb-comparison-line" [attr.d]="linePath" [attr.stroke]="lineColor" />
-      @for (marker of lineMarkers; track marker.key) {
-        <svg:circle class="wb-comparison-marker"
-                    [attr.cx]="marker.cx"
-                    [attr.cy]="marker.cy"
-                    [attr.r]="3.5"
-                    [attr.fill]="lineColor" />
-      }
+      <svg:g class="wb-reference">
+        <!-- Knocked out of the bars underneath so the reference stays readable
+             where it crosses them, without having to shout in colour. -->
+        <svg:path class="wb-reference-halo" [attr.d]="linePath" />
+        <svg:path class="wb-reference-line" [attr.d]="linePath" />
+        @for (marker of lineMarkers; track marker.key) {
+          <svg:circle class="wb-reference-marker"
+                      [attr.cx]="marker.cx"
+                      [attr.cy]="marker.cy"
+                      [attr.r]="3" />
+        }
+      </svg:g>
 
       <!-- Sits over the bars, so it replaces their per-bar tooltips with one
-           tooltip carrying both series for the hovered category. -->
+           tooltip carrying both series for the hovered category. `colors` is
+           required by the component but the tooltip keys off marks instead, so
+           what it returns never reaches the screen. -->
       <svg:g ngx-charts-tooltip-area
              [dims]="dims"
              [xSet]="xDomain"
              [xScale]="centeredXScale"
              [yScale]="yScale"
              [results]="tooltipResults"
-             [colors]="seriesColors"
+             [colors]="colors"
              [tooltipDisabled]="tooltipDisabled"
              [tooltipTemplate]="seriesTooltip" />
     }
@@ -80,17 +86,24 @@
 <ng-template #seriesTooltip let-model="model">
   <div class="wb-chart-tooltip">
     <div class="wb-chart-tooltip-title">{{ tooltipTitle(model) }}</div>
-    @for (item of model; track item.series) {
-      <div class="wb-chart-tooltip-row">
-        <span class="wb-chart-tooltip-swatch" [style.background-color]="item.color"></span>
-        <span class="wb-chart-tooltip-series">
-          {{ item.series }}
-          @if (item.extra?.label) {
-            <span class="wb-chart-tooltip-note">({{ item.extra.label }})</span>
-          }
-        </span>
-        <span class="wb-chart-tooltip-value">{{ item.value | number:'1.0-1' }} {{ unit }}</span>
-      </div>
+    @for (item of model; track item.series; let last = $last) {
+      <!-- Keyed by the mark rather than the colour: this sits on the library's
+           near-black tooltip, where the graphite reference would not carry. -->
+      <span class="wb-chart-tooltip-mark" [class.is-reference]="last"></span>
+      <span class="wb-chart-tooltip-label">
+        {{ item.series }}
+        @if (item.extra?.label) {
+          <span class="wb-chart-tooltip-note">({{ item.extra.label }})</span>
+        }
+      </span>
+      <span class="wb-chart-tooltip-value">{{ item.value | number:'1.0-1' }}<span class="wb-chart-tooltip-unit">{{ unit }}</span></span>
+    }
+    @if (tooltipDelta(model); as delta) {
+      <span class="wb-chart-tooltip-rule"></span>
+      <span class="wb-chart-tooltip-label is-delta">{{ deltaLabel }}</span>
+      <span class="wb-chart-tooltip-value">
+        {{ delta > 0 ? '+' : '' }}{{ delta | percent:'1.1-1' }}
+      </span>
     }
   </div>
 </ng-template>

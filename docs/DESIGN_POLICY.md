@@ -204,6 +204,29 @@ currently zero hex literals outside `styles.css`; keep it that way.
 Use these for anything showing connector or charge point state. Do not invent
 ad-hoc green/yellow/red classes.
 
+### Charts
+
+| Purpose | Token | Light | Dark |
+|---|---|---|---|
+| Series being read | `--color-chart-series` | `--color-primary` | `--color-primary` |
+| Period compared against | `--color-chart-reference` | `#64748b` | `#94a3b8` |
+
+One series, one colour: a bar per month carries no categorical meaning, so the
+monthly charts are single-hued and take the same ink as the metric values above
+them. Categorical colour is for charts where the categories differ in kind —
+per-user and per-charger breakdowns — and there it comes from the component's
+`scheme`.
+
+A comparison series is an annotation, not a rival: graphite, dashed, drawn over
+the bars with a knockout so it stays readable without raising its voice.
+Direction of change is carried by the sign on the number, never by green and
+red — those mean online and faulted here.
+
+ngx-charts takes colours as JS strings and cannot read a custom property, so
+chart components apply these tokens through CSS instead (a CSS `fill` or
+`stroke` beats the attribute the library writes). See
+`bar-line-chart.component.css`.
+
 ### Action buttons
 
 `--color-action` / `--color-action-hover` for standard actions,

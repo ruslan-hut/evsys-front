@@ -150,6 +150,13 @@
   --color-connector-error: #dc2626;
   --color-connector-error-bg: #fee2e2;
 
+  /* Charts — the period being read, and the period it is measured against.
+     The series takes the same ink as the metric values it sits under, so a
+     card reads as one thing. ngx-charts takes colours as JS strings, so chart
+     components apply these through CSS; see bar-line-chart.component.css. */
+  --color-chart-series: var(--color-primary);
+  --color-chart-reference: #64748b;
+
   /* Focus */
   --color-focus-ring: rgba(2, 132, 199, 0.35);
 
@@ -239,6 +246,9 @@
   --color-connector-error-bg: #2e0a0a;
 
   /* Focus */
+  --color-chart-series: var(--color-primary);
+  --color-chart-reference: #94a3b8;
+
   --color-focus-ring: rgba(56, 189, 248, 0.4);
 
   /* Header surface (dark mirrors light intent) */
