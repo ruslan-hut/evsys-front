@@ -92,6 +92,13 @@ export const routes: Routes = [
     loadComponent: () => import('./components/user/login/login.component').then(m => m.LoginComponent)
   },
   {
+    // consent page of the MCP OAuth flow; it handles signing in itself, since
+    // it is usually opened cold and authGuard would reject it before the
+    // session is restored
+    path: 'oauth/authorize',
+    loadComponent: () => import('./components/oauth-consent/oauth-consent.component').then(m => m.OAuthConsentComponent)
+  },
+  {
     path: 'account/register',
     loadComponent: () => import('./components/user/register/register.component').then(m => m.RegisterComponent)
   },

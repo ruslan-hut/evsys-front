@@ -1036,5 +1036,29 @@
     "colAssigned": "Asignado",
     "colComposition": "Sesiones cargando",
     "noLimit": "sin límite"
+  },
+  "oauthConsent": {
+    "title": "{{client}} quiere acceder a EVSys",
+    "subtitle": "Sesión iniciada como {{user}}",
+    "intro": "Si lo permites, esta aplicación podrá leer todo lo que tú puedes ver en EVSys:",
+    "scope": {
+      "chargePoints": "Puntos de carga, conectores, ubicaciones y su estado",
+      "transactions": "Sesiones de carga, valores de medición y pagos",
+      "logs": "Registros del sistema, del backend, de pagos y de errores",
+      "users": "Estadísticas e informes, usuarios y tarjetas RFID"
+    },
+    "readOnly": "Solo lectura: no puede modificar datos ni enviar comandos a los puntos de carga.",
+    "redirectTo": "Vuelve a",
+    "expires": "La solicitud caduca a las",
+    "trustHint": "Permítelo solo si iniciaste tú esta conexión, desde una aplicación de confianza.",
+    "approve": "Permitir",
+    "deny": "Denegar",
+    "switchAccount": "Usar otra cuenta",
+    "notAllowed": "Solo los administradores y operadores pueden conectar aplicaciones a EVSys.",
+    "decisionFailed": "No se pudo completar la solicitud. Inicia la conexión de nuevo desde la aplicación.",
+    "unavailableTitle": "Solicitud de autorización no encontrada",
+    "unavailableBody": "Esta solicitud ha caducado o ya fue respondida. Inicia la conexión de nuevo desde la aplicación.",
+    "redirecting": "Volviendo a la aplicación…",
+    "unknownClient": "El nombre de arriba lo elige la propia aplicación y no está verificado. El acceso se enviará a {{host}}. Permítelo solo si conoces ese sitio e iniciaste allí esta conexión."
   }
 }

@@ -1036,5 +1036,29 @@
     "colAssigned": "Assigned",
     "colComposition": "Sessions charging",
     "noLimit": "no limit"
+  },
+  "oauthConsent": {
+    "title": "{{client}} wants to access EVSys",
+    "subtitle": "Signed in as {{user}}",
+    "intro": "If you allow it, this application can read everything you can see in EVSys:",
+    "scope": {
+      "chargePoints": "Charge points, connectors, locations and their status",
+      "transactions": "Charging sessions, meter values and payments",
+      "logs": "System, backend, payment and error logs",
+      "users": "Statistics and reports, users and RFID tags"
+    },
+    "readOnly": "Read only: it cannot change data or send commands to charge points.",
+    "redirectTo": "Returns to",
+    "expires": "Request expires at",
+    "trustHint": "Allow only if you started this connection yourself, from an application you trust.",
+    "approve": "Allow",
+    "deny": "Deny",
+    "switchAccount": "Use another account",
+    "notAllowed": "Only administrators and operators can connect applications to EVSys.",
+    "decisionFailed": "Could not complete the request. Start the connection again from the application.",
+    "unavailableTitle": "Authorization request not found",
+    "unavailableBody": "This request has expired or was already answered. Start the connection again from the application.",
+    "redirecting": "Returning to the application…",
+    "unknownClient": "The name above is chosen by the application itself and is not verified. The access will be sent to {{host}}. Allow only if you know that site and started this connection there."
   }
 }

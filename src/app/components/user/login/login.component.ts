@@ -4,6 +4,7 @@ import {AccountService} from "../../../service/account.service";
 import {ErrorService} from "../../../service/error.service";
 import {Router} from "@angular/router";
 import {first} from "rxjs";
+import {takeReturnUrl} from "../../../helpers/return-url";
 import {
   signInWithPopup,
   sendSignInLinkToEmail,
@@ -97,7 +98,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          const returnUrl = '/';
+          const returnUrl = takeReturnUrl();
           this.navigateTo(returnUrl);
         },
         error: error => {
@@ -134,7 +135,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   signInWithToken(token : string) {
       this.accountService.loginWithToken(token).pipe().subscribe({
         next: () => {
-          const returnUrl = '/';
+          const returnUrl = takeReturnUrl();
           this.navigateTo(returnUrl);
         },
         error: error => {

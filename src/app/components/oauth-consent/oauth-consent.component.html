@@ -1,0 +1,88 @@
+@if (state() === 'loading' || state() === 'redirecting' || busy()) {
+  <div class="consent-progress"><mat-progress-bar mode="indeterminate" /></div>
+}
+
+<div class="consent-container">
+  @switch (state()) {
+    @case ('unavailable') {
+      <mat-card class="consent-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="consent-icon consent-icon--warn">link_off</mat-icon>
+          <mat-card-title>{{ 'oauthConsent.unavailableTitle' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ 'oauthConsent.unavailableBody' | translate }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+    @case ('redirecting') {
+      <mat-card class="consent-card">
+        <mat-card-content>
+          <p>{{ 'oauthConsent.redirecting' | translate }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+    @case ('ready') {
+      @if (consent(); as c) {
+        <mat-card class="consent-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="consent-icon">hub</mat-icon>
+            <mat-card-title>{{ 'oauthConsent.title' | translate: {client: c.client_name} }}</mat-card-title>
+            <mat-card-subtitle>{{ 'oauthConsent.subtitle' | translate: {user: c.username} }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            @if (c.can_approve) {
+              <p>{{ 'oauthConsent.intro' | translate }}</p>
+              <ul class="consent-scope">
+                <li>{{ 'oauthConsent.scope.chargePoints' | translate }}</li>
+                <li>{{ 'oauthConsent.scope.transactions' | translate }}</li>
+                <li>{{ 'oauthConsent.scope.logs' | translate }}</li>
+                <li>{{ 'oauthConsent.scope.users' | translate }}</li>
+              </ul>
+              <p class="consent-note">
+                <mat-icon class="consent-note-icon">visibility</mat-icon>
+                {{ 'oauthConsent.readOnly' | translate }}
+              </p>
+            } @else {
+              <p class="consent-warn">{{ 'oauthConsent.notAllowed' | translate }}</p>
+            }
+
+            @if (!c.known_client) {
+              <div class="consent-unknown" role="alert">
+                <mat-icon class="consent-note-icon">warning</mat-icon>
+                <span>{{ 'oauthConsent.unknownClient' | translate: {host: c.redirect_host} }}</span>
+              </div>
+            }
+
+            <dl class="consent-details">
+              <dt>{{ 'oauthConsent.redirectTo' | translate }}</dt>
+              <dd>{{ c.redirect_host }}</dd>
+              <dt>{{ 'oauthConsent.expires' | translate }}</dt>
+              <dd>{{ c.expires_at | date: 'shortTime' }}</dd>
+            </dl>
+            <p class="consent-hint">{{ 'oauthConsent.trustHint' | translate }}</p>
+
+            @if (errorKey(); as key) {
+              <p class="consent-warn" role="alert">{{ key | translate }}</p>
+            }
+          </mat-card-content>
+
+          <mat-card-actions align="end" class="consent-actions">
+            <button mat-button type="button" (click)="signInAsSomeoneElse()" [disabled]="busy()">
+              {{ 'oauthConsent.switchAccount' | translate }}
+            </button>
+            <button mat-stroked-button type="button" (click)="deny()" [disabled]="busy()">
+              {{ 'oauthConsent.deny' | translate }}
+            </button>
+            @if (c.can_approve) {
+              <button mat-flat-button color="primary" type="button" (click)="approve()" [disabled]="busy()">
+                {{ 'oauthConsent.approve' | translate }}
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      }
+    }
+  }
+</div>
