@@ -9,6 +9,15 @@
       {{ 'aiAnalysis.reports.dryRun' | translate }}
     </button>
     <span class="ai-toolbar-group">
+      <mat-form-field appearance="outline" class="ai-locations-field" subscriptSizing="dynamic">
+        <mat-label>{{ 'aiAnalysis.reports.locations' | translate }}</mat-label>
+        <mat-select multiple [value]="runLocations()" (valueChange)="runLocations.set($event)"
+                    [placeholder]="'aiAnalysis.reports.wholeNetwork' | translate">
+          @for (l of locations(); track l.id) {
+            <mat-option [value]="l.id">{{ l.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
       <mat-form-field appearance="outline" class="ai-lang-field" subscriptSizing="dynamic">
         <mat-label>{{ 'aiAnalysis.reports.language' | translate }}</mat-label>
         <mat-select [value]="runLanguage()" (valueChange)="runLanguage.set($event)">
@@ -50,7 +59,10 @@
            [attr.aria-pressed]="selected()?.id === r.id"
            (click)="open(r)" (keydown.enter)="onRowKey($event, r)" (keydown.space)="onRowKey($event, r)">
         <span class="timestamp">{{ r.created_at | date: 'dd.MM.yy HH:mm' }}</span>
-        <span>{{ periodLabel(r) }}</span>
+        <span>
+          {{ periodLabel(r) }}
+          <span class="ai-row-scope">{{ scopesOf(r) }}</span>
+        </span>
         <span>
           {{ 'aiAnalysis.trigger.' + r.trigger | translate }}
           @if (r.dry_run) {
@@ -111,6 +123,19 @@
           }
         }
 
+        @if (selectedScopes().length > 1) {
+          <div class="ai-preview-bar">
+            <mat-button-toggle-group [value]="previewScope()" (change)="selectScope($event.value)" [hideSingleSelectionIndicator]="true"
+                                     [attr.aria-label]="'aiAnalysis.reports.locations' | translate">
+              @for (sc of selectedScopes(); track sc.key) {
+                <mat-button-toggle [value]="sc.key">{{ sc.label }}</mat-button-toggle>
+              }
+            </mat-button-toggle-group>
+          </div>
+        } @else if (selectedScopes().length === 1) {
+          <div class="ai-detail-meta">{{ 'aiAnalysis.reports.locations' | translate }}: {{ selectedScopes()[0].label }}</div>
+        }
+
         @if (selectedLanguages().length > 0) {
           <div class="ai-preview-bar">
             <mat-button-toggle-group [value]="previewLanguage()" (change)="showPreview($event.value)" [hideSingleSelectionIndicator]="true">
@@ -135,7 +160,7 @@
           <div class="ai-deliveries">
             @for (d of s.deliveries; track $index) {
               <div class="ai-delivery">
-                <span>{{ d.email }}</span>
+                <span>{{ d.email }} <span class="ai-row-scope">{{ scopeLabelOf(d.scope) }}</span></span>
                 <span>{{ d.language.toUpperCase() }}</span>
                 <span class="timestamp">{{ d.sent_at | date: 'dd.MM.yy HH:mm' }}</span>
                 @if (d.error) {

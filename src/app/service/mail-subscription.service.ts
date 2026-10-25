@@ -2,7 +2,7 @@ import {Injectable, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {MailSubscription} from '../models/mail-subscription';
+import {MailSubscription, ReportLocation} from '../models/mail-subscription';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +32,11 @@ export class MailSubscriptionService {
 
   sendNow(id: string): Observable<{ success: boolean }> {
     return this.http.post<{ success: boolean }>(`${this.baseUrl}/${id}/send-now`, {});
+  }
+
+  /** Every location, for limiting a report to some of them. */
+  locations(): Observable<ReportLocation[] | null> {
+    return this.http.get<ReportLocation[] | null>(`${environment.apiUrl}/mail/locations`);
   }
 
   sendTest(email: string): Observable<{ success: boolean }> {

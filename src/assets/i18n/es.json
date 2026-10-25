@@ -665,11 +665,14 @@
       "monthly": "Mensual"
     },
     "language": "Idioma",
-    "aiNote": "El análisis IA abarca toda la red y se envía según la programación de Análisis IA → Ajustes.",
+    "aiNote": "Se envía según la programación de Análisis IA → Ajustes; sin ubicaciones abarca toda la red.",
     "addReport": "Añadir informe",
     "summary": "{{enabled}} de {{total}} activos",
     "aiReportQueued": "El análisis IA está en camino: generarlo puede tardar unos minutos",
-    "aiShort": "IA"
+    "aiShort": "IA",
+    "locations": "Ubicaciones",
+    "allLocations": "Toda la red",
+    "locationsHint": "Vacío: toda la red"
   },
   "users": {
     "title": "Usuarios",
@@ -1151,7 +1154,7 @@
       "language": "Idioma",
       "generate": "Generar",
       "generateAndSend": "Generar y enviar",
-      "hint": "«Solo recopilar datos» muestra lo que leería el modelo, sin coste. «Generar» crea un informe para revisarlo. «Generar y enviar» lo envía a todos los suscriptores activos.",
+      "hint": "«Solo recopilar datos» muestra lo que leería el modelo, sin coste. «Generar» crea un informe para revisarlo. Ambos cubren las ubicaciones elegidas o toda la red. «Generar y enviar» envía a cada suscriptor activo el análisis de sus ubicaciones.",
       "created": "Creado",
       "period": "Periodo",
       "trigger": "Inicio",
@@ -1167,7 +1170,9 @@
       "sendAllTitle": "Enviar el análisis IA",
       "sendAllContent": "¿Generar el análisis ahora y enviarlo a todos los suscriptores activos? Cada idioma cuesta una petición a OpenAI.",
       "sendAllYes": "Generar y enviar",
-      "preview": "Vista previa del correo"
+      "preview": "Vista previa del correo",
+      "locations": "Ubicaciones",
+      "wholeNetwork": "Toda la red"
     },
     "usage": {
       "ranges": {

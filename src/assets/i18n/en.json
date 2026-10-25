@@ -665,11 +665,14 @@
       "monthly": "Monthly"
     },
     "language": "Language",
-    "aiNote": "The AI analysis covers the whole network and is sent on the schedule set in AI analysis → Settings.",
+    "aiNote": "Sent on the schedule set in AI analysis → Settings; without locations it covers the whole network.",
     "addReport": "Add report",
     "summary": "{{enabled}} of {{total}} active",
     "aiReportQueued": "The AI analysis is on its way: generating it may take a few minutes",
-    "aiShort": "AI"
+    "aiShort": "AI",
+    "locations": "Locations",
+    "allLocations": "Whole network",
+    "locationsHint": "Leave empty for the whole network"
   },
   "users": {
     "title": "Users",
@@ -1151,7 +1154,7 @@
       "language": "Language",
       "generate": "Generate",
       "generateAndSend": "Generate and send",
-      "hint": "\"Collect data only\" shows what the model would read, at no cost. \"Generate\" creates a report for preview. \"Generate and send\" emails every active subscriber.",
+      "hint": "\"Collect data only\" shows what the model would read, at no cost. \"Generate\" creates a report for preview. Both cover the chosen locations, or the whole network. \"Generate and send\" emails every active subscriber the analysis of their own locations.",
       "created": "Created",
       "period": "Period",
       "trigger": "Started",
@@ -1167,7 +1170,9 @@
       "sendAllTitle": "Send the AI analysis",
       "sendAllContent": "Generate the analysis now and email it to every active subscriber? Each language costs one OpenAI request.",
       "sendAllYes": "Generate and send",
-      "preview": "Email preview"
+      "preview": "Email preview",
+      "locations": "Locations",
+      "wholeNetwork": "Whole network"
     },
     "usage": {
       "ranges": {

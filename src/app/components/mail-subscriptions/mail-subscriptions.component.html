@@ -63,6 +63,16 @@
             </mat-select>
           </mat-form-field>
         } @else {
+          <mat-form-field appearance="outline" class="mail-subs-field mail-subs-field--wide">
+            <mat-label>{{ 'mailSubscriptions.locations' | translate }}</mat-label>
+            <mat-select multiple formControlName="location_ids" [placeholder]="'mailSubscriptions.allLocations' | translate">
+              @for (l of locations(); track l.id) {
+                <mat-option [value]="l.id">{{ l.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>{{ 'mailSubscriptions.locationsHint' | translate }}</mat-hint>
+          </mat-form-field>
+
           <mat-form-field appearance="outline" class="mail-subs-field">
             <mat-label>{{ 'mailSubscriptions.language' | translate }}</mat-label>
             <mat-select formControlName="language">
@@ -102,7 +112,7 @@
               @for (s of r.subscriptions; track s.id) {
                 <span class="mail-subs-chip" [class.mail-subs-chip--off]="!s.enabled" [class.mail-subs-chip--ai]="s.report === 'ai_analysis'">
                   @if (s.report === 'ai_analysis') {
-                    {{ 'mailSubscriptions.aiShort' | translate }} · {{ s.language.toUpperCase() }}
+                    {{ 'mailSubscriptions.aiShort' | translate }} · {{ s.language.toUpperCase() }}@if (s.location_ids?.length) { · {{ s.location_ids?.join(', ') }} }
                   } @else {
                     {{ 'mailSubscriptions.periods.' + s.period | translate }}
                   }

@@ -47,8 +47,8 @@ export class AIReportService {
     return this.http.get<AIReport>(`${this.baseUrl}/reports/${encodeURIComponent(id)}`);
   }
 
-  preview(id: string, language: string): Observable<AIReportPreview> {
-    return this.http.get<AIReportPreview>(`${this.baseUrl}/reports/${encodeURIComponent(id)}/preview`, {params: {language}});
+  preview(id: string, scope: string, language: string): Observable<AIReportPreview> {
+    return this.http.get<AIReportPreview>(`${this.baseUrl}/reports/${encodeURIComponent(id)}/preview`, {params: {scope, language}});
   }
 
   usage(from?: string, to?: string): Observable<AIUsageReport> {

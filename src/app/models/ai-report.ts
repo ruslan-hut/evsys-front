@@ -48,6 +48,8 @@ export interface AIReportRunRequest {
   language?: AIReportLanguage;
   email?: string;
   send_all?: boolean;
+  /** Empty or absent: the whole network. */
+  location_ids?: string[];
 }
 
 export interface AIFinding {
@@ -67,7 +69,19 @@ export interface AIAnalysisResult {
   trends: string[];
 }
 
+/** One set of locations a run analysed; key "" is the whole network. */
+export interface AIReportScope {
+  key: string;
+  location_ids?: string[];
+  locations?: string[];
+  /** JSON the model read; only in the single-report response. */
+  snapshot?: string;
+  snapshot_bytes: number;
+}
+
 export interface AIAnalysis {
+  /** Key of the AIReportScope the answer is about; absent on old reports. */
+  scope?: string;
   language: AIReportLanguage;
   result?: AIAnalysisResult;
   response_id?: string;
@@ -75,6 +89,7 @@ export interface AIAnalysis {
 }
 
 export interface AIReportDelivery {
+  scope?: string;
   email: string;
   language: AIReportLanguage;
   sent_at: string;
@@ -94,15 +109,17 @@ export interface AIReport {
   model?: string;
   created_at: string;
   finished_at?: string;
-  /** JSON the model read; only in the single-report response. */
+  /** Whole-network snapshot of reports older than location filters. */
   snapshot?: string;
   snapshot_bytes: number;
+  scopes?: AIReportScope[];
   analyses?: AIAnalysis[];
   deliveries?: AIReportDelivery[];
   cost_usd: number;
 }
 
 export interface AIReportPreview {
+  scope: string;
   language: AIReportLanguage;
   subject: string;
   html: string;

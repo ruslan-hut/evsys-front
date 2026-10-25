@@ -18,6 +18,8 @@ import {serverMessage} from '../../../helpers/error.interceptor';
 import {BasicDialogComponent} from '../../dialogs/basic/basic-dialog.component';
 import {DialogData} from '../../../models/dialog-data';
 import {AIReport, AIReportLanguage, AIReportRunRequest} from '../../../models/ai-report';
+import {ReportLocation} from '../../../models/mail-subscription';
+import {MailSubscriptionService} from '../../../service/mail-subscription.service';
 
 /** How often the list is refreshed while a run is in progress. */
 const POLL_MS = 3000;
@@ -58,8 +60,14 @@ export class AIReportsComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly dialog = inject(MatDialog);
+  private readonly mailService = inject(MailSubscriptionService);
 
   readonly languages: AIReportLanguage[] = ['es', 'en'];
+  readonly locations = signal<ReportLocation[]>([]);
+  /** Locations of a manual run; empty is the whole network. */
+  readonly runLocations = signal<string[]>([]);
+  /** Key of the scope shown in the detail; "" is the whole network. */
+  readonly previewScope = signal('');
 
   readonly loading = signal(false);
   readonly starting = signal(false);
@@ -75,10 +83,21 @@ export class AIReportsComponent implements OnInit {
     const now = Date.now();
     return this.reports().some(r => r.status === 'running' && now - new Date(r.created_at).getTime() < STALE_RUN_MS);
   });
+  /** The scopes of the open report, with their labels. */
+  readonly selectedScopes = computed(() => {
+    const report = this.selected();
+    if (!report) return [];
+    if (!report.scopes?.length) return [{key: '', label: this.scopeLabel([])}];
+    return report.scopes.map(sc => ({key: sc.key, label: this.scopeLabel(sc.locations ?? sc.location_ids ?? [])}));
+  });
   readonly selectedLanguages = computed(() =>
-    (this.selected()?.analyses ?? []).filter(a => !!a.result).map(a => a.language));
+    (this.selected()?.analyses ?? [])
+      .filter(a => !!a.result && (a.scope ?? '') === this.previewScope())
+      .map(a => a.language));
   readonly prettySnapshot = computed(() => {
-    const raw = this.selected()?.snapshot;
+    const report = this.selected();
+    const scope = report?.scopes?.find(sc => sc.key === this.previewScope());
+    const raw = scope ? scope.snapshot : (this.previewScope() === '' ? report?.snapshot : '');
     if (!raw) return '';
     try {
       return JSON.stringify(JSON.parse(raw), null, 2);
@@ -97,6 +116,20 @@ export class AIReportsComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.mailService.locations().subscribe({
+      next: (list) => this.locations.set(list ?? []),
+      error: () => this.locations.set([]),
+    });
+  }
+
+  /** "Alpicat, El Pedernoso", or the whole network when none are named. */
+  scopeLabel(names: string[]): string {
+    return names.length ? names.join(', ') : this.translate.instant('aiAnalysis.reports.wholeNetwork');
+  }
+
+  scopeLabelOf(key: string | undefined): string {
+    const scope = this.selected()?.scopes?.find(sc => sc.key === (key ?? ''));
+    return this.scopeLabel(scope?.locations ?? []);
   }
 
   load(): void {
@@ -148,14 +181,9 @@ export class AIReportsComponent implements OnInit {
         // a slower answer for a row clicked earlier must not replace this one
         if (this.opening !== report.id) return;
         this.selected.set(report);
-        const langs = this.selectedLanguages();
-        const lang = langs.includes(this.previewLanguage()) ? this.previewLanguage() : langs[0];
-        if (lang) {
-          this.showPreview(lang);
-        } else {
-          this.previewHtml.set(null);
-          this.previewSubject.set('');
-        }
+        const keys = this.selectedScopes().map(sc => sc.key);
+        this.previewScope.set(keys.includes(this.previewScope()) ? this.previewScope() : (keys[0] ?? ''));
+        this.showDefaultPreview();
       },
       error: () => this.errorService.handle(this.translate.instant('aiAnalysis.errors.loadReport')),
     });
@@ -172,17 +200,35 @@ export class AIReportsComponent implements OnInit {
     this.previewHtml.set(null);
   }
 
+  selectScope(key: string): void {
+    this.previewScope.set(key);
+    this.showDefaultPreview();
+  }
+
+  /** Shows the preview in the current language, or the scope's first one. */
+  private showDefaultPreview(): void {
+    const langs = this.selectedLanguages();
+    const lang = langs.includes(this.previewLanguage()) ? this.previewLanguage() : langs[0];
+    if (lang) {
+      this.showPreview(lang);
+    } else {
+      this.previewHtml.set(null);
+      this.previewSubject.set('');
+    }
+  }
+
   showPreview(language: AIReportLanguage): void {
     const report = this.selected();
     if (!report) return;
+    const scope = this.previewScope();
     this.previewLanguage.set(language);
     this.previewLoading.set(true);
     this.previewHtml.set(null);
     this.previewSubject.set('');
-    this.aiService.preview(report.id, language).subscribe({
+    this.aiService.preview(report.id, scope, language).subscribe({
       next: (preview) => {
-        // the user may have switched report or language meanwhile
-        if (this.selected()?.id !== report.id || this.previewLanguage() !== language) return;
+        // the user may have switched report, scope or language meanwhile
+        if (this.selected()?.id !== report.id || this.previewScope() !== scope || this.previewLanguage() !== language) return;
         this.previewSubject.set(preview.subject);
         // the email is built by the backend with every model text escaped, and
         // the frame is sandboxed without scripts
@@ -197,11 +243,11 @@ export class AIReportsComponent implements OnInit {
   }
 
   dryRun(): void {
-    this.start({dry_run: true});
+    this.start({dry_run: true, location_ids: this.runLocations()});
   }
 
   generate(): void {
-    this.start({language: this.runLanguage()});
+    this.start({language: this.runLanguage(), location_ids: this.runLocations()});
   }
 
   /** Sending reaches every subscriber and costs a request per language: confirm first. */
@@ -228,6 +274,7 @@ export class AIReportsComponent implements OnInit {
         this.reports.update(list => [report, ...list.filter(r => r.id !== report.id)]);
         this.opening = report.id;
         this.selected.set(report);
+        this.previewScope.set('');
         this.previewHtml.set(null);
         this.schedulePoll();
       },
@@ -239,7 +286,14 @@ export class AIReportsComponent implements OnInit {
   }
 
   languagesOf(report: AIReport): string {
-    return (report.analyses ?? []).filter(a => !!a.result).map(a => a.language.toUpperCase()).join(', ');
+    const langs = new Set((report.analyses ?? []).filter(a => !!a.result).map(a => a.language.toUpperCase()));
+    return [...langs].join(', ');
+  }
+
+  /** The locations a report covers, for the list: names, or the whole network. */
+  scopesOf(report: AIReport): string {
+    if (!report.scopes?.length) return this.scopeLabel([]);
+    return report.scopes.map(sc => this.scopeLabel(sc.locations ?? [])).join(' · ');
   }
 
   analysisStatus(report: AIReport): string {

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormBuilder, FormGroupDirective, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatProgressBar} from '@angular/material/progress-bar';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatFormField, MatHint, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatSelect, MatOption} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
@@ -13,7 +13,7 @@ import {MatAccordion, MatExpansionPanel, MatExpansionPanelDescription, MatExpans
 import {MatDialog} from '@angular/material/dialog';
 import {BasicDialogComponent} from '../dialogs/basic/basic-dialog.component';
 import {DialogData} from '../../models/dialog-data';
-import {MailLanguage, MailRecipient, MailReportType, MailSubscription, MailSubscriptionPeriod} from '../../models/mail-subscription';
+import {MailLanguage, MailRecipient, MailReportType, MailSubscription, MailSubscriptionPeriod, ReportLocation} from '../../models/mail-subscription';
 import {MailSubscriptionService} from '../../service/mail-subscription.service';
 import {StatsService} from '../../service/stats.service';
 import {ErrorService} from '../../service/error.service';
@@ -36,7 +36,7 @@ import {RowAction, RowActionsComponent} from '../ui/row-actions/row-actions.comp
     ReactiveFormsModule,
     FormsModule,
     MatProgressBar,
-    MatFormField, MatLabel, MatInput, MatSelect, MatOption,
+    MatFormField, MatLabel, MatHint, MatInput, MatSelect, MatOption,
     MatSlideToggle, MatButton, MatIcon,
     MatCard, MatCardContent, MatCardHeader, MatCardTitle,
     MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription,
@@ -57,6 +57,7 @@ export class MailSubscriptionsComponent implements OnInit {
   readonly languages: MailLanguage[] = ['es', 'en'];
   readonly groups: Group[] = this.statsService.getGroups();
 
+  readonly locations = signal<ReportLocation[]>([]);
   readonly loading = signal(false);
   readonly saving = signal(false);
   readonly subscriptions = signal<MailSubscription[]>([]);
@@ -94,6 +95,8 @@ export class MailSubscriptionsComponent implements OnInit {
     period: ['daily' as MailSubscriptionPeriod | '', Validators.required],
     user_group: [this.groups[0]?.id ?? 'default', Validators.required],
     language: ['es' as MailLanguage, Validators.required],
+    /** Empty: the whole network. */
+    location_ids: [[] as string[]],
     enabled: [true],
   });
 
@@ -103,6 +106,10 @@ export class MailSubscriptionsComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(type => this.applyReportType(type));
     this.load();
+    this.mailService.locations().subscribe({
+      next: (list) => this.locations.set(list ?? []),
+      error: () => this.locations.set([]),
+    });
   }
 
   private applyReportType(type: MailReportType): void {
@@ -145,6 +152,7 @@ export class MailSubscriptionsComponent implements OnInit {
       period: values.period || 'daily',
       user_group: values.user_group || (this.groups[0]?.id ?? 'default'),
       language: values.language ?? 'es',
+      location_ids: values.location_ids ?? [],
       enabled: values.enabled ?? true,
     });
     this.applyReportType(report);
@@ -210,6 +218,8 @@ export class MailSubscriptionsComponent implements OnInit {
       period: ai ? '' : value.period,
       user_group: ai ? '' : value.user_group,
       language: value.language,
+      // an empty list is sent, not left out: it returns to the whole network
+      location_ids: ai ? value.location_ids : [],
       enabled: value.enabled,
     };
     const id = this.editingId();
@@ -240,8 +250,8 @@ export class MailSubscriptionsComponent implements OnInit {
     const setEnabled = (value: boolean) =>
       this.subscriptions.update(list => list.map(s => s.id === sub.id ? {...s, enabled: value} : s));
     setEnabled(enabled);
-    const {email, report, period, user_group, language} = sub;
-    this.mailService.update(sub.id, {email, report, period, user_group, language, enabled}).subscribe({
+    const {email, report, period, user_group, language, location_ids} = sub;
+    this.mailService.update(sub.id, {email, report, period, user_group, language, location_ids: location_ids ?? [], enabled}).subscribe({
       error: () => {
         setEnabled(!enabled);
         this.errorService.handle(this.translate.instant('errors.saveMailSub'));
@@ -305,13 +315,24 @@ export class MailSubscriptionsComponent implements OnInit {
   /** One line naming a report, e.g. "AI analysis · ES" or "Consumption · Weekly · Client". */
   describe(sub: MailSubscription): string {
     if (sub.report === 'ai_analysis') {
-      return `${this.translate.instant('mailSubscriptions.reportTypes.ai_analysis')} · ${sub.language.toUpperCase()}`;
+      return [
+        this.translate.instant('mailSubscriptions.reportTypes.ai_analysis'),
+        sub.language.toUpperCase(),
+        this.locationNames(sub),
+      ].join(' · ');
     }
     return [
       this.translate.instant('mailSubscriptions.reportTypes.statistic'),
       this.translate.instant('mailSubscriptions.periods.' + sub.period),
       this.translate.instant(this.groupName(sub.user_group)),
     ].join(' · ');
+  }
+
+  /** The locations an AI analysis covers: their names, or the whole network. */
+  locationNames(sub: MailSubscription): string {
+    const ids = sub.location_ids ?? [];
+    if (ids.length === 0) return this.translate.instant('mailSubscriptions.allLocations');
+    return ids.map(id => this.locations().find(l => l.id === id)?.name ?? id).join(', ');
   }
 
   summary(recipient: MailRecipient): string {
