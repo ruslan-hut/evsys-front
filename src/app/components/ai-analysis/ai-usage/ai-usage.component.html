@@ -1,0 +1,133 @@
+@if (loading()) {
+  <div><mat-progress-bar mode="indeterminate" /></div>
+}
+
+<div class="ai-usage">
+  <mat-button-toggle-group [value]="range()" (change)="setRange($event.value)" [hideSingleSelectionIndicator]="true">
+    @for (r of ranges; track r) {
+      <mat-button-toggle [value]="r">{{ 'aiAnalysis.usage.ranges.' + r | translate }}</mat-button-toggle>
+    }
+  </mat-button-toggle-group>
+
+  @if (usage(); as u) {
+    <div class="ai-totals">
+      <div class="ai-total">
+        <span class="ai-total-label">{{ 'aiAnalysis.usage.cost' | translate }}</span>
+        <span class="ai-total-value currency">${{ u.totals.cost_usd | number: '1.2-4' }}</span>
+      </div>
+      <div class="ai-total">
+        <span class="ai-total-label">{{ 'aiAnalysis.usage.requests' | translate }}</span>
+        <span class="ai-total-value numeric">{{ u.totals.requests }}</span>
+        @if (u.totals.failed > 0) {
+          <span class="ai-total-sub ai-error-text">{{ 'aiAnalysis.usage.failed' | translate: {n: u.totals.failed} }}</span>
+        }
+      </div>
+      <div class="ai-total">
+        <span class="ai-total-label">{{ 'aiAnalysis.usage.inputTokens' | translate }}</span>
+        <span class="ai-total-value numeric">{{ u.totals.input_tokens | number }}</span>
+        <span class="ai-total-sub">{{ 'aiAnalysis.usage.cached' | translate: {n: (u.totals.cached_tokens | number)} }}</span>
+      </div>
+      <div class="ai-total">
+        <span class="ai-total-label">{{ 'aiAnalysis.usage.outputTokens' | translate }}</span>
+        <span class="ai-total-value numeric">{{ u.totals.output_tokens | number }}</span>
+        <span class="ai-total-sub">{{ 'aiAnalysis.usage.reasoning' | translate: {n: (u.totals.reasoning_tokens | number)} }}</span>
+      </div>
+    </div>
+
+    @if (months().length > 0) {
+      <div class="ai-tables">
+        <div class="table-responsive ai-card">
+          <table class="ai-table">
+            <thead>
+              <tr>
+                <th>{{ 'aiAnalysis.usage.month' | translate }}</th>
+                <th class="numeric">{{ 'aiAnalysis.usage.requests' | translate }}</th>
+                <th class="numeric">{{ 'aiAnalysis.usage.tokens' | translate }}</th>
+                <th class="numeric">{{ 'aiAnalysis.usage.cost' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of months(); track m.month) {
+                <tr>
+                  <td class="mono">{{ m.month }}</td>
+                  <td class="numeric">{{ m.requests }}</td>
+                  <td class="numeric">{{ m.input_tokens + m.output_tokens | number }}</td>
+                  <td class="numeric currency">${{ m.cost_usd | number: '1.2-4' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive ai-card">
+          <table class="ai-table">
+            <thead>
+              <tr>
+                <th>{{ 'aiAnalysis.usage.model' | translate }}</th>
+                <th class="numeric">{{ 'aiAnalysis.usage.requests' | translate }}</th>
+                <th class="numeric">{{ 'aiAnalysis.usage.tokens' | translate }}</th>
+                <th class="numeric">{{ 'aiAnalysis.usage.cost' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of u.models | keyvalue; track m.key) {
+                <tr>
+                  <td class="mono">{{ m.key }}</td>
+                  <td class="numeric">{{ m.value.requests }}</td>
+                  <td class="numeric">{{ m.value.input_tokens + m.value.output_tokens | number }}</td>
+                  <td class="numeric currency">${{ m.value.cost_usd | number: '1.2-4' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <div class="table-responsive ai-card">
+      <table class="ai-table">
+        <thead>
+          <tr>
+            <th>{{ 'aiAnalysis.usage.time' | translate }}</th>
+            <th>{{ 'aiAnalysis.usage.trigger' | translate }}</th>
+            <th>{{ 'aiAnalysis.usage.model' | translate }}</th>
+            <th>{{ 'aiAnalysis.usage.language' | translate }}</th>
+            <th class="numeric">{{ 'aiAnalysis.usage.input' | translate }}</th>
+            <th class="numeric">{{ 'aiAnalysis.usage.cachedShort' | translate }}</th>
+            <th class="numeric">{{ 'aiAnalysis.usage.output' | translate }}</th>
+            <th class="numeric">{{ 'aiAnalysis.usage.reasoningShort' | translate }}</th>
+            <th class="numeric">{{ 'aiAnalysis.usage.duration' | translate }}</th>
+            <th class="numeric">{{ 'aiAnalysis.usage.cost' | translate }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of records(); track r.id) {
+            <tr>
+              <td class="timestamp">{{ r.time | date: 'dd.MM.yy HH:mm' }}</td>
+              <td>{{ 'aiAnalysis.trigger.' + r.trigger | translate }}</td>
+              <td class="mono">{{ r.model }}</td>
+              <td>{{ r.language?.toUpperCase() || '—' }}</td>
+              <td class="numeric">{{ r.input_tokens | number }}</td>
+              <td class="numeric">{{ r.cached_tokens | number }}</td>
+              <td class="numeric">{{ r.output_tokens | number }}</td>
+              <td class="numeric">{{ r.reasoning_tokens | number }}</td>
+              <td class="numeric">{{ r.duration_ms / 1000 | number: '1.1-1' }} s</td>
+              <td class="numeric currency">${{ r.cost_usd | number: '1.4-4' }}</td>
+              <td>
+                @if (r.success) {
+                  <mat-icon class="ai-ok-icon">check</mat-icon>
+                } @else {
+                  <span class="ai-error-text" [title]="r.error ?? ''">
+                    <mat-icon class="ai-err-icon">error</mat-icon>
+                  </span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="11" class="no-data">{{ 'aiAnalysis.usage.empty' | translate }}</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

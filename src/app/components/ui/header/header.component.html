@@ -53,6 +53,11 @@
             <button mat-menu-item (click)="navigateTo('/mail-subscriptions')">
               <mat-icon>mail</mat-icon><span>{{ 'header.mailReports' | translate }}</span>
             </button>
+            @if (isAdminRole) {
+              <button mat-menu-item (click)="navigateTo('/ai-analysis')">
+                <mat-icon>auto_awesome</mat-icon><span>{{ 'header.aiAnalysis' | translate }}</span>
+              </button>
+            }
             <button mat-menu-item (click)="navigateTo('/webhooks')">
               <mat-icon>webhook</mat-icon><span>{{ 'header.webhooks' | translate }}</span>
             </button>
@@ -168,6 +173,11 @@
               <button mat-menu-item (click)="navigateTo('/mail-subscriptions')">
                 <mat-icon>mail</mat-icon><span>{{ 'header.mailReports' | translate }}</span>
               </button>
+              @if (isAdminRole) {
+                <button mat-menu-item (click)="navigateTo('/ai-analysis')">
+                  <mat-icon>auto_awesome</mat-icon><span>{{ 'header.aiAnalysis' | translate }}</span>
+                </button>
+              }
               <button mat-menu-item (click)="navigateTo('/webhooks')">
                 <mat-icon>webhook</mat-icon><span>{{ 'header.webhooks' | translate }}</span>
               </button>

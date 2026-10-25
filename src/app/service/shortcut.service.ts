@@ -16,7 +16,10 @@ export interface Command {
   /** Extra words matched by the palette filter but not displayed. */
   keywords?: string;
   route: string;
+  /** Admins and operators. */
   adminOnly?: boolean;
+  /** Admins only, not operators. */
+  adminRoleOnly?: boolean;
 }
 
 const COMMANDS: Command[] = [
@@ -34,6 +37,7 @@ const COMMANDS: Command[] = [
   { id: 'users', labelKey: 'shortcuts.commands.users', groupKey: 'shortcuts.groups.management', icon: 'group', hint: 'g u', route: '/users', adminOnly: true },
   { id: 'tags', labelKey: 'shortcuts.commands.tags', groupKey: 'shortcuts.groups.management', icon: 'nfc', route: '/user-tags', adminOnly: true, keywords: 'rfid cards' },
   { id: 'mail', labelKey: 'shortcuts.commands.mail', groupKey: 'shortcuts.groups.management', icon: 'mail', route: '/mail-subscriptions', adminOnly: true },
+  { id: 'aiAnalysis', labelKey: 'shortcuts.commands.aiAnalysis', groupKey: 'shortcuts.groups.management', icon: 'auto_awesome', route: '/ai-analysis', adminRoleOnly: true, keywords: 'ai openai weekly report analysis' },
   { id: 'webhooks', labelKey: 'shortcuts.commands.webhooks', groupKey: 'shortcuts.groups.management', icon: 'webhook', route: '/webhooks', adminOnly: true },
 
   { id: 'syslog', labelKey: 'shortcuts.commands.systemLog', groupKey: 'shortcuts.groups.diagnostics', icon: 'terminal', hint: 'g l', route: '/log/system', adminOnly: true },
@@ -74,8 +78,10 @@ export class ShortcutService {
 
   /** Commands the signed-in user is allowed to run. */
   availableCommands(): Command[] {
-    const privileged = this.accountService.isAdmin || this.accountService.isOperator;
-    return COMMANDS.filter(command => !command.adminOnly || privileged);
+    const admin = this.accountService.isAdmin;
+    const privileged = admin || this.accountService.isOperator;
+    return COMMANDS.filter(command =>
+      (!command.adminOnly || privileged) && (!command.adminRoleOnly || admin));
   }
 
   requestFilterFocus(): void {

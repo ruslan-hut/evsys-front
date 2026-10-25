@@ -138,11 +138,17 @@ describe('ShortcutService', () => {
       expect(service.availableCommands().some(c => c.adminOnly)).toBe(true);
     });
 
-    it('lists every command for an operator', () => {
+    it('lists the operator commands for an operator, without the admin-role ones', () => {
       account.isAdmin = false;
       account.isOperator = true;
+      const commands = service.availableCommands();
 
-      expect(service.availableCommands().some(c => c.adminOnly)).toBe(true);
+      expect(commands.some(c => c.adminOnly)).toBe(true);
+      expect(commands.map(c => c.id)).not.toContain('aiAnalysis');
+    });
+
+    it('lists the admin-role commands for an admin', () => {
+      expect(service.availableCommands().map(c => c.id)).toContain('aiAnalysis');
     });
 
     it('hides admin-only commands from a plain user', () => {
@@ -150,7 +156,7 @@ describe('ShortcutService', () => {
       account.isOperator = false;
       const commands = service.availableCommands();
 
-      expect(commands.every(c => !c.adminOnly)).toBe(true);
+      expect(commands.every(c => !c.adminOnly && !c.adminRoleOnly)).toBe(true);
       expect(commands.map(c => c.id)).toContain('points');
       expect(commands.map(c => c.id)).not.toContain('users');
     });

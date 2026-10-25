@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from "./helpers/auth.guard";
+import { adminGuard, authGuard } from "./helpers/auth.guard";
 import { homeRedirectGuard } from "./helpers/home-redirect.guard";
 
 export const routes: Routes = [
@@ -168,6 +168,11 @@ export const routes: Routes = [
     path: 'mail-subscriptions',
     loadComponent: () => import('./components/mail-subscriptions/mail-subscriptions.component').then(m => m.MailSubscriptionsComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'ai-analysis',
+    loadComponent: () => import('./components/ai-analysis/ai-analysis.component').then(m => m.AIAnalysisComponent),
+    canActivate: [adminGuard]
   },
   {
     path: 'webhooks',

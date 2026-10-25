@@ -65,7 +65,8 @@
     "openNavigation": "Open navigation",
     "back": "Back",
     "profile": "Profile: {{name}}",
-    "webhooks": "Webhooks"
+    "webhooks": "Webhooks",
+    "aiAnalysis": "AI analysis"
   },
   "login": {
     "title": "Sign In",
@@ -627,8 +628,8 @@
     "sendTestLabel": "Send a test message to",
     "emailPlaceholder": "recipient@example.com",
     "sendTest": "Send test mail",
-    "editTitle": "Edit subscription",
-    "newTitle": "New subscription",
+    "editTitle": "Edit report",
+    "newTitle": "New report",
     "email": "Email",
     "period": "Period",
     "client": "Client (group)",
@@ -646,13 +647,29 @@
     "edit": "Edit",
     "sendNow": "Send now",
     "delete": "Delete",
-    "noSubscriptions": "No mail subscriptions configured.",
+    "noSubscriptions": "No mail reports configured. Add an address above.",
     "deleteTitle": "Delete subscription",
-    "deleteContent": "Delete report subscription for \"{{email}}\"?",
+    "deleteContent": "Stop sending \"{{report}}\" to {{email}}?",
     "deleteYes": "Delete",
     "deleteNo": "Cancel",
     "testSent": "Test mail sent to {{email}}",
-    "reportSent": "Report sent"
+    "reportSent": "Report sent",
+    "report": "Report",
+    "reportTypes": {
+      "statistic": "Consumption",
+      "ai_analysis": "AI analysis"
+    },
+    "periods": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly"
+    },
+    "language": "Language",
+    "aiNote": "The AI analysis covers the whole network and is sent on the schedule set in AI analysis → Settings.",
+    "addReport": "Add report",
+    "summary": "{{enabled}} of {{total}} active",
+    "aiReportQueued": "The AI analysis is on its way: generating it may take a few minutes",
+    "aiShort": "AI"
   },
   "users": {
     "title": "Users",
@@ -986,7 +1003,8 @@
       "systemLog": "System log",
       "paymentLog": "Payment log",
       "paymentRetries": "Payment retries",
-      "profile": "Profile and appearance"
+      "profile": "Profile and appearance",
+      "aiAnalysis": "AI analysis"
     }
   },
   "actions": {
@@ -1060,5 +1078,132 @@
     "unavailableBody": "This request has expired or was already answered. Start the connection again from the application.",
     "redirecting": "Returning to the application…",
     "unknownClient": "The name above is chosen by the application itself and is not verified. The access will be sent to {{host}}. Allow only if you know that site and started this connection there."
+  },
+  "aiAnalysis": {
+    "tabs": {
+      "reports": "Reports",
+      "settings": "Settings",
+      "usage": "Usage"
+    },
+    "languages": {
+      "es": "Spanish",
+      "en": "English"
+    },
+    "trigger": {
+      "schedule": "Scheduled",
+      "manual": "Manual",
+      "test": "Test"
+    },
+    "status": {
+      "running": "Running",
+      "done": "Done",
+      "failed": "Failed"
+    },
+    "health": {
+      "ok": "All good",
+      "attention": "Attention",
+      "critical": "Critical"
+    },
+    "settings": {
+      "title": "Analysis settings",
+      "apiKey": "OpenAI key",
+      "configured": "Configured",
+      "apiKeyMissing": "Missing — set OPENAI_API_KEY in the deployment",
+      "mail": "Mail",
+      "notConfigured": "Not configured",
+      "recipients": "Recipients",
+      "nextRun": "Next run",
+      "monthSpent": "Spent this month",
+      "enabled": "Send the analysis on schedule",
+      "schedule": "Schedule",
+      "weekday": "Day",
+      "hour": "Hour",
+      "timeZone": "Time zone",
+      "timeZoneHint": "IANA name, e.g. Europe/Madrid",
+      "periodDays": "Period analysed",
+      "days": "days",
+      "model": "Model",
+      "modelPrice": "${{input}} in / ${{output}} out per 1M tokens",
+      "reasoningEffort": "Reasoning effort",
+      "effort": {
+        "default": "Model default",
+        "minimal": "Minimal",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "maxOutputTokens": "Max output tokens",
+      "monthlyBudget": "Monthly budget",
+      "monthlyBudgetHint": "USD; 0 = no limit",
+      "prompt": "Instructions",
+      "promptDefault": "Default",
+      "promptCustom": "Custom",
+      "promptHint": "What the model is told to look for and how to write. The answer format is fixed by the system.",
+      "restorePrompt": "Restore default",
+      "test": "Test connection",
+      "testPassed": "OpenAI answered: {{model}}, {{ms}} ms, {{tokens}} tokens, ${{cost}}",
+      "save": "Save",
+      "saved": "Settings saved",
+      "updated": "Last changed by {{by}}, {{at}}"
+    },
+    "reports": {
+      "dryRun": "Collect data only",
+      "language": "Language",
+      "generate": "Generate",
+      "generateAndSend": "Generate and send",
+      "hint": "\"Collect data only\" shows what the model would read, at no cost. \"Generate\" creates a report for preview. \"Generate and send\" emails every active subscriber.",
+      "created": "Created",
+      "period": "Period",
+      "trigger": "Started",
+      "status": "Status",
+      "languages": "Languages",
+      "sent": "Sent",
+      "cost": "Cost",
+      "dataOnly": "Data",
+      "empty": "No analyses yet.",
+      "running": "The analysis is running; this page updates by itself.",
+      "deliveries": "Deliveries",
+      "snapshot": "Data sent to the model",
+      "sendAllTitle": "Send the AI analysis",
+      "sendAllContent": "Generate the analysis now and email it to every active subscriber? Each language costs one OpenAI request.",
+      "sendAllYes": "Generate and send",
+      "preview": "Email preview"
+    },
+    "usage": {
+      "ranges": {
+        "month": "This month",
+        "90d": "90 days",
+        "365d": "12 months"
+      },
+      "cost": "Cost",
+      "requests": "Requests",
+      "failed": "{{n}} failed",
+      "inputTokens": "Input tokens",
+      "outputTokens": "Output tokens",
+      "cached": "{{n}} from cache",
+      "reasoning": "{{n}} reasoning",
+      "month": "Month",
+      "model": "Model",
+      "tokens": "Tokens",
+      "time": "Time",
+      "trigger": "Started",
+      "language": "Lang.",
+      "input": "Input",
+      "cachedShort": "Cached",
+      "output": "Output",
+      "reasoningShort": "Reasoning",
+      "duration": "Duration",
+      "empty": "No requests in this period."
+    },
+    "errors": {
+      "loadSettings": "Failed to load the AI analysis settings",
+      "saveSettings": "Failed to save the settings. {{error}}",
+      "test": "OpenAI test failed. {{error}}",
+      "loadReports": "Failed to load the analyses",
+      "loadReport": "Failed to load the analysis",
+      "preview": "Failed to render the email",
+      "run": "Failed to start the analysis. {{error}}",
+      "loadUsage": "Failed to load the usage"
+    }
   }
 }

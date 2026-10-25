@@ -13,3 +13,9 @@ export const authGuard: CanActivateFn = () => {
 
   return user.role === environment.admin || user.role === environment.operator;
 };
+
+/** Admins only: pages that operators may not open, such as the AI analysis settings. */
+export const adminGuard: CanActivateFn = () => {
+  const user = inject(AccountService).userValue;
+  return !!user && user.role === environment.admin;
+};

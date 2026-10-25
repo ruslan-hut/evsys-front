@@ -1,0 +1,162 @@
+@if (loading() && reports().length === 0) {
+  <div><mat-progress-bar mode="indeterminate" /></div>
+}
+
+<div class="ai-reports">
+  <div class="ai-toolbar">
+    <button mat-stroked-button type="button" (click)="dryRun()" [disabled]="starting() || anyRunning()">
+      <mat-icon>dataset</mat-icon>
+      {{ 'aiAnalysis.reports.dryRun' | translate }}
+    </button>
+    <span class="ai-toolbar-group">
+      <mat-form-field appearance="outline" class="ai-lang-field" subscriptSizing="dynamic">
+        <mat-label>{{ 'aiAnalysis.reports.language' | translate }}</mat-label>
+        <mat-select [value]="runLanguage()" (valueChange)="runLanguage.set($event)">
+          @for (l of languages; track l) {
+            <mat-option [value]="l">{{ 'aiAnalysis.languages.' + l | translate }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button color="primary" type="button" (click)="generate()" [disabled]="starting() || anyRunning()">
+        <mat-icon>auto_awesome</mat-icon>
+        {{ 'aiAnalysis.reports.generate' | translate }}
+      </button>
+    </span>
+    <span class="ai-spacer"></span>
+    <button mat-raised-button color="primary" type="button" (click)="generateAndSend()" [disabled]="starting() || anyRunning()">
+      <mat-icon>send</mat-icon>
+      {{ 'aiAnalysis.reports.generateAndSend' | translate }}
+    </button>
+  </div>
+  <div class="ai-hint">{{ 'aiAnalysis.reports.hint' | translate }}</div>
+
+  @if (anyRunning()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  <div class="ai-list">
+    <div class="ai-list-head" aria-hidden="true">
+      <span>{{ 'aiAnalysis.reports.created' | translate }}</span>
+      <span>{{ 'aiAnalysis.reports.period' | translate }}</span>
+      <span>{{ 'aiAnalysis.reports.trigger' | translate }}</span>
+      <span>{{ 'aiAnalysis.reports.status' | translate }}</span>
+      <span>{{ 'aiAnalysis.reports.languages' | translate }}</span>
+      <span>{{ 'aiAnalysis.reports.sent' | translate }}</span>
+      <span class="numeric">{{ 'aiAnalysis.reports.cost' | translate }}</span>
+    </div>
+    @for (r of reports(); track r.id) {
+      <div class="ai-row row-clickable" role="button" tabindex="0"
+           [class.ai-row--selected]="selected()?.id === r.id"
+           [attr.aria-pressed]="selected()?.id === r.id"
+           (click)="open(r)" (keydown.enter)="onRowKey($event, r)" (keydown.space)="onRowKey($event, r)">
+        <span class="timestamp">{{ r.created_at | date: 'dd.MM.yy HH:mm' }}</span>
+        <span>{{ periodLabel(r) }}</span>
+        <span>
+          {{ 'aiAnalysis.trigger.' + r.trigger | translate }}
+          @if (r.dry_run) {
+            <span class="ai-badge">{{ 'aiAnalysis.reports.dataOnly' | translate }}</span>
+          }
+        </span>
+        <span>
+          <span class="ai-badge ai-badge--{{ r.status }}">{{ 'aiAnalysis.status.' + r.status | translate }}</span>
+          @if (analysisStatus(r); as st) {
+            <span class="ai-badge ai-badge--{{ st }}">{{ 'aiAnalysis.health.' + st | translate }}</span>
+          }
+        </span>
+        <span>{{ languagesOf(r) || '—' }}</span>
+        <span>
+          {{ r.deliveries?.length ?? 0 }}
+          @if (failedDeliveries(r) > 0) {
+            <span class="ai-error-text">({{ failedDeliveries(r) }} ✕)</span>
+          }
+        </span>
+        <span class="numeric currency">${{ r.cost_usd | number: '1.2-4' }}</span>
+      </div>
+    } @empty {
+      @if (!loading()) {
+        <div class="no-data">{{ 'aiAnalysis.reports.empty' | translate }}</div>
+      }
+    }
+  </div>
+
+  @if (selected(); as s) {
+    <mat-card class="ai-detail">
+      <mat-card-content>
+        <div class="ai-detail-head">
+          <div>
+            <div class="ai-detail-title">
+              {{ periodLabel(s, true) }}
+              <span class="ai-badge ai-badge--{{ s.status }}">{{ 'aiAnalysis.status.' + s.status | translate }}</span>
+            </div>
+            <div class="ai-detail-meta">
+              {{ 'aiAnalysis.trigger.' + s.trigger | translate }}
+              @if (s.author) { · {{ s.author }} }
+              @if (s.model && !s.dry_run) { · {{ s.model }} }
+              · {{ s.time_zone }}
+              · <span class="currency">${{ s.cost_usd | number: '1.2-4' }}</span>
+              · {{ s.snapshot_bytes / 1024 | number: '1.0-0' }} KB
+            </div>
+          </div>
+          <button mat-button type="button" (click)="close()">
+            <mat-icon>close</mat-icon>{{ 'common.close' | translate }}
+          </button>
+        </div>
+
+        @if (s.error) {
+          <div class="ai-error-box"><mat-icon>error</mat-icon>{{ s.error }}</div>
+        }
+        @for (a of s.analyses ?? []; track a.language) {
+          @if (a.error) {
+            <div class="ai-error-box"><mat-icon>error</mat-icon>{{ a.language.toUpperCase() }}: {{ a.error }}</div>
+          }
+        }
+
+        @if (selectedLanguages().length > 0) {
+          <div class="ai-preview-bar">
+            <mat-button-toggle-group [value]="previewLanguage()" (change)="showPreview($event.value)" [hideSingleSelectionIndicator]="true">
+              @for (l of selectedLanguages(); track l) {
+                <mat-button-toggle [value]="l">{{ l.toUpperCase() }}</mat-button-toggle>
+              }
+            </mat-button-toggle-group>
+            <span class="ai-preview-subject">{{ previewSubject() }}</span>
+          </div>
+          @if (previewLoading()) {
+            <mat-progress-bar mode="indeterminate" />
+          }
+          @if (previewHtml(); as html) {
+            <iframe class="ai-preview" sandbox="" [srcdoc]="html" [title]="previewSubject() || ('aiAnalysis.reports.preview' | translate)"></iframe>
+          }
+        } @else if (s.status === 'running') {
+          <div class="ai-hint">{{ 'aiAnalysis.reports.running' | translate }}</div>
+        }
+
+        @if ((s.deliveries ?? []).length > 0) {
+          <h3 class="ai-section-title">{{ 'aiAnalysis.reports.deliveries' | translate }}</h3>
+          <div class="ai-deliveries">
+            @for (d of s.deliveries; track $index) {
+              <div class="ai-delivery">
+                <span>{{ d.email }}</span>
+                <span>{{ d.language.toUpperCase() }}</span>
+                <span class="timestamp">{{ d.sent_at | date: 'dd.MM.yy HH:mm' }}</span>
+                @if (d.error) {
+                  <span class="ai-error-text">{{ d.error }}</span>
+                } @else {
+                  <mat-icon class="ai-ok-icon">check</mat-icon>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @if (prettySnapshot()) {
+          <mat-expansion-panel class="ai-snapshot">
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ 'aiAnalysis.reports.snapshot' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <pre class="ai-snapshot-json">{{ prettySnapshot() }}</pre>
+          </mat-expansion-panel>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

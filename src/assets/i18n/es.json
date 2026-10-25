@@ -65,7 +65,8 @@
     "openNavigation": "Abrir navegación",
     "back": "Volver",
     "profile": "Perfil: {{name}}",
-    "webhooks": "Webhooks"
+    "webhooks": "Webhooks",
+    "aiAnalysis": "Análisis IA"
   },
   "login": {
     "title": "Iniciar sesión",
@@ -627,8 +628,8 @@
     "sendTestLabel": "Enviar un mensaje de prueba a",
     "emailPlaceholder": "destinatario@ejemplo.com",
     "sendTest": "Enviar correo de prueba",
-    "editTitle": "Editar suscripción",
-    "newTitle": "Nueva suscripción",
+    "editTitle": "Editar informe",
+    "newTitle": "Nuevo informe",
     "email": "Correo",
     "period": "Periodo",
     "client": "Cliente (grupo)",
@@ -646,13 +647,29 @@
     "edit": "Editar",
     "sendNow": "Enviar ahora",
     "delete": "Eliminar",
-    "noSubscriptions": "No hay suscripciones de correo configuradas.",
+    "noSubscriptions": "No hay informes por correo configurados. Añada una dirección arriba.",
     "deleteTitle": "Eliminar suscripción",
-    "deleteContent": "¿Eliminar la suscripción al informe para \"{{email}}\"?",
+    "deleteContent": "¿Dejar de enviar «{{report}}» a {{email}}?",
     "deleteYes": "Eliminar",
     "deleteNo": "Cancelar",
     "testSent": "Correo de prueba enviado a {{email}}",
-    "reportSent": "Informe enviado"
+    "reportSent": "Informe enviado",
+    "report": "Informe",
+    "reportTypes": {
+      "statistic": "Consumo",
+      "ai_analysis": "Análisis IA"
+    },
+    "periods": {
+      "daily": "Diario",
+      "weekly": "Semanal",
+      "monthly": "Mensual"
+    },
+    "language": "Idioma",
+    "aiNote": "El análisis IA abarca toda la red y se envía según la programación de Análisis IA → Ajustes.",
+    "addReport": "Añadir informe",
+    "summary": "{{enabled}} de {{total}} activos",
+    "aiReportQueued": "El análisis IA está en camino: generarlo puede tardar unos minutos",
+    "aiShort": "IA"
   },
   "users": {
     "title": "Usuarios",
@@ -986,7 +1003,8 @@
       "systemLog": "Registro del sistema",
       "paymentLog": "Registro de pagos",
       "paymentRetries": "Reintentos de pago",
-      "profile": "Perfil y apariencia"
+      "profile": "Perfil y apariencia",
+      "aiAnalysis": "Análisis IA"
     }
   },
   "actions": {
@@ -1060,5 +1078,132 @@
     "unavailableBody": "Esta solicitud ha caducado o ya fue respondida. Inicia la conexión de nuevo desde la aplicación.",
     "redirecting": "Volviendo a la aplicación…",
     "unknownClient": "El nombre de arriba lo elige la propia aplicación y no está verificado. El acceso se enviará a {{host}}. Permítelo solo si conoces ese sitio e iniciaste allí esta conexión."
+  },
+  "aiAnalysis": {
+    "tabs": {
+      "reports": "Informes",
+      "settings": "Ajustes",
+      "usage": "Consumo"
+    },
+    "languages": {
+      "es": "Español",
+      "en": "Inglés"
+    },
+    "trigger": {
+      "schedule": "Programado",
+      "manual": "Manual",
+      "test": "Prueba"
+    },
+    "status": {
+      "running": "En curso",
+      "done": "Hecho",
+      "failed": "Error"
+    },
+    "health": {
+      "ok": "Todo en orden",
+      "attention": "Atención",
+      "critical": "Crítico"
+    },
+    "settings": {
+      "title": "Ajustes del análisis",
+      "apiKey": "Clave de OpenAI",
+      "configured": "Configurada",
+      "apiKeyMissing": "Falta: defina OPENAI_API_KEY en el despliegue",
+      "mail": "Correo",
+      "notConfigured": "Sin configurar",
+      "recipients": "Destinatarios",
+      "nextRun": "Próxima ejecución",
+      "monthSpent": "Gastado este mes",
+      "enabled": "Enviar el análisis según la programación",
+      "schedule": "Programación",
+      "weekday": "Día",
+      "hour": "Hora",
+      "timeZone": "Zona horaria",
+      "timeZoneHint": "Nombre IANA, p. ej. Europe/Madrid",
+      "periodDays": "Periodo analizado",
+      "days": "días",
+      "model": "Modelo",
+      "modelPrice": "{{input}} $ entrada / {{output}} $ salida por 1M tokens",
+      "reasoningEffort": "Esfuerzo de razonamiento",
+      "effort": {
+        "default": "Por defecto del modelo",
+        "minimal": "Mínimo",
+        "low": "Bajo",
+        "medium": "Medio",
+        "high": "Alto"
+      },
+      "maxOutputTokens": "Máx. tokens de salida",
+      "monthlyBudget": "Presupuesto mensual",
+      "monthlyBudgetHint": "USD; 0 = sin límite",
+      "prompt": "Instrucciones",
+      "promptDefault": "Por defecto",
+      "promptCustom": "Personalizadas",
+      "promptHint": "Qué debe buscar el modelo y cómo debe redactar. El formato de la respuesta lo fija el sistema.",
+      "restorePrompt": "Restaurar por defecto",
+      "test": "Probar conexión",
+      "testPassed": "OpenAI respondió: {{model}}, {{ms}} ms, {{tokens}} tokens, {{cost}} $",
+      "save": "Guardar",
+      "saved": "Ajustes guardados",
+      "updated": "Último cambio: {{by}}, {{at}}"
+    },
+    "reports": {
+      "dryRun": "Solo recopilar datos",
+      "language": "Idioma",
+      "generate": "Generar",
+      "generateAndSend": "Generar y enviar",
+      "hint": "«Solo recopilar datos» muestra lo que leería el modelo, sin coste. «Generar» crea un informe para revisarlo. «Generar y enviar» lo envía a todos los suscriptores activos.",
+      "created": "Creado",
+      "period": "Periodo",
+      "trigger": "Inicio",
+      "status": "Estado",
+      "languages": "Idiomas",
+      "sent": "Enviados",
+      "cost": "Coste",
+      "dataOnly": "Datos",
+      "empty": "Todavía no hay análisis.",
+      "running": "El análisis está en curso; esta página se actualiza sola.",
+      "deliveries": "Envíos",
+      "snapshot": "Datos enviados al modelo",
+      "sendAllTitle": "Enviar el análisis IA",
+      "sendAllContent": "¿Generar el análisis ahora y enviarlo a todos los suscriptores activos? Cada idioma cuesta una petición a OpenAI.",
+      "sendAllYes": "Generar y enviar",
+      "preview": "Vista previa del correo"
+    },
+    "usage": {
+      "ranges": {
+        "month": "Este mes",
+        "90d": "90 días",
+        "365d": "12 meses"
+      },
+      "cost": "Coste",
+      "requests": "Peticiones",
+      "failed": "{{n}} fallidas",
+      "inputTokens": "Tokens de entrada",
+      "outputTokens": "Tokens de salida",
+      "cached": "{{n}} desde caché",
+      "reasoning": "{{n}} de razonamiento",
+      "month": "Mes",
+      "model": "Modelo",
+      "tokens": "Tokens",
+      "time": "Hora",
+      "trigger": "Inicio",
+      "language": "Idioma",
+      "input": "Entrada",
+      "cachedShort": "Caché",
+      "output": "Salida",
+      "reasoningShort": "Razonam.",
+      "duration": "Duración",
+      "empty": "No hay peticiones en este periodo."
+    },
+    "errors": {
+      "loadSettings": "No se pudieron cargar los ajustes del análisis IA",
+      "saveSettings": "No se pudieron guardar los ajustes. {{error}}",
+      "test": "La prueba de OpenAI ha fallado. {{error}}",
+      "loadReports": "No se pudieron cargar los análisis",
+      "loadReport": "No se pudo cargar el análisis",
+      "preview": "No se pudo mostrar el correo",
+      "run": "No se pudo iniciar el análisis. {{error}}",
+      "loadUsage": "No se pudo cargar el consumo"
+    }
   }
 }

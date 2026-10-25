@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { errorInterceptor, NOT_AUTHORIZED_KEY, REQUEST_FAILED_KEY } from './error.interceptor';
+import { errorInterceptor, NOT_AUTHORIZED_KEY, REQUEST_FAILED_KEY, RequestError } from './error.interceptor';
 
 const URL = '/anything';
 
@@ -53,6 +53,21 @@ describe('errorInterceptor', () => {
     const caught = errorFor(500);
     expect(caught).toBeInstanceOf(Error);
     expect((caught as unknown as { status?: number }).status).toBeUndefined();
+  });
+
+  it('keeps the backend explanation next to the key', () => {
+    let caught: RequestError | undefined;
+    http.get(URL).subscribe({ error: (e: RequestError) => (caught = e) });
+    controller.expectOne(URL).flush(
+      { status_code: 2001, status_message: 'Failed to start ai report: an analysis is already running' },
+      { status: 400, statusText: 'Bad Request' }
+    );
+    expect(caught?.message).toBe(REQUEST_FAILED_KEY);
+    expect(caught?.serverMessage).toBe('Failed to start ai report: an analysis is already running');
+  });
+
+  it('leaves the explanation out when the body has none', () => {
+    expect((errorFor(500) as RequestError).serverMessage).toBeUndefined();
   });
 
   it('passes successful responses through untouched', () => {

@@ -39,11 +39,13 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   menuEnabled = false;
 
   isAdmin = false;
+  /** Admin role proper: some pages are closed to operators. */
+  isAdminRole = false;
   isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset);
 
   /** Routes that light up each top-level nav group. */
   private static readonly MONITORING_ROUTES = ['/dashboard', '/statistic', '/reports', '/export'];
-  private static readonly MANAGE_ROUTES = ['/users', '/user-tags', '/mail-subscriptions', '/webhooks', '/log/', '/payment-retries'];
+  private static readonly MANAGE_ROUTES = ['/users', '/user-tags', '/mail-subscriptions', '/ai-analysis', '/webhooks', '/log/', '/payment-retries'];
 
   /** True when the current URL belongs to this nav destination. */
   isActive(route: string): boolean {
@@ -98,9 +100,11 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
           this.username = user.username;
         }
         this.isAdmin = (user.role === environment.admin || user.role === environment.operator);
+        this.isAdminRole = user.role === environment.admin;
       } else {
         this.username = '';
         this.isAdmin = false;
+        this.isAdminRole = false;
       }
       this.cdr.markForCheck();
     })

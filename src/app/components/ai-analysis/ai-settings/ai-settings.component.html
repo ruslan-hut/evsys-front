@@ -1,0 +1,184 @@
+@if (loading()) {
+  <div><mat-progress-bar mode="indeterminate" /></div>
+}
+
+@if (view(); as v) {
+  <div class="ai-settings">
+    <div class="ai-status-strip">
+      <div class="ai-status-item">
+        <span class="ai-status-label">{{ 'aiAnalysis.settings.apiKey' | translate }}</span>
+        @if (v.has_api_key) {
+          <span class="ai-status-value ai-ok"><mat-icon>check_circle</mat-icon>{{ 'aiAnalysis.settings.configured' | translate }}</span>
+        } @else {
+          <span class="ai-status-value ai-missing"><mat-icon>error</mat-icon>{{ 'aiAnalysis.settings.apiKeyMissing' | translate }}</span>
+        }
+      </div>
+      <div class="ai-status-item">
+        <span class="ai-status-label">{{ 'aiAnalysis.settings.mail' | translate }}</span>
+        @if (v.mail_enabled) {
+          <span class="ai-status-value ai-ok"><mat-icon>check_circle</mat-icon>{{ 'aiAnalysis.settings.configured' | translate }}</span>
+        } @else {
+          <span class="ai-status-value ai-missing"><mat-icon>error</mat-icon>{{ 'aiAnalysis.settings.notConfigured' | translate }}</span>
+        }
+      </div>
+      <div class="ai-status-item">
+        <span class="ai-status-label">{{ 'aiAnalysis.settings.recipients' | translate }}</span>
+        <button type="button" class="ai-status-value ai-link" (click)="openRecipients()">
+          {{ v.recipients }}<mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+      <div class="ai-status-item">
+        <span class="ai-status-label">{{ 'aiAnalysis.settings.nextRun' | translate }}</span>
+        <span class="ai-status-value timestamp">
+          @if (v.enabled) {
+            {{ nextRunLabel(v) }}
+          } @else {
+            —
+          }
+        </span>
+      </div>
+      <div class="ai-status-item">
+        <span class="ai-status-label">{{ 'aiAnalysis.settings.monthSpent' | translate }}</span>
+        <span class="ai-status-value currency">
+          ${{ v.month_spent_usd | number: '1.2-4' }}
+          @if (v.monthly_budget_usd > 0) {
+            <span class="ai-muted">/ ${{ v.monthly_budget_usd | number: '1.2-2' }}</span>
+          }
+        </span>
+        @if (budgetShare(); as share) {
+          <mat-progress-bar mode="determinate" [value]="share" class="ai-budget-bar" />
+        }
+      </div>
+    </div>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ 'aiAnalysis.settings.title' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="save()" class="ai-form">
+          <mat-slide-toggle formControlName="enabled">{{ 'aiAnalysis.settings.enabled' | translate }}</mat-slide-toggle>
+
+          <h3 class="ai-form-heading">{{ 'aiAnalysis.settings.schedule' | translate }}</h3>
+          <div class="ai-form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.weekday' | translate }}</mat-label>
+              <mat-select formControlName="weekday">
+                @for (d of weekdays; track d) {
+                  <mat-option [value]="d">{{ weekdayName(d) }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.hour' | translate }}</mat-label>
+              <mat-select formControlName="hour">
+                @for (h of hours; track h) {
+                  <mat-option [value]="h">{{ h < 10 ? '0' + h : h }}:00</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.timeZone' | translate }}</mat-label>
+              <input matInput formControlName="time_zone" />
+              <mat-hint>{{ 'aiAnalysis.settings.timeZoneHint' | translate }}</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.periodDays' | translate }}</mat-label>
+              <input matInput type="number" min="1" max="31" formControlName="period_days" />
+              <span matSuffix class="ai-suffix">{{ 'aiAnalysis.settings.days' | translate }}</span>
+            </mat-form-field>
+          </div>
+
+          <h3 class="ai-form-heading">{{ 'aiAnalysis.settings.model' | translate }}</h3>
+          <div class="ai-form-row">
+            <mat-form-field appearance="outline" class="ai-field-wide">
+              <mat-label>{{ 'aiAnalysis.settings.model' | translate }}</mat-label>
+              <mat-select formControlName="model">
+                @if (!modelListed(v)) {
+                  <mat-option [value]="v.model">{{ v.model }}</mat-option>
+                }
+                @for (m of v.models; track m.id) {
+                  <mat-option [value]="m.id">{{ m.label }} <span class="ai-muted">· {{ modelPrice(m.id) }}</span></mat-option>
+                }
+              </mat-select>
+              <mat-hint>{{ modelPrice(form.controls.model.value) }}</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.reasoningEffort' | translate }}</mat-label>
+              <mat-select formControlName="reasoning_effort">
+                @for (e of efforts; track e) {
+                  <mat-option [value]="e">{{ (e ? 'aiAnalysis.settings.effort.' + e : 'aiAnalysis.settings.effort.default') | translate }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.maxOutputTokens' | translate }}</mat-label>
+              <input matInput type="number" min="1000" max="64000" step="1000" formControlName="max_output_tokens" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'aiAnalysis.settings.monthlyBudget' | translate }}</mat-label>
+              <span matTextPrefix>$&nbsp;</span>
+              <input matInput type="number" min="0" step="1" formControlName="monthly_budget_usd" />
+              <mat-hint>{{ 'aiAnalysis.settings.monthlyBudgetHint' | translate }}</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <h3 class="ai-form-heading">
+            {{ 'aiAnalysis.settings.prompt' | translate }}
+            @if (promptIsDefault()) {
+              <span class="ai-tag">{{ 'aiAnalysis.settings.promptDefault' | translate }}</span>
+            } @else {
+              <span class="ai-tag ai-tag--custom">{{ 'aiAnalysis.settings.promptCustom' | translate }}</span>
+            }
+          </h3>
+          <mat-form-field appearance="outline" class="ai-prompt">
+            <mat-label>{{ 'aiAnalysis.settings.prompt' | translate }}</mat-label>
+            <textarea matInput formControlName="system_prompt" rows="14"></textarea>
+            <mat-hint>{{ 'aiAnalysis.settings.promptHint' | translate }}</mat-hint>
+          </mat-form-field>
+
+          <mat-divider />
+
+          <div class="ai-form-actions">
+            <button mat-stroked-button type="button" (click)="test()" [disabled]="testing() || !v.has_api_key">
+              <mat-icon>network_check</mat-icon>
+              {{ 'aiAnalysis.settings.test' | translate }}
+            </button>
+            @if (!promptIsDefault()) {
+              <button mat-button type="button" (click)="restoreDefaultPrompt()">
+                <mat-icon>restart_alt</mat-icon>
+                {{ 'aiAnalysis.settings.restorePrompt' | translate }}
+              </button>
+            }
+            <span class="ai-spacer"></span>
+            <button mat-raised-button color="primary" type="submit" [disabled]="saving() || form.invalid || form.pristine">
+              <mat-icon>save</mat-icon>
+              {{ 'aiAnalysis.settings.save' | translate }}
+            </button>
+          </div>
+
+          @if (testing()) {
+            <mat-progress-bar mode="indeterminate" />
+          }
+          @if (testResult(); as t) {
+            <div class="ai-test-result">
+              <mat-icon class="ai-ok">check_circle</mat-icon>
+              {{ 'aiAnalysis.settings.testPassed' | translate: {
+                model: t.model,
+                ms: t.duration_ms,
+                tokens: t.input_tokens + t.output_tokens,
+                cost: (t.cost_usd | number: '1.4-6')
+              } }}
+            </div>
+          }
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    @if (v.updated_by) {
+      <div class="ai-muted ai-updated">
+        {{ 'aiAnalysis.settings.updated' | translate: {by: v.updated_by, at: (v.updated_at | date: 'dd.MM.yyyy HH:mm')} }}
+      </div>
+    }
+  </div>
+}

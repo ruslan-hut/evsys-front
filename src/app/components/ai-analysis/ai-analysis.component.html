@@ -1,0 +1,19 @@
+<div class="ai-container">
+  <mat-tab-group [preserveContent]="true" [selectedIndex]="activeTabIndex()" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab [label]="'aiAnalysis.tabs.reports' | translate">
+      <ng-template matTabContent>
+        <app-ai-reports />
+      </ng-template>
+    </mat-tab>
+    <mat-tab [label]="'aiAnalysis.tabs.settings' | translate">
+      <ng-template matTabContent>
+        <app-ai-settings />
+      </ng-template>
+    </mat-tab>
+    <mat-tab [label]="'aiAnalysis.tabs.usage' | translate">
+      <ng-template matTabContent>
+        <app-ai-usage />
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
