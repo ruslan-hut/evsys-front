@@ -11,10 +11,11 @@ import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material/expansion';
 import {MatDialog} from '@angular/material/dialog';
+import {MatTooltip} from '@angular/material/tooltip';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {AIReportService} from '../../../service/ai-report.service';
 import {ErrorService} from '../../../service/error.service';
-import {serverMessage} from '../../../helpers/error.interceptor';
+import {explainAIError, explainRequestError} from '../ai-errors';
 import {BasicDialogComponent} from '../../dialogs/basic/basic-dialog.component';
 import {DialogData} from '../../../models/dialog-data';
 import {AIReport, AIReportLanguage, AIReportRunRequest} from '../../../models/ai-report';
@@ -50,7 +51,7 @@ export function dayIn(value: string | Date, timeZone: string, withYear: boolean)
     FormsModule, DatePipe, DecimalPipe,
     MatProgressBar, MatButton, MatIcon, MatFormField, MatLabel, MatSelect, MatOption,
     MatCard, MatCardContent, MatButtonToggleGroup, MatButtonToggle,
-    MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle,
+    MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatTooltip,
     TranslatePipe,
   ],
 })
@@ -280,7 +281,7 @@ export class AIReportsComponent implements OnInit {
       },
       error: (err) => {
         this.starting.set(false);
-        this.errorService.handle(this.translate.instant('aiAnalysis.errors.run', {error: serverMessage(err)}));
+        this.errorService.handle(explainRequestError(err, 'aiAnalysis.errors.run', this.translate));
       },
     });
   }
@@ -290,10 +291,22 @@ export class AIReportsComponent implements OnInit {
     return [...langs].join(', ');
   }
 
-  /** The locations a report covers, for the list: names, or the whole network. */
-  scopesOf(report: AIReport): string {
-    if (!report.scopes?.length) return this.scopeLabel([]);
-    return report.scopes.map(sc => this.scopeLabel(sc.locations ?? [])).join(' · ');
+  /** One label per set of locations a report covers, for the list. */
+  scopeNames(report: AIReport): string[] {
+    if (!report.scopes?.length) return [this.scopeLabel([])];
+    return report.scopes.map(sc => this.scopeLabel(sc.locations ?? []));
+  }
+
+  /** "3 emails" in the list, or a dash when nothing was sent. */
+  sentLabel(report: AIReport): string {
+    const n = report.deliveries?.length ?? 0;
+    return n ? this.translate.instant('aiAnalysis.reports.sentCount', {n}) : '—';
+  }
+
+  /** A stored error as a sentence of its own. */
+  explain(text: string): string {
+    const sentence = explainAIError(text, this.translate);
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
   }
 
   analysisStatus(report: AIReport): string {

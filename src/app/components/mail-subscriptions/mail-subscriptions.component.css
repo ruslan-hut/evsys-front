@@ -7,8 +7,26 @@
   margin: 0 auto;
 }
 
+.mail-subs-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--touch-target-min);
+}
+
+.mail-subs-count {
+  font-size: var(--text-md);
+  color: var(--color-text-secondary);
+}
+
 .mail-subs-form-card {
   width: 100%;
+}
+
+/* a diagnostic, kept below the addresses it serves */
+.mail-subs-test {
+  margin-top: var(--space-4);
 }
 
 .mail-subs-form {
@@ -44,8 +62,11 @@
 }
 
 .mail-subs-address {
+  min-width: 0;
   font-weight: var(--weight-medium);
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mail-subs-summary {
@@ -98,7 +119,7 @@
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-.mail-subs-report--off .mail-subs-report-label,
+.mail-subs-report--off .mail-subs-report-title,
 .mail-subs-report--off .mail-subs-report-icon {
   color: var(--color-text-muted);
 }
@@ -111,10 +132,32 @@
   color: var(--color-text-secondary);
 }
 
-.mail-subs-report-label {
+.mail-subs-report-text {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-width: 0;
+}
+
+.mail-subs-report-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--text-md);
+}
+
+.mail-subs-report-detail {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.mail-subs-lang {
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--color-background-light);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
 }
 
 .mail-subs-panel-actions {
@@ -128,7 +171,8 @@
     padding: var(--space-2);
   }
 
-  .mail-subs-chips {
+  /* the address needs the whole header; the reports show once it opens */
+  .mail-subs-summary {
     display: none;
   }
 }

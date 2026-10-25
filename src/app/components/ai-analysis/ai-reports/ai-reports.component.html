@@ -4,33 +4,33 @@
 
 <div class="ai-reports">
   <div class="ai-toolbar">
-    <button mat-stroked-button type="button" (click)="dryRun()" [disabled]="starting() || anyRunning()">
+    <mat-form-field appearance="outline" class="ai-locations-field" subscriptSizing="dynamic">
+      <mat-label>{{ 'aiAnalysis.reports.locations' | translate }}</mat-label>
+      <mat-select multiple [value]="runLocations()" (valueChange)="runLocations.set($event)"
+                  [placeholder]="'aiAnalysis.reports.wholeNetwork' | translate">
+        @for (l of locations(); track l.id) {
+          <mat-option [value]="l.id">{{ l.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="ai-lang-field" subscriptSizing="dynamic">
+      <mat-label>{{ 'aiAnalysis.reports.language' | translate }}</mat-label>
+      <mat-select [value]="runLanguage()" (valueChange)="runLanguage.set($event)">
+        @for (l of languages; track l) {
+          <mat-option [value]="l">{{ 'aiAnalysis.languages.' + l | translate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button mat-stroked-button type="button" (click)="dryRun()" [disabled]="starting() || anyRunning()"
+            [matTooltip]="'aiAnalysis.reports.dryRunHint' | translate">
       <mat-icon>dataset</mat-icon>
       {{ 'aiAnalysis.reports.dryRun' | translate }}
     </button>
-    <span class="ai-toolbar-group">
-      <mat-form-field appearance="outline" class="ai-locations-field" subscriptSizing="dynamic">
-        <mat-label>{{ 'aiAnalysis.reports.locations' | translate }}</mat-label>
-        <mat-select multiple [value]="runLocations()" (valueChange)="runLocations.set($event)"
-                    [placeholder]="'aiAnalysis.reports.wholeNetwork' | translate">
-          @for (l of locations(); track l.id) {
-            <mat-option [value]="l.id">{{ l.name }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="ai-lang-field" subscriptSizing="dynamic">
-        <mat-label>{{ 'aiAnalysis.reports.language' | translate }}</mat-label>
-        <mat-select [value]="runLanguage()" (valueChange)="runLanguage.set($event)">
-          @for (l of languages; track l) {
-            <mat-option [value]="l">{{ 'aiAnalysis.languages.' + l | translate }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <button mat-stroked-button color="primary" type="button" (click)="generate()" [disabled]="starting() || anyRunning()">
-        <mat-icon>auto_awesome</mat-icon>
-        {{ 'aiAnalysis.reports.generate' | translate }}
-      </button>
-    </span>
+    <button mat-stroked-button color="primary" type="button" (click)="generate()" [disabled]="starting() || anyRunning()"
+            [matTooltip]="'aiAnalysis.reports.generateHint' | translate">
+      <mat-icon>auto_awesome</mat-icon>
+      {{ 'aiAnalysis.reports.generate' | translate }}
+    </button>
     <span class="ai-spacer"></span>
     <button mat-raised-button color="primary" type="button" (click)="generateAndSend()" [disabled]="starting() || anyRunning()">
       <mat-icon>send</mat-icon>
@@ -51,38 +51,44 @@
       <span>{{ 'aiAnalysis.reports.status' | translate }}</span>
       <span>{{ 'aiAnalysis.reports.languages' | translate }}</span>
       <span>{{ 'aiAnalysis.reports.sent' | translate }}</span>
-      <span class="numeric">{{ 'aiAnalysis.reports.cost' | translate }}</span>
+      <span class="ai-head-end">{{ 'aiAnalysis.reports.cost' | translate }}</span>
     </div>
     @for (r of reports(); track r.id) {
       <div class="ai-row row-clickable" role="button" tabindex="0"
            [class.ai-row--selected]="selected()?.id === r.id"
            [attr.aria-pressed]="selected()?.id === r.id"
            (click)="open(r)" (keydown.enter)="onRowKey($event, r)" (keydown.space)="onRowKey($event, r)">
-        <span class="timestamp">{{ r.created_at | date: 'dd.MM.yy HH:mm' }}</span>
-        <span>
+        <span class="ai-cell-created timestamp">{{ r.created_at | date: 'dd.MM.yy HH:mm' }}</span>
+        <span class="ai-cell-period">
           {{ periodLabel(r) }}
-          <span class="ai-row-scope">{{ scopesOf(r) }}</span>
+          <span class="ai-scope-tags">
+            @for (name of scopeNames(r); track $index) {
+              <span class="ai-scope-tag">{{ name }}</span>
+            }
+          </span>
         </span>
-        <span>
+        <span class="ai-cell-trigger">
           {{ 'aiAnalysis.trigger.' + r.trigger | translate }}
           @if (r.dry_run) {
             <span class="ai-badge">{{ 'aiAnalysis.reports.dataOnly' | translate }}</span>
           }
         </span>
-        <span>
+        <span class="ai-cell-status">
           <span class="ai-badge ai-badge--{{ r.status }}">{{ 'aiAnalysis.status.' + r.status | translate }}</span>
           @if (analysisStatus(r); as st) {
             <span class="ai-badge ai-badge--{{ st }}">{{ 'aiAnalysis.health.' + st | translate }}</span>
           }
         </span>
-        <span>{{ languagesOf(r) || '—' }}</span>
-        <span>
-          {{ r.deliveries?.length ?? 0 }}
+        <span class="ai-cell-langs">{{ languagesOf(r) || '—' }}</span>
+        <span class="ai-cell-sent">
+          {{ sentLabel(r) }}
           @if (failedDeliveries(r) > 0) {
-            <span class="ai-error-text">({{ failedDeliveries(r) }} ✕)</span>
+            <span class="ai-error-text">{{ 'aiAnalysis.reports.sentFailed' | translate: {n: failedDeliveries(r)} }}</span>
           }
         </span>
-        <span class="numeric currency">${{ r.cost_usd | number: '1.2-4' }}</span>
+        <span class="ai-cell-cost numeric currency">
+          @if (r.cost_usd > 0) { ${{ r.cost_usd | number: '1.2-4' }} } @else { — }
+        </span>
       </div>
     } @empty {
       @if (!loading()) {
@@ -95,56 +101,60 @@
     <mat-card class="ai-detail">
       <mat-card-content>
         <div class="ai-detail-head">
-          <div>
-            <div class="ai-detail-title">
-              {{ periodLabel(s, true) }}
-              <span class="ai-badge ai-badge--{{ s.status }}">{{ 'aiAnalysis.status.' + s.status | translate }}</span>
-            </div>
-            <div class="ai-detail-meta">
-              {{ 'aiAnalysis.trigger.' + s.trigger | translate }}
-              @if (s.author) { · {{ s.author }} }
-              @if (s.model && !s.dry_run) { · {{ s.model }} }
-              · {{ s.time_zone }}
-              · <span class="currency">${{ s.cost_usd | number: '1.2-4' }}</span>
-              · {{ s.snapshot_bytes / 1024 | number: '1.0-0' }} KB
-            </div>
+          <div class="ai-detail-title">
+            {{ periodLabel(s, true) }}
+            <span class="ai-badge ai-badge--{{ s.status }}">{{ 'aiAnalysis.status.' + s.status | translate }}</span>
           </div>
           <button mat-button type="button" (click)="close()">
             <mat-icon>close</mat-icon>{{ 'common.close' | translate }}
           </button>
         </div>
 
+        <dl class="ai-facts">
+          <div><dt>{{ 'aiAnalysis.reports.trigger' | translate }}</dt><dd>{{ 'aiAnalysis.trigger.' + s.trigger | translate }}</dd></div>
+          @if (s.author) {
+            <div><dt>{{ 'aiAnalysis.reports.author' | translate }}</dt><dd>{{ s.author }}</dd></div>
+          }
+          @if (s.model && !s.dry_run) {
+            <div><dt>{{ 'aiAnalysis.settings.model' | translate }}</dt><dd class="mono">{{ s.model }}</dd></div>
+          }
+          <div><dt>{{ 'aiAnalysis.settings.timeZone' | translate }}</dt><dd>{{ s.time_zone }}</dd></div>
+          <div><dt>{{ 'aiAnalysis.reports.cost' | translate }}</dt>
+            <dd class="currency">@if (s.cost_usd > 0) { ${{ s.cost_usd | number: '1.2-4' }} } @else { — }</dd></div>
+        </dl>
+
         @if (s.error) {
-          <div class="ai-error-box"><mat-icon>error</mat-icon>{{ s.error }}</div>
+          <div class="ai-error-box"><mat-icon>error</mat-icon>{{ explain(s.error) }}</div>
         }
-        @for (a of s.analyses ?? []; track a.language) {
-          @if (a.error) {
-            <div class="ai-error-box"><mat-icon>error</mat-icon>{{ a.language.toUpperCase() }}: {{ a.error }}</div>
+        @for (a of s.analyses ?? []; track $index) {
+          @if (a.error && a.error !== s.error) {
+            <div class="ai-error-box"><mat-icon>error</mat-icon>{{ scopeLabelOf(a.scope) }}, {{ a.language.toUpperCase() }}: {{ explain(a.error) }}</div>
           }
         }
 
-        @if (selectedScopes().length > 1) {
-          <div class="ai-preview-bar">
+        <div class="ai-preview-bar">
+          @if (selectedScopes().length > 1) {
             <mat-button-toggle-group [value]="previewScope()" (change)="selectScope($event.value)" [hideSingleSelectionIndicator]="true"
                                      [attr.aria-label]="'aiAnalysis.reports.locations' | translate">
               @for (sc of selectedScopes(); track sc.key) {
                 <mat-button-toggle [value]="sc.key">{{ sc.label }}</mat-button-toggle>
               }
             </mat-button-toggle-group>
-          </div>
-        } @else if (selectedScopes().length === 1) {
-          <div class="ai-detail-meta">{{ 'aiAnalysis.reports.locations' | translate }}: {{ selectedScopes()[0].label }}</div>
-        }
-
-        @if (selectedLanguages().length > 0) {
-          <div class="ai-preview-bar">
-            <mat-button-toggle-group [value]="previewLanguage()" (change)="showPreview($event.value)" [hideSingleSelectionIndicator]="true">
+          } @else if (selectedScopes().length === 1) {
+            <span class="ai-scope-single">{{ selectedScopes()[0].label }}</span>
+          }
+          <span class="ai-spacer"></span>
+          @if (selectedLanguages().length > 0) {
+            <mat-button-toggle-group [value]="previewLanguage()" (change)="showPreview($event.value)" [hideSingleSelectionIndicator]="true"
+                                     [attr.aria-label]="'aiAnalysis.reports.language' | translate">
               @for (l of selectedLanguages(); track l) {
                 <mat-button-toggle [value]="l">{{ l.toUpperCase() }}</mat-button-toggle>
               }
             </mat-button-toggle-group>
-            <span class="ai-preview-subject">{{ previewSubject() }}</span>
-          </div>
+          }
+        </div>
+
+        @if (selectedLanguages().length > 0) {
           @if (previewLoading()) {
             <mat-progress-bar mode="indeterminate" />
           }
@@ -160,13 +170,16 @@
           <div class="ai-deliveries">
             @for (d of s.deliveries; track $index) {
               <div class="ai-delivery">
-                <span>{{ d.email }} <span class="ai-row-scope">{{ scopeLabelOf(d.scope) }}</span></span>
+                <span class="ai-delivery-to">
+                  {{ d.email }}
+                  <span class="ai-row-scope">{{ scopeLabelOf(d.scope) }}</span>
+                </span>
                 <span>{{ d.language.toUpperCase() }}</span>
                 <span class="timestamp">{{ d.sent_at | date: 'dd.MM.yy HH:mm' }}</span>
                 @if (d.error) {
                   <span class="ai-error-text">{{ d.error }}</span>
                 } @else {
-                  <mat-icon class="ai-ok-icon">check</mat-icon>
+                  <mat-icon class="ai-ok-icon" [attr.aria-label]="'aiAnalysis.reports.delivered' | translate">check</mat-icon>
                 }
               </div>
             }

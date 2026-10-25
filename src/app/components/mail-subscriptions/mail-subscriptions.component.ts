@@ -63,6 +63,8 @@ export class MailSubscriptionsComponent implements OnInit {
   readonly subscriptions = signal<MailSubscription[]>([]);
   readonly editingId = signal<string | null>(null);
   readonly reportType = signal<MailReportType>('statistic');
+  /** The form shows only while an address or report is being added or edited. */
+  readonly formOpen = signal(false);
   /** Addresses whose panels are open, lower case; kept across reloads. */
   readonly openPanels = signal<ReadonlySet<string>>(new Set());
 
@@ -178,9 +180,18 @@ export class MailSubscriptionsComponent implements OnInit {
     });
   }
 
+  /** Opens the form for a new address. */
+  startCreate(): void {
+    this.editingId.set(null);
+    this.resetForm();
+    this.formOpen.set(true);
+    this.showForm();
+  }
+
   /** Starts a new report for an address that already receives some. */
   addReportTo(recipient: MailRecipient): void {
     this.editingId.set(null);
+    this.formOpen.set(true);
     const hasAI = recipient.subscriptions.some(s => s.report === 'ai_analysis');
     this.resetForm({email: recipient.email, report: hasAI ? 'statistic' : 'ai_analysis'});
     this.showForm();
@@ -196,12 +207,14 @@ export class MailSubscriptionsComponent implements OnInit {
 
   startEdit(sub: MailSubscription): void {
     this.editingId.set(sub.id ?? null);
+    this.formOpen.set(true);
     this.resetForm(sub);
     this.showForm();
   }
 
   cancelEdit(): void {
     this.editingId.set(null);
+    this.formOpen.set(false);
     this.resetForm();
   }
 
@@ -312,20 +325,26 @@ export class MailSubscriptionsComponent implements OnInit {
     return this.groups.find((g) => g.id === id)?.name ?? id;
   }
 
-  /** One line naming a report, e.g. "AI analysis · ES" or "Consumption · Weekly · Client". */
+  /** "AI analysis" or "Weekly consumption". */
+  titleOf(sub: MailSubscription): string {
+    return sub.report === 'ai_analysis'
+      ? this.translate.instant('mailSubscriptions.reportTypes.ai_analysis')
+      : this.translate.instant('mailSubscriptions.statisticTitle.' + sub.period);
+  }
+
+  /** What the report covers: its locations, or the client group of the figures. */
+  detailOf(sub: MailSubscription): string {
+    return sub.report === 'ai_analysis'
+      ? this.locationNames(sub)
+      : this.translate.instant(this.groupName(sub.user_group));
+  }
+
+  /** The report in one phrase, for labels and dialogs: "AI analysis, ES, Alpicat". */
   describe(sub: MailSubscription): string {
-    if (sub.report === 'ai_analysis') {
-      return [
-        this.translate.instant('mailSubscriptions.reportTypes.ai_analysis'),
-        sub.language.toUpperCase(),
-        this.locationNames(sub),
-      ].join(' · ');
-    }
-    return [
-      this.translate.instant('mailSubscriptions.reportTypes.statistic'),
-      this.translate.instant('mailSubscriptions.periods.' + sub.period),
-      this.translate.instant(this.groupName(sub.user_group)),
-    ].join(' · ');
+    const parts = [this.titleOf(sub)];
+    if (sub.report === 'ai_analysis') parts.push(sub.language.toUpperCase());
+    parts.push(this.detailOf(sub));
+    return parts.join(', ');
   }
 
   /** The locations an AI analysis covers: their names, or the whole network. */

@@ -9,14 +9,15 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatDivider} from '@angular/material/divider';
+import {MatExpansionPanel, MatExpansionPanelDescription, MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material/expansion';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {AIReportService} from '../../../service/ai-report.service';
 import {ErrorService} from '../../../service/error.service';
 import {LanguageService} from '../../../service/language.service';
 import {AIReportSettingsUpdate, AIReportSettingsView, AIUsage} from '../../../models/ai-report';
-import {serverMessage} from '../../../helpers/error.interceptor';
+import {explainRequestError} from '../ai-errors';
 
 const REASONING_EFFORTS = ['', 'minimal', 'low', 'medium', 'high'];
 const HOURS = Array.from({length: 24}, (_, h) => h);
@@ -32,7 +33,8 @@ const WEEKDAYS = [1, 2, 3, 4, 5, 6, 0];
     ReactiveFormsModule, DatePipe, DecimalPipe,
     MatProgressBar, MatFormField, MatLabel, MatHint, MatSuffix, MatInput, MatSelect, MatOption,
     MatSlideToggle, MatButton, MatIcon, MatDivider,
-    MatCard, MatCardContent, MatCardHeader, MatCardTitle,
+    MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription,
+    MatCard, MatCardContent,
     TranslatePipe,
   ],
 })
@@ -113,17 +115,20 @@ export class AISettingsComponent implements OnInit {
     });
   }
 
-  /** The next run as the schedule sees it: in the schedule's time zone. */
-  nextRunLabel(v: AIReportSettingsView): string {
-    if (!v.next_run) return '—';
+  /** The next run as the schedule sees it, in the schedule's time zone. */
+  nextRun(v: AIReportSettingsView): {day: string; time: string; zone: string} | null {
+    if (!v.next_run) return null;
+    const at = new Date(v.next_run);
     try {
-      const formatted = new Intl.DateTimeFormat(this.language.current, {
-        weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', timeZone: v.time_zone,
-      }).format(new Date(v.next_run));
-      return `${formatted} (${v.time_zone})`;
+      const day = new Intl.DateTimeFormat(this.language.current, {
+        weekday: 'long', day: 'numeric', month: 'long', timeZone: v.time_zone,
+      }).format(at);
+      const time = new Intl.DateTimeFormat(this.language.current, {
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: v.time_zone,
+      }).format(at);
+      return {day, time, zone: v.time_zone};
     } catch {
-      return v.next_run;
+      return {day: v.next_run, time: '', zone: v.time_zone};
     }
   }
 
@@ -184,7 +189,7 @@ export class AISettingsComponent implements OnInit {
       },
       error: (err) => {
         this.saving.set(false);
-        this.errorService.handle(this.translate.instant('aiAnalysis.errors.saveSettings', {error: serverMessage(err)}));
+        this.errorService.handle(explainRequestError(err, 'aiAnalysis.errors.saveSettings', this.translate));
       },
     });
   }
@@ -201,7 +206,7 @@ export class AISettingsComponent implements OnInit {
       },
       error: (err) => {
         this.testing.set(false);
-        this.errorService.handle(this.translate.instant('aiAnalysis.errors.test', {error: serverMessage(err)}));
+        this.errorService.handle(explainRequestError(err, 'aiAnalysis.errors.test', this.translate));
       },
     });
   }

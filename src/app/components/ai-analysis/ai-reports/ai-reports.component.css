@@ -5,6 +5,7 @@
   padding-top: var(--space-4);
 }
 
+/* Controls wrap as one flow, so no button is pushed past a narrow screen. */
 .ai-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -12,24 +13,12 @@
   gap: var(--space-2);
 }
 
-.ai-toolbar-group {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.ai-lang-field {
-  width: 140px;
-}
-
 .ai-locations-field {
   width: 220px;
 }
 
-.ai-row-scope {
-  display: block;
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
+.ai-lang-field {
+  width: 140px;
 }
 
 .ai-spacer {
@@ -51,19 +40,22 @@
 .ai-list-head,
 .ai-row {
   display: grid;
-  grid-template-columns: 110px minmax(150px, 1.2fr) 120px minmax(150px, 1fr) 70px 70px 80px;
+  grid-template-columns: 110px minmax(180px, 1.4fr) 120px minmax(140px, 1fr) 64px 110px 80px;
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
 }
 
 .ai-list-head {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   border-bottom: 1px solid var(--color-border-light);
+}
+
+.ai-head-end,
+.ai-cell-cost {
+  text-align: right;
 }
 
 .ai-row {
@@ -78,6 +70,31 @@
 
 .ai-row--selected {
   background: var(--color-background-light);
+}
+
+.ai-scope-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-05);
+}
+
+.ai-scope-tag {
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--color-background-light);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.ai-cell-sent .ai-error-text {
+  display: block;
+}
+
+.ai-row-scope {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
 }
 
 .ai-badge {
@@ -122,7 +139,7 @@
 .ai-detail-head {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-3);
 }
 
@@ -135,10 +152,23 @@
   font-weight: var(--weight-semibold);
 }
 
-.ai-detail-meta {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
+/* Label over value, so each fact reads on its own. */
+.ai-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: var(--space-2) 0 0 0;
+}
+
+.ai-facts dt {
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
+}
+
+.ai-facts dd {
+  margin: 0;
+  font-size: var(--text-md);
+  color: var(--color-text-primary);
 }
 
 .ai-error-box {
@@ -165,12 +195,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin: var(--space-4) 0 var(--space-2) 0;
 }
 
-.ai-preview-subject {
+.ai-scope-single {
   font-size: var(--text-md);
+  font-weight: var(--weight-medium);
   color: var(--color-text-secondary);
 }
 
@@ -205,6 +236,10 @@
   border-bottom: 1px solid var(--color-border-light);
 }
 
+.ai-delivery-to {
+  overflow-wrap: anywhere;
+}
+
 .ai-ok-icon {
   color: var(--color-success);
   width: var(--icon-xs);
@@ -225,6 +260,7 @@
   white-space: pre;
 }
 
+/* Narrow screens: each report becomes a card, period and status first. */
 @media (max-width: 899px) {
   .ai-list-head {
     display: none;
@@ -232,8 +268,20 @@
 
   .ai-row {
     grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "period  status"
+      "trigger cost"
+      "created sent";
     row-gap: var(--space-1);
   }
+
+  .ai-cell-period { grid-area: period; }
+  .ai-cell-status { grid-area: status; justify-self: end; }
+  .ai-cell-trigger { grid-area: trigger; color: var(--color-text-secondary); }
+  .ai-cell-cost { grid-area: cost; }
+  .ai-cell-created { grid-area: created; font-size: var(--text-sm); color: var(--color-text-muted); }
+  .ai-cell-sent { grid-area: sent; justify-self: end; font-size: var(--text-sm); }
+  .ai-cell-langs { display: none; }
 
   .ai-delivery {
     grid-template-columns: 1fr auto auto;
@@ -249,6 +297,16 @@
 }
 
 @media (max-width: 599px) {
+  .ai-locations-field,
+  .ai-lang-field {
+    flex: 1 1 140px;
+    width: auto;
+  }
+
+  .ai-toolbar button {
+    flex: 1 1 auto;
+  }
+
   .ai-toolbar .ai-spacer {
     display: none;
   }

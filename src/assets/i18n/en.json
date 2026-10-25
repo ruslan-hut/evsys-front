@@ -647,7 +647,7 @@
     "edit": "Edit",
     "sendNow": "Send now",
     "delete": "Delete",
-    "noSubscriptions": "No mail reports configured. Add an address above.",
+    "noSubscriptions": "No addresses yet. Add the first one with \"Add address\".",
     "deleteTitle": "Delete subscription",
     "deleteContent": "Stop sending \"{{report}}\" to {{email}}?",
     "deleteYes": "Delete",
@@ -672,7 +672,14 @@
     "aiShort": "AI",
     "locations": "Locations",
     "allLocations": "Whole network",
-    "locationsHint": "Leave empty for the whole network"
+    "locationsHint": "Leave empty for the whole network",
+    "addresses": "{{n}} addresses",
+    "addAddress": "Add address",
+    "statisticTitle": {
+      "daily": "Daily consumption",
+      "weekly": "Weekly consumption",
+      "monthly": "Monthly consumption"
+    }
   },
   "users": {
     "title": "Users",
@@ -1154,7 +1161,7 @@
       "language": "Language",
       "generate": "Generate",
       "generateAndSend": "Generate and send",
-      "hint": "\"Collect data only\" shows what the model would read, at no cost. \"Generate\" creates a report for preview. Both cover the chosen locations, or the whole network. \"Generate and send\" emails every active subscriber the analysis of their own locations.",
+      "hint": "\"Generate and send\" emails every active subscriber the analysis of their own locations.",
       "created": "Created",
       "period": "Period",
       "trigger": "Started",
@@ -1172,7 +1179,13 @@
       "sendAllYes": "Generate and send",
       "preview": "Email preview",
       "locations": "Locations",
-      "wholeNetwork": "Whole network"
+      "wholeNetwork": "Whole network",
+      "dryRunHint": "Shows what the model would read, at no cost",
+      "generateHint": "Creates a report to review, without sending it",
+      "sentCount": "{{n}} emails",
+      "sentFailed": "{{n}} failed",
+      "author": "Author",
+      "delivered": "Sent"
     },
     "usage": {
       "ranges": {
@@ -1202,13 +1215,25 @@
     },
     "errors": {
       "loadSettings": "Failed to load the AI analysis settings",
-      "saveSettings": "Failed to save the settings. {{error}}",
-      "test": "OpenAI test failed. {{error}}",
+      "saveSettings": "Failed to save the settings: {{error}}",
+      "test": "OpenAI test failed: {{error}}",
       "loadReports": "Failed to load the analyses",
       "loadReport": "Failed to load the analysis",
       "preview": "Failed to render the email",
-      "run": "Failed to start the analysis. {{error}}",
-      "loadUsage": "Failed to load the usage"
+      "run": "Failed to start the analysis: {{error}}",
+      "loadUsage": "Failed to load the usage",
+      "known": {
+        "noKey": "the OpenAI key is missing. Add OPENAI_API_KEY to the deployment secrets.",
+        "budget": "the monthly budget is reached. Raise it in Settings or wait for next month.",
+        "busy": "an analysis is already running. Wait for it to finish.",
+        "noSubscribers": "there are no active subscribers of the AI analysis. Add them in Mail reports.",
+        "noMail": "mail is not configured on the server.",
+        "stopping": "the server is restarting. Try again in a minute.",
+        "interrupted": "the analysis was interrupted by a server restart. Run it again.",
+        "unknownModel": "the chosen model is not in the price list. Pick another one.",
+        "timeZone": "the time zone is not valid. Use an IANA name, e.g. Europe/Madrid.",
+        "unreachable": "the server did not answer."
+      }
     }
   }
 }

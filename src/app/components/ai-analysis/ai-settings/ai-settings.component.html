@@ -29,13 +29,14 @@
       </div>
       <div class="ai-status-item">
         <span class="ai-status-label">{{ 'aiAnalysis.settings.nextRun' | translate }}</span>
-        <span class="ai-status-value timestamp">
-          @if (v.enabled) {
-            {{ nextRunLabel(v) }}
-          } @else {
-            —
-          }
-        </span>
+        @if (v.enabled && nextRun(v); as next) {
+          <span class="ai-status-value ai-status-value--stack">
+            <span>{{ next.day }} <span class="timestamp">{{ next.time }}</span></span>
+            <span class="ai-muted ai-status-note">{{ next.zone }}</span>
+          </span>
+        } @else {
+          <span class="ai-status-value">—</span>
+        }
       </div>
       <div class="ai-status-item">
         <span class="ai-status-label">{{ 'aiAnalysis.settings.monthSpent' | translate }}</span>
@@ -52,9 +53,6 @@
     </div>
 
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>{{ 'aiAnalysis.settings.title' | translate }}</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="save()" class="ai-form">
           <mat-slide-toggle formControlName="enabled">{{ 'aiAnalysis.settings.enabled' | translate }}</mat-slide-toggle>
@@ -98,7 +96,7 @@
                   <mat-option [value]="v.model">{{ v.model }}</mat-option>
                 }
                 @for (m of v.models; track m.id) {
-                  <mat-option [value]="m.id">{{ m.label }} <span class="ai-muted">· {{ modelPrice(m.id) }}</span></mat-option>
+                  <mat-option [value]="m.id">{{ m.label }}</mat-option>
                 }
               </mat-select>
               <mat-hint>{{ modelPrice(form.controls.model.value) }}</mat-hint>
@@ -123,19 +121,29 @@
             </mat-form-field>
           </div>
 
-          <h3 class="ai-form-heading">
-            {{ 'aiAnalysis.settings.prompt' | translate }}
-            @if (promptIsDefault()) {
-              <span class="ai-tag">{{ 'aiAnalysis.settings.promptDefault' | translate }}</span>
-            } @else {
-              <span class="ai-tag ai-tag--custom">{{ 'aiAnalysis.settings.promptCustom' | translate }}</span>
+          <mat-expansion-panel class="ai-prompt-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ 'aiAnalysis.settings.prompt' | translate }}</mat-panel-title>
+              <mat-panel-description>
+                @if (promptIsDefault()) {
+                  <span class="ai-tag">{{ 'aiAnalysis.settings.promptDefault' | translate }}</span>
+                } @else {
+                  <span class="ai-tag ai-tag--custom">{{ 'aiAnalysis.settings.promptCustom' | translate }}</span>
+                }
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="outline" class="ai-prompt">
+              <mat-label>{{ 'aiAnalysis.settings.prompt' | translate }}</mat-label>
+              <textarea matInput formControlName="system_prompt" rows="14"></textarea>
+              <mat-hint>{{ 'aiAnalysis.settings.promptHint' | translate }}</mat-hint>
+            </mat-form-field>
+            @if (!promptIsDefault()) {
+              <button mat-button type="button" (click)="restoreDefaultPrompt()">
+                <mat-icon>restart_alt</mat-icon>
+                {{ 'aiAnalysis.settings.restorePrompt' | translate }}
+              </button>
             }
-          </h3>
-          <mat-form-field appearance="outline" class="ai-prompt">
-            <mat-label>{{ 'aiAnalysis.settings.prompt' | translate }}</mat-label>
-            <textarea matInput formControlName="system_prompt" rows="14"></textarea>
-            <mat-hint>{{ 'aiAnalysis.settings.promptHint' | translate }}</mat-hint>
-          </mat-form-field>
+          </mat-expansion-panel>
 
           <mat-divider />
 
@@ -144,12 +152,6 @@
               <mat-icon>network_check</mat-icon>
               {{ 'aiAnalysis.settings.test' | translate }}
             </button>
-            @if (!promptIsDefault()) {
-              <button mat-button type="button" (click)="restoreDefaultPrompt()">
-                <mat-icon>restart_alt</mat-icon>
-                {{ 'aiAnalysis.settings.restorePrompt' | translate }}
-              </button>
-            }
             <span class="ai-spacer"></span>
             <button mat-raised-button color="primary" type="submit" [disabled]="saving() || form.invalid || form.pristine">
               <mat-icon>save</mat-icon>

@@ -647,7 +647,7 @@
     "edit": "Editar",
     "sendNow": "Enviar ahora",
     "delete": "Eliminar",
-    "noSubscriptions": "No hay informes por correo configurados. Añada una dirección arriba.",
+    "noSubscriptions": "Todavía no hay direcciones. Añada la primera con «Añadir dirección».",
     "deleteTitle": "Eliminar suscripción",
     "deleteContent": "¿Dejar de enviar «{{report}}» a {{email}}?",
     "deleteYes": "Eliminar",
@@ -672,7 +672,14 @@
     "aiShort": "IA",
     "locations": "Ubicaciones",
     "allLocations": "Toda la red",
-    "locationsHint": "Vacío: toda la red"
+    "locationsHint": "Vacío: toda la red",
+    "addresses": "{{n}} direcciones",
+    "addAddress": "Añadir dirección",
+    "statisticTitle": {
+      "daily": "Consumo diario",
+      "weekly": "Consumo semanal",
+      "monthly": "Consumo mensual"
+    }
   },
   "users": {
     "title": "Usuarios",
@@ -1154,7 +1161,7 @@
       "language": "Idioma",
       "generate": "Generar",
       "generateAndSend": "Generar y enviar",
-      "hint": "«Solo recopilar datos» muestra lo que leería el modelo, sin coste. «Generar» crea un informe para revisarlo. Ambos cubren las ubicaciones elegidas o toda la red. «Generar y enviar» envía a cada suscriptor activo el análisis de sus ubicaciones.",
+      "hint": "«Generar y enviar» envía a cada suscriptor activo el análisis de sus ubicaciones.",
       "created": "Creado",
       "period": "Periodo",
       "trigger": "Inicio",
@@ -1172,7 +1179,13 @@
       "sendAllYes": "Generar y enviar",
       "preview": "Vista previa del correo",
       "locations": "Ubicaciones",
-      "wholeNetwork": "Toda la red"
+      "wholeNetwork": "Toda la red",
+      "dryRunHint": "Muestra lo que leería el modelo, sin coste",
+      "generateHint": "Crea un informe para revisarlo, sin enviarlo",
+      "sentCount": "{{n}} correos",
+      "sentFailed": "{{n}} con error",
+      "author": "Autor",
+      "delivered": "Enviado"
     },
     "usage": {
       "ranges": {
@@ -1202,13 +1215,25 @@
     },
     "errors": {
       "loadSettings": "No se pudieron cargar los ajustes del análisis IA",
-      "saveSettings": "No se pudieron guardar los ajustes. {{error}}",
-      "test": "La prueba de OpenAI ha fallado. {{error}}",
+      "saveSettings": "No se pudieron guardar los ajustes: {{error}}",
+      "test": "La prueba de OpenAI ha fallado: {{error}}",
       "loadReports": "No se pudieron cargar los análisis",
       "loadReport": "No se pudo cargar el análisis",
       "preview": "No se pudo mostrar el correo",
-      "run": "No se pudo iniciar el análisis. {{error}}",
-      "loadUsage": "No se pudo cargar el consumo"
+      "run": "No se pudo iniciar el análisis: {{error}}",
+      "loadUsage": "No se pudo cargar el consumo",
+      "known": {
+        "noKey": "falta la clave de OpenAI. Añada OPENAI_API_KEY a los secretos del despliegue.",
+        "budget": "se ha alcanzado el presupuesto mensual. Auméntelo en Ajustes o espere al mes siguiente.",
+        "busy": "ya hay un análisis en curso. Espere a que termine.",
+        "noSubscribers": "no hay suscriptores activos del análisis IA. Añádalos en Informes por correo.",
+        "noMail": "el correo no está configurado en el servidor.",
+        "stopping": "el servidor se está reiniciando. Inténtelo en un minuto.",
+        "interrupted": "el análisis se interrumpió al reiniciarse el servidor. Vuelva a lanzarlo.",
+        "unknownModel": "el modelo elegido no está en la lista de precios. Elija otro.",
+        "timeZone": "la zona horaria no es válida. Use un nombre IANA, p. ej. Europe/Madrid.",
+        "unreachable": "el servidor no respondió."
+      }
     }
   }
 }
