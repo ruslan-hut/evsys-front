@@ -61,12 +61,35 @@ export interface AIFinding {
   recommendation: string;
 }
 
+export type AIActionPriority = 'urgent' | 'priority' | 'planned';
+
+/** One row of the executive diagnosis: a charge point or an area, one sentence. */
+export interface AIDiagnosis {
+  subject: string;
+  text: string;
+}
+
+/** One row of the action plan. */
+export interface AIAction {
+  priority: AIActionPriority;
+  target: string;
+  action: string;
+}
+
+/**
+ * The model's answer. Compact reports carry diagnosis/actions/closing_note;
+ * reports generated before the compact layout carry summary/findings/trends
+ * (null on newer ones).
+ */
 export interface AIAnalysisResult {
   status: AIAnalysisStatus;
   headline: string;
+  diagnosis?: AIDiagnosis[];
+  actions?: AIAction[];
+  closing_note?: string;
   summary: string;
-  findings: AIFinding[];
-  trends: string[];
+  findings: AIFinding[] | null;
+  trends: string[] | null;
 }
 
 /** One set of locations a run analysed; key "" is the whole network. */
